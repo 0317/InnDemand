@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">InnDemand</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="facebook_app_id">1533116273663759</string>
+
+    <!-- .......Google Integration String calls....... -->
+
+    <string name="logout">Logout</string>
+    <string name="loginText">Please login with your Google Account</string>
+
+    <!-- ......Hardcoded string values are under...... -->
+
+    <string name="login_call">LOGIN</string>
+    <string name="login_terms_lines">By signing-up you agree to our terms of service &amp; privacy policy</string>
+    <string name="room_services">Room Service</string>
+    <string name="bell_boy">Bell-boy</string>
+    <string name="room_cleaning">Room cleaning</string>
+    <string name="laundry">Laundry</string>
+    <string name="cab_call">Cab</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="wakeup_call">Wake me up</string>
+    <string name="bath_essentials">Bathroom Essentials</string>
+    <string name="bed_tea_call">Bed Tea/Coffee</string>
+    <string name="beverages">Beverages</string>
+    <string name="pick_time">PICK A TIME</string>
+    <string name="confirm_demand">CONFIRM MY DEMAND</string>
+    <string name="pick_date">Pick Up Date</string>
+    <string name="pick_up_time">Pick Up Time</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_time">Select Time</string>
+    <string name="change_time">CHANGE TIME</string>
+    <string name="cancel_wakeup_call">CANCEL WAKE UP CALL</string>
+    <string name="anything_to_say">Do you have anything to say?</string>
+    <string name="tap_to_start">Tap here to start typing</string>
+    <string name="when_to_clean">When do you want us to clean  your room?</string>
+    <string name="pick_clothes">When do you want us to pick up clothes?</string>
+    <string name="no_of_water_bottles">Select No. of  Water Bottles</string>
+    <string name="no_of_soda_bottles">Select No. of  Soda Bottles</string>
+    <string name="no_of_ice_bottles">Select No. of  Ice Buckets</string>
+    <string name="no_of_glasses">Select No. of  Glasses</string>
+    <string name="bed_tea_tea">Tea</string>
+    <string name="bed_tea_coffee">Coffee</string>
+    <string name="note_bed_tea">NOTE: We cost Rs 25  per  Tea/Coffee. It will  take us 20 mins to prepare your drink</string>
+    <string name="note_beverage">NOTE: We will reach the service to you in 15 minutes</string>
+    <string name="note_clothes">NOTE: We charge Rs 15 per cloth &amp; 7 hours to deliver it back</string>
+    <string name="note_bath_essentials">NOTE: It will take us 10 minutes to reach you the towel(S)</string>
+    <string name="note_cab">NOTE: Providing Cab services is based on the availability. We will call you to confirm.</string>
+    <string name="write_comment_here">Write your comment here</string>
+    <string name="write_comment">Write Comment</string>
+    <string name="submit">Submit</string>
+    <string name="my_cart">My Cart</string>
+    <string name="mycart">NOTE: Taxes Included</string>
+    <string name="proceed">PROCEED</string>
+    <string name="apply_coupon">APPLY DISCOUNT CODE</string>
+    <string name="food_delivery_time">Food Delivery Time</string>
+    <string name="appetizer_fragment_headline">Our Restaurant Serves both Vegetarian &amp; Non-Vegeterian</string>
+    <string name="restaurant_timing">Restaurant Timings - 7AM to 11PM</string>
+    <string name="note_restaurant">NOTE: It will take a minimum of 60 mins to prepare the food</string>
+    <string name="food_type">FOOD TYPE: </string>
+
+</resources>
