@@ -29,6 +29,7 @@
     <string name="beverages">Beverages</string>
     <string name="pick_time">PICK A TIME</string>
     <string name="confirm_demand">CONFIRM MY DEMAND</string>
+    <string name="confirm">CONFIRM</string>
     <string name="pick_date">Pick Up Date</string>
     <string name="pick_up_time">Pick Up Time</string>
     <string name="select_date">Select Date</string>
@@ -62,5 +63,13 @@
     <string name="restaurant_timing">Restaurant Timings - 7AM to 11PM</string>
     <string name="note_restaurant">NOTE: It will take a minimum of 60 mins to prepare the food</string>
     <string name="food_type">FOOD TYPE: </string>
+    <string name="restaurants">RESTAURANT</string>
+    <string name="bar">BAR</string>
+    <string name="spa">SPA</string>
+    <string name="room_service">ROOM SERVICE</string>
+    <string name="mis_info">MISCELLANEOUS INFO</string>
+    <string name="hotel_restau_timing">Restaurant Timing(s)</string>
+    <string name="swim_timing">Swimming Pool Timing(s)</string>
+    <string name="about_hotel">ABOUT HOTEL</string>
 
 </resources>

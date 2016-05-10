@@ -1,6 +1,8 @@
 package demand.inn.com.inndemand;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -14,25 +16,44 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
+import demand.inn.com.inndemand.Helper.CircleTransform;
+import demand.inn.com.inndemand.utility.AppPreferences;
+import demand.inn.com.inndemand.utility.NetworkUtility;
+
 //import demand.inn.com.inndemand.Helper.CircleTransform;
 
 public class DashBoard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+   //Utility call Area
+    NetworkUtility nu;
+    AppPreferences prefs;
+
+    //Preferences Call
+    SharedPreferences settings;
+
+    //UI call
     ImageView displayImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
+        nu = new NetworkUtility(DashBoard.this);
+        prefs = new AppPreferences(DashBoard.this);
+        settings =  PreferenceManager.getDefaultSharedPreferences(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "You want to Email?", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -48,7 +69,7 @@ public class DashBoard extends AppCompatActivity
 
         //UI Items call
         displayImage = (ImageView) findViewById(R.id.imageView);
-      //  Picasso.with(DashBoard.this).load(R.drawable.ic_menu_camera).transform(new CircleTransform()).into(displayImage);
+        Glide.with(DashBoard.this).load(settings.getString("image", "")).transform(new CircleTransform(DashBoard.this)).into(displayImage);
     }
 
     @Override

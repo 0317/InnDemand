@@ -1,11 +1,7 @@
 package demand.inn.com.inndemand.login;
 
-import android.app.Activity;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.facebook.CallbackManager;
@@ -16,10 +12,10 @@ import com.facebook.FacebookSdk;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.GraphRequest;
@@ -39,15 +35,15 @@ import com.google.android.gms.plus.model.people.Person;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.Arrays;
 
 import demand.inn.com.inndemand.R;
 
 /**
- * Created by akash on 3/5/16.
+ * Created by akash
  */
-    public class LoginScreen extends Activity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    public class LoginScreen extends AppCompatActivity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     LoginButton loginButton;
     CallbackManager callbackManager;
@@ -73,6 +69,10 @@ import demand.inn.com.inndemand.R;
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.loginscreen);
 
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().hide();
+
 
         AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create();
@@ -85,13 +85,11 @@ import demand.inn.com.inndemand.R;
         mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(Plus.API, Plus.PlusOptions.builder().build()).addScope(Plus.SCOPE_PLUS_LOGIN).build();
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends, user_photos"));
+        loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends, user_mobile_phone, user_photos"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
             public void onSuccess(final LoginResult loginResult) {
-
-
 
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
@@ -108,6 +106,7 @@ import demand.inn.com.inndemand.R;
                                     editor.putBoolean("isLoggedIn", true);
                                     editor.putString("fb_id", object.getString("id"));
                                     editor.putString("fb_name", object.getString("name"));
+                                    editor.putString("user_mobile_phone", object.getString("user_mobile_phone"));
                                     editor.putString("fb_dob", object.has("birthday")==false?"01/01/1990" : object.getString("birthday"));
                                     editor.putString("fb_gender", object.getString("gender"));
                                     editor.commit();
@@ -121,7 +120,7 @@ import demand.inn.com.inndemand.R;
                             }
                         });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender, birthday, picture.type(large)");
+                parameters.putString("fields", "id,name,email,gender, birthday,user_mobile_phone, picture.type(large)");
 
                 new GraphRequest(loginResult.getAccessToken(), "me", parameters, HttpMethod.GET,
                         new GraphRequest.Callback() {
@@ -137,7 +136,9 @@ import demand.inn.com.inndemand.R;
 
                                             SharedPreferences.Editor editor = settings.edit();
                                             editor.putString("image", profilePicUrl);
+                                            editor.putString("user_mobile_phone", data.getString("user_mobile_phone"));
                                             editor.putString("name", data.getString("name"));
+                                            editor.putString("email", data.getString("email"));
                                             editor.commit();
                                         }
                                     } catch (Exception e) {

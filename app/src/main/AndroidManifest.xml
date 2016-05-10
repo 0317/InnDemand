@@ -2,9 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="demand.inn.com.inndemand">
 
+    <!-- ...............InnDemand app permissions area............ -->
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="com.javapapers.android.maps.path.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +23,11 @@
         android:theme="@style/AppTheme">
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
+        <meta-data android:name="com.inthecheesefactory.lab.glidepicasso.GlideConfiguration"
+            android:value="GlideModule"/>
+
+        <!-- ...................Activity call Area....................... -->
 
         <activity android:name=".welcome.SplashScreen"
             android:label="@string/app_name"
@@ -25,6 +39,12 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".login.LoginScreen"
+            android:label="@string/select_time"
+            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".login.CheckDetails"></activity>
+        <activity android:name=".login.QrScan"></activity>
+
         <activity
             android:name=".DashBoard"
             android:label="@string/app_name"
@@ -34,9 +54,18 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".login.LoginScreen"></activity>
+
+        <activity android:name=".login.HotelDetails"
+            android:label="@string/bell_boy"
+            android:theme="@style/AppTheme"></activity>
         <activity android:name=".cartarea.MyCart"></activity>
         <activity android:name=".welcome.CommentArea"></activity>
+
+
+        <!-- ...................Broadcast call Area....................... -->
+
+        <!-- ...................Services call Area........................ -->
+
     </application>
 
 </manifest>

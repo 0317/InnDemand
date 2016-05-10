@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import demand.inn.com.inndemand.R;
 
 /**
- * Created by akash on 5/5/16.
+ * Created by akash
  */
 public class Appetizer extends Fragment {
 
