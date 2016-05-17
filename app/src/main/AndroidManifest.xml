@@ -14,6 +14,7 @@
     <uses-permission android:name="com.javapapers.android.maps.path.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="in.wptrafficanalyzer.locationroutemylocationv2.permission.MAPS_RECEIVE" />
 
     <application
         android:allowBackup="true"
@@ -61,10 +62,31 @@
         <activity android:name=".cartarea.MyCart"></activity>
         <activity android:name=".welcome.CommentArea"></activity>
 
+        <!-- ................Room-Services Activity Area.......... -->
+
+        <activity android:name=".roomservice.RoomServices"
+            android:label="@string/room_services"></activity>
+        <activity android:name=".roomservice.Bathroom"></activity>
+        <activity android:name=".roomservice.RoomCleaning"></activity>
+        <activity android:name=".roomservice.WakeUp"></activity>
+        <activity android:name=".roomservice.Cab"></activity>
+        <activity android:name=".roomservice.Laundry"></activity>
+        <activity android:name=".roomservice.Beverages"></activity>
+        <activity android:name=".roomservice.BedTea"></activity>
+        <activity android:name=".roomservice.BellBoy"></activity>
+
+        <!-- ................Restaurant Activity Area.......... -->
+
+        <activity android:name=".roomservice.Restaurant"></activity>
 
         <!-- ...................Broadcast call Area....................... -->
 
         <!-- ...................Services call Area........................ -->
+
+        <activity android:name=".mapdirection.Mapping"></activity>
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAgQdWF1SP1rwBpfprvCsVgR__MIh76mYw"/>
 
     </application>
 

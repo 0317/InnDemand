@@ -14,6 +14,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:gravity="center"
+        android:id="@+id/backpress_bell"
+        android:onClick="backPress"
         android:orientation="vertical">
 
         <ImageView
@@ -67,6 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
+            android:id="@+id/say_something_bell"
             android:hint="@string/tap_to_start"
             android:background="@null"/>
 
@@ -79,6 +82,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="#ff9900"
+        android:onClick="confirmDemand"
         android:id="@+id/confirm_demand_click"
         android:gravity="center">
 

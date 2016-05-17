@@ -14,6 +14,8 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:gravity="center"
+            android:onClick="backPress"
+            android:id="@+id/backpress_bath"
             android:orientation="vertical">
 
             <ImageView
@@ -34,16 +36,12 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="60dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="60dp"
             android:weightSum="3">
 
             <ImageView
@@ -108,7 +106,8 @@
                                 <CheckBox
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    />
+                                    android:buttonTint="@color/confirm_demand_click"
+                                    android:id="@+id/towels_bath"/>
 
                             </LinearLayout>
 
@@ -144,7 +143,8 @@
                                 <CheckBox
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    />
+                                    android:id="@+id/soap_bath"
+                                    android:buttonTint="@color/confirm_demand_click"/>
 
                             </LinearLayout>
 
@@ -180,6 +180,8 @@
                                 <CheckBox
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:buttonTint="@color/confirm_demand_click"
+                                    android:id="@+id/maintainance_bath"
                                     />
 
                             </LinearLayout>
@@ -194,14 +196,13 @@
 
         </LinearLayout>
 
-    </ScrollView>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
+        android:onClick="confirmDemand"
         android:background="@color/confirm_demand_click"
-        android:id="@+id/confirm_demand_click"
+        android:id="@+id/confirm_demand_click_bath"
         android:gravity="center">
 
         <TextView

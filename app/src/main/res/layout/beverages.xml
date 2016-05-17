@@ -14,6 +14,8 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:gravity="center"
+            android:id="@+id/backpress_beverages"
+            android:onClick="backPress"
             android:orientation="vertical">
 
             <ImageView
@@ -33,16 +35,12 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="60dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="60dp"
             android:weightSum="3">
 
             <ImageView
@@ -115,12 +113,15 @@
                                     android:layout_alignParentLeft="true"
                                     android:layout_marginTop="10dp"
                                     android:layout_marginLeft="15dp"
+                                    android:onClick="waterMinus"
+                                    android:id="@+id/waterMinus_beverage"
                                     android:src="@drawable/ic_media_play"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="0"
+                                        android:id="@+id/waterCount_beverage"
                                         android:textSize="15sp"
                                         android:layout_marginTop="15dp"
                                         android:layout_centerHorizontal="true"
@@ -131,7 +132,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
+                                        android:id="@+id/waterPlus_beverage"
                                         android:layout_marginRight="15dp"
+                                        android:onClick="waterPlus"
                                         android:layout_alignParentRight="true"
                                         android:src="@drawable/ic_media_play"/>
 
@@ -178,6 +181,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentLeft="true"
                                         android:layout_marginTop="10dp"
+                                        android:onClick="sodaMinus"
+                                        android:id="@+id/sodaMinus_beverage"
                                         android:layout_marginLeft="15dp"
                                         android:src="@drawable/ic_media_play"/>
 
@@ -187,6 +192,7 @@
                                         android:text="0"
                                         android:textSize="15sp"
                                         android:layout_marginTop="15dp"
+                                        android:id="@+id/sodaCount_beverage"
                                         android:layout_centerHorizontal="true"
                                         android:gravity="center"
                                         />
@@ -195,7 +201,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
+                                        android:id="@+id/sodaPlus_beverage"
                                         android:layout_marginRight="15dp"
+                                        android:onClick="sodaPlus"
                                         android:layout_alignParentRight="true"
                                         android:src="@drawable/ic_media_play"/>
 
@@ -243,6 +251,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentLeft="true"
                                         android:layout_marginTop="10dp"
+                                        android:onClick="iceMinus"
+                                        android:id="@+id/iceMinus_beverage"
                                         android:layout_marginLeft="15dp"
                                         android:src="@drawable/ic_media_play"/>
 
@@ -251,6 +261,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="0"
                                         android:textSize="15sp"
+                                        android:id="@+id/iceCount_beverage"
                                         android:layout_marginTop="15dp"
                                         android:layout_centerHorizontal="true"
                                         android:gravity="center"
@@ -260,7 +271,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
+                                        android:id="@+id/icePlus_beverage"
                                         android:layout_marginRight="15dp"
+                                        android:onClick="icePlus"
                                         android:layout_alignParentRight="true"
                                         android:src="@drawable/ic_media_play"/>
 
@@ -309,6 +322,8 @@
                                         android:layout_alignParentLeft="true"
                                         android:layout_marginTop="10dp"
                                         android:layout_marginLeft="15dp"
+                                        android:onClick="glassMinus"
+                                        android:id="@+id/glassMinus_beverage"
                                         android:src="@drawable/ic_media_play"/>
 
                                     <TextView
@@ -316,6 +331,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="0"
                                         android:textSize="15sp"
+                                        android:id="@+id/glassCount_beverage"
                                         android:layout_marginTop="15dp"
                                         android:layout_centerHorizontal="true"
                                         android:gravity="center"
@@ -325,7 +341,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
+                                        android:id="@+id/glassPlus_beverage"
                                         android:layout_marginRight="15dp"
+                                        android:onClick="glassPlus"
                                         android:layout_alignParentRight="true"
                                         android:src="@drawable/ic_media_play"/>
 
@@ -345,14 +363,13 @@
 
         </LinearLayout>
 
-    </ScrollView>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@color/confirm_demand_click"
-        android:id="@+id/confirm_demand_click"
+        android:id="@+id/confirm_demand_click_beverages"
+        android:onClick="confirmDemand"
         android:gravity="center">
 
         <TextView

@@ -15,6 +15,8 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:gravity="center"
+            android:id="@+id/backpress"
+            android:onClick="backPress"
             android:orientation="vertical">
 
             <ImageView
@@ -48,6 +50,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/beverages_click"
+            android:onClick="beveragesClick"
             android:orientation="vertical"
             android:gravity="center">
 
@@ -69,6 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="roomcleanClick"
             android:id="@+id/roomclean_click"
             android:orientation="vertical"
             android:gravity="center">
@@ -92,6 +96,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:onClick="laundryClick"
             android:id="@+id/laundry_click"
             android:orientation="vertical">
 
@@ -123,6 +128,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/cab_click"
+            android:onClick="cabClick"
             android:orientation="vertical"
             android:gravity="center">
 
@@ -145,6 +151,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/bed_tea_click"
+            android:onClick="bedteaClick"
             android:orientation="vertical"
             android:gravity="center">
 
@@ -166,6 +173,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:onClick="wakeupClick"
             android:id="@+id/wake_up_click"
             android:orientation="vertical">
 
@@ -196,6 +204,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="bellboyClick"
             android:id="@+id/bell_boy_click"
             android:orientation="vertical"
             android:gravity="center">
@@ -218,6 +227,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="bathessentialsClick"
             android:id="@+id/bath_essentials_click"
             android:orientation="vertical"
             android:gravity="center">
