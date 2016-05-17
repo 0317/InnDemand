@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by akash on 4/5/16.
@@ -26,6 +27,9 @@ public class BellBoy extends AppCompatActivity {
 
     //Others
     String saySomething;
+
+    //Class call
+    AppController appController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +50,6 @@ public class BellBoy extends AppCompatActivity {
         onBackPressed();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 
     public void confirmDemand(){
         //string call to get value of edittext

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by akash on 4/5/16.
@@ -23,6 +24,9 @@ public class Bathroom extends AppCompatActivity {
     //UI call area
     CheckBox towels, soap, maintainance;
     LinearLayout backPress, confirm;
+
+    //Class call
+    AppController appController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

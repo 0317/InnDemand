@@ -14,6 +14,7 @@ import java.util.Calendar;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by akash on 4/5/16.
@@ -35,6 +36,9 @@ public class RoomCleaning extends AppCompatActivity {
     //Others
     String saySomething;
     private String format = "";
+
+    //Class call
+    AppController appController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

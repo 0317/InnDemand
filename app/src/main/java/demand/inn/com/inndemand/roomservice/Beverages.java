@@ -29,6 +29,7 @@ public class Beverages extends AppCompatActivity {
 
     //Others
     int count = 0;
+    String waterText, sodaText, iceText, glassText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +59,13 @@ public class Beverages extends AppCompatActivity {
     }
 
     public void waterMinus(){
-        count--;
-        water.setText(count);
+        waterText = water.getText().toString().trim();
+        if(waterText == "0"){
+            waterMinus.setEnabled(false);
+        }else {
+            count--;
+            water.setText(count);
+        }
     }
 
     public void waterPlus(){
@@ -68,8 +74,13 @@ public class Beverages extends AppCompatActivity {
     }
 
     public void sodaMinus(){
-        count--;
-        soda.setText(count);
+        sodaText = soda.getText().toString().trim();
+        if(sodaText == "0"){
+            sodaMinus.setEnabled(false);
+        }else {
+            count--;
+            soda.setText(count);
+        }
     }
 
     public void sodaPlus(){
@@ -78,8 +89,13 @@ public class Beverages extends AppCompatActivity {
     }
 
     public void iceMinus(){
-        count--;
-        ice.setText(count);
+        iceText = water.getText().toString().trim();
+        if(iceText == "0"){
+            iceMinus.setEnabled(false);
+        }else {
+            count--;
+            ice.setText(count);
+        }
     }
 
     public void icePlus(){
@@ -88,8 +104,13 @@ public class Beverages extends AppCompatActivity {
     }
 
     public void glassMinus(){
-        count--;
-        glass.setText(count);
+        glassText = water.getText().toString().trim();
+        if(glassText == "0"){
+            glassMinus.setEnabled(false);
+        }else {
+            count--;
+            glass.setText(count);
+        }
     }
 
     public void glassPlus(){
@@ -105,7 +126,7 @@ public class Beverages extends AppCompatActivity {
 
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
+
                 }
             });
 

@@ -29,6 +29,7 @@ public class BedTea extends AppCompatActivity {
 
     //Others
     int count = 0;
+    String teaText, coffeeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +53,13 @@ public class BedTea extends AppCompatActivity {
     }
 
     public void teaMinus(){
-        count--;
-        tea.setText(count);
+        teaText = tea.getText().toString().trim();
+        if(teaText == "0"){
+            teaMinus.setEnabled(false);
+        }else {
+            count--;
+            tea.setText(count);
+        }
     }
 
     public void teaPlus(){
@@ -62,8 +68,13 @@ public class BedTea extends AppCompatActivity {
     }
 
     public void coffeeMinus(){
-        count--;
-        coffee.setText(count);
+        coffeeText = coffee.getText().toString().trim();
+        if(coffeeText == "0"){
+            coffeeMinus.setEnabled(false);
+        }else {
+            count--;
+            coffee.setText(count);
+        }
     }
 
     public void coffeePlus(){
@@ -79,7 +90,6 @@ public class BedTea extends AppCompatActivity {
 
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
                         }
                     });
 

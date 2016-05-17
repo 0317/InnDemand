@@ -10,6 +10,7 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by akash on 4/5/16.
@@ -25,6 +26,9 @@ public class RoomServices extends AppCompatActivity {
     //UI Initialize
     LinearLayout beverages_click, laundry_click, cab_click, bed_tea_click, bath_essentials_click, bell_boy_click,
             room_clean_click, wake_up_click, backPress;
+
+    //Class call
+    AppController appController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,10 +122,5 @@ public class RoomServices extends AppCompatActivity {
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }

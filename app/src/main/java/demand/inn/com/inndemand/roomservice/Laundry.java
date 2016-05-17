@@ -1,6 +1,5 @@
 package demand.inn.com.inndemand.roomservice;
 
-import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,15 +9,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.android.volley.Cache;
+
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
- * Created by akash on 4/5/16.
+ * Created by akash
  */
+
 public class Laundry extends AppCompatActivity {
 
     //Utility call area
@@ -36,12 +40,16 @@ public class Laundry extends AppCompatActivity {
     String saySomething;
     private String format = "";
 
+    //Class call Area
+    AppController appController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.laundry);
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
+        appController = new AppController();
 
         getSupportActionBar().hide();
 
@@ -58,6 +66,19 @@ public class Laundry extends AppCompatActivity {
 
         //Calender Area
         calendar = Calendar.getInstance();
+
+        Cache cache = AppController.getInstance().getRequestQueue().getCache();
+        Cache.Entry entry = cache.get("");
+        if(entry != null){
+            try {
+                String data = new String(entry.data, "UTF-8");
+                // handle data, like converting it to xml, json, bitmap etc.,
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }else{
+        // Cached response doesn't exists. Make network call here
+        }
 
     }
 
@@ -106,4 +127,5 @@ public class Laundry extends AppCompatActivity {
     public void backPress(){
         onBackPressed();
     }
+
 }

@@ -9,10 +9,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.roomservice.Beverages;
@@ -20,6 +26,7 @@ import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.SplashScreen;
 
 /**
@@ -35,9 +42,13 @@ public class HotelDetails extends AppCompatActivity {
     //UI Call
     Button checkout;
     TextView hotel_Name, hotel_Address;
+    ImageLoader imageLoader;
+    NetworkImageView imageView;
+    ImageView main_backdrop;
 
     //Others
     String callHotel;
+    String URL, TAG;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,11 +57,34 @@ public class HotelDetails extends AppCompatActivity {
         nu = new NetworkUtility(HotelDetails.this);
         prefs = new AppPreferences(HotelDetails.this);
 
+        URL = "";
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_menu_camera);
         toolbar.setTitle("Vivanta - By Taj");
         toolbar.getMenu().findItem(R.menu.hotel_details_menu);
+
+        imageLoader = AppController.getInstance().getImageLoader();
+//        imageView.setImageUrl(URL, imageLoader);
+
+        main_backdrop = (ImageView) findViewById(R.id.main_backdrop);
+        // If you are using normal ImageView
+        imageLoader.get(URL, new ImageLoader.ImageListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Image Load Error: " + error.getMessage());
+            }
+
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                if (response.getBitmap() != null) {
+                    // load image into imageview
+                    main_backdrop.setImageBitmap(response.getBitmap());
+                }
+            }
+        });
 
         //UI initialize
         checkout = (Button) findViewById(R.id.checkout_click);
