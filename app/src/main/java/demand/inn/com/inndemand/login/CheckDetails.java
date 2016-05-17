@@ -43,11 +43,6 @@ public class CheckDetails extends AppCompatActivity {
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
         prefs  =new AppPreferences(CheckDetails.this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_camera);
-        toolbar.setTitle("Confirm Details");
-
         //UI Initialized here
         fb_name = (EditText) findViewById(R.id.fb_name);
         fb_email = (EditText) findViewById(R.id.fb_email);
@@ -59,15 +54,18 @@ public class CheckDetails extends AppCompatActivity {
         fb_email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
         //details set from facebook data
-
+//
         fb_name.setText(settings.getString("fb_name", "")); //facebook name
+//        fb_name.setEnabled(false);
+//
         fb_email.setText(settings.getString("email", ""));  //facebook email
+//        fb_email.setEnabled(true);
 
-        Glide.with(this).load(settings.getString("image", "")).into(fb_dp);
+//        Glide.with(this).load(settings.getString("image", "")).into(fb_dp); //facebook DP
 
     }
 
-    public void verifyDetails(){
+    public void verifyDetails(View view){
 
         //String initialized to get above mentioned edittext values
 
@@ -77,16 +75,16 @@ public class CheckDetails extends AppCompatActivity {
 
         prefs.setUser_fname(name);
         prefs.setUser_email(email);
-        prefs.setUser_phone(Integer.parseInt(phone));
+//        prefs.setUser_phone(Integer.parseInt(phone));
 
         if(name == null || name.equalsIgnoreCase("")){
             Snackbar.make(view, "Please Enter Name", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-        }else if(email == null || email.contains("@")){
+        }else if(email == null || !email.contains("@")){
             Snackbar.make(view, "Please Enter Valid Email", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }else if(phone == null || phone.length() <= 9){
-            Snackbar.make(view, "Please Enter Correct Number", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Please Enter Correct Phone Number", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }else {
             Intent in = new Intent(CheckDetails.this, QrScan.class);

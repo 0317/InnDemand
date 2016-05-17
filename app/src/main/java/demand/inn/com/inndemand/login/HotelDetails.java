@@ -59,12 +59,6 @@ public class HotelDetails extends AppCompatActivity {
 
         URL = "";
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_camera);
-        toolbar.setTitle("Vivanta - By Taj");
-        toolbar.getMenu().findItem(R.menu.hotel_details_menu);
-
         imageLoader = AppController.getInstance().getImageLoader();
 //        imageView.setImageUrl(URL, imageLoader);
 

@@ -42,6 +42,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="#fff"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal"
         android:weightSum="3">
 
@@ -50,13 +51,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/beverages_click"
-            android:onClick="beveragesClick"
             android:orientation="vertical"
             android:gravity="center">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:onClick="beveragesClick"
                 android:background="@drawable/round_circle"
                 />
 
@@ -64,6 +65,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="BEVERAGES ETC"
+                android:textSize="10sp"
+                android:gravity="center"
                 android:paddingTop="10dp"/>
 
         </LinearLayout>
@@ -72,7 +75,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="roomcleanClick"
             android:id="@+id/roomclean_click"
             android:orientation="vertical"
             android:gravity="center">
@@ -80,6 +82,7 @@
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:onClick="roomcleanClick"
                 android:background="@drawable/round_circle"
                 />
 
@@ -87,6 +90,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ROOM CLEANING"
+                android:textSize="10sp"
+                android:gravity="center"
                 android:paddingTop="10dp"/>
 
         </LinearLayout>
@@ -96,13 +101,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:onClick="laundryClick"
             android:id="@+id/laundry_click"
             android:orientation="vertical">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:onClick="laundryClick"
                 android:background="@drawable/round_circle"
                 />
 
@@ -110,6 +115,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="LAUNDRY"
+                android:textSize="10sp"
+                android:gravity="center"
                 android:paddingTop="10dp"/>
 
         </LinearLayout>
@@ -120,6 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:layout_marginTop="10dp"
         android:weightSum="3">
 
 
@@ -128,13 +136,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/cab_click"
-            android:onClick="cabClick"
             android:orientation="vertical"
             android:gravity="center">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:onClick="cabClick"
                 android:background="@drawable/round_circle"
                 />
 
@@ -142,6 +150,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CAB"
+                android:gravity="center"
+                android:textSize="10sp"
                 android:paddingTop="10dp"/>
 
         </LinearLayout>
@@ -151,19 +161,21 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/bed_tea_click"
-            android:onClick="bedteaClick"
             android:orientation="vertical"
             android:gravity="center">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:onClick="bedteaClick"
                 android:background="@drawable/round_circle"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="BED TEA/COFFEE"
+                android:gravity="center"
+                android:textSize="10sp"
                 android:paddingTop="10dp"/>
 
         </LinearLayout>
@@ -173,13 +185,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:onClick="wakeupClick"
             android:id="@+id/wake_up_click"
             android:orientation="vertical">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:onClick="wakeupClick"
                 android:background="@drawable/round_circle"
                 />
 
@@ -187,6 +199,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="WAKE ME UP"
+                android:gravity="center"
+                android:textSize="10sp"
                 android:paddingTop="10dp"/>
 
         </LinearLayout>
@@ -197,6 +211,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:layout_marginTop="10dp"
         android:weightSum="3">
 
 
@@ -204,7 +219,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="bellboyClick"
             android:id="@+id/bell_boy_click"
             android:orientation="vertical"
             android:gravity="center">
@@ -212,6 +226,7 @@
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:onClick="bellboyClick"
                 android:background="@drawable/round_circle"
                 />
 
@@ -219,6 +234,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="BELL-BOY"
+                android:gravity="center"
+                android:textSize="10sp"
                 android:paddingTop="10dp"/>
 
         </LinearLayout>
@@ -227,7 +244,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="bathessentialsClick"
             android:id="@+id/bath_essentials_click"
             android:orientation="vertical"
             android:gravity="center">
@@ -235,7 +251,7 @@
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginTop="10dp"
+                android:onClick="bathessentialsClick"
                 android:background="@drawable/round_circle"
                 />
 
@@ -244,6 +260,7 @@
                 android:layout_height="wrap_content"
                 android:text="BATHROOM ESSENTIALS"
                 android:gravity="center"
+                android:textSize="10sp"
                 android:paddingTop="10dp"/>
 
         </LinearLayout>

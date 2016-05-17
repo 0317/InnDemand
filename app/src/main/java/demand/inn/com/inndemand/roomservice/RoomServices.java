@@ -3,6 +3,7 @@ package demand.inn.com.inndemand.roomservice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.games.multiplayer.realtime.Room;
@@ -37,31 +38,30 @@ public class RoomServices extends AppCompatActivity {
         nu = new NetworkUtility(RoomServices.this);
         prefs = new AppPreferences(RoomServices.this);
 
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         //UI elements call
 
         //Linearlayout click call for different services
-        beverages_click = (LinearLayout) findViewById(R.id.beverages_click);
-        laundry_click = (LinearLayout) findViewById(R.id.laundry_click);
-        cab_click = (LinearLayout) findViewById(R.id.cab_click);
-        bed_tea_click = (LinearLayout) findViewById(R.id.bed_tea_click);
-        bath_essentials_click = (LinearLayout) findViewById(R.id.bath_essentials_click);
-        bell_boy_click = (LinearLayout) findViewById(R.id.bell_boy_click);
-        room_clean_click = (LinearLayout) findViewById(R.id.roomclean_click);
-        wake_up_click = (LinearLayout) findViewById(R.id.wake_up_click);
-        backPress = (LinearLayout) findViewById(R.id.backpress);
+//        beverages_click = (LinearLayout) findViewById(R.id.beverages_click);
+//        laundry_click = (LinearLayout) findViewById(R.id.laundry_click);
+//        cab_click = (LinearLayout) findViewById(R.id.cab_click);
+//        bed_tea_click = (LinearLayout) findViewById(R.id.bed_tea_click);
+//        bath_essentials_click = (LinearLayout) findViewById(R.id.bath_essentials_click);
+//        bell_boy_click = (LinearLayout) findViewById(R.id.bell_boy_click);
+//        room_clean_click = (LinearLayout) findViewById(R.id.roomclean_click);
+//        wake_up_click = (LinearLayout) findViewById(R.id.wake_up_click);
     }
 
     //onClick method for back-press or cancel
-    public void backPress(){
+    public void backPress(View view){
         onBackPressed();
     }
 
         //onClick Method Call for different services (Linearlayout)
 
         //Beverages Click Method
-    public void beveragesClick(){
+    public void beveragesClick(View view){
         Intent in = new Intent(RoomServices.this, Beverages.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -69,7 +69,7 @@ public class RoomServices extends AppCompatActivity {
     }
 
     //Laundry Click method
-    public void laundryClick(){
+    public void laundryClick(View view){
         Intent in = new Intent(RoomServices.this, Laundry.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -77,7 +77,7 @@ public class RoomServices extends AppCompatActivity {
     }
 
     //Cab Click method
-    public void cabClick(){
+    public void cabClick(View view){
         Intent in = new Intent(RoomServices.this, Cab.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -85,7 +85,7 @@ public class RoomServices extends AppCompatActivity {
     }
 
     //Bed Tea Click method
-    public void bedteaClick(){
+    public void bedteaClick(View view){
         Intent in = new Intent(RoomServices.this, BedTea.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -93,7 +93,7 @@ public class RoomServices extends AppCompatActivity {
     }
 
     //Bath Essentials Click method
-    public void bathessentialsClick(){
+    public void bathessentialsClick(View view){
         Intent in = new Intent(RoomServices.this, Bathroom.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -101,7 +101,7 @@ public class RoomServices extends AppCompatActivity {
     }
 
     //Bell-Boy Click method
-    public void bellboyClick(){
+    public void bellboyClick(View view){
         Intent in = new Intent(RoomServices.this, BellBoy.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -109,7 +109,7 @@ public class RoomServices extends AppCompatActivity {
     }
 
     //Room Clean Click method
-    public void roomcleanClick(){
+    public void roomcleanClick(View view){
         Intent in = new Intent(RoomServices.this, RoomCleaning.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -117,7 +117,7 @@ public class RoomServices extends AppCompatActivity {
     }
 
     //Wake-up Click method
-    public void wakeupClick(){
+    public void wakeupClick(View view){
         Intent in = new Intent(RoomServices.this, WakeUp.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

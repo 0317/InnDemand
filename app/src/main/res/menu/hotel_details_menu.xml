@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/menu_noti"
-        android:icon="@drawable/ic_menu_camera"
+        android:icon="@mipmap/ic_notification"
         android:title="Notification" />
 
     <item

@@ -1,5 +1,6 @@
 package demand.inn.com.inndemand;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -19,6 +20,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import demand.inn.com.inndemand.Helper.CircleTransform;
+import demand.inn.com.inndemand.roomservice.Laundry;
+import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 
@@ -49,14 +52,14 @@ public class DashBoard extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "You want to Email?", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "You want to Email?", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -69,7 +72,7 @@ public class DashBoard extends AppCompatActivity
 
         //UI Items call
         displayImage = (ImageView) findViewById(R.id.imageView);
-        Glide.with(DashBoard.this).load(settings.getString("image", "")).transform(new CircleTransform(DashBoard.this)).into(displayImage);
+//        Glide.with(DashBoard.this).load(settings.getString("image", "")).transform(new CircleTransform(DashBoard.this)).into(displayImage);
     }
 
     @Override
@@ -113,6 +116,9 @@ public class DashBoard extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+            Intent in = new Intent(DashBoard.this, RoomServices.class);
+            startActivity(in);
+            finish();
 
         } else if (id == R.id.nav_slideshow) {
 

@@ -1,6 +1,7 @@
 package demand.inn.com.inndemand.login;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.CameraSource;
@@ -21,6 +24,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
@@ -43,6 +47,7 @@ public class QrScan extends AppCompatActivity {
     SurfaceView cameraView;
     TextView barcodeInfo;
     CameraSource cameraSource;
+    LinearLayout next;
 
     //Others
     String hotelName;
@@ -54,15 +59,19 @@ public class QrScan extends AppCompatActivity {
         nu = new NetworkUtility(QrScan.this);
         prefs = new AppPreferences(QrScan.this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_camera);
-        toolbar.setTitle("QR Scan");
-
         prefs.setIs_task_completed(true);
 
         cameraView = (SurfaceView) findViewById(R.id.camera_view);
         barcodeInfo = (TextView) findViewById(R.id.code_info);
+
+        next = (LinearLayout) findViewById(R.id.scan_text);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(QrScan.this, HotelDetails.class);
+                startActivity(in);
+            }
+        });
 
         barcodeDetector =
                 new BarcodeDetector.Builder(this)
@@ -114,17 +123,17 @@ public class QrScan extends AppCompatActivity {
             }
         });
 
-        final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-
-        if (barcodes.size() != 0) {
-            barcodeInfo.post(new Runnable() {    // Use the post method of the TextView
-                public void run() {
-                    barcodeInfo.setText(barcodes.valueAt(0).displayValue); // Update the TextView
-                }
-            });
-        }
-
-        hotelName = barcodes.valueAt(0).displayValue;
-        prefs.setHotel_Name(hotelName);
+//        final SparseArray<Barcode> barcodes = detections.getDetectedItems();
+//
+//        if (barcodes.size() != 0) {
+//            barcodeInfo.post(new Runnable() {    // Use the post method of the TextView
+//                public void run() {
+//                    barcodeInfo.setText(barcodes.valueAt(0).displayValue); // Update the TextView
+//                }
+//            });
+//        }
+//
+//        hotelName = barcodes.valueAt(0).displayValue;
+//        prefs.setHotel_Name(hotelName);
     }
 }

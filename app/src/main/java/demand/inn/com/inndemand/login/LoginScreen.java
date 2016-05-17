@@ -1,5 +1,6 @@
 package demand.inn.com.inndemand.login;
 
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.GraphRequest;
@@ -61,6 +63,9 @@ import demand.inn.com.inndemand.R;
     //Cache Data Call
     SharedPreferences settings;
 
+    //UI call
+    ImageView logo_next;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,13 +74,9 @@ import demand.inn.com.inndemand.R;
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.loginscreen);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().hide();
 
-
-        AppEventsLogger.activateApp(this);
-        callbackManager = CallbackManager.Factory.create();
+        //UI initialized
+//        logo_next = (ImageView) findViewById(R.id.logo_next);
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
 
         //Google Login Area
@@ -84,8 +85,9 @@ import demand.inn.com.inndemand.R;
 
         mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(Plus.API, Plus.PlusOptions.builder().build()).addScope(Plus.SCOPE_PLUS_LOGIN).build();
 
+        callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends, user_mobile_phone, user_photos"));
+        loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends, user_photos"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
@@ -106,7 +108,7 @@ import demand.inn.com.inndemand.R;
                                     editor.putBoolean("isLoggedIn", true);
                                     editor.putString("fb_id", object.getString("id"));
                                     editor.putString("fb_name", object.getString("name"));
-                                    editor.putString("user_mobile_phone", object.getString("user_mobile_phone"));
+//                                    editor.putString("user_mobile_phone", object.getString("user_mobile_phone"));
                                     editor.putString("fb_dob", object.has("birthday")==false?"01/01/1990" : object.getString("birthday"));
                                     editor.putString("fb_gender", object.getString("gender"));
                                     editor.commit();
@@ -136,7 +138,7 @@ import demand.inn.com.inndemand.R;
 
                                             SharedPreferences.Editor editor = settings.edit();
                                             editor.putString("image", profilePicUrl);
-                                            editor.putString("user_mobile_phone", data.getString("user_mobile_phone"));
+//                                            editor.putString("user_mobile_phone", data.getString("user_mobile_phone"));
                                             editor.putString("name", data.getString("name"));
                                             editor.putString("email", data.getString("email"));
                                             editor.commit();
@@ -284,5 +286,10 @@ import demand.inn.com.inndemand.R;
                         e.printStackTrace();
                    }
            }
+
+    public void nextScreen(View view){
+        Intent in = new Intent(LoginScreen.this, CheckDetails.class);
+        startActivity(in);
+    }
 
 }

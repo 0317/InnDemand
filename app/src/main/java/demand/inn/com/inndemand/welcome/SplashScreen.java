@@ -42,9 +42,7 @@ public class SplashScreen extends AppCompatActivity {
         prefs = new AppPreferences(SplashScreen.this);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         //To add shortcut App icon on the desktop of mobile
         addShortcut();
@@ -59,7 +57,7 @@ public class SplashScreen extends AppCompatActivity {
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         finish();
                     }else if(prefs.getIs_task_completed() == true){
-                        Intent in = new Intent(SplashScreen.this, DashBoard.class);
+                        Intent in = new Intent(SplashScreen.this, LoginScreen.class);
                         startActivity(in);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         finish();

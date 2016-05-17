@@ -29,6 +29,14 @@
         <meta-data android:name="com.inthecheesefactory.lab.glidepicasso.GlideConfiguration"
             android:value="GlideModule"/>
 
+        <!-- .............Facebook Login Activity................... -->
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
         <!-- ...................Activity call Area....................... -->
 
         <activity android:name=".welcome.SplashScreen"
@@ -42,10 +50,11 @@
         </activity>
 
         <activity android:name=".login.LoginScreen"
-            android:label="@string/select_time"
-            android:theme="@style/AppTheme"></activity>
-        <activity android:name=".login.CheckDetails"></activity>
-        <activity android:name=".login.QrScan"></activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".login.CheckDetails"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".login.QrScan"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".DashBoard"
@@ -58,8 +67,8 @@
         </activity>
 
         <activity android:name=".login.HotelDetails"
-            android:label="@string/bell_boy"
-            android:theme="@style/AppTheme"></activity>
+            android:label="Hotel"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".cartarea.MyCart"></activity>
         <activity android:name=".welcome.CommentArea"></activity>
 
