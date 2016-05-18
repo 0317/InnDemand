@@ -35,6 +35,7 @@
     <string name="select_date">Select Date</string>
     <string name="select_time">Select Time</string>
     <string name="change_time">CHANGE TIME</string>
+    <string name="check_out">CHECKOUT</string>
     <string name="cancel_wakeup_call">CANCEL WAKE UP CALL</string>
     <string name="anything_to_say">Do you have anything to say?</string>
     <string name="tap_to_start">Tap here to start typing</string>

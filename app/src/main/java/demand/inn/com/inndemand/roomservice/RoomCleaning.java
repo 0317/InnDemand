@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
- * Created by akash on 4/5/16.
+ * Created by akash
  */
 
 public class RoomCleaning extends AppCompatActivity {
@@ -50,12 +51,12 @@ public class RoomCleaning extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //UI initialize area
-        backpress = (LinearLayout) findViewById(R.id.backpress_roomClean);
+//        backpress = (LinearLayout) findViewById(R.id.backpress_roomClean);
         say_something = (EditText) findViewById(R.id.say_something_roomClean);
 
         //TextView UI Initialize area
-        now = (TextView) findViewById(R.id.now_roomClean);
-        pickTime = (TextView) findViewById(R.id.pickTime_roomClean);
+//        now = (TextView) findViewById(R.id.now_roomClean);
+//        pickTime = (TextView) findViewById(R.id.pickTime_roomClean);
 
         //TImePicker UI Initialize area
         timePick = new TimePicker(this);
@@ -69,7 +70,7 @@ public class RoomCleaning extends AppCompatActivity {
 
     }
 
-    public void pickTime(){
+    public void pickTime(View view){
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         final int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -84,7 +85,7 @@ public class RoomCleaning extends AppCompatActivity {
         mTimePicker.show();
     }
 
-    public void backPress(){
+    public void backPress(View view){
         onBackPressed();
     }
 }

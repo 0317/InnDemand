@@ -81,7 +81,7 @@ public class HotelDetails extends AppCompatActivity {
         });
 
         //UI initialize
-        checkout = (Button) findViewById(R.id.checkout_click);
+//        checkout = (Button) findViewById(R.id.checkout_click);
         hotel_Name = (TextView) findViewById(R.id.hotel_Name);
         hotel_Address = (TextView) findViewById(R.id.hotel_Address);
 
@@ -102,14 +102,14 @@ public class HotelDetails extends AppCompatActivity {
     }
 
     //Button onClicklistener to Checkout from the hotel & redirect to Splash Screen
-    public void checkOut() {
+    public void checkOut(View view) {
         prefs.setCheckout("1");
         Intent in = new Intent(HotelDetails.this, SplashScreen.class);
         startActivity(in);
         finish();
     }
 
-    public void callHotel() {
+    public void callHotel(View view) {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse(callHotel));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -126,28 +126,28 @@ public class HotelDetails extends AppCompatActivity {
     }
 
     //OnClick to go to Restaurant Screen
-    public void restaurantClick(){
+    public void restaurantClick(View view){
         Intent in = new Intent(HotelDetails.this, Restaurant.class);
         startActivity(in);
         finish();
     }
 
     //OnClick to go to Room Services Screen
-    public void roomServiceClick(){
+    public void roomServiceClick(View view){
         Intent in = new Intent(HotelDetails.this, RoomServices.class);
         startActivity(in);
         finish();
     }
 
     //OnClick to go to Bar Screen
-    public void barClick(){
+    public void barClick(View view){
         Intent in = new Intent(HotelDetails.this, Beverages.class);
         startActivity(in);
         finish();
     }
 
     //OnClick to go to Spa Screen
-    public void spaClick(){
+    public void spaClick(View view){
         Intent in = new Intent(HotelDetails.this, Restaurant.class);
         startActivity(in);
         finish();

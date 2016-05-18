@@ -3,6 +3,7 @@ package demand.inn.com.inndemand.roomservice;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -12,7 +13,7 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
- * Created by akash on 4/5/16.
+ * Created by akash
  */
 
 public class BellBoy extends AppCompatActivity {
@@ -46,12 +47,12 @@ public class BellBoy extends AppCompatActivity {
 
     }
 
-    public void backPress(){
+    public void backPress(View view){
         onBackPressed();
     }
 
 
-    public void confirmDemand(){
+    public void confirmDemand(View view){
         //string call to get value of edittext
         saySomething = say_something.getText().toString().trim();
 

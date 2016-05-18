@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
@@ -38,19 +39,19 @@ public class Cab extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //UI Initialize area
-        backPress = (LinearLayout) findViewById(R.id.backpress_cab);
-        confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_cab);
+//        backPress = (LinearLayout) findViewById(R.id.backpress_cab);
+//        confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_cab);
 
         //UI Initialize RadioButton area
-        today = (RadioButton) findViewById(R.id.radioToday_cab);
-        tomorrow = (RadioButton) findViewById(R.id.radioTomorrow_cab);
-        now = (RadioButton) findViewById(R.id.radioNow_cab);
-        hour = (RadioButton) findViewById(R.id.radioHour_cab);
+//        today = (RadioButton) findViewById(R.id.radioToday_cab);
+//        tomorrow = (RadioButton) findViewById(R.id.radioTomorrow_cab);
+//        now = (RadioButton) findViewById(R.id.radioNow_cab);
+//        hour = (RadioButton) findViewById(R.id.radioHour_cab);
 
     }
 
     //onSelect method for today RadioButton for Cab
-    public void todayClick(){
+    public void todayClick(View view){
         if(today.isChecked()){
             today.setChecked(true);
             tomorrow.setChecked(false);
@@ -60,7 +61,7 @@ public class Cab extends AppCompatActivity {
     }
 
     //onSelect method for tomorrow RadioButton for Cab
-    public void tomorrowClick(){
+    public void tomorrowClick(View view){
         if(tomorrow.isChecked()){
             tomorrow.setChecked(true);
             today.setChecked(false);
@@ -70,7 +71,7 @@ public class Cab extends AppCompatActivity {
     }
 
     //onSelect method for now pick RadioButton for Cab
-    public void nowClick(){
+    public void nowClick(View view){
         if(now.isChecked()){
             now.setChecked(true);
             hour.setChecked(false);
@@ -80,7 +81,7 @@ public class Cab extends AppCompatActivity {
     }
 
     //onSelect method for hour pick RadioButton for Cab
-    public void hourClick(){
+    public void hourClick(View view){
         if(hour.isChecked()){
             hour.setChecked(true);
             now.setChecked(false);
@@ -90,7 +91,7 @@ public class Cab extends AppCompatActivity {
     }
 
     //Select time to pick-up for cab
-    public void pickTime_cab(){
+    public void pickTime_cab(View view){
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         final int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -105,7 +106,7 @@ public class Cab extends AppCompatActivity {
         mTimePicker.show();
     }
 
-    public void confirmDemand(){
+    public void confirmDemand(View view){
         if(today.isChecked() == false && tomorrow.isChecked() == false || now.isChecked() == false && hour.isChecked() == false){
 
         }else {
@@ -113,7 +114,7 @@ public class Cab extends AppCompatActivity {
         }
     }
 
-    public void backPress(){
+    public void backPress(View view){
         onBackPressed();
     }
 }

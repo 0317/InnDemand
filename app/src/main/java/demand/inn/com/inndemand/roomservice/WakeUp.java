@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -37,19 +38,19 @@ public class WakeUp extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //UI initlaized
-        back_press = (LinearLayout) findViewById(R.id.back_press_wakeup);
-        confirm_demand = (LinearLayout) findViewById(R.id.confirm_demand_click_wakeup);
-        changeTime = (LinearLayout) findViewById(R.id.changeTime_wakeup);
-        cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
+//        back_press = (LinearLayout) findViewById(R.id.back_press_wakeup);
+//        confirm_demand = (LinearLayout) findViewById(R.id.confirm_demand_click_wakeup);
+//        changeTime = (LinearLayout) findViewById(R.id.changeTime_wakeup);
+//        cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
 
-        today = (RadioButton) findViewById(R.id.radioToday_wakeup);
-        tomorrow = (RadioButton) findViewById(R.id.radioTomorrow_wakeup);
+//        today = (RadioButton) findViewById(R.id.radioToday_wakeup);
+//        tomorrow = (RadioButton) findViewById(R.id.radioTomorrow_wakeup);
 
         currentTime = (TextView) findViewById(R.id.currentTime_wakeup);
     }
 
     //onSelect method for today RadioButton for WakeUp
-    public void todayClick(){
+    public void todayClick(View view){
         if(today.isChecked()){
             today.setChecked(true);
             tomorrow.setChecked(false);
@@ -59,7 +60,7 @@ public class WakeUp extends AppCompatActivity {
     }
 
     //onSelect method for tomorrow RadioButton for wakeup
-    public void tomorrowClick(){
+    public void tomorrowClick(View view){
         if(tomorrow.isChecked()){
             tomorrow.setChecked(true);
             today.setChecked(false);
@@ -69,11 +70,11 @@ public class WakeUp extends AppCompatActivity {
     }
 
     //cancel wake-up call set in room services
-    public void cancelWakeup(){
+    public void cancelWakeup(View view){
 
     }
 
-    public void confirmDemand(){
+    public void confirmDemand(View view){
         if(today.isChecked() == false && tomorrow.isChecked() == false){
 
         }else{

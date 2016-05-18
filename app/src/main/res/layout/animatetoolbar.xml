@@ -108,12 +108,11 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CHECKOUT"
+                android:text="@string/check_out"
                 android:id="@+id/checkout_click"
                 android:onClick="checkOut"
                 android:layout_alignParentRight="true"
                 android:layout_margin="10dp"
-                android:padding="10dp"
                 android:textColor="@android:color/white"
                 android:background="@drawable/yellow_side_round"/>
 
@@ -161,13 +160,13 @@
                 android:layout_marginTop="15dp"
                 android:onClick="restaurantClick"
                 android:gravity="center_vertical"
-                android:background="#ff0000">
+                android:background="@mipmap/ic_restaurant_click">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
-                    android:src="@drawable/ic_menu_camera"/>
+                    android:src="@mipmap/ic_restaurant"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -188,13 +187,13 @@
                 android:layout_marginTop="15dp"
                 android:onClick="roomServiceClick"
                 android:gravity="center_vertical"
-                android:background="#ff0000">
+                android:background="@mipmap/ic_roomservice_click">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
-                    android:src="@drawable/ic_menu_camera"/>
+                    android:src="@mipmap/ic_roomserivce"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -215,14 +214,14 @@
                 android:layout_marginTop="15dp"
                 android:onClick="barClick"
                 android:gravity="center_vertical"
-                android:background="#ff0000">
+                android:background="@mipmap/ic_bar_click">
 
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
-                    android:src="@drawable/ic_menu_camera"/>
+                    android:src="@mipmap/ic_bar"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -243,14 +242,14 @@
                 android:layout_marginTop="15dp"
                 android:onClick="spaClick"
                 android:gravity="center_vertical"
-                android:background="#ff0000">
+                android:background="@mipmap/ic_spa_click">
 
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
-                    android:src="@drawable/ic_menu_camera"/>
+                    android:src="@mipmap/ic_spa"/>
 
                 <TextView
                     android:layout_width="wrap_content"

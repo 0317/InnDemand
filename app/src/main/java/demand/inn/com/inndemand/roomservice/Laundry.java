@@ -82,11 +82,11 @@ public class Laundry extends AppCompatActivity {
 
     }
 
-    public void nowPick(){
+    public void nowPick(View view){
 
     }
 
-    public void pickTime(){
+    public void pickTime(View view){
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         final int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -124,7 +124,7 @@ public class Laundry extends AppCompatActivity {
 //                .append(" ").append(format));
     }
 
-    public void backPress(){
+    public void backPress(View view){
         onBackPressed();
     }
 

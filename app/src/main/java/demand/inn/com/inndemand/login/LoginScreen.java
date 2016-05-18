@@ -14,7 +14,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -40,6 +38,8 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.utility.AppPreferences;
+import demand.inn.com.inndemand.utility.NetworkUtility;
 
 /**
  * Created by akash
@@ -47,6 +47,11 @@ import demand.inn.com.inndemand.R;
 
     public class LoginScreen extends AppCompatActivity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    //Utility class area
+    NetworkUtility nu;
+    AppPreferences prefs;
+
+    //UI call area
     LoginButton loginButton;
     CallbackManager callbackManager;
 
@@ -73,6 +78,8 @@ import demand.inn.com.inndemand.R;
         // especially, if you're using Facebook UI elements.
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.loginscreen);
+        nu = new NetworkUtility(this);
+        prefs = new AppPreferences(this);
 
 
         //UI initialized
@@ -153,6 +160,9 @@ import demand.inn.com.inndemand.R;
 
                 request.setParameters(parameters);
                 request.executeAsync();
+                Intent in = new Intent(LoginScreen.this,CheckDetails.class);
+                startActivity(in);
+                finish();
             }
 
             @Override

@@ -87,7 +87,7 @@ public class CheckDetails extends AppCompatActivity {
             Snackbar.make(view, "Please Enter Correct Phone Number", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }else {
-            Intent in = new Intent(CheckDetails.this, QrScan.class);
+            Intent in = new Intent(CheckDetails.this, QRscanning.class);
             startActivity(in);
             finish();
         }
