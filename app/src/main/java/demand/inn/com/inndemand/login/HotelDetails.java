@@ -110,26 +110,26 @@ public class HotelDetails extends AppCompatActivity {
     }
 
     public void callHotel(View view) {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse(callHotel));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        startActivity(callIntent);
+//        Intent callIntent = new Intent(Intent.ACTION_CALL);
+//        callIntent.setData(Uri.parse());
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        startActivity(callIntent);
     }
 
     //OnClick to go to Restaurant Screen
     public void restaurantClick(View view){
-        Intent in = new Intent(HotelDetails.this, Restaurant.class);
-        startActivity(in);
-        finish();
+//        Intent in = new Intent(HotelDetails.this, Restaurant.class);
+//        startActivity(in);
+//        finish();
     }
 
     //OnClick to go to Room Services Screen
@@ -141,15 +141,15 @@ public class HotelDetails extends AppCompatActivity {
 
     //OnClick to go to Bar Screen
     public void barClick(View view){
-        Intent in = new Intent(HotelDetails.this, Beverages.class);
-        startActivity(in);
-        finish();
+//        Intent in = new Intent(HotelDetails.this, Beverages.class);
+//        startActivity(in);
+//        finish();
     }
 
     //OnClick to go to Spa Screen
     public void spaClick(View view){
-        Intent in = new Intent(HotelDetails.this, Restaurant.class);
-        startActivity(in);
-        finish();
+//        Intent in = new Intent(HotelDetails.this, Restaurant.class);
+//        startActivity(in);
+//        finish();
     }
 }

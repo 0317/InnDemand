@@ -90,7 +90,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/no_of_water_bottles"
-                                android:textSize="18sp"
+                                android:textSize="14sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="15dp"
                                 android:textColor="@color/view_gray" />
@@ -159,7 +159,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/no_of_soda_bottles"
-                                android:textSize="18sp"
+                                android:textSize="14sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="15dp"
                                 android:textColor="@color/view_gray" />
@@ -229,7 +229,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/no_of_ice_bottles"
-                                android:textSize="18sp"
+                                android:textSize="14sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="15dp"
                                 android:textColor="@color/view_gray" />
@@ -299,7 +299,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/no_of_glasses"
-                                android:textSize="18sp"
+                                android:textSize="14sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="15dp"
                                 android:textColor="@color/view_gray" />

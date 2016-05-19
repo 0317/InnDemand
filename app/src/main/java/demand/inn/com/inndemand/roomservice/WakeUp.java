@@ -39,7 +39,7 @@ public class WakeUp extends AppCompatActivity {
 
         //UI initlaized
 //        back_press = (LinearLayout) findViewById(R.id.back_press_wakeup);
-//        confirm_demand = (LinearLayout) findViewById(R.id.confirm_demand_click_wakeup);
+        confirm_demand = (LinearLayout) findViewById(R.id.confirm_demand_click_wakeup);
 //        changeTime = (LinearLayout) findViewById(R.id.changeTime_wakeup);
 //        cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
 
@@ -75,11 +75,11 @@ public class WakeUp extends AppCompatActivity {
     }
 
     public void confirmDemand(View view){
-        if(today.isChecked() == false && tomorrow.isChecked() == false){
-
-        }else{
-
-        }
+//        if(today.isChecked() == false && tomorrow.isChecked() == false){
+//
+//        }else{
+//
+//        }
     }
 
     public void backPress(){

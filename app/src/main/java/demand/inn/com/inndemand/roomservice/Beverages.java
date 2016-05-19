@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,17 +49,17 @@ public class Beverages extends AppCompatActivity {
         confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_bedTea);
 
         //Click call area (ImageView)
-        waterMinus = (ImageView) findViewById(R.id.waterMinus_beverage);
-        waterPlus = (ImageView) findViewById(R.id.waterPlus_beverage);
-        sodaMinus = (ImageView) findViewById(R.id.sodaMinus_beverage);
-        sodaPlus = (ImageView) findViewById(R.id.sodaPlus_beverage);
-        iceMinus = (ImageView) findViewById(R.id.iceMinus_beverage);
-        icePlus = (ImageView) findViewById(R.id.icePlus_beverage);
-        glassMinus = (ImageView) findViewById(R.id.glassMinus_beverage);
-        glassPlus = (ImageView) findViewById(R.id.glassPlus_beverage);
+//        waterMinus = (ImageView) findViewById(R.id.waterMinus_beverage);
+//        waterPlus = (ImageView) findViewById(R.id.waterPlus_beverage);
+//        sodaMinus = (ImageView) findViewById(R.id.sodaMinus_beverage);
+//        sodaPlus = (ImageView) findViewById(R.id.sodaPlus_beverage);
+//        iceMinus = (ImageView) findViewById(R.id.iceMinus_beverage);
+//        icePlus = (ImageView) findViewById(R.id.icePlus_beverage);
+//        glassMinus = (ImageView) findViewById(R.id.glassMinus_beverage);
+//        glassPlus = (ImageView) findViewById(R.id.glassPlus_beverage);
     }
 
-    public void waterMinus(){
+    public void waterMinus(View view){
         waterText = water.getText().toString().trim();
         if(waterText == "0"){
             waterMinus.setEnabled(false);
@@ -68,12 +69,12 @@ public class Beverages extends AppCompatActivity {
         }
     }
 
-    public void waterPlus(){
+    public void waterPlus(View view){
         count++;
         water.setText(count);
     }
 
-    public void sodaMinus(){
+    public void sodaMinus(View view){
         sodaText = soda.getText().toString().trim();
         if(sodaText == "0"){
             sodaMinus.setEnabled(false);
@@ -83,12 +84,12 @@ public class Beverages extends AppCompatActivity {
         }
     }
 
-    public void sodaPlus(){
+    public void sodaPlus(View view){
         count--;
         soda.setText(count);
     }
 
-    public void iceMinus(){
+    public void iceMinus(View view){
         iceText = water.getText().toString().trim();
         if(iceText == "0"){
             iceMinus.setEnabled(false);
@@ -98,12 +99,12 @@ public class Beverages extends AppCompatActivity {
         }
     }
 
-    public void icePlus(){
+    public void icePlus(View view){
         count++;
         ice.setText(count);
     }
 
-    public void glassMinus(){
+    public void glassMinus(View view){
         glassText = water.getText().toString().trim();
         if(glassText == "0"){
             glassMinus.setEnabled(false);
@@ -113,12 +114,12 @@ public class Beverages extends AppCompatActivity {
         }
     }
 
-    public void glassPlus(){
+    public void glassPlus(View view){
         count--;
         glass.setText(count);
     }
 
-    public void confirmDemand(){
+    public void confirmDemand(View view){
         if(water == null && soda == null && ice == null && glass == null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Please select atleast one item");
@@ -144,7 +145,7 @@ public class Beverages extends AppCompatActivity {
         }
     }
 
-    public void backPress(){
+    public void backPress(View view){
         onBackPressed();
     }
 }

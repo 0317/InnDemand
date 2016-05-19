@@ -55,8 +55,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".login.QrScan"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".login.QRscanning"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".login.QRscanning"></activity>
 
         <activity
             android:name=".DashBoard"

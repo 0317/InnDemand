@@ -14,6 +14,7 @@ import android.view.View;
 import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.login.LoginScreen;
+import demand.inn.com.inndemand.login.QRscanning;
 import demand.inn.com.inndemand.login.QrScan;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;

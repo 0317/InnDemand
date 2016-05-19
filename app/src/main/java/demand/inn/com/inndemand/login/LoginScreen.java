@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 
@@ -298,7 +299,7 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
            }
 
     public void nextScreen(View view){
-        Intent in = new Intent(LoginScreen.this, CheckDetails.class);
+        Intent in = new Intent(LoginScreen.this, QRscanning.class);
         startActivity(in);
     }
 

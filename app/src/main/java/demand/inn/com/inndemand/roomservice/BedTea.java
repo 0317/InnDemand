@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,46 +44,46 @@ public class BedTea extends AppCompatActivity {
         //UI Initialize area
         tea = (TextView) findViewById(R.id.teaCount_bedTea);
         coffee = (TextView) findViewById(R.id.coffeeCount_bedTea);
-        confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_bedTea);
+//        confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_bedTea);
 
         //Click call area (ImageView)
-        teaMinus = (ImageView) findViewById(R.id.teaMinus_bedTea);
-        teaPlus = (ImageView) findViewById(R.id.teaPlus_bedTea);
-        coffeeMinus = (ImageView) findViewById(R.id.coffeeMinus_bedTea);
-        coffeePlus = (ImageView) findViewById(R.id.coffeePlus_bedTea);
+//        teaMinus = (ImageView) findViewById(R.id.teaMinus_bedTea);
+//        teaPlus = (ImageView) findViewById(R.id.teaPlus_bedTea);
+//        coffeeMinus = (ImageView) findViewById(R.id.coffeeMinus_bedTea);
+//        coffeePlus = (ImageView) findViewById(R.id.coffeePlus_bedTea);
     }
 
-    public void teaMinus(){
+    public void teaMinus(View view){
         teaText = tea.getText().toString().trim();
         if(teaText == "0"){
             teaMinus.setEnabled(false);
         }else {
             count--;
-            tea.setText(count);
+            tea.setText("");
         }
     }
 
-    public void teaPlus(){
+    public void teaPlus(View view){
         count++;
-        tea.setText(count);
+        tea.setText("");
     }
 
-    public void coffeeMinus(){
+    public void coffeeMinus(View view){
         coffeeText = coffee.getText().toString().trim();
         if(coffeeText == "0"){
             coffeeMinus.setEnabled(false);
         }else {
             count--;
-            coffee.setText(count);
+            coffee.setText("");
         }
     }
 
-    public void coffeePlus(){
+    public void coffeePlus(View view){
         count--;
-        coffee.setText(count);
+        coffee.setText("");
     }
 
-    public void confirmDemand(){
+    public void confirmDemand(View view){
         if(tea == null && coffee == null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Please select atleast one item");
@@ -107,7 +108,7 @@ public class BedTea extends AppCompatActivity {
         }
     }
 
-    public void backPress(){
+    public void backPress(View view){
         onBackPressed();
     }
 }

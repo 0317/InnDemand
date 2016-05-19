@@ -1,8 +1,8 @@
 package demand.inn.com.inndemand.login;
 
-import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
@@ -11,9 +11,6 @@ import com.google.zxing.Result;
 import demand.inn.com.inndemand.R;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-/**
- * Created by akash
- */
 public class QRscanning extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
 
@@ -21,10 +18,11 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qrscanning);
-//
+
 //    }
 //
 //    public void QrScanner(View view){
+
 
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
         setContentView(mScannerView);
@@ -58,3 +56,4 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         // mScannerView.resumeCameraPreview(this);
     }
 }
+
