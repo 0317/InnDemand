@@ -197,7 +197,7 @@ public class Mapping extends FragmentActivity implements LocationListener {
             br.close();
 
         }catch(Exception e){
-            Log.d("Exception while downloading url", e.toString());
+           e.printStackTrace();
         }finally{
             iStream.close();
             urlConnection.disconnect();

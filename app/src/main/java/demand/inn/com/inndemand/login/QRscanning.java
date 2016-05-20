@@ -1,6 +1,8 @@
 package demand.inn.com.inndemand.login;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,20 +11,27 @@ import android.view.View;
 import com.google.zxing.Result;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.utility.AppPreferences;
+import demand.inn.com.inndemand.utility.NetworkUtility;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QRscanning extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
 
+    //Utitlity Class call
+    NetworkUtility nu;
+    AppPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qrscanning);
+        nu = new NetworkUtility(this);
+        prefs = new AppPreferences(this);
 
 //    }
 //
 //    public void QrScanner(View view){
-
 
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
         setContentView(mScannerView);
@@ -39,7 +48,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     }
 
     @Override
-    public void handleResult(Result rawResult) {
+    public void handleResult(final Result rawResult) {
         // Do something with the result here
 
         Log.e("handler", rawResult.getText()); // Prints scan results
@@ -47,8 +56,18 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 
         // show the scanner result into dialog box.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Scan Result");
+        builder.setTitle("Hotel Details");
         builder.setMessage(rawResult.getText());
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent in = new Intent(QRscanning.this, HotelDetails.class);
+                prefs.setHotel_Name(rawResult.getText());
+                startActivity(in);
+                finish();
+            }
+        });
+
         AlertDialog alert1 = builder.create();
         alert1.show();
 

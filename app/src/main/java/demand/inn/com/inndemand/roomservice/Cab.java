@@ -3,8 +3,10 @@ package demand.inn.com.inndemand.roomservice;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
@@ -43,52 +45,61 @@ public class Cab extends AppCompatActivity {
 //        confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_cab);
 
         //UI Initialize RadioButton area
-//        today = (RadioButton) findViewById(R.id.radioToday_cab);
-//        tomorrow = (RadioButton) findViewById(R.id.radioTomorrow_cab);
-//        now = (RadioButton) findViewById(R.id.radioNow_cab);
-//        hour = (RadioButton) findViewById(R.id.radioHour_cab);
+        today = (RadioButton) findViewById(R.id.radioToday_cab);
+        tomorrow = (RadioButton) findViewById(R.id.radioTomorrow_cab);
+        now = (RadioButton) findViewById(R.id.radioNow_cab);
+        hour = (RadioButton) findViewById(R.id.radioHour_cab);
+
+        today.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(today.isChecked()){
+                    today.setChecked(true);
+                    tomorrow.setChecked(false);
+                }else{
+                    today.setChecked(false);
+                }
+            }
+        });
+
+        tomorrow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(tomorrow.isChecked()){
+                    tomorrow.setChecked(true);
+                    today.setChecked(false);
+                }else{
+                    tomorrow.setChecked(false);
+                }
+            }
+        });
+
+        now.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(now.isChecked()){
+                    now.setChecked(true);
+                    hour.setChecked(false);
+                }else{
+                    now.setChecked(false);
+                }
+            }
+        });
+
+        hour.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(hour.isChecked()){
+                    hour.setChecked(true);
+                    now.setChecked(false);
+                }else{
+                    hour.setChecked(false);
+                }
+            }
+        });
 
     }
 
-    //onSelect method for today RadioButton for Cab
-    public void todayClick(View view){
-        if(today.isChecked()){
-            today.setChecked(true);
-            tomorrow.setChecked(false);
-        }else{
-            today.setChecked(false);
-        }
-    }
-
-    //onSelect method for tomorrow RadioButton for Cab
-    public void tomorrowClick(View view){
-        if(tomorrow.isChecked()){
-            tomorrow.setChecked(true);
-            today.setChecked(false);
-        }else{
-            tomorrow.setChecked(false);
-        }
-    }
-
-    //onSelect method for now pick RadioButton for Cab
-    public void nowClick(View view){
-        if(now.isChecked()){
-            now.setChecked(true);
-            hour.setChecked(false);
-        }else{
-            now.setChecked(false);
-        }
-    }
-
-    //onSelect method for hour pick RadioButton for Cab
-    public void hourClick(View view){
-        if(hour.isChecked()){
-            hour.setChecked(true);
-            now.setChecked(false);
-        }else{
-            hour.setChecked(false);
-        }
-    }
 
     //Select time to pick-up for cab
     public void pickTime_cab(View view){
@@ -108,7 +119,8 @@ public class Cab extends AppCompatActivity {
 
     public void confirmDemand(View view){
         if(today.isChecked() == false && tomorrow.isChecked() == false || now.isChecked() == false && hour.isChecked() == false){
-
+            Snackbar.make(view, "Please Select First", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         }else {
 
         }

@@ -1,7 +1,9 @@
 package demand.inn.com.inndemand.welcome;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -47,30 +49,45 @@ public class SplashScreen extends AppCompatActivity {
 
         //To add shortcut App icon on the desktop of mobile
         addShortcut();
+        call(view);
+    }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(nu.isConnectingToInternet()) {
-                    if (prefs.getIs_task_completed() == false) {
-                        Intent in = new Intent(SplashScreen.this, LoginScreen.class);
-                        startActivity(in);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        finish();
-                    }else if(prefs.getIs_task_completed() == true){
-                        Intent in = new Intent(SplashScreen.this, LoginScreen.class);
-                        startActivity(in);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        finish();
+    public void call(View view){
+        if (nu.isConnectingToInternet()) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (nu.isConnectingToInternet()) {
+                        if (prefs.getIs_task_completed() == false) {
+                            Intent in = new Intent(SplashScreen.this, LoginScreen.class);
+                            startActivity(in);
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            finish();
+                        } else if (prefs.getIs_task_completed() == true) {
+                            Intent in = new Intent(SplashScreen.this, LoginScreen.class);
+                            startActivity(in);
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            finish();
+                        }
+
                     }
-                } else {
-                        Snackbar.make(view, "Oops, No Internet Connection..", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+
+
                 }
+            }, 3000 /* 3sec delay*/);
 
-
-            }
-        }, 3000 /* 3sec delay*/);
+        } else {
+//            Snackbar.make(view, "Oops, No Internet Connection..", Snackbar.LENGTH_LONG)
+//                                .setAction("Action", null).show();
+            new AlertDialog.Builder(this).setTitle("No Internet")
+                    .setMessage("It seems no Internet Connection")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+        }
 
     }
 

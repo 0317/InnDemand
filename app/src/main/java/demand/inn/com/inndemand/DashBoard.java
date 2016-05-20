@@ -1,11 +1,13 @@
 package demand.inn.com.inndemand;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,12 +20,14 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.login.LoginManager;
 
 import demand.inn.com.inndemand.Helper.CircleTransform;
 import demand.inn.com.inndemand.roomservice.Laundry;
 import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.welcome.SplashScreen;
 
 //import demand.inn.com.inndemand.Helper.CircleTransform;
 
@@ -124,10 +128,34 @@ public class DashBoard extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_contact) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_signout) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(DashBoard.this);
+            builder.setMessage("You want to Sign out?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if(LoginManager.getInstance()!=null)
+                                LoginManager.getInstance().logOut();
 
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putBoolean("isLoggedIn", false);
+                            editor.commit();
+
+                            Intent in = new Intent(DashBoard.this, SplashScreen.class);
+                            startActivity(in);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.setTitle("Are you sure?");
+            dialog.show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -7,13 +7,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:gravity="center"
             android:id="@+id/backpress"
             android:onClick="backPress"
@@ -30,10 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/room_services"
-            android:textSize="22sp"
-            android:textStyle="bold"
+            android:textSize="@dimen/twenty_sp"
             android:textColor="@android:color/white"
-            android:padding="18dp"/>
+            android:padding="10dp"/>
 
     </LinearLayout>
 
@@ -67,7 +66,7 @@
                 android:text="BEVERAGES ETC"
                 android:textSize="10sp"
                 android:gravity="center"
-                android:paddingTop="10dp"/>
+                android:paddingTop="5dp"/>
 
         </LinearLayout>
 
@@ -92,7 +91,7 @@
                 android:text="ROOM CLEANING"
                 android:textSize="10sp"
                 android:gravity="center"
-                android:paddingTop="10dp"/>
+                android:paddingTop="5dp"/>
 
         </LinearLayout>
 
@@ -117,7 +116,7 @@
                 android:text="LAUNDRY"
                 android:textSize="10sp"
                 android:gravity="center"
-                android:paddingTop="10dp"/>
+                android:paddingTop="5dp"/>
 
         </LinearLayout>
 

@@ -6,6 +6,10 @@
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- To access accounts configured on device -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- To use account credentials -->
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.CAMERA"></uses-permission>
@@ -24,10 +28,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="package.name.for.main.code.GlideConfiguration" android:value="GlideModule" />
         <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
-        <meta-data android:name="com.inthecheesefactory.lab.glidepicasso.GlideConfiguration"
-            android:value="GlideModule"/>
+
 
         <!-- .............Facebook Login Activity................... -->
 
@@ -41,6 +48,7 @@
 
         <activity android:name=".welcome.SplashScreen"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,16 +58,30 @@
         </activity>
 
         <activity android:name=".login.LoginScreen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+        </activity>
+
         <activity android:name=".login.CheckDetails"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity android:name=".login.QrScan"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".login.QRscanning"></activity>
+        <activity android:name=".login.QRscanning"
+            android:screenOrientation="portrait">
+
+        </activity>
+
 
         <activity
             android:name=".DashBoard"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -69,32 +91,51 @@
 
         <activity android:name=".login.HotelDetails"
             android:label="Hotel"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".cartarea.MyCart"></activity>
-        <activity android:name=".welcome.CommentArea"></activity>
+        <activity android:name=".cartarea.MyCart"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".welcome.CommentArea"
+            android:screenOrientation="portrait"></activity>
 
         <!-- ................Room-Services Activity Area.......... -->
 
         <activity android:name=".roomservice.RoomServices"
-            android:label="@string/room_services"></activity>
-        <activity android:name=".roomservice.Bathroom"></activity>
-        <activity android:name=".roomservice.RoomCleaning"></activity>
-        <activity android:name=".roomservice.WakeUp"></activity>
-        <activity android:name=".roomservice.Cab"></activity>
-        <activity android:name=".roomservice.Laundry"></activity>
-        <activity android:name=".roomservice.Beverages"></activity>
-        <activity android:name=".roomservice.BedTea"></activity>
-        <activity android:name=".roomservice.BellBoy"></activity>
+            android:label="@string/room_services"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:icon="@drawable/ic_menu_camera"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".roomservice.Bathroom"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".roomservice.RoomCleaning"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".roomservice.WakeUp"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".roomservice.Cab"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".roomservice.Laundry"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".roomservice.Beverages"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".roomservice.BedTea"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".roomservice.BellBoy"
+            android:screenOrientation="portrait"></activity>
 
         <!-- ................Restaurant Activity Area.......... -->
 
-        <activity android:name=".roomservice.Restaurant"></activity>
+        <activity android:name=".roomservice.Restaurant"
+            android:screenOrientation="portrait"></activity>
 
         <!-- ...................Broadcast call Area....................... -->
 
         <!-- ...................Services call Area........................ -->
 
-        <activity android:name=".mapdirection.Mapping"></activity>
+
+        <!-- ...................Map Area....................................-->
+
+        <activity android:name=".mapdirection.Mapping"
+            android:screenOrientation="portrait"></activity>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAgQdWF1SP1rwBpfprvCsVgR__MIh76mYw"/>

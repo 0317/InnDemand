@@ -5,14 +5,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:id="@+id/wake_up_click"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:gravity="center"
             android:id="@+id/back_press_wakeup"
             android:onClick="backPress"
@@ -29,17 +29,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/wakeup_call"
-            android:textSize="22sp"
+            android:textSize="@dimen/twenty_sp"
             android:textColor="@android:color/white"
-            android:padding="18dp"/>
+            android:padding="10dp"/>
 
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="60dp">
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="50dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,9 +63,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/select_date"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/forteen_sp"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:textStyle="bold"
                     android:textColor="@android:color/black" />
 
@@ -76,25 +76,25 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:orientation="horizontal">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="50dp">
+                            android:layout_height="40dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Today - "
-                                android:textSize="18sp"
+                                android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="10dp"
                                 android:textColor="@color/view_gray" />
 
                             <LinearLayout
                                 android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_height="40dp"
                                 android:layout_alignParentRight="true"
                                 android:orientation="horizontal"
                                 android:gravity="center">
@@ -104,7 +104,6 @@
                                     android:layout_height="wrap_content"
                                     android:id="@+id/radioToday_wakeup"
                                     android:buttonTint="@color/confirm_demand_click"
-                                    android:onClick="todayClick"
                                     />
 
                             </LinearLayout>
@@ -115,25 +114,25 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="40dp"
                         android:orientation="horizontal">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="50dp">
+                            android:layout_height="40dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Tomorrow - "
-                                android:textSize="18sp"
+                                android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"
                                 android:textColor="@color/view_gray" />
 
                             <LinearLayout
                                 android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_height="40dp"
                                 android:layout_alignParentRight="true"
                                 android:orientation="horizontal"
                                 android:gravity="center">
@@ -143,7 +142,7 @@
                                     android:layout_height="wrap_content"
                                     android:id="@+id/radioTomorrow_wakeup"
                                     android:buttonTint="@color/confirm_demand_click"
-                                    android:onClick="tomorrowClick"
+
                                     />
 
                             </LinearLayout>
@@ -163,9 +162,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/select_time"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/forteen_sp"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:textStyle="bold"
                     android:textColor="@android:color/black" />
 
@@ -177,26 +176,26 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:orientation="horizontal">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="50dp">
+                            android:layout_height="40dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="00 : 00"
-                                android:textSize="18sp"
+                                android:textSize="@dimen/sixteen_sp"
                                 android:id="@+id/currentTime_wakeup"
                                 android:layout_marginLeft="15dp"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="10dp"
                                 android:textColor="@color/view_gray" />
 
                             <LinearLayout
                                 android:layout_width="150dp"
-                                android:layout_height="50dp"
+                                android:layout_height="40dp"
                                 android:layout_alignParentRight="true"
                                 android:orientation="horizontal"
                                 android:id="@+id/changeTime_wakeup"
@@ -217,21 +216,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:onClick="cancelWakeup"
-                    android:id="@+id/cancel_wakeUp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Cancel Wake-up call"/>
-
-                </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -244,7 +228,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="@dimen/forteen_sp"
                 android:text="@string/cancel_wakeup_call"/>
 
             </LinearLayout>
@@ -255,7 +239,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@color/confirm_demand_click"
         android:id="@+id/confirm_demand_click_wakeup"
@@ -266,7 +250,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/confirm_demand"
-            android:textSize="15sp"
+            android:textSize="@dimen/forteen_sp"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

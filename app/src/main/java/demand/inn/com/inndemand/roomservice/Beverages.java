@@ -15,7 +15,7 @@ import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 
 /**
- * Created by akash on 4/5/16.
+ * Created by akash
  */
 public class Beverages extends AppCompatActivity {
 
@@ -64,14 +64,14 @@ public class Beverages extends AppCompatActivity {
         if(waterText == "0"){
             waterMinus.setEnabled(false);
         }else {
-            count--;
-            water.setText(count);
+            --count;
+            water.setText(String.valueOf(count));
         }
     }
 
     public void waterPlus(View view){
-        count++;
-        water.setText(count);
+        ++count;
+        water.setText(String.valueOf(count));
     }
 
     public void sodaMinus(View view){
@@ -79,14 +79,14 @@ public class Beverages extends AppCompatActivity {
         if(sodaText == "0"){
             sodaMinus.setEnabled(false);
         }else {
-            count--;
-            soda.setText(count);
+            --count;
+            soda.setText(String.valueOf(count));
         }
     }
 
     public void sodaPlus(View view){
-        count--;
-        soda.setText(count);
+        ++count;
+        soda.setText(String.valueOf(count));
     }
 
     public void iceMinus(View view){
@@ -94,14 +94,14 @@ public class Beverages extends AppCompatActivity {
         if(iceText == "0"){
             iceMinus.setEnabled(false);
         }else {
-            count--;
-            ice.setText(count);
+            --count;
+            ice.setText(String.valueOf(count));
         }
     }
 
     public void icePlus(View view){
-        count++;
-        ice.setText(count);
+        ++count;
+        ice.setText(String.valueOf(count));
     }
 
     public void glassMinus(View view){
@@ -109,14 +109,14 @@ public class Beverages extends AppCompatActivity {
         if(glassText == "0"){
             glassMinus.setEnabled(false);
         }else {
-            count--;
-            glass.setText(count);
+            --count;
+            glass.setText(String.valueOf(count));
         }
     }
 
     public void glassPlus(View view){
-        count--;
-        glass.setText(count);
+        ++count;
+        glass.setText(String.valueOf(count));
     }
 
     public void confirmDemand(View view){

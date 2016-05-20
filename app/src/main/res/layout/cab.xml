@@ -5,14 +5,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:id="@+id/wake_up_click"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:gravity="center"
             android:onClick="backPress"
             android:id="@+id/backpress_cab"
@@ -29,18 +29,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cab_call"
-            android:textSize="22sp"
-            android:textStyle="bold"
+            android:textSize="@dimen/twenty_sp"
             android:textColor="@android:color/white"
-            android:padding="18dp"/>
+            android:padding="10dp"/>
 
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="60dp">
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="50dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,16 +72,16 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/view_gray"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pick_date"
-                android:textSize="16sp"
+                android:textSize="@dimen/forteen_sp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black" />
 
@@ -93,25 +92,25 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="40dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Today - "
-                    android:textSize="18sp"
+                    android:textSize="@dimen/sixteen_sp"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:textColor="@color/view_gray" />
 
                         <LinearLayout
                             android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_height="40dp"
                             android:layout_alignParentRight="true"
                             android:orientation="horizontal"
                             android:gravity="center">
@@ -120,8 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/radioToday_cab"
-                        android:buttonTint="@color/confirm_demand_click"
-                        android:onClick="todayClick"/>
+                        android:buttonTint="@color/confirm_demand_click" />
 
                         </LinearLayout>
 
@@ -131,25 +129,25 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="40dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tomorrow - "
-                            android:textSize="18sp"
+                            android:textSize="@dimen/sixteen_sp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginTop="10dp"
                             android:textColor="@color/view_gray" />
 
                         <LinearLayout
                             android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_height="40dp"
                             android:layout_alignParentRight="true"
                             android:orientation="horizontal"
                             android:gravity="center">
@@ -158,7 +156,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/radioTomorrow_cab"
-                                android:onClick="tomorrowClick"
                                 android:buttonTint="@color/confirm_demand_click"/>
 
                         </LinearLayout>
@@ -178,9 +175,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pick_up_time"
-                android:textSize="16sp"
+                android:textSize="@dimen/forteen_sp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black" />
 
@@ -192,25 +189,25 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="40dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="NOW"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/sixteen_sp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginTop="15dp"
                             android:textColor="@color/view_gray" />
 
                         <LinearLayout
                             android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_height="40dp"
                             android:layout_alignParentRight="true"
                             android:orientation="horizontal"
                             android:gravity="center">
@@ -219,7 +216,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/radioNow_cab"
-                                android:onClick="nowClick"
                                 android:buttonTint="@color/confirm_demand_click"
                                 />
 
@@ -231,25 +227,25 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="40dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="in 1 Hour"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/sixteen_sp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginTop="10dp"
                             android:textColor="@color/view_gray" />
 
                         <LinearLayout
                             android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_height="40dp"
                             android:layout_alignParentRight="true"
                             android:orientation="horizontal"
                             android:gravity="center">
@@ -258,7 +254,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/radioHour_cab"
-                                android:onClick="hourClick"
                                 android:buttonTint="@color/confirm_demand_click"
                                 />
 
@@ -274,11 +269,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pick_time"
-                android:textSize="18sp"
+                android:textSize="@dimen/sixteen_sp"
                 android:onClick="pickTime_cab"
                 android:id="@+id/pickTime_cab"
                 android:padding="5dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:textColor="@color/confirm_demand_click" />
 
         </LinearLayout>
@@ -289,7 +284,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:onClick="confirmDemand"
         android:background="@color/confirm_demand_click"
@@ -300,7 +295,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/confirm_demand"
-            android:textSize="15sp"
+            android:textSize="@dimen/forteen_sp"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

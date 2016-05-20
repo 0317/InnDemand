@@ -15,7 +15,7 @@ import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 
 /**
- * Created by akash on 4/5/16.
+ * Created by akash
  */
 public class BedTea extends AppCompatActivity {
 
@@ -29,8 +29,8 @@ public class BedTea extends AppCompatActivity {
     LinearLayout confirmDemand;
 
     //Others
-    int count = 0;
-    String teaText, coffeeText;
+    int count;
+    String teaText = null, coffeeText = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,48 +43,56 @@ public class BedTea extends AppCompatActivity {
 
         //UI Initialize area
         tea = (TextView) findViewById(R.id.teaCount_bedTea);
+        teaText = tea.getText().toString().trim();
         coffee = (TextView) findViewById(R.id.coffeeCount_bedTea);
+        coffeeText = coffee.getText().toString().trim();
 //        confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_bedTea);
 
         //Click call area (ImageView)
-//        teaMinus = (ImageView) findViewById(R.id.teaMinus_bedTea);
-//        teaPlus = (ImageView) findViewById(R.id.teaPlus_bedTea);
-//        coffeeMinus = (ImageView) findViewById(R.id.coffeeMinus_bedTea);
-//        coffeePlus = (ImageView) findViewById(R.id.coffeePlus_bedTea);
-    }
+        teaMinus = (ImageView) findViewById(R.id.teaMinus_bedTea);
+        teaPlus = (ImageView) findViewById(R.id.teaPlus_bedTea);
+        coffeeMinus = (ImageView) findViewById(R.id.coffeeMinus_bedTea);
+        coffeePlus = (ImageView) findViewById(R.id.coffeePlus_bedTea);
 
-    public void teaMinus(View view){
-        teaText = tea.getText().toString().trim();
-        if(teaText == "0"){
-            teaMinus.setEnabled(false);
-        }else {
-            count--;
-            tea.setText("");
-        }
-    }
+        teaMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-    public void teaPlus(View view){
-        count++;
-        tea.setText("");
+                if(teaText == "0"){
+                    teaMinus.setEnabled(false);
+                }else {
+                    --count;
+                    tea.setText(String.valueOf(count));
+                }
+            }
+        });
+        teaPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ++count;
+                tea.setText(String.valueOf(count));
+            }
+        });
     }
 
     public void coffeeMinus(View view){
-        coffeeText = coffee.getText().toString().trim();
-        if(coffeeText == "0"){
+
+        if(coffee.getText().toString() == "0"){
             coffeeMinus.setEnabled(false);
+            coffee.setText("0");
         }else {
-            count--;
-            coffee.setText("");
+            --count;
+            coffee.setText(String.valueOf(count));
         }
     }
 
     public void coffeePlus(View view){
-        count--;
-        coffee.setText("");
+        ++count;
+        coffee.setText(String.valueOf(count));
     }
 
     public void confirmDemand(View view){
-        if(tea == null && coffee == null){
+        if(teaText == null && coffeeText == null || teaText == "0" && coffeeText == "0"){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Please select atleast one item");
             builder.setCancelable(true);

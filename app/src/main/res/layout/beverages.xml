@@ -5,14 +5,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:id="@+id/wake_up_click"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:gravity="center"
             android:id="@+id/backpress_beverages"
             android:onClick="backPress"
@@ -29,9 +29,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/beverages"
-            android:textSize="22sp"
+            android:textSize="@dimen/twenty_sp"
             android:textColor="@android:color/white"
-            android:padding="18dp"/>
+            android:padding="10dp"/>
 
     </LinearLayout>
 
@@ -39,8 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="50dp"
             android:weightSum="3">
 
             <ImageView
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/note_beverage"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/twelve_sp"
                     android:gravity="center"
                     android:layout_marginRight="15dp"
                     android:layout_marginLeft="15dp"
@@ -69,7 +69,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:background="@color/view_gray"/>
 
                 <LinearLayout
@@ -90,7 +90,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/no_of_water_bottles"
-                                android:textSize="14sp"
+                                android:textSize="@dimen/forteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="15dp"
                                 android:textColor="@color/view_gray" />
@@ -103,8 +103,9 @@
                                 android:gravity="center">
 
                                 <RelativeLayout
-                                    android:layout_width="150dp"
+                                    android:layout_width="120dp"
                                     android:layout_height="50dp"
+                                    android:layout_marginLeft="15dp"
                                     >
 
                                 <ImageView
@@ -122,7 +123,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="0"
                                         android:id="@+id/waterCount_beverage"
-                                        android:textSize="15sp"
+                                        android:textSize="@dimen/forteen_sp"
                                         android:layout_marginTop="15dp"
                                         android:layout_centerHorizontal="true"
                                         android:gravity="center"
@@ -159,7 +160,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/no_of_soda_bottles"
-                                android:textSize="14sp"
+                                android:textSize="@dimen/forteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="15dp"
                                 android:textColor="@color/view_gray" />
@@ -172,8 +173,9 @@
                                 android:gravity="center">
 
                                 <RelativeLayout
-                                    android:layout_width="150dp"
+                                    android:layout_width="120dp"
                                     android:layout_height="50dp"
+                                    android:layout_marginLeft="15dp"
                                     >
 
                                     <ImageView
@@ -229,7 +231,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/no_of_ice_bottles"
-                                android:textSize="14sp"
+                                android:textSize="@dimen/forteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="15dp"
                                 android:textColor="@color/view_gray" />
@@ -242,8 +244,9 @@
                                 android:gravity="center">
 
                                 <RelativeLayout
-                                    android:layout_width="150dp"
+                                    android:layout_width="120dp"
                                     android:layout_height="50dp"
+                                    android:layout_marginLeft="15dp"
                                     >
 
                                     <ImageView
@@ -299,7 +302,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/no_of_glasses"
-                                android:textSize="14sp"
+                                android:textSize="@dimen/forteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="15dp"
                                 android:textColor="@color/view_gray" />
@@ -312,8 +315,9 @@
                                 android:gravity="center">
 
                                 <RelativeLayout
-                                    android:layout_width="150dp"
+                                    android:layout_width="120dp"
                                     android:layout_height="50dp"
+                                    android:layout_marginLeft="15dp"
                                     >
 
                                     <ImageView
@@ -365,7 +369,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@color/confirm_demand_click"
         android:id="@+id/confirm_demand_click_beverages"
@@ -376,7 +380,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/confirm_demand"
-            android:textSize="15sp"
+            android:textSize="@dimen/forteen_sp"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

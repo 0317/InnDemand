@@ -145,7 +145,7 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
                                             //Bitmap profilePic = getFacebookProfilePicture(profilePicUrl);
 
                                             SharedPreferences.Editor editor = settings.edit();
-                                            editor.putString("image", profilePicUrl);
+                                            editor.putString("fb_image", profilePicUrl);
 //                                            editor.putString("user_mobile_phone", data.getString("user_mobile_phone"));
                                             editor.putString("name", data.getString("name"));
                                             editor.putString("email", data.getString("email"));
@@ -275,32 +275,66 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
               } else {
 //                    signinFrame.setVisibility(View.VISIBLE);
 //                    profileFrame.setVisibility(View.GONE);
+
+//               Intent in = new Intent(LoginScreen.this, CheckDetails.class);
+//               startActivity(in);
+//               finish();
                    }
     }
 
+    //To get Google Account User's Profile Information
     private void getProfileInformation() {
-         try {
-                 if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-                             String personName = currentPerson.getDisplayName();
-                           String personPhotoUrl = currentPerson.getImage().getUrl();
-//                              String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+        try {
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                String personName = currentPerson.getDisplayName();
+                String personPhotoUrl = currentPerson.getImage().getUrl();
+                String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
-//                          username.setText(personName);
-//                             emailLabel.setText(email);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("google_image", personPhotoUrl);
+//
+                editor.putString("google_name", personName);
+                editor.putString("google_email", email);
+                editor.commit();
 
-                          //     new LoadProfileImage(image).execute(personPhotoUrl);
-                                    // update profile frame with new info about Google Account
-                             updateProfile(true);
-                           }
-                  } catch (Exception e) {
-                        e.printStackTrace();
-                   }
-           }
+                //     new LoadProfileImage(image).execute(personPhotoUrl);
+                // update profile frame with new info about Google Account
+                updateProfile(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    public void nextScreen(View view){
-        Intent in = new Intent(LoginScreen.this, QRscanning.class);
-        startActivity(in);
     }
 
+    //ActivityResult call back function to get details of User (facebook/Google)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        // Check which request we're responding to
+        if (requestCode == RC_SIGN_IN) {
+            resultCode = requestCode;
+            if (resultCode != RESULT_OK) {
+                signedInUser = false;
+
+            }
+
+            mIntentInProgress = false;
+
+            if (!mGoogleApiClient.isConnecting()) {
+                mGoogleApiClient.connect();
+            }
+        }
+
+    }
+
+    //Intent fire to go to Check Profile Details Page
+    public void nextScreen(View view){
+        Intent in = new Intent(LoginScreen.this, CheckDetails.class);
+        startActivity(in);
+        finish();
+    }
 }

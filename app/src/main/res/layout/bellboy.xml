@@ -5,14 +5,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:id="@+id/wake_up_click"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:id="@+id/backpress_bell"
         android:onClick="backPress"
@@ -29,10 +29,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bell_boy"
-            android:textSize="22sp"
-            android:textStyle="bold"
+            android:textSize="@dimen/twenty_sp"
             android:textColor="@android:color/white"
-            android:padding="18dp"/>
+            android:padding="10dp"/>
 
 </LinearLayout>
 
@@ -59,9 +58,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/anything_to_say"
-            android:textSize="16sp"
+            android:textSize="@dimen/forteen_sp"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:textStyle="bold"
             android:textColor="@android:color/black" />
 
@@ -69,6 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
+            android:maxLines="3"
             android:id="@+id/say_something_bell"
             android:hint="@string/tap_to_start"
             android:background="@null"/>
@@ -79,9 +79,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:background="#ff9900"
+        android:background="@color/confirm_demand_click"
         android:onClick="confirmDemand"
         android:id="@+id/confirm_demand_click"
         android:gravity="center">
@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/confirm_demand"
-            android:textSize="15sp"
+            android:textSize="@dimen/forteen_sp"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

@@ -2,6 +2,9 @@ package demand.inn.com.inndemand.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -9,14 +12,19 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
+
+import java.io.InputStream;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.utility.AppPreferences;
+import demand.inn.com.inndemand.utility.NetworkUtility;
 
 /**
  * Created by akash
@@ -24,13 +32,16 @@ import demand.inn.com.inndemand.utility.AppPreferences;
 
 public class CheckDetails extends AppCompatActivity {
 
+    //Utility Class call
+    NetworkUtility nu;
+    AppPreferences prefs;
+
     //UI
-    EditText fb_name, fb_email, fb_phone;
+    EditText detail_name, detail_email, detail_phone;
     ImageView fb_dp;
 
     //Preference Area
     SharedPreferences settings;
-    AppPreferences prefs;
 
     //Others
     String name, email, phone;
@@ -40,31 +51,34 @@ public class CheckDetails extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkdetails);
+        nu = new NetworkUtility(this);
+        prefs = new AppPreferences(this);
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
         prefs  =new AppPreferences(CheckDetails.this);
 
         //UI Initialized here
-        fb_name = (EditText) findViewById(R.id.fb_name);
-        fb_email = (EditText) findViewById(R.id.fb_email);
-        fb_phone = (EditText) findViewById(R.id.fb_phone);
+        detail_name = (EditText) findViewById(R.id.fb_name);
+        detail_email = (EditText) findViewById(R.id.fb_email);
+        detail_phone = (EditText) findViewById(R.id.fb_phone);
 
         fb_dp = (ImageView) findViewById(R.id.fb_dp);
 
         //Email validation
-        fb_email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        detail_email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
-        //details set from facebook data
-//
-//        fb_name.setText(settings.getString("fb_name", "")); //facebook name
-        fb_name.setText("Akash");
-        fb_name.setEnabled(false);
-//
-//        fb_email.setText(settings.getString("email", ""));  //facebook email
-        fb_email.setText("akash@gmail.com");
-        fb_email.setEnabled(true);
+        //details set from facebook/google data
 
-//        Glide.with(this).load(settings.getString("image", "")).into(fb_dp); //facebook DP
-        Glide.with(this).load(R.drawable.ic_menu_camera).into(fb_dp);
+        detail_name.setText(settings.getString("google_name", ""));     //google name
+        detail_name.setText(settings.getString("fb_name", ""));         //facebbok name
+        detail_name.setText("Akash");
+        detail_name.setEnabled(false);
+//
+        detail_email.setText(settings.getString("google_email", ""));   //google email
+        detail_email.setText(settings.getString("fb_email", ""));       //facebook email
+        detail_email.setEnabled(true);
+
+//        Glide.with(this).load(settings.getString("google_image", "")).into(fb_dp); //google DP
+//        Picasso.with(this).load(R.drawable.ic_menu_camera).into(fb_dp);
 
     }
 
@@ -72,9 +86,9 @@ public class CheckDetails extends AppCompatActivity {
 
         //String initialized to get above mentioned edittext values
 
-        name = fb_name.getText().toString(); //can't change name
-        email = fb_email.getText().toString(); ////can change email
-        phone = fb_phone.getText().toString(); ////can change phone
+        name = detail_name.getText().toString();            //can't change name
+        email = detail_email.getText().toString();          //can change email
+        phone = detail_phone.getText().toString();          //can change phone
 
         prefs.setUser_fname(name);
         prefs.setUser_email(email);

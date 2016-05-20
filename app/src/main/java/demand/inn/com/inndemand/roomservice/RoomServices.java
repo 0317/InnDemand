@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.games.multiplayer.realtime.Room;
@@ -39,7 +40,7 @@ public class RoomServices extends AppCompatActivity {
         prefs = new AppPreferences(RoomServices.this);
 
 //        getSupportActionBar().hide();
-
+//
         //UI elements call
 
         //Linearlayout click call for different services
@@ -65,7 +66,6 @@ public class RoomServices extends AppCompatActivity {
         Intent in = new Intent(RoomServices.this, Beverages.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        finish();
     }
 
     //Laundry Click method
@@ -73,7 +73,6 @@ public class RoomServices extends AppCompatActivity {
         Intent in = new Intent(RoomServices.this, Laundry.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        finish();
     }
 
     //Cab Click method
@@ -81,7 +80,7 @@ public class RoomServices extends AppCompatActivity {
         Intent in = new Intent(RoomServices.this, Cab.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        finish();
+
     }
 
     //Bed Tea Click method
@@ -89,7 +88,7 @@ public class RoomServices extends AppCompatActivity {
         Intent in = new Intent(RoomServices.this, BedTea.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        finish();
+
     }
 
     //Bath Essentials Click method
@@ -97,7 +96,7 @@ public class RoomServices extends AppCompatActivity {
         Intent in = new Intent(RoomServices.this, Bathroom.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        finish();
+
     }
 
     //Bell-Boy Click method
@@ -105,7 +104,7 @@ public class RoomServices extends AppCompatActivity {
         Intent in = new Intent(RoomServices.this, BellBoy.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        finish();
+
     }
 
     //Room Clean Click method
@@ -113,7 +112,7 @@ public class RoomServices extends AppCompatActivity {
         Intent in = new Intent(RoomServices.this, RoomCleaning.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        finish();
+
     }
 
     //Wake-up Click method
@@ -121,6 +120,6 @@ public class RoomServices extends AppCompatActivity {
         Intent in = new Intent(RoomServices.this, WakeUp.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        finish();
+
     }
 }

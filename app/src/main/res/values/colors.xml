@@ -5,7 +5,7 @@
 
     <color name="colorPrimary">#7C5CCB</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#FF9900</color>
 
     <!-- ......Different colors used in App are under...... -->
     <color name="confirm_demand_click">#ff9900</color>

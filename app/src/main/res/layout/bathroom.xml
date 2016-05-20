@@ -5,14 +5,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:id="@+id/wake_up_click"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:gravity="center"
             android:onClick="backPress"
             android:id="@+id/backpress_bath"
@@ -29,10 +29,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bath_essentials"
-            android:textSize="22sp"
+            android:textSize="@dimen/twenty_sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:padding="18dp"/>
+            android:padding="10dp"/>
 
     </LinearLayout>
 
@@ -40,8 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="50dp"
             android:weightSum="3">
 
             <ImageView
@@ -70,7 +70,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:background="@color/view_gray"/>
 
                 <LinearLayout
@@ -91,9 +91,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Towels"
-                                android:textSize="18sp"
+                                android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="10dp"
                                 android:textColor="@color/view_gray" />
 
                             <LinearLayout
@@ -128,9 +128,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Soaps"
-                                android:textSize="18sp"
+                                android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="10dp"
                                 android:textColor="@color/view_gray" />
 
                             <LinearLayout
@@ -165,9 +165,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Maintainance"
-                                android:textSize="18sp"
+                                android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="10dp"
                                 android:textColor="@color/view_gray" />
 
                             <LinearLayout
@@ -198,7 +198,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:onClick="confirmDemand"
         android:background="@color/confirm_demand_click"
@@ -209,7 +209,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/confirm_demand"
-            android:textSize="15sp"
+            android:textSize="@dimen/forteen_sp"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

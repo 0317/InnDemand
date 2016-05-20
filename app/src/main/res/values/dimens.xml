@@ -6,4 +6,17 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+
+    <!-- .......Small Dimensions for Text....... -->
+    <dimen name="ten_sp">10sp</dimen>
+    <dimen name="twelve_sp">12sp</dimen>
+    <dimen name="forteen_sp">14sp</dimen>
+    <dimen name="fifteen_sp">15sp</dimen>
+    <dimen name="sixteen_sp">16sp</dimen>
+    <dimen name="eighteen_sp">18sp</dimen>
+    <dimen name="twenty_sp">20sp</dimen>
+    <dimen name="twenty_two_sp">22sp</dimen>
+    <dimen name="twenty_five_sp">25sp</dimen>
+
 </resources>

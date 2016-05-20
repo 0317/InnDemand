@@ -84,8 +84,4 @@ public class RoomCleaning extends AppCompatActivity {
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
     }
-
-    public void backPress(View view){
-        onBackPressed();
-    }
 }

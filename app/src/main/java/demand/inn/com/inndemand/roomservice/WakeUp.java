@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -43,30 +44,34 @@ public class WakeUp extends AppCompatActivity {
 //        changeTime = (LinearLayout) findViewById(R.id.changeTime_wakeup);
 //        cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
 
-//        today = (RadioButton) findViewById(R.id.radioToday_wakeup);
-//        tomorrow = (RadioButton) findViewById(R.id.radioTomorrow_wakeup);
+        today = (RadioButton) findViewById(R.id.radioToday_wakeup);
+        tomorrow = (RadioButton) findViewById(R.id.radioTomorrow_wakeup);
 
         currentTime = (TextView) findViewById(R.id.currentTime_wakeup);
-    }
 
-    //onSelect method for today RadioButton for WakeUp
-    public void todayClick(View view){
-        if(today.isChecked()){
-            today.setChecked(true);
-            tomorrow.setChecked(false);
-        }else{
-            today.setChecked(false);
-        }
-    }
+        today.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(today.isChecked()){
+                    today.setChecked(true);
+                    tomorrow.setChecked(false);
+                }else{
+                    today.setChecked(false);
+                }
+            }
+        });
 
-    //onSelect method for tomorrow RadioButton for wakeup
-    public void tomorrowClick(View view){
-        if(tomorrow.isChecked()){
-            tomorrow.setChecked(true);
-            today.setChecked(false);
-        }else{
-            tomorrow.setChecked(false);
-        }
+        tomorrow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(tomorrow.isChecked()){
+                    tomorrow.setChecked(true);
+                    today.setChecked(false);
+                }else{
+                    tomorrow.setChecked(false);
+                }
+            }
+        });
     }
 
     //cancel wake-up call set in room services

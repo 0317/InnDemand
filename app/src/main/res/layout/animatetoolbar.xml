@@ -10,7 +10,7 @@
     >
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/main.appbar"
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -18,7 +18,7 @@
         >
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/main.collapsing"
+            android:id="@+id/collapsing"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -82,7 +82,7 @@
             android:id="@+id/hotel_Name"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-            android:textSize="22sp"
+            android:textSize="@dimen/twenty_sp"
             android:textStyle="bold"
             android:text="Vivanta - By Taj"
             />
@@ -93,7 +93,7 @@
                     android:paddingLeft="15dp"
                     android:id="@+id/hotel_Address"
                     android:paddingTop="5dp"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/forteen_sp"
                     android:text="MG Road, Gurgaon"
                     />
 
@@ -111,8 +111,11 @@
                 android:text="@string/check_out"
                 android:id="@+id/checkout_click"
                 android:onClick="checkOut"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
                 android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:layout_marginRight="5dp"
                 android:textColor="@android:color/white"
                 android:background="@drawable/yellow_side_round"/>
 
@@ -146,8 +149,10 @@
                     android:paddingLeft="15dp"
                     android:paddingTop="5dp"
                     android:textSize="16sp"
+                    android:id="@+id/get_direction"
+                    android:onClick="direction"
                     android:textColor="@color/confirm_demand_click"
-                    android:text="GET DIRECTION"
+                    android:text="@string/get_direction"
                     />
 
                 </LinearLayout>
@@ -332,6 +337,7 @@
                 android:layout_marginTop="15dp"
                 android:orientation="vertical"
                 android:paddingBottom="15dp"
+                android:layout_marginBottom="15dp"
                 android:gravity="center_vertical"
                 android:background="#fff">
 
@@ -339,6 +345,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
+                    android:layout_marginTop="15dp"
                     android:textSize="16sp"
                     android:textColor="@color/colorPrimary"
                     android:text="@string/about_hotel"
