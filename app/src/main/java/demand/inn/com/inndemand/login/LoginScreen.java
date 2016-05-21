@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -38,6 +39,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.cartarea.MyCart;
 import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
@@ -77,7 +79,7 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
         super.onCreate(savedInstanceState);
         // Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(LoginScreen.this);
         setContentView(R.layout.loginscreen);
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
@@ -96,6 +98,10 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends, user_photos"));
+        Object object = new Object();
+        if (object instanceof GraphRequest) {
+            Log.e("OKAY", "OKAY");
+        }
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override

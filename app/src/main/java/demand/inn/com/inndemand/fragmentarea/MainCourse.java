@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import demand.inn.com.inndemand.R;
 
@@ -23,45 +24,51 @@ public class MainCourse extends Fragment {
     //UI Calls
     RelativeLayout maincourse_options;
     Context context;
+    TextView cart_item, cart_total;
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.maincourse, container, false);
 
+        //UI initialize
+        cart_item = (TextView) view.findViewById(R.id.maincourse_items);
+        cart_total = (TextView) view.findViewById(R.id.maincourse_total);
+        cart_total.setText("Total: Rs 2000");
+        cart_item.setText("(10 items)");
+
         //UI Initialize to select Main Course Veg/Non-Veg options
         maincourse_options = (RelativeLayout) view.findViewById(R.id.maincourse_option_click);
-        maincourse_options.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(context, maincourse_options);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.maincourse_menu, popup.getMenu());
-
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
+//        maincourse_options.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PopupMenu popup = new PopupMenu(context, maincourse_options);
+//                //Inflating the Popup using xml file
+//                popup.getMenuInflater().inflate(R.menu.maincourse_menu, popup.getMenu());
 //
-                        switch (item.getItemId()) {
-                            case R.id.all:
-
-                        return true;
-
-                            case R.id.veg:
-
-                            return true;
-
-                            case R.id.nonveg:
-
-                                return true;
-                        }
-                        return false;
-                    }
-                });
-
-                popup.show();//showing popup menu
-            }
-        });
+//                //registering popup with OnMenuItemClickListener
+//                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    public boolean onMenuItemClick(MenuItem item) {
+////
+//                        switch (item.getItemId()) {
+//                            case R.id.all:
+//
+//                        return true;
+//
+//                            case R.id.veg:
+//
+//                            return true;
+//
+//                            case R.id.nonveg:
+//
+//                                return true;
+//                        }
+//                        return false;
+//                    }
+//                });
+//
+//                popup.show();//showing popup menu
+//            }
+//        });
 
         return  view;
     }

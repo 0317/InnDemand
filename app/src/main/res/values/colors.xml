@@ -11,5 +11,6 @@
     <color name="confirm_demand_click">#ff9900</color>
     <color name="view_gray">#959595</color>
     <color name="dark_gray">#353535</color>
+    <color name="theme_gray">#f4f4f4</color>
 
 </resources>

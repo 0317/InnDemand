@@ -5,34 +5,33 @@
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:orientation="horizontal"
-        android:background="@color/view_gray">
+        android:background="@color/theme_gray">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="@string/food_type"
-            android:textSize="22sp"
+            android:textSize="@dimen/eighteen_sp"
             android:layout_marginLeft="15dp"
-            android:textStyle="bold"
             android:gravity="center"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:id="@+id/maincourse_option_click"
         android:layout_marginLeft="20dp"
-        android:background="@color/view_gray">
+        android:background="@color/theme_gray">
 
         <LinearLayout
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:orientation="horizontal"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:background="@color/view_gray">
+            android:background="@color/theme_gray">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -95,18 +94,56 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:background="@color/confirm_demand_click"
         android:id="@+id/confirm_demand_click"
+        android:orientation="vertical"
         android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/proceed"
-            android:textSize="15sp"
-            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/theme_gray"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/twelve_sp"
+                android:id="@+id/maincourse_total"
+                android:textColor="@color/confirm_demand_click" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/maincourse_items"
+                android:layout_marginLeft="5dp"
+                android:textSize="@dimen/twelve_sp"
+                android:textColor="@color/view_gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/confirm_demand_click"
+            android:id="@+id/confirm_demand_click_maincourse"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/proceed"
+                android:textSize="@dimen/forteen_sp"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

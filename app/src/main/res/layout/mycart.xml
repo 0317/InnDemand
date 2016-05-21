@@ -5,7 +5,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:id="@+id/my_cart_click"
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -26,7 +26,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -34,18 +34,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/my_cart"
-            android:textSize="22sp"
-            android:textColor="@android:color/white"
-            android:paddingLeft="18dp"
-            android:paddingTop="18dp"
-            android:paddingBottom="18dp"/>
+            android:textSize="@dimen/twenty_sp"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="("
             android:layout_marginLeft="2dp"
-            android:textSize="22sp"
+            android:textSize="@dimen/twenty_sp"
             android:textColor="@android:color/white"/>
 
         <TextView
@@ -53,7 +50,7 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:layout_marginLeft="2dp"
-            android:textSize="22sp"
+            android:textSize="@dimen/twenty_sp"
             android:textColor="@android:color/white"/>
 
         <TextView
@@ -61,7 +58,7 @@
             android:layout_height="wrap_content"
             android:text=")"
             android:layout_marginLeft="2dp"
-            android:textSize="22sp"
+            android:textSize="@dimen/twenty_sp"
             android:textColor="@android:color/white"/>
 
         </LinearLayout>
@@ -72,94 +69,151 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:weightSum="2">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:id="@+id/cart_list">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mycart"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"/>
-
-    </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/view_gray"></View>
-
-
-
-        </LinearLayout>
-
-    </ScrollView>
+        </android.support.v7.widget.RecyclerView>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginBottom="50dp">
+            android:layout_marginBottom="70dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+<!--
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="@string/apply_coupon"
-            android:textColor="@android:color/white"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hide_layout"
+                    android:orientation="vertical">
+
+                <include layout="@layout/promocode"
+                    android:id="@+id/promocode_area"></include>
+
+                    </LinearLayout>-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:id="@+id/apply_coupon_code"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/view_gray"
+                    android:layout_marginRight="15dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/apply_coupon"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/forteen_sp"
+                         android:id="@+id/promo_text"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/view_gray"
+                        android:id="@+id/edit_promocode">
+
+                        <include layout="@layout/promocode"></include>
+
+                    </LinearLayout>
+                    <!--
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter promo code"
+                        android:textColor="@android:color/white"
+                        android:id="@+id/edit_promocode"/>-->
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/layout_button">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cancel"
+                            android:id="@+id/cart_promoCancel"
+                            android:layout_marginRight="5dp"
+                            android:onClick="cancelPromo"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@android:color/white"
+                            android:background="@color/colorPrimary"/>
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apply"
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/cart_promoApply"
+                            android:onClick="applyPromo"
+                            android:textColor="@android:color/white"
+                            android:background="@color/confirm_demand_click"/>
+
+                    </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+<!--
+                </LinearLayout>-->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/food_delivery_time"
-            android:textSize="16sp"
+            android:textSize="@dimen/forteen_sp"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:textColor="@android:color/black"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp">
+                android:layout_height="40dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="NOW"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/sixteen_sp"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:textColor="@color/view_gray" />
 
                 <LinearLayout
                     android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentRight="true"
                     android:orientation="horizontal"
                     android:gravity="center">
@@ -167,6 +221,9 @@
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/now_cart"
+                        android:layout_marginTop="5dp"
+                        android:buttonTint="@color/confirm_demand_click"
                         />
 
                 </LinearLayout>
@@ -181,11 +238,13 @@
             android:text="@string/pick_time"
             android:textSize="16sp"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
             android:textColor="@color/confirm_demand_click"/>
 
             <LinearLayout
-                android:layout_width="180dp"
+                android:layout_width="150dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="5dp"
                 android:layout_alignParentBottom="true"
                 android:id="@+id/write_comments"
                 >
@@ -194,7 +253,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/write_comment"
-            android:textSize="16sp"
+            android:textSize="@dimen/forteen_sp"
+            android:id="@+id/writecomment_cart"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
             android:textColor="@color/view_gray"/>
@@ -209,18 +269,54 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:id="@+id/items_details"
+        android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/theme_gray"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/twelve_sp"
+            android:id="@+id/cart_total"
+            android:textColor="@color/confirm_demand_click" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/cart_items"
+            android:layout_marginLeft="5dp"
+            android:textSize="@dimen/twelve_sp"
+            android:textColor="@color/view_gray" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:background="@color/confirm_demand_click"
-        android:id="@+id/confirm_demand_click"
+        android:id="@+id/confirm_demand_click_cart"
+        android:orientation="vertical"
         android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/proceed"
-            android:textSize="15sp"
+            android:textSize="@dimen/forteen_sp"
             android:textColor="@android:color/white" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

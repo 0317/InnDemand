@@ -94,7 +94,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".cartarea.MyCart"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".welcome.CommentArea"
             android:screenOrientation="portrait"></activity>
 
@@ -125,7 +126,9 @@
         <!-- ................Restaurant Activity Area.......... -->
 
         <activity android:name=".roomservice.Restaurant"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+        </activity>
 
         <!-- ...................Broadcast call Area....................... -->
 

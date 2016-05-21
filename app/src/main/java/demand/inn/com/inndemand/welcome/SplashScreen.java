@@ -53,11 +53,11 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     public void call(View view){
-        if (nu.isConnectingToInternet()) {
+//        if (nu.isConnectingToInternet()) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (nu.isConnectingToInternet()) {
+//                    if (nu.isConnectingToInternet()) {
                         if (prefs.getIs_task_completed() == false) {
                             Intent in = new Intent(SplashScreen.this, LoginScreen.class);
                             startActivity(in);
@@ -70,24 +70,24 @@ public class SplashScreen extends AppCompatActivity {
                             finish();
                         }
 
-                    }
+//                    }
 
 
                 }
             }, 3000 /* 3sec delay*/);
 
-        } else {
-//            Snackbar.make(view, "Oops, No Internet Connection..", Snackbar.LENGTH_LONG)
-//                                .setAction("Action", null).show();
-            new AlertDialog.Builder(this).setTitle("No Internet")
-                    .setMessage("It seems no Internet Connection")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-        }
+//        } else {
+////            Snackbar.make(view, "Oops, No Internet Connection..", Snackbar.LENGTH_LONG)
+////                                .setAction("Action", null).show();
+//            new AlertDialog.Builder(this).setTitle("No Internet")
+//                    .setMessage("It seems no Internet Connection")
+//                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            finish();
+//                        }
+//                    });
+//        }
 
     }
 

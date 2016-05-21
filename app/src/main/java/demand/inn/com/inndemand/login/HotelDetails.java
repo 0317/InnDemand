@@ -23,6 +23,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.cartarea.MyCart;
 import demand.inn.com.inndemand.mapdirection.Mapping;
 import demand.inn.com.inndemand.roomservice.Beverages;
 import demand.inn.com.inndemand.roomservice.Restaurant;
@@ -148,8 +149,8 @@ public class HotelDetails extends AppCompatActivity {
 
     //OnClick to go to Restaurant Screen
     public void restaurantClick(View view){
-//        Intent in = new Intent(HotelDetails.this, Restaurant.class);
-//        startActivity(in);
+        Intent in = new Intent(HotelDetails.this, MyCart.class);
+        startActivity(in);
 
     }
 

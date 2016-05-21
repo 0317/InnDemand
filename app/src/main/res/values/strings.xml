@@ -55,11 +55,11 @@
     <string name="note_cab">NOTE: Providing Cab services is based on the availability. We will call you to confirm.</string>
     <string name="write_comment_here">Write your comment here</string>
     <string name="write_comment">Write Comment</string>
-    <string name="submit">Submit</string>
+    <string name="submit">SUBMIT</string>
     <string name="my_cart">My Cart</string>
     <string name="mycart">NOTE: Taxes Included</string>
     <string name="proceed">PROCEED</string>
-    <string name="apply_coupon">APPLY DISCOUNT CODE</string>
+    <string name="apply_coupon">Apply Discount Code</string>
     <string name="food_delivery_time">Food Delivery Time</string>
     <string name="appetizer_fragment_headline">Our Restaurant Serves both Vegetarian &amp; Non-Vegeterian</string>
     <string name="restaurant_timing">Restaurant Timings - 7AM to 11PM</string>
@@ -74,6 +74,7 @@
     <string name="swim_timing">Swimming Pool Timing(s)</string>
     <string name="about_hotel">ABOUT HOTEL</string>
     <string name="add_number">NOTE: Please add your Mobile number to serve you better.</string>
+    <string name="enter_promocode">ENTER PROMO CODE</string>
 
     <!-- Button labels -->
     <string name="sign_out">Sign Out</string>
