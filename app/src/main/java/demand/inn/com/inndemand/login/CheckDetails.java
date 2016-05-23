@@ -78,6 +78,7 @@ public class CheckDetails extends AppCompatActivity {
         detail_email.setEnabled(true);
 
         System.out.print("google_data"+ settings.getString("google_name", "") +"email"+settings.getString("google_email", ""));
+//        Glide.with(this).load(settings.getString("google_image", "")).into(fb_dp); //google DP
 
         Picasso.with(this).load(R.drawable.ic_menu_camera).into(fb_dp);
 
