@@ -87,7 +87,7 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
 
         //UI initialized
 //        logo_next = (ImageView) findViewById(R.id.logo_next);
-        settings =  PreferenceManager.getDefaultSharedPreferences(this);
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         //Google Login Area
         signinButton = (SignInButton) findViewById(R.id.signin_google);
@@ -102,88 +102,93 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
         if (object instanceof GraphRequest) {
             Log.e("OKAY", "OKAY");
         }
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        try {
+            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
-            @Override
-            public void onSuccess(final LoginResult loginResult) {
+                @Override
+                public void onSuccess(final LoginResult loginResult) {
 
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(
-                                    JSONObject object,
-                                    GraphResponse response) {
+                    GraphRequest request = GraphRequest.newMeRequest(
+                            loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(
+                                        JSONObject object,
+                                        GraphResponse response) {
 
-                                try {
-                                    System.out.println("FBDetails=========" + loginResult.getAccessToken().getToken());
-
-                                    SharedPreferences.Editor editor = settings.edit();
-                                    editor.putBoolean("isLoggedIn", true);
-                                    editor.putString("fb_id", object.getString("id"));
-                                    editor.putString("fb_name", object.getString("name"));
-//                                    editor.putString("user_mobile_phone", object.getString("user_mobile_phone"));
-                                    editor.putString("fb_dob", object.has("birthday")==false?"01/01/1990" : object.getString("birthday"));
-                                    editor.putString("fb_gender", object.getString("gender"));
-                                    editor.commit();
-
-                                    System.out.println("DataDetails=========" + loginResult.getAccessToken());
-
-                                } catch(JSONException ex) {
-                                    ex.printStackTrace();
-                                }
-
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender, birthday,user_mobile_phone, picture.type(large)");
-
-                new GraphRequest(loginResult.getAccessToken(), "me", parameters, HttpMethod.GET,
-                        new GraphRequest.Callback() {
-                            @Override
-                            public void onCompleted(GraphResponse response) {
-                                if (response != null) {
                                     try {
-                                        System.out.println("before========="+response.getRawResponse());
-                                        JSONObject data = response.getJSONObject();
-                                        if (data.has("picture")) {
-                                            String profilePicUrl = data.getJSONObject("picture").getJSONObject("data").getString("url");
-                                            //Bitmap profilePic = getFacebookProfilePicture(profilePicUrl);
+                                        System.out.println("FBDetails=========" + loginResult.getAccessToken().getToken());
 
-                                            SharedPreferences.Editor editor = settings.edit();
-                                            editor.putString("fb_image", profilePicUrl);
+                                        SharedPreferences.Editor editor = settings.edit();
+                                        editor.putBoolean("isLoggedIn", true);
+                                        editor.putString("fb_id", object.getString("id"));
+                                        editor.putString("fb_name", object.getString("name"));
+//                                    editor.putString("user_mobile_phone", object.getString("user_mobile_phone"));
+                                        editor.putString("fb_dob", object.has("birthday") == false ? "01/01/1990" : object.getString("birthday"));
+                                        editor.putString("fb_gender", object.getString("gender"));
+                                        editor.commit();
+
+                                        System.out.println("DataDetails=========" + loginResult.getAccessToken());
+
+                                    } catch (JSONException ex) {
+                                        ex.printStackTrace();
+                                    }
+
+                                }
+                            });
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "id,name,email,gender, birthday,user_mobile_phone, picture.type(large)");
+
+                    new GraphRequest(loginResult.getAccessToken(), "me", parameters, HttpMethod.GET,
+                            new GraphRequest.Callback() {
+                                @Override
+                                public void onCompleted(GraphResponse response) {
+                                    if (response != null) {
+                                        try {
+                                            System.out.println("before=========" + response.getRawResponse());
+                                            JSONObject data = response.getJSONObject();
+                                            if (data.has("picture")) {
+                                                String profilePicUrl = data.getJSONObject("picture").getJSONObject("data").getString("url");
+                                                //Bitmap profilePic = getFacebookProfilePicture(profilePicUrl);
+
+                                                SharedPreferences.Editor editor = settings.edit();
+                                                editor.putString("fb_image", profilePicUrl);
 //                                            editor.putString("user_mobile_phone", data.getString("user_mobile_phone"));
-                                            editor.putString("name", data.getString("name"));
-                                            editor.putString("email", data.getString("email"));
-                                            editor.commit();
+                                                editor.putString("name", data.getString("name"));
+                                                editor.putString("email", data.getString("email"));
+                                                editor.commit();
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
                                     }
                                 }
-                            }
-                        }).executeAsync();
+                            }).executeAsync();
 
 
-                request.setParameters(parameters);
-                request.executeAsync();
-                Intent in = new Intent(LoginScreen.this,CheckDetails.class);
-                startActivity(in);
-                finish();
-            }
+                    request.setParameters(parameters);
+                    request.executeAsync();
+                    Intent in = new Intent(LoginScreen.this, CheckDetails.class);
+                    startActivity(in);
+                    finish();
+                }
 
-            @Override
-            public void onCancel() {
-                // App code
-                LoginManager.getInstance().logOut();
-            }
+                @Override
+                public void onCancel() {
+                    // App code
+                    LoginManager.getInstance().logOut();
+                }
 
-            @Override
-            public void onError(FacebookException error) {
-                Toast.makeText(LoginScreen.this, "Exception occurred during Facebook Signin", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onError(FacebookException error) {
+                    Toast.makeText(LoginScreen.this, "Exception occurred during Facebook Signin", Toast.LENGTH_SHORT).show();
+                }
+            });
 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.e("InDemand", "" + ex.getLocalizedMessage());
+        }
     }
 
     protected void onStart() {
@@ -303,6 +308,8 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
                 editor.putString("google_name", personName);
                 editor.putString("google_email", email);
                 editor.commit();
+
+                System.out.print("google_details"+ settings.getString("google_name", "") +"email"+settings.getString("google_email", ""));
 
                 //     new LoadProfileImage(image).execute(personPhotoUrl);
                 // update profile frame with new info about Google Account

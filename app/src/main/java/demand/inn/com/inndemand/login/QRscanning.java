@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.zxing.Result;
 
@@ -22,6 +23,8 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     NetworkUtility nu;
     AppPreferences prefs;
 
+    Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,15 +32,15 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
-//    }
-//
-//    public void QrScanner(View view){
+                try {
+                    mScannerView = new ZXingScannerView(QRscanning.this);   // Programmatically initialize the scanner view
+                    setContentView(mScannerView);
 
-        mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
-        setContentView(mScannerView);
-
-        mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
-        mScannerView.startCamera();         // Start camera
+                    mScannerView.setResultHandler(QRscanning.this); // Register ourselves as a handler for scan results.
+                    mScannerView.startCamera();         // Start camera
+                }catch(NoClassDefFoundError e){
+                    e.printStackTrace();
+                }
 
     }
 

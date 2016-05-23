@@ -16,4 +16,9 @@
 
   </me.dm7.barcodescanner.zxing.ZXingScannerView>-->
 
+  <!--  <Button android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="QRScanner"
+        android:id="@+id/button" />-->
+
 </RelativeLayout>

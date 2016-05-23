@@ -69,14 +69,15 @@ public class CheckDetails extends AppCompatActivity {
         //details set from facebook/google data
 
         detail_name.setText(settings.getString("google_name", ""));     //google name
-        detail_name.setText(settings.getString("fb_name", ""));         //facebbok name
+//        detail_name.setText(settings.getString("fb_name", ""));         //facebbok name
         detail_name.setText("Akash");
-        detail_name.setEnabled(false);
+//        detail_name.setEnabled(false);
 //
         detail_email.setText(settings.getString("google_email", ""));   //google email
-        detail_email.setText(settings.getString("fb_email", ""));       //facebook email
+//        detail_email.setText(settings.getString("fb_email", ""));       //facebook email
         detail_email.setEnabled(true);
 
+        System.out.print("google_data"+ settings.getString("google_name", "") +"email"+settings.getString("google_email", ""));
 //        Glide.with(this).load(settings.getString("google_image", "")).into(fb_dp); //google DP
 //        Picasso.with(this).load(R.drawable.ic_menu_camera).into(fb_dp);
 
@@ -104,7 +105,7 @@ public class CheckDetails extends AppCompatActivity {
             Snackbar.make(view, "Please Enter Correct Phone Number", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }else {
-            Intent in = new Intent(CheckDetails.this, HotelDetails.class);
+            Intent in = new Intent(CheckDetails.this, QRscanning.class);
             startActivity(in);
             finish();
         }
