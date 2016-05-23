@@ -3,45 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <Button
+        android:id="@+id/scannerButton"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/scan_text"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Please scan the QR code to verify hotel"
-            android:gravity="center"/>
-
-    </LinearLayout>
-
-        <SurfaceView
-            android:layout_width="match_parent"
-            android:layout_height="380dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/camera_view"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/code_info"
-            android:layout_toRightOf="@+id/camera_view"
-            android:textSize="20sp"
-            android:layout_marginLeft="16dp"
-            android:text="Nothing to read."
-            android:layout_alignParentTop="true"
-            />
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="Scanner" />
 
 </RelativeLayout>

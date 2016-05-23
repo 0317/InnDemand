@@ -1,8 +1,10 @@
 package demand.inn.com.inndemand.login;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,16 +34,17 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+
+
                 try {
                     mScannerView = new ZXingScannerView(QRscanning.this);   // Programmatically initialize the scanner view
                     setContentView(mScannerView);
 
                     mScannerView.setResultHandler(QRscanning.this); // Register ourselves as a handler for scan results.
                     mScannerView.startCamera();         // Start camera
-                }catch(NoClassDefFoundError e){
+                }catch(Exception e){
                     e.printStackTrace();
                 }
-
     }
 
     @Override

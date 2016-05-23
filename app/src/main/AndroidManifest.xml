@@ -32,7 +32,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <meta-data android:name="package.name.for.main.code.GlideConfiguration" android:value="GlideModule" />
+        <meta-data android:name="com.github.bumptech.glide" android:value="GlideModule" />
         <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
 
 
@@ -56,6 +56,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".adapter.BarcodeScanner"></activity>
+        <activity android:name=".login.QRbar"></activity>
 
         <activity android:name=".login.LoginScreen"
             android:screenOrientation="portrait"

@@ -3,12 +3,12 @@
 
     <!-- ......Theme color values of App are under...... -->
 
-    <color name="colorPrimary">#7C5CCB</color>
+    <color name="colorPrimary">#7D5CCB</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF9900</color>
+    <color name="colorAccent">#FFCE00</color>
 
     <!-- ......Different colors used in App are under...... -->
-    <color name="confirm_demand_click">#ff9900</color>
+    <color name="confirm_demand_click">#FFCE00</color>
     <color name="view_gray">#959595</color>
     <color name="dark_gray">#353535</color>
     <color name="theme_gray">#f4f4f4</color>

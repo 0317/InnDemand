@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -79,7 +80,8 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
         super.onCreate(savedInstanceState);
         // Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.
-        FacebookSdk.sdkInitialize(LoginScreen.this);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         setContentView(R.layout.loginscreen);
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
