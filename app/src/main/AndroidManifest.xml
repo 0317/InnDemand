@@ -59,12 +59,16 @@
         <activity android:name=".adapter.BarcodeScanner"></activity>
         <activity android:name=".login.QRbar"></activity>
 
-        <activity android:name=".login.LoginScreen"
+       <!-- <activity android:name=".login.LoginScreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
 
 
-        </activity>
+        </activity>-->
+
+        <activity android:name=".login.Loginscreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".login.CheckDetails"
             android:screenOrientation="portrait"

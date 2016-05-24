@@ -1,3 +1,4 @@
+/*
 package demand.inn.com.inndemand.login;
 
 import android.content.Intent;
@@ -45,9 +46,11 @@ import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 
+*/
 /**
  * Created by akash
- */
+ *//*
+
 
     public class LoginScreen extends AppCompatActivity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -353,3 +356,4 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
         finish();
     }
 }
+*/

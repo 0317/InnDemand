@@ -119,7 +119,7 @@
                                         android:layout_marginLeft="15dp"
                                         android:id="@+id/teaMinus_bedTea"
                                         android:onClick="teaMinus"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_subtract"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -140,7 +140,7 @@
                                         android:layout_marginRight="15dp"
                                         android:onClick="teaPlus"
                                         android:layout_alignParentRight="true"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_plus"/>
 
                                 </RelativeLayout>
 
@@ -189,7 +189,7 @@
                                         android:id="@+id/coffeeMinus_bedTea"
                                         android:layout_marginLeft="15dp"
                                         android:onClick="coffeeMinus"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_subtract"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -210,7 +210,7 @@
                                         android:layout_marginRight="15dp"
                                         android:onClick="coffeePlus"
                                         android:layout_alignParentRight="true"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_plus"/>
 
                                 </RelativeLayout>
 

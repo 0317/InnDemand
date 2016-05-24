@@ -15,7 +15,10 @@ import android.view.View;
 
 import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.login.LoginScreen;
+import demand.inn.com.inndemand.login.CheckDetails;
+/*import demand.inn.com.inndemand.login.LoginScreen;*/
+import demand.inn.com.inndemand.login.HotelDetails;
+import demand.inn.com.inndemand.login.Loginscreen;
 import demand.inn.com.inndemand.login.QRscanning;
 import demand.inn.com.inndemand.login.QrScan;
 import demand.inn.com.inndemand.utility.AppPreferences;
@@ -59,12 +62,12 @@ public class SplashScreen extends AppCompatActivity {
                 public void run() {
 //                    if (nu.isConnectingToInternet()) {
                         if (prefs.getIs_task_completed() == false) {
-                            Intent in = new Intent(SplashScreen.this, LoginScreen.class);
+                            Intent in = new Intent(SplashScreen.this, Loginscreen.class);
                             startActivity(in);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                         } else if (prefs.getIs_task_completed() == true) {
-                            Intent in = new Intent(SplashScreen.this, LoginScreen.class);
+                            Intent in = new Intent(SplashScreen.this, QRscanning.class);
                             startActivity(in);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
@@ -75,19 +78,6 @@ public class SplashScreen extends AppCompatActivity {
 
                 }
             }, 3000 /* 3sec delay*/);
-
-//        } else {
-////            Snackbar.make(view, "Oops, No Internet Connection..", Snackbar.LENGTH_LONG)
-////                                .setAction("Action", null).show();
-//            new AlertDialog.Builder(this).setTitle("No Internet")
-//                    .setMessage("It seems no Internet Connection")
-//                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            finish();
-//                        }
-//                    });
-//        }
 
     }
 

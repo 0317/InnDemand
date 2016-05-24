@@ -56,6 +56,8 @@ public class CheckDetails extends AppCompatActivity {
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
         prefs  =new AppPreferences(CheckDetails.this);
 
+        prefs.setIs_task_completed(true);
+
         //UI Initialized here
         detail_name = (EditText) findViewById(R.id.fb_name);
         detail_email = (EditText) findViewById(R.id.fb_email);
@@ -69,18 +71,14 @@ public class CheckDetails extends AppCompatActivity {
         //details set from facebook/google data
 
         detail_name.setText(settings.getString("google_name", ""));     //google name
-//        detail_name.setText(settings.getString("fb_name", ""));         //facebbok name
-        detail_name.setText("Akash");
-//        detail_name.setEnabled(false);
-//
+        detail_name.setText(prefs.getUser_fname());                     //facebbok name
+        detail_name.setEnabled(false);
+
         detail_email.setText(settings.getString("google_email", ""));   //google email
-//        detail_email.setText(settings.getString("fb_email", ""));       //facebook email
+        detail_email.setText(prefs.getUser_email());                    //facebook email
         detail_email.setEnabled(true);
 
-        System.out.print("google_data"+ settings.getString("google_name", "") +"email"+settings.getString("google_email", ""));
-//        Glide.with(this).load(settings.getString("google_image", "")).into(fb_dp); //google DP
-
-        Picasso.with(this).load(R.drawable.ic_menu_camera).into(fb_dp);
+        Picasso.with(this).load(prefs.getUser_picture()).into(fb_dp);
 
     }
 
@@ -96,19 +94,19 @@ public class CheckDetails extends AppCompatActivity {
         prefs.setUser_email(email);
 //        prefs.setUser_phone(Integer.parseInt(phone));
 
-//        if(name == null || name.equalsIgnoreCase("")){
-//            Snackbar.make(view, "Please Enter Name", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show();
-//        }else if(email == null || !email.contains("@")){
-//            Snackbar.make(view, "Please Enter Valid Email", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show();
-//        }else if(phone == null || phone.length() <= 9){
-//            Snackbar.make(view, "Please Enter Correct Phone Number", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show();
-//        }else {
-            Intent in = new Intent(CheckDetails.this, QRbar.class);
+        if(name == null || name.equalsIgnoreCase("")){
+            Snackbar.make(view, "Please Enter Name", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }else if(email == null || !email.contains("@")){
+            Snackbar.make(view, "Please Enter Valid Email", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }else if(phone == null || phone.length() <= 9){
+            Snackbar.make(view, "Please Enter Correct Phone Number", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }else {
+            Intent in = new Intent(CheckDetails.this, QRscanning.class);
             startActivity(in);
             finish();
-//        }
+        }
     }
 }

@@ -116,7 +116,7 @@
                                     android:layout_marginLeft="15dp"
                                     android:onClick="waterMinus"
                                     android:id="@+id/waterMinus_beverage"
-                                    android:src="@drawable/ic_media_play"/>
+                                    android:src="@mipmap/ic_subtract"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -137,7 +137,7 @@
                                         android:layout_marginRight="15dp"
                                         android:onClick="waterPlus"
                                         android:layout_alignParentRight="true"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_plus"/>
 
                                 </RelativeLayout>
 
@@ -186,7 +186,7 @@
                                         android:onClick="sodaMinus"
                                         android:id="@+id/sodaMinus_beverage"
                                         android:layout_marginLeft="15dp"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_subtract"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -207,7 +207,7 @@
                                         android:layout_marginRight="15dp"
                                         android:onClick="sodaPlus"
                                         android:layout_alignParentRight="true"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_plus"/>
 
                                 </RelativeLayout>
 
@@ -257,7 +257,7 @@
                                         android:onClick="iceMinus"
                                         android:id="@+id/iceMinus_beverage"
                                         android:layout_marginLeft="15dp"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_subtract"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -278,7 +278,7 @@
                                         android:layout_marginRight="15dp"
                                         android:onClick="icePlus"
                                         android:layout_alignParentRight="true"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_plus"/>
 
                                 </RelativeLayout>
 
@@ -328,7 +328,7 @@
                                         android:layout_marginLeft="15dp"
                                         android:onClick="glassMinus"
                                         android:id="@+id/glassMinus_beverage"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_subtract"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -349,7 +349,7 @@
                                         android:layout_marginRight="15dp"
                                         android:onClick="glassPlus"
                                         android:layout_alignParentRight="true"
-                                        android:src="@drawable/ic_media_play"/>
+                                        android:src="@mipmap/ic_plus"/>
 
                                 </RelativeLayout>
 

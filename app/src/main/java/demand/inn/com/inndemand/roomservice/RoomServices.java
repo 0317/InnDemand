@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 
-import com.google.android.gms.games.multiplayer.realtime.Room;
+/*import com.google.android.gms.games.multiplayer.realtime.Room;*/
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.utility.AppPreferences;

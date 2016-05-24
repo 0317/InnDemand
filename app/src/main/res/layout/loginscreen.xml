@@ -73,7 +73,7 @@
                  android:background="#fff"/>-->
 
             <com.google.android.gms.common.SignInButton
-                android:id="@+id/signin_google"
+                android:id="@+id/sign_in_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"

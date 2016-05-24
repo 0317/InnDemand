@@ -18,6 +18,8 @@ public class AppPreferences {
             user_gender = "user_gender",
             user_email = "user_email",
             user_phone = "user_phone",
+            user_picture = "user_picture",
+            user_bday = "user_bday",
             user_lname = "user_lname",
             deviceToken = "device_token_pref",
             appVersion = "app_version_pref",
@@ -123,5 +125,21 @@ public class AppPreferences {
 
     public void setHotel_Name(String _hotel_Name) {
         prefEditor.putString(hotel_Name, _hotel_Name).commit();
+    }
+
+    public String getUser_picture() {
+        return appSharedpref.getString(user_picture, "");
+    }
+
+    public void setUser_picture(String _user_picture) {
+        prefEditor.putString(user_picture, _user_picture).commit();
+    }
+
+    public String getUser_bday() {
+        return appSharedpref.getString(user_bday, "");
+    }
+
+    public void setUser_bday(String _user_bday) {
+        prefEditor.putString(user_bday, _user_bday).commit();
     }
 }
