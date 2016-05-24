@@ -29,7 +29,7 @@ public class Beverages extends AppCompatActivity {
     LinearLayout confirmDemand;
 
     //Others
-    int count = 0;
+    int water_count = 0, glass_count = 0, ice_count = 0, soda_count = 0 ;
     String waterText, sodaText, iceText, glassText;
 
     @Override
@@ -64,14 +64,14 @@ public class Beverages extends AppCompatActivity {
         if(waterText == "0"){
             waterMinus.setEnabled(false);
         }else {
-            --count;
-            water.setText(String.valueOf(count));
+            --water_count;
+            water.setText(String.valueOf(water_count));
         }
     }
 
     public void waterPlus(View view){
-        ++count;
-        water.setText(String.valueOf(count));
+        ++water_count;
+        water.setText(String.valueOf(water_count));
     }
 
     public void sodaMinus(View view){
@@ -79,14 +79,14 @@ public class Beverages extends AppCompatActivity {
         if(sodaText == "0"){
             sodaMinus.setEnabled(false);
         }else {
-            --count;
-            soda.setText(String.valueOf(count));
+            --soda_count;
+            soda.setText(String.valueOf(soda_count));
         }
     }
 
     public void sodaPlus(View view){
-        ++count;
-        soda.setText(String.valueOf(count));
+        ++soda_count;
+        soda.setText(String.valueOf(soda_count));
     }
 
     public void iceMinus(View view){
@@ -94,14 +94,14 @@ public class Beverages extends AppCompatActivity {
         if(iceText == "0"){
             iceMinus.setEnabled(false);
         }else {
-            --count;
-            ice.setText(String.valueOf(count));
+            --ice_count;
+            ice.setText(String.valueOf(ice_count));
         }
     }
 
     public void icePlus(View view){
-        ++count;
-        ice.setText(String.valueOf(count));
+        ++ice_count;
+        ice.setText(String.valueOf(ice_count));
     }
 
     public void glassMinus(View view){
@@ -109,14 +109,14 @@ public class Beverages extends AppCompatActivity {
         if(glassText == "0"){
             glassMinus.setEnabled(false);
         }else {
-            --count;
-            glass.setText(String.valueOf(count));
+            --glass_count;
+            glass.setText(String.valueOf(glass_count));
         }
     }
 
     public void glassPlus(View view){
-        ++count;
-        glass.setText(String.valueOf(count));
+        ++glass_count;
+        glass.setText(String.valueOf(glass_count));
     }
 
     public void confirmDemand(View view){

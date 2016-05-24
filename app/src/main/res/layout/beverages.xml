@@ -109,8 +109,8 @@
                                     >
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
                                     android:layout_alignParentLeft="true"
                                     android:layout_marginTop="10dp"
                                     android:layout_marginLeft="15dp"
@@ -125,17 +125,19 @@
                                         android:id="@+id/waterCount_beverage"
                                         android:textSize="@dimen/forteen_sp"
                                         android:layout_marginTop="15dp"
+                                        android:layout_marginLeft="5dp"
                                         android:layout_centerHorizontal="true"
                                         android:gravity="center"
                                         />
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_marginTop="10dp"
                                         android:id="@+id/waterPlus_beverage"
                                         android:layout_marginRight="15dp"
                                         android:onClick="waterPlus"
+                                        android:layout_marginLeft="5dp"
                                         android:layout_alignParentRight="true"
                                         android:src="@mipmap/ic_plus"/>
 
@@ -179,8 +181,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_alignParentLeft="true"
                                         android:layout_marginTop="10dp"
                                         android:onClick="sodaMinus"
@@ -200,8 +202,8 @@
                                         />
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_marginTop="10dp"
                                         android:id="@+id/sodaPlus_beverage"
                                         android:layout_marginRight="15dp"
@@ -250,8 +252,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_alignParentLeft="true"
                                         android:layout_marginTop="10dp"
                                         android:onClick="iceMinus"
@@ -271,8 +273,8 @@
                                         />
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_marginTop="10dp"
                                         android:id="@+id/icePlus_beverage"
                                         android:layout_marginRight="15dp"
@@ -321,8 +323,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_alignParentLeft="true"
                                         android:layout_marginTop="10dp"
                                         android:layout_marginLeft="15dp"
@@ -342,8 +344,8 @@
                                         />
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_marginTop="10dp"
                                         android:id="@+id/glassPlus_beverage"
                                         android:layout_marginRight="15dp"

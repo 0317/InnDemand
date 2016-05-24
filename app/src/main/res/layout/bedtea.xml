@@ -112,8 +112,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_alignParentLeft="true"
                                         android:layout_marginTop="10dp"
                                         android:layout_marginLeft="15dp"
@@ -133,8 +133,8 @@
                                         />
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_marginTop="10dp"
                                         android:id="@+id/teaPlus_bedTea"
                                         android:layout_marginRight="15dp"
@@ -182,8 +182,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_alignParentLeft="true"
                                         android:layout_marginTop="10dp"
                                         android:id="@+id/coffeeMinus_bedTea"
@@ -203,8 +203,8 @@
                                         />
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
                                         android:layout_marginTop="10dp"
                                         android:id="@+id/coffeePlus_bedTea"
                                         android:layout_marginRight="15dp"

@@ -29,7 +29,7 @@ public class BedTea extends AppCompatActivity {
     LinearLayout confirmDemand;
 
     //Others
-    int count;
+    int tea_count = 0, coffee_count = 0;
     String teaText = null, coffeeText = null;
 
     @Override
@@ -61,16 +61,16 @@ public class BedTea extends AppCompatActivity {
                 if(teaText == "0"){
                     teaMinus.setEnabled(false);
                 }else {
-                    --count;
-                    tea.setText(String.valueOf(count));
+                    --tea_count;
+                    tea.setText(String.valueOf(tea_count));
                 }
             }
         });
         teaPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ++count;
-                tea.setText(String.valueOf(count));
+                ++tea_count;
+                tea.setText(String.valueOf(tea_count));
             }
         });
     }
@@ -81,14 +81,14 @@ public class BedTea extends AppCompatActivity {
             coffeeMinus.setEnabled(false);
             coffee.setText("0");
         }else {
-            --count;
-            coffee.setText(String.valueOf(count));
+            --coffee_count;
+            coffee.setText(String.valueOf(coffee_count));
         }
     }
 
     public void coffeePlus(View view){
-        ++count;
-        coffee.setText(String.valueOf(count));
+        ++coffee_count;
+        coffee.setText(String.valueOf(coffee_count));
     }
 
     public void confirmDemand(View view){

@@ -62,7 +62,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 
         // show the scanner result into dialog box.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Hotel Details");
+        builder.setTitle("Details");
         builder.setMessage(rawResult.getText());
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
