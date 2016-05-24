@@ -5,33 +5,34 @@
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:orientation="horizontal"
-        android:background="@color/theme_gray">
+        android:layout_marginTop="50dp"
+        android:background="@color/view_gray">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             android:text="@string/food_type"
-            android:textSize="@dimen/eighteen_sp"
+            android:textSize="@dimen/sixteen_sp"
             android:layout_marginLeft="15dp"
             android:gravity="center"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:id="@+id/maincourse_option_click"
         android:layout_marginLeft="20dp"
-        android:background="@color/theme_gray">
+        android:background="@color/view_gray">
 
         <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
             android:orientation="horizontal"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:background="@color/theme_gray">
+            android:background="@color/view_gray">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -48,32 +49,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:gravity="center_horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="@string/appetizer_fragment_headline"
+            android:textSize="@dimen/ten_sp"
             android:gravity="center"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/restaurant_timing"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginTop="10dp"
-            android:text="@string/note_restaurant"
+            android:textSize="@dimen/ten_sp"
             android:gravity="center"/>
 
     </LinearLayout>
@@ -81,69 +76,72 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="115dp"
         android:background="@color/view_gray"></View>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/appetizer_list"
-        android:layout_marginTop="160dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginBottom="40dp"
         ></ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@color/confirm_demand_click"
         android:id="@+id/confirm_demand_click"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:weightSum="2"
         android:gravity="center">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="@color/theme_gray"
-            android:orientation="horizontal"
-            android:gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/theme_gray"
+        android:orientation="vertical"
+        android:layout_weight="1.2"
+        android:gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="@dimen/twelve_sp"
-                android:id="@+id/maincourse_total"
-                android:textColor="@color/confirm_demand_click" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/maincourse_items"
+            android:textSize="@dimen/twelve_sp"
+            android:textColor="@color/view_gray" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:id="@+id/maincourse_items"
-                android:layout_marginLeft="5dp"
-                android:textSize="@dimen/twelve_sp"
-                android:textColor="@color/view_gray" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/twelve_sp"
+            android:id="@+id/maincourse_total"
+            android:textColor="@color/confirm_demand_click" />
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/confirm_demand_click"
-            android:id="@+id/confirm_demand_click_maincourse"
-            android:orientation="vertical"
-            android:gravity="center">
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/proceed"
-                android:textSize="@dimen/forteen_sp"
-                android:textColor="@android:color/white" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight=".8"
+        android:background="@color/confirm_demand_click"
+        android:id="@+id/confirm_demand_click_maincourse"
+        android:orientation="vertical"
+        android:gravity="center">
 
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Cart"
+            android:textSize="@dimen/forteen_sp"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
 
     </LinearLayout>
 

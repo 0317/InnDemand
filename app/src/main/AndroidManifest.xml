@@ -133,7 +133,6 @@
 
         <activity android:name=".roomservice.Restaurant"
             android:screenOrientation="portrait">
-
         </activity>
 
         <!-- ...................Broadcast call Area....................... -->

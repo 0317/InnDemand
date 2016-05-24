@@ -57,7 +57,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:onClick="beveragesClick"
-                android:background="@drawable/round_circle"
+                android:background="@drawable/round_beverage"
                 />
 
             <TextView
@@ -107,7 +107,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:onClick="laundryClick"
-                android:background="@drawable/round_circle"
+                android:background="@drawable/round_laundry"
                 />
 
             <TextView
@@ -142,7 +142,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:onClick="cabClick"
-                android:background="@drawable/round_circle"
+                android:background="@drawable/round_cab"
                 />
 
             <TextView
@@ -167,7 +167,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:onClick="bedteaClick"
-                android:background="@drawable/round_circle"
+                android:background="@drawable/round_bedtea"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -191,7 +191,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:onClick="wakeupClick"
-                android:background="@drawable/round_circle"
+                android:background="@drawable/round_wakeup"
                 />
 
             <TextView
@@ -226,7 +226,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:onClick="bellboyClick"
-                android:background="@drawable/round_circle"
+                android:background="@drawable/round_bellboy"
                 />
 
             <TextView
@@ -251,7 +251,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:onClick="bathessentialsClick"
-                android:background="@drawable/round_circle"
+                android:background="@drawable/round_bathroom"
                 />
 
             <TextView

@@ -56,7 +56,6 @@ public class Restaurant extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Restaurat");
         toolbar.setNavigationIcon(R.drawable.ic_menu_camera);
 
         //Title set for Collapsing Toolbar
@@ -72,7 +71,7 @@ public class Restaurant extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle("Restaurant");
+                    collapsingToolbarLayout.setTitle("");
                     isShow = true;
                 } else if(isShow) {
                     collapsingToolbarLayout.setTitle("");
