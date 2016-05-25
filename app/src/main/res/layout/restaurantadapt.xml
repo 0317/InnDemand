@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="80dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="80dp"
         android:orientation="vertical">
 
        <TextView
@@ -24,72 +24,32 @@
             android:layout_height="wrap_content"
             android:text="@string/restaurant"
             android:textSize="@dimen/forteen_sp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="15dp"
             android:id="@+id/restaurant_listitems_name"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/view_gray"
             android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal">
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/restaurant"
             android:textSize="@dimen/forteen_sp"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
             android:id="@+id/restaurant_listitems_rupees"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/view_gray"
             android:textStyle="bold"/>
-
-        <LinearLayout
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <RelativeLayout
-                android:layout_width="120dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="15dp"
-                >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/dish_minus"
-                    android:layout_marginLeft="15dp"
-                    android:src="@drawable/ic_menu_camera"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:id="@+id/text_counting"
-                    android:textSize="15sp"
-                    android:layout_marginTop="15dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/dish_count"
-                    android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/ic_menu_camera"/>
-
-            </RelativeLayout>
-
 
         </LinearLayout>
 

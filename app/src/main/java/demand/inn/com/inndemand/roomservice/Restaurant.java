@@ -10,6 +10,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -17,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.adapter.RestaurantAdapter;
+import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
 import demand.inn.com.inndemand.fragmentarea.Dessert;
 import demand.inn.com.inndemand.fragmentarea.MainCourse;
@@ -41,6 +46,18 @@ public class Restaurant extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurant);
 
+        //Toolbar call
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.mipmap.ic_back);
+        toolbar.inflateMenu(R.menu.main_menu);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         //tabclass initialization
         mAppetizer = new Appetizer();
         mDessert = new Dessert();
@@ -55,9 +72,6 @@ public class Restaurant extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_camera);
-
         //Title set for Collapsing Toolbar
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
@@ -71,7 +85,7 @@ public class Restaurant extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle("");
+                    collapsingToolbarLayout.setTitle("Restaurant");
                     isShow = true;
                 } else if(isShow) {
                     collapsingToolbarLayout.setTitle("");
