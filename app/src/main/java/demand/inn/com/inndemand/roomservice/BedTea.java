@@ -26,7 +26,7 @@ public class BedTea extends AppCompatActivity {
     //UI call area
     TextView tea, coffee;
     ImageView teaPlus, teaMinus, coffeePlus, coffeeMinus;
-    LinearLayout confirmDemand;
+    LinearLayout confirmDemand, backpress_bedTea;
 
     //Others
     int tea_count = 0, coffee_count = 0;
@@ -46,7 +46,7 @@ public class BedTea extends AppCompatActivity {
         teaText = tea.getText().toString().trim();
         coffee = (TextView) findViewById(R.id.coffeeCount_bedTea);
         coffeeText = coffee.getText().toString().trim();
-//        confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_bedTea);
+        backpress_bedTea = (LinearLayout) findViewById(R.id.backpress_bedTea);
 
         //Click call area (ImageView)
         teaMinus = (ImageView) findViewById(R.id.teaMinus_bedTea);
@@ -118,5 +118,6 @@ public class BedTea extends AppCompatActivity {
 
     public void backPress(View view){
         onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

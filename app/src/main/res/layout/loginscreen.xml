@@ -88,6 +88,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_weight="1"
+                android:id="@+id/terms_conditions"
                 android:layout_alignParentBottom="true"
                 android:text="@string/login_terms_lines"/>
 

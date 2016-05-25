@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import java.io.InputStream;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.adapter.CircleTransform;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 
@@ -61,7 +62,7 @@ public class CheckDetails extends AppCompatActivity {
         //UI Initialized here
         detail_name = (EditText) findViewById(R.id.fb_name);
         detail_email = (EditText) findViewById(R.id.fb_email);
-        detail_phone = (EditText) findViewById(R.id.fb_phone);
+//        detail_phone = (EditText) findViewById(R.id.fb_phone);
 
         fb_dp = (ImageView) findViewById(R.id.fb_dp);
 
@@ -78,7 +79,8 @@ public class CheckDetails extends AppCompatActivity {
         detail_email.setText(prefs.getUser_email());                    //facebook email
         detail_email.setEnabled(true);
 
-        Picasso.with(this).load(prefs.getUser_picture()).into(fb_dp);
+//        Picasso.with(this).load(prefs.getUser_picture()).into(fb_dp);
+        Picasso.with(this).load(prefs.getUser_picture()).transform(new CircleTransform()).into(fb_dp);
 
     }
 
@@ -88,7 +90,7 @@ public class CheckDetails extends AppCompatActivity {
 
         name = detail_name.getText().toString();            //can't change name
         email = detail_email.getText().toString();          //can change email
-        phone = detail_phone.getText().toString();          //can change phone
+//        phone = detail_phone.getText().toString();          //can change phone
 
         prefs.setUser_fname(name);
         prefs.setUser_email(email);
@@ -100,13 +102,15 @@ public class CheckDetails extends AppCompatActivity {
         }else if(email == null || !email.contains("@")){
             Snackbar.make(view, "Please Enter Valid Email", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-        }else if(phone == null || phone.length() <= 9){
-            Snackbar.make(view, "Please Enter Correct Phone Number", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
         }else {
             Intent in = new Intent(CheckDetails.this, QRscanning.class);
             startActivity(in);
             finish();
         }
+        /*else if(phone == null || phone.length() <= 9){
+            Snackbar.make(view, "Please Enter Correct Phone Number", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }*/
+
     }
 }

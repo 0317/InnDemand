@@ -15,12 +15,13 @@
             android:layout_height="50dp"
             android:gravity="center"
             android:id="@+id/backpress_bedTea"
+            android:onClick="backPress"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_camera"/>
+                android:src="@mipmap/ic_cancel"/>
 
         </LinearLayout>
 

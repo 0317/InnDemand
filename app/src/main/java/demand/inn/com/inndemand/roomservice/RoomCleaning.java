@@ -51,7 +51,7 @@ public class RoomCleaning extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //UI initialize area
-//        backpress = (LinearLayout) findViewById(R.id.backpress_roomClean);
+        backpress = (LinearLayout) findViewById(R.id.backpress_roomClean);
         say_something = (EditText) findViewById(R.id.say_something_roomClean);
 
         //TextView UI Initialize area
@@ -83,5 +83,10 @@ public class RoomCleaning extends AppCompatActivity {
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
+    }
+
+    public void backPress(View view){
+        onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

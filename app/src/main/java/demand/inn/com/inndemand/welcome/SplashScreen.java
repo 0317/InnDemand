@@ -12,10 +12,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
 
 import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.login.CheckDetails;
 /*import demand.inn.com.inndemand.login.LoginScreen;*/
 import demand.inn.com.inndemand.login.HotelDetails;
 import demand.inn.com.inndemand.login.Loginscreen;
@@ -43,6 +43,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.splashscreen);
         nu = new NetworkUtility(SplashScreen.this);
         prefs = new AppPreferences(SplashScreen.this);
@@ -67,18 +68,14 @@ public class SplashScreen extends AppCompatActivity {
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                         } else if (prefs.getIs_task_completed() == true) {
-                            Intent in = new Intent(SplashScreen.this, QRscanning.class);
+                            Intent in = new Intent(SplashScreen.this, Loginscreen.class);
                             startActivity(in);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                         }
 
-//                    }
-
-
                 }
             }, 3000 /* 3sec delay*/);
-
     }
 
     private void addShortcut() {

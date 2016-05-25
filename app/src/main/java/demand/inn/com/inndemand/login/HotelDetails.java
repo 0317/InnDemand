@@ -1,9 +1,11 @@
 package demand.inn.com.inndemand.login;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -12,9 +14,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -49,11 +56,13 @@ public class HotelDetails extends AppCompatActivity {
     ImageLoader imageLoader;
     NetworkImageView imageView;
     ImageView main_backdrop;
+    Toolbar toolbar, tolbar;
 
     //Others
     String callHotel;
     String URL, TAG;
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +74,17 @@ public class HotelDetails extends AppCompatActivity {
 
         imageLoader = AppController.getInstance().getImageLoader();
 //        imageView.setImageUrl(URL, imageLoader);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.mipmap.ic_back);
+        toolbar.inflateMenu(R.menu.main_menu);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         //Title set for Collapsing Toolbar
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
@@ -149,15 +169,15 @@ public class HotelDetails extends AppCompatActivity {
 
     //OnClick to go to Restaurant Screen
     public void restaurantClick(View view){
-        Intent in = new Intent(HotelDetails.this, Restaurant.class);
-        startActivity(in);
-
+//        Intent in = new Intent(HotelDetails.this, Restaurant.class);
+//        startActivity(in);
     }
 
     //OnClick to go to Room Services Screen
     public void roomServiceClick(View view){
         Intent in = new Intent(HotelDetails.this, RoomServices.class);
         startActivity(in);
+        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
     }
 
     //OnClick to go to Bar Screen
@@ -172,5 +192,36 @@ public class HotelDetails extends AppCompatActivity {
 //        Intent in = new Intent(HotelDetails.this, Restaurant.class);
 //        startActivity(in);
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.maincourse_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }else if(id == R.id.action_cart){
+
+        }else if(id == R.id.action_notification){
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

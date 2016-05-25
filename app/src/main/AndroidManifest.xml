@@ -3,7 +3,7 @@
     package="demand.inn.com.inndemand">
 
     <!-- ...............InnDemand app permissions area............ -->
-
+    <uses-permission-sdk-23 android:name="android.permission.CAMERA"></uses-permission-sdk-23>
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- To access accounts configured on device -->
@@ -98,7 +98,8 @@
         <activity android:name=".login.HotelDetails"
             android:label="Hotel"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity android:name=".cartarea.MyCart"
             android:screenOrientation="portrait">
         </activity>

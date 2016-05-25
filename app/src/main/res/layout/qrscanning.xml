@@ -9,6 +9,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="demand.inn.com.inndemand.login.QRscanning">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/forteen_sp"
+            android:text="@string/please_scan"/>
+
+    </LinearLayout>
+
 <!--  <me.dm7.barcodescanner.zxing.ZXingScannerView
       android:layout_width="match_parent"
       android:layout_height="match_parent"

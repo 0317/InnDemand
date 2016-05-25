@@ -49,6 +49,7 @@ public class BellBoy extends AppCompatActivity {
 
     public void backPress(View view){
         onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
 

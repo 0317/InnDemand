@@ -39,7 +39,7 @@ public class WakeUp extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //UI initlaized
-//        back_press = (LinearLayout) findViewById(R.id.back_press_wakeup);
+        back_press = (LinearLayout) findViewById(R.id.back_press_wakeup);
         confirm_demand = (LinearLayout) findViewById(R.id.confirm_demand_click_wakeup);
 //        changeTime = (LinearLayout) findViewById(R.id.changeTime_wakeup);
 //        cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
@@ -87,7 +87,8 @@ public class WakeUp extends AppCompatActivity {
 //        }
     }
 
-    public void backPress(){
+    public void backPress(View view){
         onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

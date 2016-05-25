@@ -3,12 +3,16 @@ package demand.inn.com.inndemand.login;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -76,7 +80,7 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
     ProgressDialog progressDialog;
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
-
+    TextView terms_conditions;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -176,6 +180,33 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
 
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(Loginscreen.this);
+
+
+        //Conditons/Terms of use Text at bottom Call Programatically
+        terms_conditions = (TextView) findViewById(R.id.terms_conditions);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        String gray = "By signing-up you agree to our ";
+        SpannableString graySpannable= new SpannableString(gray);
+        graySpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, gray.length(), 0);
+        builder.append(graySpannable);
+
+        String yellow = "terms of service ";
+        SpannableString yellowSpannable= new SpannableString(yellow);
+        yellowSpannable.setSpan(new ForegroundColorSpan(Color.YELLOW), 0, yellow.length(), 0);
+        builder.append(yellowSpannable);
+
+        String grays = "& ";
+        SpannableString graysSpannable = new SpannableString(grays);
+        graysSpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, grays.length(), 0);
+        builder.append(graysSpannable);
+
+        String yellows = "privacy policy";
+        SpannableString yellowsSpannables= new SpannableString(yellows);
+        yellowsSpannables.setSpan(new ForegroundColorSpan(Color.YELLOW), 0, yellows.length(), 0);
+        builder.append(yellowsSpannables);
+
+        terms_conditions.setText(builder, TextView.BufferType.SPANNABLE);
 
     }
 

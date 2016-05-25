@@ -57,6 +57,7 @@ public class RoomServices extends AppCompatActivity {
     //onClick method for back-press or cancel
     public void backPress(View view){
         onBackPressed();
+        overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
 
         //onClick Method Call for different services (Linearlayout)

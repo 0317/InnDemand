@@ -12,14 +12,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="15dp"
+        android:layout_height="220dp"
+        android:layout_margin="10dp"
         android:orientation="horizontal"
         android:gravity="center">
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:id="@+id/fb_dp"/>
 
         </LinearLayout>
@@ -42,7 +42,7 @@
         android:editable="true"
         android:id="@+id/fb_email"/>
 
-    <EditText
+    <!--<EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -59,7 +59,7 @@
             android:gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="5dp"
-            android:textSize="@dimen/twelve_sp"/>
+            android:textSize="@dimen/twelve_sp"/>-->
 
     </LinearLayout>
 

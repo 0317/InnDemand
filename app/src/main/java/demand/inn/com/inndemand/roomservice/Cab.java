@@ -41,7 +41,7 @@ public class Cab extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //UI Initialize area
-//        backPress = (LinearLayout) findViewById(R.id.backpress_cab);
+        backPress = (LinearLayout) findViewById(R.id.backpress_cab);
 //        confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_cab);
 
         //UI Initialize RadioButton area
@@ -128,5 +128,6 @@ public class Cab extends AppCompatActivity {
 
     public void backPress(View view){
         onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

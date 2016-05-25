@@ -67,7 +67,7 @@ public class MyCart extends AppCompatActivity {
         cart_item.setText("(10 items)");
 
         input_code = (EditText) findViewById(R.id.input_code);
-        items_details = (LinearLayout) findViewById(R.id.items_details);
+//        items_details = (LinearLayout) findViewById(R.id.items_details);
         enterPromo = (LinearLayout) findViewById(R.id.apply_coupon_code);
 
         layout = (RelativeLayout) findViewById(R.id.layout_button);

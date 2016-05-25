@@ -4,9 +4,12 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,14 +37,19 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
-
+        getSupportActionBar().setTitle("Please scan Code to get Hotel Details");
 
                 try {
-                    mScannerView = new ZXingScannerView(QRscanning.this);   // Programmatically initialize the scanner view
-                    setContentView(mScannerView);
+                    if (ContextCompat.checkSelfPermission(QRscanning.this,
+                            Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 
-                    mScannerView.setResultHandler(QRscanning.this); // Register ourselves as a handler for scan results.
-                    mScannerView.startCamera();         // Start camera
+
+                        mScannerView = new ZXingScannerView(QRscanning.this);   // Programmatically initialize the scanner view
+                        setContentView(mScannerView);
+
+                        mScannerView.setResultHandler(QRscanning.this); // Register ourselves as a handler for scan results.
+                        mScannerView.startCamera();         // Start camera
+                    }
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -80,5 +88,10 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         // If you would like to resume scanning, call this method below:
         // mScannerView.resumeCameraPreview(this);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        }
 }
 

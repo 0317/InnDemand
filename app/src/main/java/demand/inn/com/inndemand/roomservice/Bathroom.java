@@ -2,6 +2,7 @@ package demand.inn.com.inndemand.roomservice;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -99,7 +100,8 @@ public class Bathroom extends AppCompatActivity {
         }
     }
 
-    public void backPress(){
+    public void backPress(View view){
         onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

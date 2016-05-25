@@ -75,6 +75,7 @@
     <string name="about_hotel">ABOUT HOTEL</string>
     <string name="add_number">NOTE: Please add your Mobile number to serve you better.</string>
     <string name="enter_promocode">ENTER PROMO CODE</string>
+    <string name="please_scan">Please scan the code below to get Hotel Details</string>
 
     <!-- Button labels -->
     <string name="sign_out">Sign Out</string>
