@@ -9,9 +9,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,11 +23,12 @@ import java.util.List;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
-import demand.inn.com.inndemand.constants.CartData;
+import demand.inn.com.inndemand.constants.AppetiserData;
 
 /**
  * Created by akash
  */
+
 public class Appetizer extends Fragment {
 
     View view;
@@ -31,11 +36,14 @@ public class Appetizer extends Fragment {
 
     //UI call area
     TextView cart_item, cart_total;
+    LinearLayout menu_options;
 
 
     private RecyclerView recyclerView;
     private RestaurantAdapter adapter;
-    private List<CartData> cardList;
+    private List<AppetiserData> cardList;
+
+    Toolbar toolbar;
 
     @Nullable
     @Override
@@ -48,6 +56,7 @@ public class Appetizer extends Fragment {
         cart_total.setText("Total: Rs 2000");
         cart_item.setText("(10 items)");
 
+
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         cardList = new ArrayList<>();
@@ -58,6 +67,38 @@ public class Appetizer extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         prepareCart();
+
+        //UI Linearlayout for Menu Options to select Menu Items
+        menu_options = (LinearLayout) view.findViewById(R.id.menu_options);
+        menu_options.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getActivity(), menu_options);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+//
+                        switch (item.getItemId()) {
+                            case R.id.action_all:
+
+                                return  true;
+
+                            case R.id.action_veg:
+                                return true;
+
+                            case R.id.action_nonveg:
+                                return true;
+                        }
+                        return true;
+                    }
+                });
+
+                popup.show();//showing popup menu
+            }
+        });
 
         return  view;
     }
@@ -90,14 +131,29 @@ public class Appetizer extends Fragment {
     }
 
     /**
-     * Adding few albums for testing
+     * Adding few stuff for testing
      */
     private void prepareCart() {
 
-        CartData a = new CartData("Pizza", "FarmHouse", "Rs: 250");
+        AppetiserData a = new AppetiserData("Pizza", "FarmHouse", "Rs: 250");
         cardList.add(a);
 
-        a = new CartData("Chinese", "Noodles", "Rs: 200");
+        a = new AppetiserData("", "Chicken Tikka", "Rs: 460");
+        cardList.add(a);
+
+        a = new AppetiserData("Chinese", "Corn Soup", "Rs: 180");
+        cardList.add(a);
+
+        a = new AppetiserData("", "Manchurian (dry)", "Rs: 220");
+        cardList.add(a);
+
+        a = new AppetiserData("", "Hakka Noodles", "Rs: 280");
+        cardList.add(a);
+
+        a = new AppetiserData("Continental", "Devilled Eggs", "Rs: 300");
+        cardList.add(a);
+
+        a = new AppetiserData("", "Asparagas Soup", "Rs: 250");
         cardList.add(a);
 
         adapter.notifyDataSetChanged();

@@ -1,17 +1,16 @@
 package demand.inn.com.inndemand.constants;
 
 /**
- * Created by akash
+ * Created by Akash
  */
-public class CartData {
+public class DessertData {
 
     private String title, name, rupees;
-    private int count;
 
-    public CartData() {
+    public DessertData() {
     }
 
-    public CartData(String title, String name, String rupees) {
+    public DessertData(String title, String name, String rupees) {
         this.title = title;
         this.name = name;
         this.rupees = rupees;
@@ -39,13 +38,5 @@ public class CartData {
 
     public void setRupees(String rupees) {
         this.rupees = rupees;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 }

@@ -16,11 +16,8 @@ import android.view.Window;
 
 import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
-/*import demand.inn.com.inndemand.login.LoginScreen;*/
-import demand.inn.com.inndemand.login.HotelDetails;
 import demand.inn.com.inndemand.login.Loginscreen;
 import demand.inn.com.inndemand.login.QRscanning;
-import demand.inn.com.inndemand.login.QrScan;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 
@@ -68,7 +65,7 @@ public class SplashScreen extends AppCompatActivity {
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                         } else if (prefs.getIs_task_completed() == true) {
-                            Intent in = new Intent(SplashScreen.this, Loginscreen.class);
+                            Intent in = new Intent(SplashScreen.this, QRscanning.class);
                             startActivity(in);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();

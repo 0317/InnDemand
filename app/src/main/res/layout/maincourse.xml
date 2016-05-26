@@ -79,13 +79,7 @@
         android:layout_marginTop="115dp"
         android:background="@color/view_gray"></View>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/appetizer_list"
-        android:layout_marginTop="110dp"
-        android:layout_marginBottom="40dp"
-        ></ListView>
+    <include layout="@layout/recyclerview"></include>
 
     <LinearLayout
         android:layout_width="match_parent"

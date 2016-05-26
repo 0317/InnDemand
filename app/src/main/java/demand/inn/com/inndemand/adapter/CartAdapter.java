@@ -1,7 +1,6 @@
 package demand.inn.com.inndemand.adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,50 +8,42 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
-import java.util.logging.Handler;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.CartData;
+import demand.inn.com.inndemand.constants.MaincourseData;
 
 /**
  * Created by akash
  */
+public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.MyViewHolder> {
 
-public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.MyViewHolder>  {
-
-    private List<AppetiserData> cartData;
+    private List<CartData> cartData;
     private Context mContext;
-    int counter;
-
-    RecyclerView.Adapter adapter;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, subtitle, rupees, count;
         public ImageView plus, minus;
-
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.restaurant_listitems_head);
             subtitle = (TextView) view.findViewById(R.id.restaurant_listitems_name);
             rupees = (TextView) view.findViewById(R.id.restaurant_listitems_rupees);
-            count = (TextView) view.findViewById(R.id.restaurant_counts);
-            plus = (ImageView) view.findViewById(R.id.restaurant_plus);
-            minus = (ImageView) view.findViewById(R.id.restaurant_minus);
+//            count = (TextView) view.findViewById(R.id.restaurant_counting);
+
         }
     }
 
-    public RestaurantAdapter(Context mContext, List<AppetiserData> cartData) {
+    public CartAdapter(Context mContext, List<CartData> cartData) {
         this.mContext = mContext;
         this.cartData = cartData;
     }
 
     @Override
-    public RestaurantAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CartAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurantadapt, parent, false);
 
@@ -60,35 +51,15 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     }
 
     @Override
-    public void onBindViewHolder(final RestaurantAdapter.MyViewHolder holder, final int position) {
-        final AppetiserData data = cartData.get(position);
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        CartData data = cartData.get(position);
         holder.title.setText(data.getTitle());
         holder.subtitle.setText(data.getName());
         holder.rupees.setText(data.getRupees());
-
-        holder.plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                counter++;
-                data.setCount(counter);
-//                counter ++;// update new value
-//                holder.count.setText(data.getCount());
-            }
-        });
-
-        holder.minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                counter--;
-                data.setCount(counter);
-//                holder.count.setText(data.getCount());
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
         return cartData.size();
     }
-
 }

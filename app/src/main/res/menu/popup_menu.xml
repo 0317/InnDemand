@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_all"
+        android:title="ALL"/>
+
+    <item
+        android:id="@+id/action_veg"
+        android:title="Vegetarian"/>
+
+    <item
+        android:id="@+id/action_nonveg"
+        android:title="Non-Vegetarian"/>
+
+</menu>

@@ -26,7 +26,10 @@ public class AppPreferences {
             hotel_Name = "hotel_Name",
             checkout = "checkout";
 
-    private String is_task_completed = "is_task_completed";
+    private String is_task_completed = "is_task_completed",
+            facebook_logged_In = "facebook_logged_In",
+            google_logged_In = "google_logged_IN";
+
 
 
 
@@ -81,6 +84,21 @@ public class AppPreferences {
         prefEditor.putBoolean(String.valueOf(is_task_completed), _is_task_completed).commit();
     }
 
+    public boolean getFacebook_logged_In() {
+        return appSharedpref.getBoolean(String.valueOf(facebook_logged_In), false);
+    }
+
+    public void setFacebook_logged_In(Boolean _facebook_logged_In) {
+        prefEditor.putBoolean(String.valueOf(facebook_logged_In), _facebook_logged_In).commit();
+    }
+
+    public boolean getGoogle_logged_In() {
+        return appSharedpref.getBoolean(String.valueOf(google_logged_In), false);
+    }
+
+    public void setGoogle_logged_In(Boolean _google_logged_In) {
+        prefEditor.putBoolean(String.valueOf(google_logged_In), _google_logged_In).commit();
+    }
 
     public String getDeviceToken()
     {

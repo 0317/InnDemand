@@ -14,6 +14,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -41,6 +43,10 @@ public class Restaurant extends AppCompatActivity {
     Dessert mDessert;
     MainCourse mMaincourse;
 
+    private RecyclerView recyclerView;
+    private RestaurantAdapter adapter;
+    private List<CartData> cardList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +63,6 @@ public class Restaurant extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
         //tabclass initialization
         mAppetizer = new Appetizer();
         mDessert = new Dessert();
@@ -96,6 +101,41 @@ public class Restaurant extends AppCompatActivity {
 
     }
 
+    private void prepareCart() {
+
+        CartData a = new CartData("Pizza", "FarmHouse", "Rs: 250");
+        cardList.add(a);
+
+        a = new CartData("Chinese", "Noodles", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Chinese", "Noodles", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Chinese", "Noodles", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Chinese", "Noodles", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Chinese", "Noodles", "Rs: 200");
+        cardList.add(a);
+        a = new CartData("Chinese", "Noodles", "Rs: 200");
+        cardList.add(a);
+        a = new CartData("Chinese", "Noodles", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Chinese", "Noodles", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Chinese", "Noodles", "Rs: 200");
+        cardList.add(a);
+
+
+
+        adapter.notifyDataSetChanged();
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(mAppetizer, "Appetizer");
@@ -132,4 +172,31 @@ public class Restaurant extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.maincourse_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }else if(id == R.id.action_cart){
+
+        }else if(id == R.id.action_notification){
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

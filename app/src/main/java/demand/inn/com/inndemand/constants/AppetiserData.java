@@ -3,15 +3,15 @@ package demand.inn.com.inndemand.constants;
 /**
  * Created by akash
  */
-public class CartData {
+public class AppetiserData {
 
     private String title, name, rupees;
     private int count;
 
-    public CartData() {
+    public AppetiserData() {
     }
 
-    public CartData(String title, String name, String rupees) {
+    public AppetiserData(String title, String name, String rupees) {
         this.title = title;
         this.name = name;
         this.rupees = rupees;

@@ -24,8 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.adapter.CartAdapter;
+import demand.inn.com.inndemand.adapter.MainCourseAdapter;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.constants.CartData;
+import demand.inn.com.inndemand.constants.MaincourseData;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.welcome.CommentArea;
@@ -48,9 +51,9 @@ public class MyCart extends AppCompatActivity {
     Button cancel_promo, apply_promo;
 
     //Class call
-    private List<CartData> cartData = new ArrayList<>();
+    private List<CartData> cardList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private RestaurantAdapter adapter;
+    private CartAdapter adapter;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -125,12 +128,6 @@ public class MyCart extends AppCompatActivity {
             }
         });
 
-//        cancel_promo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        });
-
         write_comment = (LinearLayout) findViewById(R.id.write_comments);
         write_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,16 +137,18 @@ public class MyCart extends AppCompatActivity {
             }
         });
 
-//        adapter = new RestaurantAdapter(cartData);
+        //ListItems in RecyclerView
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        cardList = new ArrayList<>();
+        adapter = new CartAdapter(this, cardList);
 
-        //UI initialize
-//        list = (RecyclerView) findViewById(R.id.cart_list);
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(adapter);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+        prepareCart();
 
-//        prepareMovieData();
+
     }
 
     public void cancelPromo(View view){
@@ -181,29 +180,50 @@ public class MyCart extends AppCompatActivity {
         }
     }
 
-    private void prepareMovieData() {
-        CartData movie = new CartData("Mad Max: Fury Road", "Action & Adventure", "2015");
-        cartData.add(movie);
-
-        movie = new CartData("Inside Out", "Animation, Kids & Family", "2015");
-        cartData.add(movie);
-
-//        movie = new CartData("Star Wars: Episode VII - The Force Awakens", "Action", "2015");
-//        cartData.add(movie);
-//
-//        movie = new CartData("Shaun the Sheep", "Animation", "2015");
-//        cartData.add(movie);
-//
-//        movie = new CartData("The Martian", "Science Fiction & Fantasy", "2015");
-//        cartData.add(movie);
-
-        adapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onBackPressed() {
 //        items_details.setVisibility(View.VISIBLE);
         super.onBackPressed();
 
+    }
+
+    /**
+     * Adding few stuff for testing
+     */
+    private void prepareCart() {
+
+        CartData a = new CartData("Veg", "Shahi Paneer", "Rs: 250");
+        cardList.add(a);
+
+        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        cardList.add(a);
+
+        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        cardList.add(a);
+
+
+
+        adapter.notifyDataSetChanged();
     }
 }

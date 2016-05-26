@@ -116,6 +116,7 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
                 progressDialog.setMessage("loading....");
                 progressDialog.show();
                 Intent in = new Intent(Loginscreen.this, CheckDetails.class);
+                prefs.setFacebook_logged_In(true);
                 startActivity(in);
                 finish();
                 String accessToken = loginResult.getAccessToken().getToken();
@@ -318,6 +319,7 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
             prefs.setUser_picture(result.getSignInAccount().getPhotoUrl().toString());
 //            Toast.makeText(this, result.getSignInAccount().getDisplayName(), Toast.LENGTH_LONG).show();
             Intent in = new Intent(Loginscreen.this, CheckDetails.class);
+            prefs.setGoogle_logged_In(true);
             startActivity(in);
             finish();
             updateUI(true);
