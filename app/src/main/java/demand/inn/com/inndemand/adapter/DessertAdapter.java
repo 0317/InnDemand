@@ -23,7 +23,7 @@ public class DessertAdapter extends  RecyclerView.Adapter<DessertAdapter.MyViewH
     private Context mContext;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, subtitle, rupees, count;
+        public TextView title, subtitle, rupees, details;
         public ImageView plus, minus;
 
         public MyViewHolder(View view) {
@@ -31,7 +31,7 @@ public class DessertAdapter extends  RecyclerView.Adapter<DessertAdapter.MyViewH
             title = (TextView) view.findViewById(R.id.restaurant_listitems_head);
             subtitle = (TextView) view.findViewById(R.id.restaurant_listitems_name);
             rupees = (TextView) view.findViewById(R.id.restaurant_listitems_rupees);
-//            count = (TextView) view.findViewById(R.id.restaurant_counting);
+            details = (TextView) view.findViewById(R.id.restaurant_listitems_details);
 
         }
     }
@@ -54,7 +54,12 @@ public class DessertAdapter extends  RecyclerView.Adapter<DessertAdapter.MyViewH
         DessertData data = cartData.get(position);
         holder.title.setText(data.getTitle());
         holder.subtitle.setText(data.getName());
+        holder.details.setText(data.getDetails() +"...");
         holder.rupees.setText(data.getRupees());
+
+        if(holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null){
+            holder.title.setVisibility(View.GONE);
+        }
     }
 
     @Override

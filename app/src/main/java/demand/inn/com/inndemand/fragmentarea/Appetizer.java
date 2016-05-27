@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,6 +66,7 @@ public class Appetizer extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
         prepareCart();
 
@@ -103,11 +105,13 @@ public class Appetizer extends Fragment {
         return  view;
     }
 
+
+
     public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
         private Drawable mDivider;
 
         public SimpleDividerItemDecoration(Context context) {
-            mDivider = context.getResources().getDrawable(R.drawable.line_divider);
+            mDivider = ContextCompat.getDrawable(context,R.drawable.line_divider);
         }
 
         @Override
@@ -135,25 +139,25 @@ public class Appetizer extends Fragment {
      */
     private void prepareCart() {
 
-        AppetiserData a = new AppetiserData("Pizza", "FarmHouse", "Rs: 250");
+        AppetiserData a = new AppetiserData("Pizza", "FarmHouse: ", "Garlic, Capcicum, Tomatoes", "Rs: 250");
         cardList.add(a);
 
-        a = new AppetiserData("", "Chicken Tikka", "Rs: 460");
+        a = new AppetiserData("", "Chicken Tikka: ", "Chicken, Red Capcicum, Pepper", "Rs: 460");
         cardList.add(a);
 
-        a = new AppetiserData("Chinese", "Corn Soup", "Rs: 180");
+        a = new AppetiserData("Chinese", "Corn Soup: ","vegetables, soya sausage", "Rs: 180");
         cardList.add(a);
 
-        a = new AppetiserData("", "Manchurian (dry)", "Rs: 220");
+        a = new AppetiserData("", "Manchurian (dry)","", "Rs: 220");
         cardList.add(a);
 
-        a = new AppetiserData("", "Hakka Noodles", "Rs: 280");
+        a = new AppetiserData("", "Hakka Noodles","", "Rs: 280");
         cardList.add(a);
 
-        a = new AppetiserData("Continental", "Devilled Eggs", "Rs: 300");
+        a = new AppetiserData("Continental", "Devilled Eggs: ","Roasted grilled eggs", "Rs: 300");
         cardList.add(a);
 
-        a = new AppetiserData("", "Asparagas Soup", "Rs: 250");
+        a = new AppetiserData("", "Asparagas Soup","", "Rs: 250");
         cardList.add(a);
 
         adapter.notifyDataSetChanged();

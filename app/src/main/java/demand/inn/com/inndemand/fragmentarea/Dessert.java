@@ -1,8 +1,12 @@
 package demand.inn.com.inndemand.fragmentarea;
 
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,6 +62,7 @@ public class Dessert extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
         prepareCart();
 
@@ -96,30 +101,57 @@ public class Dessert extends Fragment {
         return  view;
     }
 
+    public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
+        private Drawable mDivider;
+
+        public SimpleDividerItemDecoration(Context context) {
+            mDivider = ContextCompat.getDrawable(context,R.drawable.line_divider);
+        }
+
+        @Override
+        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            int left = parent.getPaddingLeft();
+            int right = parent.getWidth() - parent.getPaddingRight();
+
+            int childCount = parent.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View child = parent.getChildAt(i);
+
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+                int top = child.getBottom() + params.bottomMargin;
+                int bottom = top + mDivider.getIntrinsicHeight();
+
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
+        }
+    }
+
     private void prepareCart() {
 
-        DessertData a = new DessertData("Ice Cream", "Sundae", "Rs: 250");
+        DessertData a = new DessertData("Ice Cream", "Sundae: ","chocolate blast with choco chips", "Rs: 250");
         cardList.add(a);
 
-        a = new DessertData("", "Soft serve", "Rs: 200");
+        a = new DessertData("", "Soft serve: ","cone with flavoured scoop", "Rs: 200");
         cardList.add(a);
 
-        a = new DessertData("Beverages", "Cold Coffee", "Rs: 200");
+        a = new DessertData("Beverages", "Cold Coffee: ","creemy header thick base", "Rs: 200");
         cardList.add(a);
 
-        a = new DessertData("", "Fruit beer", "Rs: 220");
+        a = new DessertData("", "Fruit beer: ","chilled on the rocks" ,"Rs: 220");
         cardList.add(a);
 
-        a = new DessertData("", "Rainbow Special", "Rs: 220");
+        a = new DessertData("", "Rainbow Special: ","Ice crust & rainbow hard smoothie...", "Rs: 220");
         cardList.add(a);
 
-        a = new DessertData("", "Vanilla Storm", "Rs: 180");
+        a = new DessertData("", "Vanilla Storm: ","flavor vanilla filled milk", "Rs: 180");
         cardList.add(a);
 
-        a = new DessertData("Cupcakes", "Choco Blast", "Rs: 240");
+        a = new DessertData("Cupcakes", "Choco Blast: ","chocolate burst fresh baked", "Rs: 240");
         cardList.add(a);
 
-        a = new DessertData("", "Mango Rush", "Rs: 220");
+        a = new DessertData("", "Mango Rush:", "pulpy refresh mango milk", "Rs: 220");
         cardList.add(a);
 
         adapter.notifyDataSetChanged();

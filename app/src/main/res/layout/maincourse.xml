@@ -7,46 +7,10 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="horizontal"
-        android:layout_marginTop="50dp"
-        android:background="@color/view_gray">
+        android:layout_marginTop="50dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/food_type"
-            android:textSize="@dimen/sixteen_sp"
-            android:layout_marginLeft="15dp"
-            android:gravity="center"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:id="@+id/maincourse_option_click"
-        android:layout_marginLeft="20dp"
-        android:background="@color/view_gray">
-
-        <LinearLayout
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:orientation="horizontal"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:background="@color/view_gray">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_camera"
-            />
-
-        </LinearLayout>
-
-        </RelativeLayout>
-
-
-    </LinearLayout>
-
+</LinearLayout>
+<!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -77,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="115dp"
-        android:background="@color/view_gray"></View>
+        android:background="@color/view_gray"></View>-->
 
     <include layout="@layout/recyclerview"></include>
 

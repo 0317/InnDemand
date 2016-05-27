@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +44,6 @@ public class Restaurant extends AppCompatActivity {
     Dessert mDessert;
     MainCourse mMaincourse;
 
-    private RecyclerView recyclerView;
-    private RestaurantAdapter adapter;
-    private List<CartData> cardList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +65,9 @@ public class Restaurant extends AppCompatActivity {
         mDessert = new Dessert();
         mMaincourse = new MainCourse();
 
-        viewPager = (ViewPager) findViewById(R.id.container);
-
         getSupportActionBar().hide();
+
+        viewPager = (ViewPager) findViewById(R.id.container);
 
         //Tab call area
         setupViewPager(viewPager);
@@ -99,41 +96,6 @@ public class Restaurant extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void prepareCart() {
-
-        CartData a = new CartData("Pizza", "FarmHouse", "Rs: 250");
-        cardList.add(a);
-
-        a = new CartData("Chinese", "Noodles", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("Chinese", "Noodles", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("Chinese", "Noodles", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("Chinese", "Noodles", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("Chinese", "Noodles", "Rs: 200");
-        cardList.add(a);
-        a = new CartData("Chinese", "Noodles", "Rs: 200");
-        cardList.add(a);
-        a = new CartData("Chinese", "Noodles", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("Chinese", "Noodles", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("Chinese", "Noodles", "Rs: 200");
-        cardList.add(a);
-
-
-
-        adapter.notifyDataSetChanged();
     }
 
     private void setupViewPager(ViewPager viewPager) {

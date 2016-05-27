@@ -1,6 +1,7 @@
 package demand.inn.com.inndemand.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     RecyclerView.Adapter adapter;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, subtitle, rupees, count;
+        public TextView title, subtitle, rupees, count, details;
         public ImageView plus, minus;
 
 
@@ -40,6 +41,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
             title = (TextView) view.findViewById(R.id.restaurant_listitems_head);
             subtitle = (TextView) view.findViewById(R.id.restaurant_listitems_name);
             rupees = (TextView) view.findViewById(R.id.restaurant_listitems_rupees);
+            details = (TextView) view.findViewById(R.id.restaurant_listitems_details);
             count = (TextView) view.findViewById(R.id.restaurant_counts);
             plus = (ImageView) view.findViewById(R.id.restaurant_plus);
             minus = (ImageView) view.findViewById(R.id.restaurant_minus);
@@ -65,6 +67,11 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         holder.title.setText(data.getTitle());
         holder.subtitle.setText(data.getName());
         holder.rupees.setText(data.getRupees());
+        holder.details.setText(data.getDetails());
+
+        if(holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null){
+            holder.title.setVisibility(View.GONE);
+        }
 
         holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,9 +1,12 @@
 package demand.inn.com.inndemand.fragmentarea;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,8 +56,6 @@ public class MainCourse extends Fragment {
         cart_total.setText("Total: Rs 2000");
         cart_item.setText("(10 items)");
 
-        //UI Initialize to select Main Course Veg/Non-Veg options
-        maincourse_options = (RelativeLayout) view.findViewById(R.id.maincourse_option_click);
         //UI Linearlayout for Menu Options to select Menu Items
         menu_options = (LinearLayout) view.findViewById(R.id.menu_options);
         menu_options.setOnClickListener(new View.OnClickListener() {
@@ -95,10 +96,38 @@ public class MainCourse extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
         prepareCart();
 
         return  view;
+    }
+
+    public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
+        private Drawable mDivider;
+
+        public SimpleDividerItemDecoration(Context context) {
+            mDivider = ContextCompat.getDrawable(context,R.drawable.line_divider);
+        }
+
+        @Override
+        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            int left = parent.getPaddingLeft();
+            int right = parent.getWidth() - parent.getPaddingRight();
+
+            int childCount = parent.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View child = parent.getChildAt(i);
+
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+                int top = child.getBottom() + params.bottomMargin;
+                int bottom = top + mDivider.getIntrinsicHeight();
+
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
+        }
     }
 
     /**
@@ -106,28 +135,27 @@ public class MainCourse extends Fragment {
      */
     private void prepareCart() {
 
-        MaincourseData a = new MaincourseData("Indian", "Shahi Paneer", "Rs: 360");
+        MaincourseData a = new MaincourseData("Indian", "Shahi Paneer: ","Indian zaika's special", "Rs: 360");
         cardList.add(a);
 
-        a = new MaincourseData("", "Chicken kabab", "Rs: 440");
+        a = new MaincourseData("", "Chicken kabab: ","crust cream filled kababs", "Rs: 440");
         cardList.add(a);
 
-        a = new MaincourseData("", "Chicken Korma", "Rs: 520");
+        a = new MaincourseData("", "Chicken Korma: ","served with salad a full platte...", "Rs: 520");
         cardList.add(a);
 
-        a = new MaincourseData("Thai", "Chicken Curry", "Rs: 480");
+        a = new MaincourseData("Thai", "Chicken Curry: ","Thai curry with grilled stuff...", "Rs: 480");
         cardList.add(a);
 
-        a = new MaincourseData("", "Chinese Water Spinach Curry", "Rs: 460");
+        a = new MaincourseData("", "Spinach Curry: ","",  "Rs: 460");
         cardList.add(a);
 
-        a = new MaincourseData("Italian", "Chicken Scallopini", "Rs: 500");
+        a = new MaincourseData("Italian", "Chicken Scallopini: ","fresh chicken served wit...", "Rs: 500");
+        cardList.add(a);
+        a = new MaincourseData("", "Veneto Chicken: ","",  "Rs: 480");
         cardList.add(a);
 
-        a = new MaincourseData("", "Veneto Chicken", "Rs: 480");
-        cardList.add(a);
-
-        a = new MaincourseData("", "Mediterranean Pasta", "Rs: 430");
+        a = new MaincourseData("", "Mediterranean Pasta:", "refreshing sea food wit...", "Rs: 430");
         cardList.add(a);
 
         adapter.notifyDataSetChanged();
