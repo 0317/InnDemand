@@ -1,6 +1,6 @@
 package demand.inn.com.inndemand.roomservice;
 
-import android.app.Activity;
+
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,21 +10,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.PopupMenu;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.adapter.RestaurantAdapter;
-import demand.inn.com.inndemand.constants.CartData;
+
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
 import demand.inn.com.inndemand.fragmentarea.Dessert;
 import demand.inn.com.inndemand.fragmentarea.MainCourse;
@@ -36,6 +33,9 @@ public class Restaurant extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    View view;
+    private Menu menu;
+    int position;
 
     Toolbar toolbar;
 
@@ -52,7 +52,55 @@ public class Restaurant extends AppCompatActivity {
         //Toolbar call
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
-        toolbar.inflateMenu(R.menu.main_menu);
+        toolbar.inflateMenu(R.menu.restaurant_menu);
+        this.menu = menu;
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+
+                //noinspection SimplifiableIfStatement
+                if (id == R.id.action_settings) {
+                    return true;
+                }else if(id == R.id.action_cart){
+//                    Intent in = new Intent(Restaurant.this, MyCart.class);
+//                    startActivity(in);
+//                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+                }else if(id == R.id.action_notification){
+
+                }else if(id == R.id.action_food){
+                    final View menuItemView = findViewById(R.id.action_food);
+                    final PopupMenu popup = new PopupMenu(Restaurant.this, menuItemView);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+//
+                            switch (item.getItemId()) {
+                                case R.id.action_all:
+                                    toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter);
+                                    return  true;
+
+                                case R.id.action_veg:
+                                    toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter_green);
+                                    return true;
+
+                                case R.id.action_nonveg:
+                                    toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter_red);
+                                    return true;
+                            }
+                            return true;
+                        }
+                    });
+
+                    popup.show();//showing popup menu
+                }
+                return true;
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,19 +108,6 @@ public class Restaurant extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        //tabclass initialization
-        mAppetizer = new Appetizer();
-        mDessert = new Dessert();
-        mMaincourse = new MainCourse();
-
-        getSupportActionBar().hide();
-
-        viewPager = (ViewPager) findViewById(R.id.container);
-
-        //Tab call area
-        setupViewPager(viewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
 
         //Title set for Collapsing Toolbar
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
@@ -95,6 +130,19 @@ public class Restaurant extends AppCompatActivity {
                 }
             }
         });
+
+        //tabclass initialization
+        mAppetizer = new Appetizer();
+        mDessert = new Dessert();
+        mMaincourse = new MainCourse();
+
+
+        viewPager = (ViewPager) findViewById(R.id.container);
+
+        //Tab call area
+        setupViewPager(viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
     }
 
@@ -134,31 +182,4 @@ public class Restaurant extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-
-        getMenuInflater().inflate(R.menu.maincourse_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }else if(id == R.id.action_cart){
-
-        }else if(id == R.id.action_notification){
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 }

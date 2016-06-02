@@ -14,17 +14,24 @@ public class AppPreferences {
     private SharedPreferences appSharedpref;
     private SharedPreferences.Editor prefEditor;
 
-    private String user_fname = "user_fname",
-            user_gender = "user_gender",
-            user_email = "user_email",
+    private String user_gender = "user_gender",
             user_phone = "user_phone",
             user_picture = "user_picture",
             user_bday = "user_bday",
             user_lname = "user_lname",
+            user_gname = "user_gname",
+            user_ggender = "user_ggender",
+            user_gemail = "user_gemail",
+            user_gphone = "user_gphone",
+            user_gpicture = "user_gpicture",
+            user_gbday = "user_gbday",
+            user_glname = "user_glname",
             deviceToken = "device_token_pref",
             appVersion = "app_version_pref",
             hotel_Name = "hotel_Name",
-            checkout = "checkout";
+            checkout = "checkout",
+            user_fbname = "user_fbname",
+            user_fbemail = "user_fbemail";
 
     private String is_task_completed = "is_task_completed",
             facebook_logged_In = "facebook_logged_In",
@@ -52,14 +59,6 @@ public class AppPreferences {
         prefEditor.putString(user_lname, _user_lname).commit();
     }
 
-    public String getUser_email() {
-        return appSharedpref.getString(user_email, "");
-    }
-
-    public void setUser_email(String _user_email) {
-        prefEditor.putString(user_email, _user_email).commit();
-    }
-
     public String getUser_gender() {
         return appSharedpref.getString(user_gender, "");
     }
@@ -68,12 +67,20 @@ public class AppPreferences {
         prefEditor.putString(user_gender, _user_gender).commit();
     }
 
-    public String getUser_fname() {
-        return appSharedpref.getString(user_fname, "");
+    public String getUser_fbname() {
+        return appSharedpref.getString(user_fbname, "");
     }
 
-    public void setUser_fname(String _user_fname) {
-        prefEditor.putString(user_fname, _user_fname).commit();
+    public void setUser_fbname(String _user_fbname) {
+        prefEditor.putString(user_fbname, _user_fbname).commit();
+    }
+
+    public String getUser_fbemail() {
+        return appSharedpref.getString(user_fbemail, "");
+    }
+
+    public void setUser_fbemail(String _user_fbemail) {
+        prefEditor.putString(user_fbemail, _user_fbemail).commit();
     }
 
     public boolean getIs_task_completed() {
@@ -159,5 +166,65 @@ public class AppPreferences {
 
     public void setUser_bday(String _user_bday) {
         prefEditor.putString(user_bday, _user_bday).commit();
+    }
+
+    public static String getSkillPrefs() {
+        return SKILL_PREFS;
+    }
+
+    public String getUser_gname() {
+        return appSharedpref.getString(user_gname, "");
+    }
+
+    public void setUser_gname(String _user_gname) {
+        prefEditor.putString(user_gname, _user_gname).commit();
+    }
+
+    public String getUser_ggender() {
+        return appSharedpref.getString(user_ggender, "");
+    }
+
+    public void setUser_ggender(String _user_ggender) {
+        prefEditor.putString(user_ggender, _user_ggender).commit();
+    }
+
+    public String getUser_gemail() {
+        return appSharedpref.getString(user_gemail, "");
+    }
+
+    public void setUser_gemail(String _user_gemail) {
+        prefEditor.putString(user_gemail, _user_gemail).commit();
+    }
+
+    public String getUser_gphone() {
+        return appSharedpref.getString(user_gphone, "");
+    }
+
+    public void setUser_gphone(String _user_gphone) {
+        prefEditor.putString(user_gphone, _user_gphone).commit();
+    }
+
+    public String getUser_gpicture() {
+        return appSharedpref.getString(user_gpicture, "");
+    }
+
+    public void setUser_gpicture(String _user_gpicture) {
+        prefEditor.putString(user_gpicture, _user_gpicture).commit();
+    }
+
+    public String getUser_gbday() {
+        return user_gbday;
+    }
+
+    public void setUser_gbday(String user_gbday) {
+        this.user_gbday = user_gbday;
+    }
+
+    public String getUser_glname() {
+        return user_glname;
+    }
+
+    public void setUser_glname(String user_glname) {
+        this.user_glname = user_glname;
     }
 }

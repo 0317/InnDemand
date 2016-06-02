@@ -25,7 +25,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -74,6 +73,7 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
 
     //Cache Data Call
     SharedPreferences settings;
+    Bundle bundle;
 
     //UI call
     ImageView logo_next;
@@ -112,13 +112,6 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
             @Override
             public void onSuccess(LoginResult loginResult) {
                 System.out.println("onSuccess");
-                progressDialog = new ProgressDialog(Loginscreen.this);
-                progressDialog.setMessage("loading....");
-                progressDialog.show();
-                Intent in = new Intent(Loginscreen.this, CheckDetails.class);
-                prefs.setFacebook_logged_In(true);
-                startActivity(in);
-                finish();
                 String accessToken = loginResult.getAccessToken().getToken();
                 Log.i("accessToken", accessToken);
 
@@ -213,7 +206,7 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
 
     private Bundle getFacebookData(JSONObject object) {
 
-        Bundle bundle = new Bundle();
+        bundle = new Bundle();
         String id = null;
         try {
             id = object.getString("id");
@@ -225,7 +218,7 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
             URL profile_pic = new URL("https://graph.facebook.com/" + id + "/picture?width=200&height=150");
             Log.i("profile_pic", profile_pic + "");
             bundle.putString("profile_pic", profile_pic.toString());
-            prefs.setUser_picture(bundle.getString("profile_pic"));
+//            prefs.setUser_picture(bundle.getString("profile_pic"));
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -236,7 +229,10 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
         if (object.has("first_name"))
             try {
                 bundle.putString("first_name", object.getString("first_name"));
-                prefs.setUser_fname(bundle.getString("first_name"));
+//                prefs.setUser_fbname(bundle.getString("first_name"));
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("fb_name", bundle.getString("first_name"));
+                editor.commit();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -250,7 +246,8 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
         if (object.has("email"))
             try {
                 bundle.putString("email", object.getString("email"));
-                prefs.setUser_email(bundle.getString("email"));
+//                prefs.setUser_email(bundle.getString("email"));
+                prefs.setUser_fbemail(bundle.getString("email"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -275,6 +272,15 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
                 e.printStackTrace();
             }
 
+        Toast.makeText(Loginscreen.this, bundle.getString("first_name"), Toast.LENGTH_SHORT).show();
+        progressDialog = new ProgressDialog(Loginscreen.this);
+        progressDialog.setMessage("loading....");
+        progressDialog.show();
+        Intent in = new Intent(Loginscreen.this, CheckDetails.class);
+        in.putExtras(bundle);
+        prefs.setFacebook_logged_In(true);
+        startActivity(in);
+        finish();
 
         return bundle;
     }
@@ -314,9 +320,9 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
     // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             System.out.print("Google Details========"+result.getSignInAccount().getDisplayName());
-            prefs.setUser_fname(result.getSignInAccount().getDisplayName());
-            prefs.setUser_email(result.getSignInAccount().getEmail());
-            prefs.setUser_picture(result.getSignInAccount().getPhotoUrl().toString());
+            prefs.setUser_gname(result.getSignInAccount().getDisplayName());
+            prefs.setUser_gemail(result.getSignInAccount().getEmail());
+            prefs.setUser_gpicture(result.getSignInAccount().getPhotoUrl().toString());
 //            Toast.makeText(this, result.getSignInAccount().getDisplayName(), Toast.LENGTH_LONG).show();
             Intent in = new Intent(Loginscreen.this, CheckDetails.class);
             prefs.setGoogle_logged_In(true);

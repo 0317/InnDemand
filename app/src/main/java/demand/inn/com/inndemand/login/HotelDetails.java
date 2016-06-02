@@ -78,6 +78,25 @@ public class HotelDetails extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
         toolbar.inflateMenu(R.menu.main_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+
+                //noinspection SimplifiableIfStatement
+                if (id == R.id.action_settings) {
+                    return true;
+                }else if(id == R.id.action_cart){
+//                    Intent in = new Intent(HotelDetails.this, MyCart.class);
+//                    startActivity(in);
+//                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+                }else if(id == R.id.action_notification){
+
+                }
+                return true;
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,8 +188,8 @@ public class HotelDetails extends AppCompatActivity {
 
     //OnClick to go to Restaurant Screen
     public void restaurantClick(View view){
-//        Intent in = new Intent(HotelDetails.this, Restaurant.class);
-//        startActivity(in);
+        Intent in = new Intent(HotelDetails.this, Restaurant.class);
+        startActivity(in);
     }
 
     //OnClick to go to Room Services Screen
@@ -193,33 +212,6 @@ public class HotelDetails extends AppCompatActivity {
 //        startActivity(in);
 
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-
-        getMenuInflater().inflate(R.menu.maincourse_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }else if(id == R.id.action_cart){
-
-        }else if(id == R.id.action_notification){
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     public void onBackPressed() {

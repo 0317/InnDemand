@@ -70,38 +70,6 @@ public class Appetizer extends Fragment {
         recyclerView.setAdapter(adapter);
         prepareCart();
 
-        //UI Linearlayout for Menu Options to select Menu Items
-        menu_options = (LinearLayout) view.findViewById(R.id.menu_options);
-        menu_options.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(getActivity(), menu_options);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
-
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-//
-                        switch (item.getItemId()) {
-                            case R.id.action_all:
-
-                                return  true;
-
-                            case R.id.action_veg:
-                                return true;
-
-                            case R.id.action_nonveg:
-                                return true;
-                        }
-                        return true;
-                    }
-                });
-
-                popup.show();//showing popup menu
-            }
-        });
-
         return  view;
     }
 

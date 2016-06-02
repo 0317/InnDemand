@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
@@ -43,9 +44,10 @@ public class CheckDetails extends AppCompatActivity {
 
     //Preference Area
     SharedPreferences settings;
+    Bundle getBundle = null;
 
     //Others
-    String name, email, phone;
+    String name, email, dp;
     View view;
 
     @Override
@@ -57,7 +59,7 @@ public class CheckDetails extends AppCompatActivity {
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
         prefs  =new AppPreferences(CheckDetails.this);
 
-        prefs.setIs_task_completed(true);
+//        prefs.setIs_task_completed(true);
 
         //UI Initialized here
         detail_name = (EditText) findViewById(R.id.fb_name);
@@ -69,19 +71,35 @@ public class CheckDetails extends AppCompatActivity {
         //Email validation
         detail_email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
+        getBundle = this.getIntent().getExtras();
+        if(getBundle == null) {
+            name = prefs.getUser_gname();
+            email = prefs.getUser_gemail();
+            dp = prefs.getUser_gpicture();
+        }
+        else{
+            name = getBundle.getString("first_name");
+            email = getBundle.getString("email");
+            dp = getBundle.getString("profile_pic");
+        }
+
         //details set from facebook/google data
+        if(name == null)
+            detail_name.setText(prefs.getUser_gname());
+        else
+        detail_name.setText(name);
 
-        detail_name.setText(settings.getString("google_name", ""));     //google name
-        detail_name.setText(prefs.getUser_fname());                     //facebbok name
-        detail_name.setEnabled(false);
+        if(email == null)
+        detail_email.setText(prefs.getUser_gemail());
+        else
+        detail_email.setText(email);
 
-        detail_email.setText(settings.getString("google_email", ""));   //google email
-        detail_email.setText(prefs.getUser_email());                    //facebook email
-        detail_email.setEnabled(true);
-
-//        Picasso.with(this).load(prefs.getUser_picture()).into(fb_dp);
-        Picasso.with(this).load(prefs.getUser_picture()).transform(new CircleTransform()).into(fb_dp);
-
+        if(dp == null) {
+            Picasso.with(this).load(prefs.getUser_gpicture()).transform(new CircleTransform()).into(fb_dp);
+        }
+        else {
+            Picasso.with(this).load(dp).transform(new CircleTransform()).into(fb_dp);
+        }
     }
 
     public void verifyDetails(View view){
@@ -91,10 +109,6 @@ public class CheckDetails extends AppCompatActivity {
         name = detail_name.getText().toString();            //can't change name
         email = detail_email.getText().toString();          //can change email
 //        phone = detail_phone.getText().toString();          //can change phone
-
-        prefs.setUser_fname(name);
-        prefs.setUser_email(email);
-//        prefs.setUser_phone(Integer.parseInt(phone));
 
         if(name == null || name.equalsIgnoreCase("")){
             Snackbar.make(view, "Please Enter Name", Snackbar.LENGTH_LONG)

@@ -137,16 +137,16 @@ public class MyCart extends AppCompatActivity {
             }
         });
 
-        //ListItems in RecyclerView
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        cardList = new ArrayList<>();
-        adapter = new CartAdapter(this, cardList);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        prepareCart();
+//        //ListItems in RecyclerView
+//        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+//        cardList = new ArrayList<>();
+//        adapter = new CartAdapter(this, cardList);
+//
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(mLayoutManager);
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setAdapter(adapter);
+//        prepareCart();
 
 
     }

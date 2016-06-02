@@ -65,7 +65,7 @@ public class SplashScreen extends AppCompatActivity {
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                         } else if (prefs.getIs_task_completed() == true) {
-                            Intent in = new Intent(SplashScreen.this, QRscanning.class);
+                            Intent in = new Intent(SplashScreen.this, Loginscreen.class);
                             startActivity(in);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();

@@ -67,7 +67,7 @@ public class Dessert extends Fragment {
         prepareCart();
 
         //UI Linearlayout for Menu Options to select Menu Items
-        menu_options = (LinearLayout) view.findViewById(R.id.menu_options);
+      /*  menu_options = (LinearLayout) view.findViewById(R.id.menu_options);
         menu_options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +96,7 @@ public class Dessert extends Fragment {
 
                 popup.show();//showing popup menu
             }
-        });
+        });*/
 
         return  view;
     }

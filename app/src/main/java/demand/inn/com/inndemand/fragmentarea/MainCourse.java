@@ -57,7 +57,7 @@ public class MainCourse extends Fragment {
         cart_item.setText("(10 items)");
 
         //UI Linearlayout for Menu Options to select Menu Items
-        menu_options = (LinearLayout) view.findViewById(R.id.menu_options);
+       /* menu_options = (LinearLayout) view.findViewById(R.id.menu_options);
         menu_options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +86,7 @@ public class MainCourse extends Fragment {
 
                 popup.show();//showing popup menu
             }
-        });
+        });*/
 
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
