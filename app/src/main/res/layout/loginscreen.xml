@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/view_gray"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="demand.inn.com.inndemand.login.LoginScreen">
+    tools:context="demand.inn.com.inndemand.login.Loginscreen">
 
     <LinearLayout
         android:layout_width="match_parent"

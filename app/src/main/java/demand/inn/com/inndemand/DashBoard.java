@@ -27,11 +27,12 @@ import demand.inn.com.inndemand.roomservice.Laundry;
 import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.welcome.BaseActivity;
 import demand.inn.com.inndemand.welcome.SplashScreen;
 
 //import demand.inn.com.inndemand.Helper.CircleTransform;
 
-public class DashBoard extends AppCompatActivity
+public class DashBoard extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
    //Utility call Area

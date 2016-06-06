@@ -138,12 +138,11 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         if (id == R.id.action_signout) {
             if(prefs.getFacebook_logged_In() == true){
                 if(LoginManager.getInstance()!=null)
+                    prefs.clearPref();
                     LoginManager.getInstance().logOut();
                 Toast.makeText(QRscanning.this, "Successfully logged-out", Toast.LENGTH_LONG).show();
                 prefs.setFacebook_logged_In(false);
-//                LoginManager.getInstance().logOut();
                 Intent in = new Intent(QRscanning.this, SplashScreen.class);
-                prefs.clearPref();
                 startActivity(in);
                 finish();
 
@@ -154,9 +153,9 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                         new ResultCallback<Status>() {
                             @Override
                             public void onResult(Status status) {
+                                prefs.clearPref();
                                 Toast.makeText(QRscanning.this, "Successfully logged-out", Toast.LENGTH_LONG).show();
                                 Intent in = new Intent(QRscanning.this, SplashScreen.class);
-                                prefs.clearPref();
                                 startActivity(in);
                                 finish();
                             }

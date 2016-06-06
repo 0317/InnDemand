@@ -25,9 +25,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.cartarea.MyCart;
@@ -69,6 +76,7 @@ public class HotelDetails extends AppCompatActivity {
         setContentView(R.layout.hoteldetails);
         nu = new NetworkUtility(HotelDetails.this);
         prefs = new AppPreferences(HotelDetails.this);
+        prefs.setCheckout("2");
 
         URL = "";
 
@@ -212,6 +220,44 @@ public class HotelDetails extends AppCompatActivity {
 //        startActivity(in);
 
     }
+
+    /**
+     * Method to make json object post call
+     * */
+
+    private void makeJsonObjectRequest() {
+
+        String url = "http://api.androidhive.info/volley/person_object.json";
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+//                        Log.d(TAG, response.toString());
+                        try {
+                            String names = response.getString("name");
+                            String emails = response.getString("email");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+
+            }
+        });
+
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
 
     @Override
     public void onBackPressed() {

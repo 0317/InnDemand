@@ -31,7 +31,9 @@ public class AppPreferences {
             hotel_Name = "hotel_Name",
             checkout = "checkout",
             user_fbname = "user_fbname",
-            user_fbemail = "user_fbemail";
+            user_fbemail = "user_fbemail",
+            fb_Token = "fb_Token",
+            g_Token = "g_Token";
 
     private String is_task_completed = "is_task_completed",
             facebook_logged_In = "facebook_logged_In",
@@ -50,6 +52,21 @@ public class AppPreferences {
     }
 
 
+    public String getFb_Token() {
+        return appSharedpref.getString(fb_Token, "");
+    }
+
+    public void setFb_Token(String _fb_Token) {
+        prefEditor.putString(fb_Token, _fb_Token).commit();
+    }
+
+    public String getG_Token() {
+        return appSharedpref.getString(g_Token, "");
+    }
+
+    public void setG_Token(String _g_Token) {
+        prefEditor.putString(g_Token, _g_Token).commit();
+    }
 
     public String getUser_lname() {
         return appSharedpref.getString(user_lname, "");

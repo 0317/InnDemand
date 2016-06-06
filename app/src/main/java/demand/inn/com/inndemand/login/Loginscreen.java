@@ -34,10 +34,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 
 import org.json.JSONException;
@@ -50,12 +52,13 @@ import java.util.Arrays;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.welcome.BaseActivity;
 
 /**
  * Created by akash
  */
 
-public class Loginscreen extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
     //Utility class area
     NetworkUtility nu;
@@ -74,6 +77,7 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
     //Cache Data Call
     SharedPreferences settings;
     Bundle bundle;
+    String accessToken;
 
     //UI call
     ImageView logo_next;
@@ -107,12 +111,13 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
 
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends, user_photos"));
+        loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends, user_photos, user_location"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 System.out.println("onSuccess");
-                String accessToken = loginResult.getAccessToken().getToken();
+                accessToken = loginResult.getAccessToken().getToken();
+                prefs.setFb_Token(loginResult.getAccessToken().getToken());
                 Log.i("accessToken", accessToken);
 
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
@@ -153,6 +158,7 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 .requestEmail()
                 .build();
 
@@ -272,7 +278,7 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
                 e.printStackTrace();
             }
 
-        Toast.makeText(Loginscreen.this, bundle.getString("first_name"), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(Loginscreen.this, bundle.getString("location"), Toast.LENGTH_SHORT).show();
         progressDialog = new ProgressDialog(Loginscreen.this);
         progressDialog.setMessage("loading....");
         progressDialog.show();
@@ -323,7 +329,6 @@ public class Loginscreen extends AppCompatActivity implements GoogleApiClient.On
             prefs.setUser_gname(result.getSignInAccount().getDisplayName());
             prefs.setUser_gemail(result.getSignInAccount().getEmail());
             prefs.setUser_gpicture(result.getSignInAccount().getPhotoUrl().toString());
-//            Toast.makeText(this, result.getSignInAccount().getDisplayName(), Toast.LENGTH_LONG).show();
             Intent in = new Intent(Loginscreen.this, CheckDetails.class);
             prefs.setGoogle_logged_In(true);
             startActivity(in);

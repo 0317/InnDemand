@@ -3,6 +3,7 @@ package demand.inn.com.inndemand.controller.webservice;
 
 import android.content.Context;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.HttpClientStack;
 import com.android.volley.toolbox.Volley;
@@ -10,8 +11,6 @@ import demand.inn.com.inndemand.model.request.IRequest;
 import demand.inn.com.inndemand.model.request.VolleyGenericRequest;
 import demand.inn.com.inndemand.model.request.listener.IRequestCompletionListener;
 
-*/
-/*
 import org.apache.http.*;
 import org.apache.http.client.CircularRedirectException;
 import org.apache.http.client.HttpClient;
@@ -33,7 +32,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
-*//*
+
 
 
 import java.net.URI;
@@ -41,10 +40,11 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 */
-/**
+/*
  * Created  on 30/1/14.
  * Helper class for volley requests and response processing
  *//*
+
 
 
 public class VolleyHelper implements IRequestCompletionListener {
@@ -57,14 +57,15 @@ public class VolleyHelper implements IRequestCompletionListener {
     private ArrayList<IRequest> mPendingRequests;
     private DefaultRetryPolicy mDefaultRetryPolicy;
 
-    */
-/**
-     * Method for creating VolleyHelper Instance.
+
+     */
+/** com.android.volley.Request.Method for creating VolleyHelper Instance.
      * This Instance will have single RequestQueue.
      *
      * @param ctx Context Object
      * @return VolleyHelper instance
      *//*
+
 
     public static VolleyHelper getInstance(Context ctx) {
         if (mInstance == null) {
@@ -81,12 +82,15 @@ public class VolleyHelper implements IRequestCompletionListener {
         return mInstance;
     }
 
-    */
-/**
+*/
+/*
+*
      * Adds request in Volley request queue and keep the request for updating listeners in case of rotation
      *
      * @param request Request To be added in Volley queue
-     *//*
+
+*//*
+
 
 
     public void addRequestInQueue(com.android.volley.Request request) {
@@ -106,12 +110,11 @@ public class VolleyHelper implements IRequestCompletionListener {
         }
     }
 
-    */
-/**
+*
      * Updates Listeners of all Pending Requests
      *
      * @param newListener new listener to be registered
-     *//*
+
 
 
     public boolean updateListeners(Object newListener) {
@@ -124,13 +127,12 @@ public class VolleyHelper implements IRequestCompletionListener {
         return isUpdated;
     }
 
-    */
-/**
+*
      * Callback on request completion
      *
      * @param isSuccess True If request completed successfully
      * @param request   Processed request
-     *//*
+
 
     @Override
     public void onRequestProcessed(boolean isSuccess, IRequest request) {
@@ -140,11 +142,10 @@ public class VolleyHelper implements IRequestCompletionListener {
         mPendingRequests.remove(request);
     }
 
-    */
-/**
+*
      * @param params
      * @return HttpClient
-     *//*
+
 
     public static HttpClient getNewHttpClient(HttpParams params) {
         try {
