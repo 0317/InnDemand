@@ -151,9 +151,9 @@ public class CheckDetails extends BaseActivity {
                     .setAction("Action", null).show();
         }else {
             makeJsonObjectRequest();
-//            Intent in = new Intent(CheckDetails.this, QRscanning.class);
-//            startActivity(in);
-//            finish();
+            Intent in = new Intent(CheckDetails.this, QRscanning.class);
+            startActivity(in);
+            finish();
         }
     }
 

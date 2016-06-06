@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.android.volley.Request;
@@ -38,6 +39,7 @@ import org.json.JSONObject;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.cartarea.MyCart;
+import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.mapdirection.Mapping;
 import demand.inn.com.inndemand.roomservice.Beverages;
 import demand.inn.com.inndemand.roomservice.Restaurant;
@@ -63,7 +65,7 @@ public class HotelDetails extends AppCompatActivity {
     ImageLoader imageLoader;
     NetworkImageView imageView;
     ImageView main_backdrop;
-    Toolbar toolbar, tolbar;
+    Toolbar toolbar;
 
     //Others
     String callHotel;
@@ -158,10 +160,12 @@ public class HotelDetails extends AppCompatActivity {
         hotel_Address = (TextView) findViewById(R.id.hotel_Address);
 
         //set Hotel name over hotel_Name TextView
-        hotel_Name.setText(prefs.getHotel_Name());
+//        hotel_Name.setText(prefs.getHotel_Name());
 
         //variable to get Hotel contact number
         callHotel = "";
+
+        makeJsonObjectRequest();
 
     }
 
@@ -211,14 +215,12 @@ public class HotelDetails extends AppCompatActivity {
     public void barClick(View view){
 //        Intent in = new Intent(HotelDetails.this, Beverages.class);
 //        startActivity(in);
-
     }
 
     //OnClick to go to Spa Screen
     public void spaClick(View view){
 //        Intent in = new Intent(HotelDetails.this, Restaurant.class);
 //        startActivity(in);
-
     }
 
     /**
@@ -227,7 +229,8 @@ public class HotelDetails extends AppCompatActivity {
 
     private void makeJsonObjectRequest() {
 
-        String url = "http://api.androidhive.info/volley/person_object.json";
+//        String url = Config.innDemand+"hotels/details";
+        String url = "http://inndemand.com/api/hotels/details/";
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
@@ -235,10 +238,25 @@ public class HotelDetails extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-//                        Log.d(TAG, response.toString());
+                        Log.d("Check url", response.toString());
                         try {
-                            String names = response.getString("name");
-                            String emails = response.getString("email");
+                            String name = response.getString("name");
+                            String location = response.getString("location");
+                            String latitude = response.getString("latitude");
+                            String longitude = response.getString("longitude");
+                            String address = response.getString("address");
+                            String number = response.getString("contact_number");
+                            Boolean service = response.getBoolean("has_restaurant_service");
+                            String restaurant_image = response.getString("restaurant_image");
+                            Boolean room_service = response.getBoolean("has_room_service");
+                            String room_img = response.getString("room_service_image");
+                            Boolean bar_service = response.getBoolean("has_bar_service");
+                            String bar_img = response.getString("bar_image");
+                            Boolean spa_service = response.getBoolean("has_spa_service");
+                            String spa_img = response.getString("spa_image");
+                            String about_hotel = response.getString("about_hotel");
+
+                            hotel_Name.setText(name);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -248,12 +266,12 @@ public class HotelDetails extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-
+//                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
-
+        Log.d("Check data", jsonObjReq.toString());
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }

@@ -270,7 +270,7 @@ public class BaseActivity extends AppCompatActivity implements
 
         System.out.println("generate access token=========="+data);
 
-        postData(Config.baseUrl+"", ApiType.API_TOKEN, data, 4,  null);
+//        postData(Config.baseUrl+"", ApiType.API_TOKEN, data, 4,  null);
 
     }
 
