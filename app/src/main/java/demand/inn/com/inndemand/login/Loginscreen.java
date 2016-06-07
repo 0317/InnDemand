@@ -41,6 +41,8 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -159,6 +161,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 .requestEmail()
                 .build();
 
@@ -172,6 +175,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
                     }
                 } /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(Plus.API)
                 .build();
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
@@ -329,6 +333,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
             prefs.setUser_gname(result.getSignInAccount().getDisplayName());
             prefs.setUser_gemail(result.getSignInAccount().getEmail());
             prefs.setUser_gpicture(result.getSignInAccount().getPhotoUrl().toString());
+            prefs.setG_Token(acct.getIdToken());
             Intent in = new Intent(Loginscreen.this, CheckDetails.class);
             prefs.setGoogle_logged_In(true);
             startActivity(in);
@@ -410,6 +415,15 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+
+            Person person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            person.getBirthday();
+            prefs.setGoogle_bday(person.getBirthday());
+            person.getAgeRange();
+            prefs.setGoogle_location(person.getCurrentLocation());
+            Log.d("Agre range:", "Check "+person.getBirthday());
+            Log.d("Bday range:", "Check "+person.getGender());
+            Log.d("Loc range:", "Check "+person.getCurrentLocation());
         }
 
     }

@@ -17,7 +17,10 @@
 
     <string name="login_call">LOGIN</string>
     <string name="get_direction">GET DIRECTION</string>
-    <string name="login_terms_lines">By signing-up you agree to our terms of service &amp; privacy policy</string>
+    <string name="login_terms_lines">By signing-up you agree to our</string>
+    <string name="terms_conditions">terms of service</string>
+    <string name="and">&amp;</string>
+    <string name="privacy_policy">privacy policy</string>
     <string name="room_services">Room Service</string>
     <string name="bell_boy">Bell-boy</string>
     <string name="room_cleaning">Room cleaning</string>

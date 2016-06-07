@@ -17,6 +17,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Cache;
+import com.android.volley.Network;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.StringRequest;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -26,9 +38,19 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.zxing.Result;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.volleycall.AppController;
+import demand.inn.com.inndemand.welcome.BaseActivity;
 import demand.inn.com.inndemand.welcome.SplashScreen;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -42,6 +64,15 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     GoogleApiClient mGoogleApiClient;
 
     Button button;
+
+    //Others
+    String splitData;
+    String hotelID, roomID, qrCode;
+
+    //Date & Time
+    Calendar c;
+    SimpleDateFormat df;
+    String formattedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +110,13 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                 }catch(Exception e){
                     e.printStackTrace();
                 }
+
+        c = Calendar.getInstance();
+        System.out.println("Current time => "+c.getTime());
+
+        df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formattedDate = df.format(c.getTime());
+        // formattedDate have current date/time
     }
 
     @Override
@@ -94,6 +132,17 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         Log.e("handler", rawResult.getText()); // Prints scan results
         Log.e("handler", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode)
 
+//        splitData = rawResult.getText();
+
+//        if(rawResult.getText().contains("-")) {
+//            String[] details = splitData.split("-");
+//            hotelID = details[0];
+//            roomID = details[1];
+//            qrCode = details[2];
+        /*}else{
+
+        }*/
+
         // show the scanner result into dialog box.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Details");
@@ -101,8 +150,8 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                makeJsonObjectRequest();
                 Intent in = new Intent(QRscanning.this, HotelDetails.class);
-                prefs.setHotel_Name(rawResult.getText());
                 startActivity(in);
                 finish();
             }
@@ -167,5 +216,85 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Method to make json object post call
+     * */
+
+    private void makeJsonObjectRequest() {
+
+        JSONObject obj = new JSONObject();
+        try{
+            obj.put("customer", prefs.getCustomer_Id());
+            obj.put("hotel", "1");
+            obj.put("room", "1");
+            obj.put("qr", "3456");
+            obj.put("checkin_time", formattedDate);
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        Log.d("Check Json", obj.toString());
+
+        postJsonData(Config.innDemand+"checkins/checkin/", obj.toString());
+
+    }
+
+    public void postJsonData(String url, String userData){
+
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data====="+requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha=success==="+response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    String checkinId = object.getString("checkin_id");
+                    prefs.setCheckin_Id(checkinId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
 }
 

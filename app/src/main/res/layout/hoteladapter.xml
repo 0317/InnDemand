@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
+
+                <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:paddingLeft="15dp"
+                     android:layout_marginTop="15dp"
+                     android:textSize="@dimen/eighteen_sp"
+                    android:id="@+id/hotel_title"
+                     android:textColor="@color/colorPrimary"
+                     android:text=""
+                     />
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:paddingLeft="15dp"
+                     android:paddingRight="15dp"
+                     android:gravity="center"
+                     android:textSize="@dimen/forteen_sp"
+                     android:id="@+id/hotel_desc"
+                     android:textColor="@color/view_gray"
+                     android:text=""
+                     />
+
+</LinearLayout>

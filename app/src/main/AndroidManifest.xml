@@ -49,11 +49,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+          <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity android:name=".login.Loginscreen"
@@ -86,11 +86,11 @@
             android:label="Hotel"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-           <!-- <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity android:name=".cartarea.MyCart"
             android:screenOrientation="portrait">
@@ -133,6 +133,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
+
+        <!-- ...................Terms of Use Area...................... -->
+
+        <activity android:name=".login.PrivacyPolicy"></activity>
+        <activity android:name=".login.TermsCondition"></activity>
 
         <!-- ...................Broadcast call Area....................... -->
 

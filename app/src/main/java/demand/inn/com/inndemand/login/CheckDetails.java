@@ -16,21 +16,25 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.Cache;
+import com.android.volley.Network;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.GregorianCalendar;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.CircleTransform;
@@ -44,7 +48,7 @@ import demand.inn.com.inndemand.welcome.BaseActivity;
  * Created by akash
  */
 
-public class CheckDetails extends BaseActivity {
+public class CheckDetails extends AppCompatActivity {
 
     //Utility Class call
     NetworkUtility nu;
@@ -63,16 +67,14 @@ public class CheckDetails extends BaseActivity {
 
     //Others
     String name, email, dp, l_name, gender, bDay, fb_location;
-    String gName, gEmail, gDP;
+    String gName, gEmail, gDP, gGender, gbBday;
     String mName, mEmail;
+    int yourAge;
+    StringBuilder strBuild;
+
     // temporary string to show the parsed response
     private String jsonResponse;
     private static String TAG = CheckDetails.class.getSimpleName();
-    View view;
-
-    //Current Time
-    Calendar cal;
-    Date currentLocalTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,9 +86,6 @@ public class CheckDetails extends BaseActivity {
         prefs  =new AppPreferences(CheckDetails.this);
 
         prefs.setIs_task_completed(true);
-
-        cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Delhi"));
-        currentLocalTime = cal.getTime();
 
         pDialog = new ProgressDialog(CheckDetails.this);
 
@@ -115,6 +114,35 @@ public class CheckDetails extends BaseActivity {
             bDay = getBundle.getString("birthday");
             fb_location = getBundle.getString("location");
         }
+
+        if(gender.equalsIgnoreCase("Male"))
+            gender = "1";
+        else
+            gender = "2";
+
+
+        String dob = bDay;
+        String dobSplit[] = dob.split("/");
+        String day = dobSplit[0];
+        String month = dobSplit[1];
+        String year = dobSplit[2];
+
+        int days =  Integer.parseInt(day);
+        int months =  Integer.parseInt(month);
+        int years =  Integer.parseInt(year);
+
+        strBuild = new StringBuilder();
+
+        // enter your date of birth
+        Calendar dateOfYourBirth = new GregorianCalendar(years , months , days);
+        Calendar today = Calendar.getInstance();
+        yourAge = today.get(Calendar.YEAR) - dateOfYourBirth.get(Calendar.YEAR);
+        dateOfYourBirth.add(Calendar.YEAR, yourAge);
+        if (today.before(dateOfYourBirth)) {
+            yourAge--;
+        }
+
+        strBuild.append(yourAge);
 
         //details set from facebook/google data
         if(name == null)
@@ -163,6 +191,7 @@ public class CheckDetails extends BaseActivity {
 
     private void makeJsonObjectRequest() {
 
+        //Json parsing(FB/Google details)
         JSONObject obj = new JSONObject();
         try {
             obj.put("name", mName);
@@ -173,7 +202,7 @@ public class CheckDetails extends BaseActivity {
                 obj.put("image", dp);
             }
             obj.put("mobile_number", "9899123456");
-            obj.put("age", bDay);
+            obj.put("age", strBuild);
             obj.put("city", fb_location);
             obj.put("gender", gender);
             if (prefs.getFb_Token() == null)
@@ -187,46 +216,67 @@ public class CheckDetails extends BaseActivity {
 
         Log.d("Check Data", obj.toString());
 
-//        String url = Config.innDemand+"customers/save/";
+        //post call to send credentials to server (FB/Google)
+        postJsonData(Config.innDemand+"customers/save/", obj.toString());
 
-        postJsonData(Config.innDemand + "customers/save/", obj.toString());
+    }
 
-//        final ProgressDialog pDialog = new ProgressDialog(this);
-//        pDialog.setMessage("Loading...");
-//        pDialog.show();
-//
-//        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-//                url , null,
-//                new Response.Listener<JSONObject>() {
-//
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        Log.d(TAG, response.toString());
-//                        pDialog.hide();
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.d(TAG, "Error: " + error.getMessage());
-//                pDialog.hide();
-//            }
-//        }) {
-//
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("name","" );
-//                params.put("email", "");
-//                params.put("", "");
-//
-//                return params;
-//            }
-//
-//        };
-//
-//        // Adding request to request queue
-//        AppController.getInstance().addToRequestQueue(jsonObjReq);
-//    }
+    public void postJsonData(String url, String userData){
+
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data====="+requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha=success==="+response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    String customer = object.getString("customer_id");
+                    prefs.setCustomer_Id(customer);
+//                    Toast.makeText(CheckDetails.this, customer, Toast.LENGTH_LONG).show();
+
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
     }
 }

@@ -20,6 +20,9 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
@@ -30,10 +33,12 @@ import demand.inn.com.inndemand.model.response.ServiceResponse;
 import demand.inn.com.inndemand.model.response.error.JVolleyError;
 import demand.inn.com.inndemand.parser.BaseParser;
 import demand.inn.com.inndemand.parser.IParser;
+import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utils.CommonEventHandler;
 import demand.inn.com.inndemand.utils.JabongImageCache;
 import demand.inn.com.inndemand.utils.StringUtils;
 import demand.inn.com.inndemand.utils.Utils;
+import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by Akash
@@ -43,10 +48,14 @@ public class BaseActivity extends AppCompatActivity implements
         Response.Listener, Response.ErrorListener, CommonEventHandler {
     public JabongImageCache mImageCache;
 
+    //Utility Class area
+    AppPreferences prefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prefs = new AppPreferences(BaseActivity.this);
 
         mImageCache = JabongImageCache.getImageCache();
     }
@@ -254,7 +263,8 @@ public class BaseActivity extends AppCompatActivity implements
                 }
             }
         };
-        mRequestQueue.add(stringRequest);
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
     public void showProgressDialog(String body){

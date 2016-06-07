@@ -2,51 +2,73 @@ package demand.inn.com.inndemand.login;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Cache;
+import com.android.volley.Network;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.JsonArray;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.cartarea.MyCart;
+import demand.inn.com.inndemand.adapter.HotelAdapter;
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.mapdirection.Mapping;
-import demand.inn.com.inndemand.roomservice.Beverages;
 import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
+import demand.inn.com.inndemand.welcome.BaseActivity;
 import demand.inn.com.inndemand.welcome.SplashScreen;
 
 /**
@@ -61,7 +83,7 @@ public class HotelDetails extends AppCompatActivity {
 
     //UI Call
     Button checkout;
-    TextView hotel_Name, hotel_Address;
+    TextView hotel_Name, hotel_Address, hotel_desc, call_hotel;
     ImageLoader imageLoader;
     NetworkImageView imageView;
     ImageView main_backdrop;
@@ -70,6 +92,12 @@ public class HotelDetails extends AppCompatActivity {
     //Others
     String callHotel;
     String URL, TAG;
+    String about_hotel;
+
+    //List Items Bottom
+    private RecyclerView recyclerView;
+    private HotelAdapter adapter;
+    private List<HotelData> hotelData;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -96,12 +124,12 @@ public class HotelDetails extends AppCompatActivity {
                 //noinspection SimplifiableIfStatement
                 if (id == R.id.action_settings) {
                     return true;
-                }else if(id == R.id.action_cart){
+                } else if (id == R.id.action_cart) {
 //                    Intent in = new Intent(HotelDetails.this, MyCart.class);
 //                    startActivity(in);
 //                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-                }else if(id == R.id.action_notification){
+                } else if (id == R.id.action_notification) {
 
                 }
                 return true;
@@ -130,7 +158,7 @@ public class HotelDetails extends AppCompatActivity {
                 if (scrollRange + verticalOffset == 0) {
                     collapsingToolbarLayout.setTitle("InnDemand");
                     isShow = true;
-                } else if(isShow) {
+                } else if (isShow) {
                     collapsingToolbarLayout.setTitle("");
                     isShow = false;
                 }
@@ -158,127 +186,381 @@ public class HotelDetails extends AppCompatActivity {
         //UI initialize
         hotel_Name = (TextView) findViewById(R.id.hotel_Name);
         hotel_Address = (TextView) findViewById(R.id.hotel_Address);
-
-        //set Hotel name over hotel_Name TextView
-//        hotel_Name.setText(prefs.getHotel_Name());
+        call_hotel = (TextView) findViewById(R.id.call_hotel);
 
         //variable to get Hotel contact number
         callHotel = "";
 
-        makeJsonObjectRequest();
+        //ListItems in RecyclerView
+        recyclerView = (RecyclerView) findViewById(R.id.hotel_recycler_view);
+        hotelData = new ArrayList<>();
+        adapter = new HotelAdapter(this, hotelData);
 
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
+
+//        if(nu.isConnectingToInternet()) {
+        recyclerView.setAdapter(adapter);
+
+        makeJsonObjectRequest();
+        makeJsonRequestBottom();
+       /* }else{
+
+        }*/
+
+    }
+
+    public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
+        private Drawable mDivider;
+
+        public SimpleDividerItemDecoration(Context context) {
+            mDivider = ContextCompat.getDrawable(context, R.drawable.list_divider);
+        }
+
+        @Override
+        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            int left = parent.getPaddingLeft();
+            int right = parent.getWidth() - parent.getPaddingRight();
+
+            int childCount = parent.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View child = parent.getChildAt(i);
+
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+                int top = child.getBottom() + params.bottomMargin;
+                int bottom = top + mDivider.getIntrinsicHeight();
+
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
+        }
     }
 
     //Button onClicklistener to Checkout from the hotel & redirect to Splash Screen
     public void checkOut(View view) {
+
+        //Json Parsing to send hotel details to checkout.
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("checkin_id", prefs.getCheckin_Id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
         prefs.setCheckout("1");
         Intent in = new Intent(HotelDetails.this, SplashScreen.class);
         startActivity(in);
         finish();
     }
 
-    public void callHotel(View view) {
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//        Intent callIntent = new Intent(Intent.ACTION_CALL);
-//        callIntent.setData(Uri.parse("+919729305557"));
-//        startActivity(callIntent);
-    }
-
-    public void direction(View view){
+    public void direction(View view) {
         Intent in = new Intent(HotelDetails.this, Mapping.class);
         startActivity(in);
     }
 
     //OnClick to go to Restaurant Screen
-    public void restaurantClick(View view){
+    public void restaurantClick(View view) {
         Intent in = new Intent(HotelDetails.this, Restaurant.class);
         startActivity(in);
     }
 
     //OnClick to go to Room Services Screen
-    public void roomServiceClick(View view){
+    public void roomServiceClick(View view) {
         Intent in = new Intent(HotelDetails.this, RoomServices.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
     }
 
     //OnClick to go to Bar Screen
-    public void barClick(View view){
+    public void barClick(View view) {
 //        Intent in = new Intent(HotelDetails.this, Beverages.class);
 //        startActivity(in);
     }
 
     //OnClick to go to Spa Screen
-    public void spaClick(View view){
+    public void spaClick(View view) {
 //        Intent in = new Intent(HotelDetails.this, Restaurant.class);
 //        startActivity(in);
     }
 
     /**
-     * Method to make json object post call
+     * Method to make json object get call
      * */
 
     private void makeJsonObjectRequest() {
 
-//        String url = Config.innDemand+"hotels/details";
-        String url = "http://inndemand.com/api/hotels/details/";
+        JSONObject obj = new JSONObject();
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null,
-                new Response.Listener<JSONObject>() {
+        try {
+            obj.put("hotel_id", "1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("Check url", response.toString());
-                        try {
-                            String name = response.getString("name");
-                            String location = response.getString("location");
-                            String latitude = response.getString("latitude");
-                            String longitude = response.getString("longitude");
-                            String address = response.getString("address");
-                            String number = response.getString("contact_number");
-                            Boolean service = response.getBoolean("has_restaurant_service");
-                            String restaurant_image = response.getString("restaurant_image");
-                            Boolean room_service = response.getBoolean("has_room_service");
-                            String room_img = response.getString("room_service_image");
-                            Boolean bar_service = response.getBoolean("has_bar_service");
-                            String bar_img = response.getString("bar_image");
-                            Boolean spa_service = response.getBoolean("has_spa_service");
-                            String spa_img = response.getString("spa_image");
-                            String about_hotel = response.getString("about_hotel");
+        Log.d("Api Data", obj.toString());
 
-                            hotel_Name.setText(name);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        Log.d("Check data", jsonObjReq.toString());
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
+        postJsonData(Config.innDemand+"hotels/details/", obj.toString());
     }
 
+    private void makeJsonRequestBottom(){
+        JSONObject objt = new JSONObject();
+
+        try {
+            objt.put("hotel_id", "1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Api Data", objt.toString());
+
+        postJsonDataBottom(Config.innDemand+"info_centre/details/", objt.toString());
+    }
+
+    public void postJsonData(String url, String userData) {
+
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha=success===" + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    String name = object.getString("name");
+                    String location = object.getString("location");
+                    String latitude = object.getString("latitude");
+                    String longitude = object.getString("longitude");
+                    String address = object.getString("address");
+                    final String number = object.getString("contact_number");
+                    Boolean service = object.getBoolean("has_restaurant_service");
+                    String restaurant_image = object.getString("restaurant_image");
+                    Boolean room_service = object.getBoolean("has_room_service");
+                    String room_img = object.getString("room_service_image");
+                    Boolean bar_service = object.getBoolean("has_bar_service");
+                    String bar_img = object.getString("bar_image");
+                    Boolean spa_service = object.getBoolean("has_spa_service");
+                    String spa_img = object.getString("spa_image");
+                    about_hotel = object.getString("about_hotel");
+
+                    hotel_Name.setText(name);
+                    hotel_Address.setText(address);
+
+                    Picasso.with(HotelDetails.this).load(restaurant_image).into(main_backdrop);
+
+                    Log.d("Name_", name);
+                    Log.d("Address_", address);
+                    Log.d("Image", restaurant_image);
+                    Log.d("COntact", number);
+
+                    call_hotel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (ActivityCompat.checkSelfPermission(HotelDetails.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                // TODO: Consider calling
+                                //    ActivityCompat#requestPermissions
+                                // here to request the missing permissions, and then overriding
+                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                //                                          int[] grantResults)
+                                // to handle the case where the user grants the permission. See the documentation
+                                // for ActivityCompat#requestPermissions for more details.
+
+                                // Should we show an explanation?
+                                if (ActivityCompat.shouldShowRequestPermissionRationale(HotelDetails.this,
+                                        Manifest.permission.CALL_PHONE)) {
+
+                                    // Show an expanation to the user *asynchronously* -- don't block
+                                    // this thread waiting for the user's response! After the user
+                                    // sees the explanation, try again to request the permission.
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(HotelDetails.this);
+                                    builder.setMessage("Need to Call")
+                                            .setPositiveButton("Call", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            })
+                                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.setTitle("Permissions");
+                                    dialog.show();
+
+                                } else {
+
+                                    // No explanation needed, we can request the permission.
+
+//                                    ActivityCompat.requestPermissions(HotelDetails.this,
+//                                            new String[]{Manifest.permission.CALL_PHONE},
+//                                            MY_PERMISSIONS_REQUEST_CALL);
+
+                                    // MY_PERMISSIONS_REQUEST_CALL is an
+                                    // app-defined int constant. The callback method gets the
+                                    // result of the request.
+                                }
+
+
+
+                                return;
+                            }
+
+                        }
+                    });
+
+                    HotelData a = new HotelData(about_hotel , "Beautiful");
+                    hotelData.add(a);
+
+                    adapter.notifyDataSetChanged();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    public void postJsonDataBottom(String url, String userData){
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha=bottom=success===" + response);
+                try {
+                    JSONObject object = new JSONObject();
+                    JSONArray array = object.getJSONArray(response);
+
+                    Log.d("Data Show:", String.valueOf(array));
+
+                    HotelData a = new HotelData(about_hotel , "Beautiful");
+                    hotelData.add(a);
+
+                    adapter.notifyDataSetChanged();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case MY_PERMISSIONS_REQUEST_CALL: {
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                    // permission was granted, yay! Do the
+//                    // contacts-related task you need to do.
+//
+//                } else {
+//
+//                    // permission denied, boo! Disable the
+//                    // functionality that depends on this permission.
+//                }
+//                return;
+//            }
+//
+//            // other 'case' lines to check for other
+//            // permissions this app might request
+//        }
+    }
+
 }

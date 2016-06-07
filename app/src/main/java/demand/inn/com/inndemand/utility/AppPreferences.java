@@ -14,18 +14,19 @@ public class AppPreferences {
     private SharedPreferences appSharedpref;
     private SharedPreferences.Editor prefEditor;
 
-    private String user_gender = "user_gender",
+    private String customer_Id = "customer_Id",
+            checkin_Id = "checkin_Id",
+            user_gender = "user_gender",
             user_phone = "user_phone",
             user_picture = "user_picture",
             user_bday = "user_bday",
             user_lname = "user_lname",
             user_gname = "user_gname",
-            user_ggender = "user_ggender",
             user_gemail = "user_gemail",
-            user_gphone = "user_gphone",
             user_gpicture = "user_gpicture",
-            user_gbday = "user_gbday",
-            user_glname = "user_glname",
+            google_gender = "google_gender",
+            google_bday = "google_bday",
+            google_location = "google_location",
             deviceToken = "device_token_pref",
             appVersion = "app_version_pref",
             hotel_Name = "hotel_Name",
@@ -33,7 +34,8 @@ public class AppPreferences {
             user_fbname = "user_fbname",
             user_fbemail = "user_fbemail",
             fb_Token = "fb_Token",
-            g_Token = "g_Token";
+            g_Token = "g_Token",
+            hotel_id = "hotel_id";
 
     private String is_task_completed = "is_task_completed",
             facebook_logged_In = "facebook_logged_In",
@@ -58,6 +60,22 @@ public class AppPreferences {
 
     public void setFb_Token(String _fb_Token) {
         prefEditor.putString(fb_Token, _fb_Token).commit();
+    }
+
+    public String getCustomer_Id() {
+        return appSharedpref.getString(customer_Id, "");
+    }
+
+    public void setCustomer_Id(String _customer_Id) {
+        prefEditor.putString(customer_Id, _customer_Id).commit();
+    }
+
+    public String getCheckin_Id() {
+        return appSharedpref.getString(checkin_Id, "");
+    }
+
+    public void setCheckin_Id(String _checkin_Id) {
+        prefEditor.putString(checkin_Id, _checkin_Id).commit();
     }
 
     public String getG_Token() {
@@ -197,14 +215,6 @@ public class AppPreferences {
         prefEditor.putString(user_gname, _user_gname).commit();
     }
 
-    public String getUser_ggender() {
-        return appSharedpref.getString(user_ggender, "");
-    }
-
-    public void setUser_ggender(String _user_ggender) {
-        prefEditor.putString(user_ggender, _user_ggender).commit();
-    }
-
     public String getUser_gemail() {
         return appSharedpref.getString(user_gemail, "");
     }
@@ -213,13 +223,6 @@ public class AppPreferences {
         prefEditor.putString(user_gemail, _user_gemail).commit();
     }
 
-    public String getUser_gphone() {
-        return appSharedpref.getString(user_gphone, "");
-    }
-
-    public void setUser_gphone(String _user_gphone) {
-        prefEditor.putString(user_gphone, _user_gphone).commit();
-    }
 
     public String getUser_gpicture() {
         return appSharedpref.getString(user_gpicture, "");
@@ -229,19 +232,35 @@ public class AppPreferences {
         prefEditor.putString(user_gpicture, _user_gpicture).commit();
     }
 
-    public String getUser_gbday() {
-        return user_gbday;
+    public String getHotel_id() {
+        return appSharedpref.getString(hotel_id, "");
     }
 
-    public void setUser_gbday(String user_gbday) {
-        this.user_gbday = user_gbday;
+    public void setHotel_id(String _hotel_id) {
+        prefEditor.putString(hotel_id, _hotel_id).commit();
     }
 
-    public String getUser_glname() {
-        return user_glname;
+    public String getGoogle_gender() {
+        return appSharedpref.getString(google_gender, "");
     }
 
-    public void setUser_glname(String user_glname) {
-        this.user_glname = user_glname;
+    public void setGoogle_gender(String _google_gender) {
+        prefEditor.putString(google_gender, _google_gender).commit();
+    }
+
+    public String getGoogle_bday() {
+        return appSharedpref.getString(google_bday, "");
+    }
+
+    public void setGoogle_bday(String _google_bday) {
+        prefEditor.putString(google_bday, _google_bday).commit();
+    }
+
+    public String getGoogle_location() {
+        return appSharedpref.getString(google_location, "");
+    }
+
+    public void setGoogle_location(String _google_location) {
+        prefEditor.putString(google_location, _google_location).commit();
     }
 }
