@@ -1,40 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/coordinatorLayout">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/wake_up_click"
+        android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:onClick="backPress"
-            android:id="@+id/backpress_cab"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_cancel"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cab_call"
-            android:textSize="@dimen/twenty_sp"
-            android:textColor="@android:color/white"
-            android:padding="10dp"/>
-
-    </LinearLayout>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_collapseMode="pin"
+        app:layout_scrollFlags="scroll|snap"
+        />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -50,7 +34,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="180dp"
             android:src="@drawable/ic_menu_camera"
             />
 
@@ -74,194 +58,82 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="10dp"
                 android:background="@color/view_gray"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pick_date"
-                android:textSize="@dimen/forteen_sp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Today - "
-                    android:textSize="@dimen/sixteen_sp"
+                    android:text="@string/when_to_pick"
+                    android:textSize="@dimen/forteen_sp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/view_gray" />
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" />
 
-                        <LinearLayout
-                            android:layout_width="50dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:orientation="horizontal"
-                            android:gravity="center">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/radioToday_cab"
-                        android:buttonTint="@color/confirm_demand_click" />
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="15dp">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tomorrow - "
-                            android:textSize="@dimen/sixteen_sp"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginTop="10dp"
-                            android:textColor="@color/view_gray" />
-
-                        <LinearLayout
-                            android:layout_width="50dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:orientation="horizontal"
-                            android:gravity="center">
-
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/radioTomorrow_cab"
-                                android:buttonTint="@color/confirm_demand_click"/>
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/view_gray"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pick_up_time"
-                android:textSize="@dimen/forteen_sp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="15dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp">
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="NOW"
                             android:textSize="@dimen/sixteen_sp"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginTop="15dp"
-                            android:textColor="@color/view_gray" />
-
-                        <LinearLayout
-                            android:layout_width="50dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:orientation="horizontal"
-                            android:gravity="center">
-
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/radioNow_cab"
-                                android:buttonTint="@color/confirm_demand_click"
-                                />
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="in 1 Hour"
-                            android:textSize="@dimen/sixteen_sp"
+                            android:padding="5dp"
+                            android:id="@+id/now_cab"
                             android:layout_marginLeft="15dp"
                             android:layout_marginTop="10dp"
-                            android:textColor="@color/view_gray" />
+                            android:textColor="@color/confirm_demand_click" />
 
-                        <LinearLayout
-                            android:layout_width="50dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:orientation="horizontal"
-                            android:gravity="center">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp">
 
-                            <RadioButton
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/radioHour_cab"
-                                android:buttonTint="@color/confirm_demand_click"
-                                />
+                                android:text="@string/pick_time"
+                                android:textSize="@dimen/sixteen_sp"
+                                android:padding="5dp"
+                                android:id="@+id/currentTime_cab"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/confirm_demand_click" />
 
-                        </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="150dp"
+                                android:layout_height="40dp"
+                                android:layout_alignParentRight="true"
+                                android:orientation="horizontal"
+                                android:gravity="center">
 
-                    </RelativeLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:layout_marginTop="5dp"
+                                    android:id="@+id/set_time"
+                                    android:textStyle="bold"/>
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -270,13 +142,78 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pick_time"
+                android:text="@string/change_time"
                 android:textSize="@dimen/sixteen_sp"
-                android:onClick="pickTime_cab"
-                android:id="@+id/pickTime_cab"
                 android:padding="5dp"
-                android:layout_marginLeft="10dp"
+                android:id="@+id/changeTime_cab"
+                android:layout_marginLeft="15dp"
                 android:textColor="@color/confirm_demand_click" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@color/theme_gray"
+                android:layout_marginTop="10dp"
+                android:id="@+id/choose_destination">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose Location"
+                    android:id="@+id/set_location"
+                    android:textSize="@dimen/sixteen_sp"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/cancel_wakeUp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:padding="5dp"
+                    android:textSize="@dimen/forteen_sp"
+                    android:text="@string/cancel_cab"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="50dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/anything_to_say"
+                    android:textSize="@dimen/forteen_sp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:maxLines="3"
+                    android:id="@+id/say_something"
+                    android:hint="@string/tap_to_start"
+                    android:background="@null"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -288,7 +225,6 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:onClick="confirmDemand"
         android:background="@color/confirm_demand_click"
         android:id="@+id/confirm_demand_click_cab"
         android:gravity="center">
@@ -302,4 +238,6 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

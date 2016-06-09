@@ -7,17 +7,34 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
+import com.android.volley.Network;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -32,6 +49,8 @@ public class Laundry extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
+    static final int TIME_DIALOG_ID = 1111;
+
     //UI call area
     LinearLayout backpress;
     EditText say_something;
@@ -42,9 +61,18 @@ public class Laundry extends AppCompatActivity {
     //Others
     String saySomething;
     private String format = "";
+    String getTime;
+    private int hour;
+    private int minute;
 
     //Class call Area
     AppController appController;
+
+    //Date & Time
+    Calendar c;
+    SimpleDateFormat df, date;
+    String formattedDate, getDate;
+    String finalTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,96 +92,175 @@ public class Laundry extends AppCompatActivity {
         now = (TextView) findViewById(R.id.now_laundry);
         pickTime = (TextView) findViewById(R.id.pickTime_laundry);
 
-        pickTime.setOnClickListener(new View.OnClickListener() {
+        c = Calendar.getInstance();
+        System.out.println("Current time => "+c.getTime());
+
+        df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        date = new SimpleDateFormat("yyyy-MM-dd");
+        formattedDate = df.format(c.getTime());
+        getDate = date.format(c.getTime());
+        // formattedDate have current date/time
+
+        now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Calendar mcurrentTime = Calendar.getInstance();
-//                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-//                final int minute = mcurrentTime.get(Calendar.MINUTE);
-//                TimePickerDialog mTimePicker;
-//                mTimePicker = new TimePickerDialog(Laundry.this, new TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-////                eReminderTime.setText( selectedHour + ":" + selectedMinute);
-//                    }
-//                }, hour, minute, true);//Yes 24 hour time
-//                mTimePicker.setTitle("Select Time");
-//                mTimePicker.show();
-                new TimePickerFragment();
+                c = Calendar.getInstance();
+                System.out.println("Current time => "+c.getTime());
+
+                df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                formattedDate = df.format(c.getTime());
+                // formattedDate have current date/time
+                finalTime =formattedDate;
             }
         });
 
-        //TImePicker UI Initialize area
-        timePick = new TimePicker(this);
-
-        //Calender Area
-        calendar = Calendar.getInstance();
-
-        Cache cache = AppController.getInstance().getRequestQueue().getCache();
-        Cache.Entry entry = cache.get("");
-        if(entry != null){
-            try {
-                String data = new String(entry.data, "UTF-8");
-                // handle data, like converting it to xml, json, bitmap etc.,
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+        pickTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Add Click Listener
+                showDialog(TIME_DIALOG_ID);
             }
-        }else{
-        // Cached response doesn't exists. Make network call here
-        }
-
+        });
     }
 
-    public static class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case TIME_DIALOG_ID:
+
+                // set time picker as current time
+                return new TimePickerDialog(this, timePickerListener, hour, minute,
+                        true);
+
+        }
+        return null;
+    }
+
+    private TimePickerDialog.OnTimeSetListener timePickerListener = new TimePickerDialog.OnTimeSetListener() {
+
 
         @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
+        public void onTimeSet(TimePicker view, int hourOfDay, int minutes) {
+            // TODO Auto-generated method stub
 
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
+            hour   = hourOfDay;
+            minute = minutes;
+
+            updateTime(hour,minute);
+
         }
+    };
 
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
+    private static String utilTime(int value) {
+
+        if (value < 10)
+            return "0" + String.valueOf(value);
+        else
+            return String.valueOf(value);
+    }
+
+    // Used to convert 24hr format to 12hr format with AM/PM values
+    private void updateTime(int hours, int mins) {
+
+        String timeSet = "";
+        if (hours > 12) {
+            hours -= 12;
+            timeSet = "PM";
+        } else if (hours == 0) {
+            hours += 12;
+            timeSet = "AM";
+        } else if (hours == 12)
+            timeSet = "PM";
+        else
+            timeSet = "AM";
+
+
+        String minutes = "";
+        if (mins < 10)
+            minutes = "0" + mins;
+        else
+            minutes = String.valueOf(mins);
+
+        // Append in a StringBuilder
+        getTime = new StringBuilder().append(hours).append(':')
+                .append(minutes).append(":").append("00").toString();
+
+        finalTime = getDate+" "+getTime;
+    }
+
+    public void confirmDemand(View view){
+        //string call to get value of edittext
+        saySomething = say_something.getText().toString().trim();
+
+        if(saySomething == null){
+
+        }else {
+
+            JSONObject obj = new JSONObject();
+
+            try {
+                obj.put("checkin_id", "2");
+                obj.put("request_time", formattedDate);
+                obj.put("req_time", finalTime);
+                obj.put("comments", saySomething);
+
+                postJsonData(Config.innDemand + "laundry/save", obj.toString());
+
+                say_something.getText().clear();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "timePicker");
-    }
+    //API call method to POST data to the server
+    public void postJsonData(String url, String userData){
 
-    public void nowPick(View view){
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
 
-    }
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
 
-    public void setTime(View view) {
-        int hour = timePick.getCurrentHour();
-        int min = timePick.getCurrentMinute();
-        showTime(hour, min);
-    }
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
 
-    public void showTime(int hour, int min) {
-        if (hour == 0) {
-            hour += 12;
-            format = "AM";
-        }
-        else if (hour == 12) {
-            format = "PM";
-        } else if (hour > 12) {
-            hour -= 12;
-            format = "PM";
-        } else {
-            format = "AM";
-        }
-//        time.setText(new StringBuilder().append(hour).append(" : ").append(min)
-//                .append(" ").append(format));
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data====="+requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha=success==="+response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
     public void backPress(View view){

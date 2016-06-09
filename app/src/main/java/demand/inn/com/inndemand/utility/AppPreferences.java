@@ -35,7 +35,8 @@ public class AppPreferences {
             user_fbemail = "user_fbemail",
             fb_Token = "fb_Token",
             g_Token = "g_Token",
-            hotel_id = "hotel_id";
+            hotel_id = "hotel_id",
+            save_data = "save_data";
 
     private String is_task_completed = "is_task_completed",
             facebook_logged_In = "facebook_logged_In",
@@ -262,5 +263,13 @@ public class AppPreferences {
 
     public void setGoogle_location(String _google_location) {
         prefEditor.putString(google_location, _google_location).commit();
+    }
+
+    public String getSave_data() {
+        return appSharedpref.getString(save_data, "");
+    }
+
+    public void setSave_data(String _save_data) {
+        prefEditor.putString(save_data, _save_data).commit();
     }
 }

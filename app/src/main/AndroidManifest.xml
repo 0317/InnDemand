@@ -86,11 +86,11 @@
             android:label="Hotel"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".cartarea.MyCart"
             android:screenOrientation="portrait">
@@ -106,21 +106,34 @@
             android:icon="@drawable/ic_menu_camera"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".roomservice.Bathroom"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".roomservice.RoomCleaning"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".roomservice.WakeUp"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".roomservice.Cab"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".roomservice.Laundry"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".roomservice.Beverages"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".roomservice.BedTea"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".roomservice.BellBoy"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
 
         <!-- ................Restaurant Activity Area.......... -->
 
@@ -136,7 +149,13 @@
 
         <!-- ...................Terms of Use Area...................... -->
 
-        <activity android:name=".login.PrivacyPolicy"></activity>
+        <activity android:name=".login.PrivacyPolicy">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
         <activity android:name=".login.TermsCondition"></activity>
 
         <!-- ...................Broadcast call Area....................... -->
@@ -149,8 +168,8 @@
         <activity android:name=".mapdirection.Mapping"
             android:screenOrientation="portrait"></activity>
         <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAgQdWF1SP1rwBpfprvCsVgR__MIh76mYw"/>
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCNosy5B30fOPeAT7Wcqo14sdtyRawTQ1Q"/>
 
     </application>
 

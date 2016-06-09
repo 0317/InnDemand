@@ -432,12 +432,6 @@ public class HotelDetails extends AppCompatActivity {
                         }
                     });
 
-                    HotelData a = new HotelData(about_hotel , "Beautiful");
-                    hotelData.add(a);
-
-                    adapter.notifyDataSetChanged();
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -490,21 +484,32 @@ public class HotelDetails extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 System.out.println("yohaha=bottom=success===" + response);
+
+
+                JSONArray array = null;
                 try {
-                    JSONObject object = new JSONObject();
-                    JSONArray array = object.getJSONArray(response);
-
-                    Log.d("Data Show:", String.valueOf(array));
-
-                    HotelData a = new HotelData(about_hotel , "Beautiful");
-                    hotelData.add(a);
-
-                    adapter.notifyDataSetChanged();
-
-
+                    array = new JSONArray(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                for (int i = 0; i < array.length(); i++) {
+                        try {
+                            JSONObject object = array.getJSONObject(i);
+
+                            String info_title = object.getString("info_title");
+                            String info_value = object.getString("info_value");
+
+                            prefs.setSave_data(info_value);
+
+                            HotelData a = new HotelData(info_title, info_value);
+                            hotelData.add(a);
+
+                            adapter.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
             }
         }, new Response.ErrorListener() {

@@ -30,19 +30,22 @@
             android:layout_height="wrap_content"
             android:text="@string/bath_essentials"
             android:textSize="@dimen/twenty_sp"
-            android:textStyle="bold"
             android:textColor="@android:color/white"
             android:padding="10dp"/>
 
     </LinearLayout>
 
-        <LinearLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="40dp"
+        >
+
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="40dp"
-            android:layout_marginTop="50dp"
-            android:weightSum="3">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -190,11 +193,40 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/anything_to_say"
+                            android:textSize="@dimen/forteen_sp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="10dp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="15dp"
+                            android:maxLines="3"
+                            android:id="@+id/say_something_bell"
+                            android:hint="@string/tap_to_start"
+                            android:background="@null"/>
+
+                    </LinearLayout>
+
                     </LinearLayout>
 
         </LinearLayout>
 
+
         </LinearLayout>
+
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"

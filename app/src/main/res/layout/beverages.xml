@@ -1,51 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/wake_up_click"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:id="@+id/backpress_beverages"
-            android:onClick="backPress"
-            android:orientation="vertical">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|snap"
+            />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_cancel"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/beverages"
-            android:textSize="@dimen/twenty_sp"
-            android:textColor="@android:color/white"
-            android:padding="10dp"/>
-
-    </LinearLayout>
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="50dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="40dp"
-            android:layout_marginTop="50dp"
-            android:weightSum="3">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="180dp"
                 android:background="@mipmap/bar"
                 android:layout_weight="2"/>
 
@@ -89,59 +76,25 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/no_of_water_bottles"
-                                android:textSize="@dimen/forteen_sp"
+                                android:text="Water Bottles"
+                                android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="10dp"
                                 android:textColor="@color/view_gray" />
 
                             <LinearLayout
-                                android:layout_width="150dp"
+                                android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_alignParentRight="true"
                                 android:orientation="horizontal"
                                 android:gravity="center">
 
-                                <RelativeLayout
-                                    android:layout_width="120dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="15dp"
-                                    >
-
-                                <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginLeft="15dp"
-                                    android:onClick="waterMinus"
-                                    android:id="@+id/waterMinus_beverage"
-                                    android:src="@mipmap/ic_subtract"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="0"
-                                        android:id="@+id/waterCount_beverage"
-                                        android:textSize="@dimen/forteen_sp"
-                                        android:layout_marginTop="15dp"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:gravity="center"
-                                        />
-
-                                    <ImageView
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_marginTop="10dp"
-                                        android:id="@+id/waterPlus_beverage"
-                                        android:layout_marginRight="15dp"
-                                        android:onClick="waterPlus"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_alignParentRight="true"
-                                        android:src="@mipmap/ic_plus"/>
-
-                                </RelativeLayout>
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/confirm_demand_click"
+                                    android:id="@+id/water_bottles_beverages"
+                                    />
 
                             </LinearLayout>
 
@@ -161,58 +114,25 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/no_of_soda_bottles"
-                                android:textSize="@dimen/forteen_sp"
+                                android:text="Soda Bottles"
+                                android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="10dp"
                                 android:textColor="@color/view_gray" />
 
                             <LinearLayout
-                                android:layout_width="150dp"
+                                android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_alignParentRight="true"
                                 android:orientation="horizontal"
                                 android:gravity="center">
 
-                                <RelativeLayout
-                                    android:layout_width="120dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="15dp"
-                                    >
-
-                                    <ImageView
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_alignParentLeft="true"
-                                        android:layout_marginTop="10dp"
-                                        android:onClick="sodaMinus"
-                                        android:id="@+id/sodaMinus_beverage"
-                                        android:layout_marginLeft="15dp"
-                                        android:src="@mipmap/ic_subtract"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="0"
-                                        android:textSize="15sp"
-                                        android:layout_marginTop="15dp"
-                                        android:id="@+id/sodaCount_beverage"
-                                        android:layout_centerHorizontal="true"
-                                        android:gravity="center"
-                                        />
-
-                                    <ImageView
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_marginTop="10dp"
-                                        android:id="@+id/sodaPlus_beverage"
-                                        android:layout_marginRight="15dp"
-                                        android:onClick="sodaPlus"
-                                        android:layout_alignParentRight="true"
-                                        android:src="@mipmap/ic_plus"/>
-
-                                </RelativeLayout>
-
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/confirm_demand_click"
+                                    android:id="@+id/soda_bottles_beverages"
+                                    />
 
                             </LinearLayout>
 
@@ -232,58 +152,25 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/no_of_ice_bottles"
-                                android:textSize="@dimen/forteen_sp"
+                                android:text="Ice Buckets"
+                                android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="10dp"
                                 android:textColor="@color/view_gray" />
 
                             <LinearLayout
-                                android:layout_width="150dp"
+                                android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_alignParentRight="true"
                                 android:orientation="horizontal"
                                 android:gravity="center">
 
-                                <RelativeLayout
-                                    android:layout_width="120dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="15dp"
-                                    >
-
-                                    <ImageView
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_alignParentLeft="true"
-                                        android:layout_marginTop="10dp"
-                                        android:onClick="iceMinus"
-                                        android:id="@+id/iceMinus_beverage"
-                                        android:layout_marginLeft="15dp"
-                                        android:src="@mipmap/ic_subtract"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="0"
-                                        android:textSize="15sp"
-                                        android:id="@+id/iceCount_beverage"
-                                        android:layout_marginTop="15dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:gravity="center"
-                                        />
-
-                                    <ImageView
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_marginTop="10dp"
-                                        android:id="@+id/icePlus_beverage"
-                                        android:layout_marginRight="15dp"
-                                        android:onClick="icePlus"
-                                        android:layout_alignParentRight="true"
-                                        android:src="@mipmap/ic_plus"/>
-
-                                </RelativeLayout>
-
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/confirm_demand_click"
+                                    android:id="@+id/ice_buckets_beverages"
+                                    />
 
                             </LinearLayout>
 
@@ -303,58 +190,25 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/no_of_glasses"
-                                android:textSize="@dimen/forteen_sp"
+                                android:text="Glasses"
+                                android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="10dp"
                                 android:textColor="@color/view_gray" />
 
                             <LinearLayout
-                                android:layout_width="150dp"
+                                android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_alignParentRight="true"
                                 android:orientation="horizontal"
                                 android:gravity="center">
 
-                                <RelativeLayout
-                                    android:layout_width="120dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="15dp"
-                                    >
-
-                                    <ImageView
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_alignParentLeft="true"
-                                        android:layout_marginTop="10dp"
-                                        android:layout_marginLeft="15dp"
-                                        android:onClick="glassMinus"
-                                        android:id="@+id/glassMinus_beverage"
-                                        android:src="@mipmap/ic_subtract"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="0"
-                                        android:textSize="15sp"
-                                        android:id="@+id/glassCount_beverage"
-                                        android:layout_marginTop="15dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:gravity="center"
-                                        />
-
-                                    <ImageView
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_marginTop="10dp"
-                                        android:id="@+id/glassPlus_beverage"
-                                        android:layout_marginRight="15dp"
-                                        android:onClick="glassPlus"
-                                        android:layout_alignParentRight="true"
-                                        android:src="@mipmap/ic_plus"/>
-
-                                </RelativeLayout>
-
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/confirm_demand_click"
+                                    android:id="@+id/glasses_beverages"
+                                    />
 
                             </LinearLayout>
 
@@ -362,6 +216,33 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="50dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/anything_to_say"
+                            android:textSize="@dimen/forteen_sp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="10dp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="15dp"
+                            android:maxLines="3"
+                            android:id="@+id/say_something_bell"
+                            android:hint="@string/tap_to_start"
+                            android:background="@null"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -369,13 +250,14 @@
 
         </LinearLayout>
 
+        </ScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@color/confirm_demand_click"
         android:id="@+id/confirm_demand_click_beverages"
-        android:onClick="confirmDemand"
         android:gravity="center">
 
         <TextView
@@ -387,4 +269,6 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

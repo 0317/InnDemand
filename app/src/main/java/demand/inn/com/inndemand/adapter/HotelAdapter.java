@@ -1,7 +1,11 @@
 package demand.inn.com.inndemand.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,7 @@ import java.util.List;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.HotelData;
+import demand.inn.com.inndemand.utility.AppPreferences;
 
 /**
  * Created by akash
@@ -21,12 +26,14 @@ public class HotelAdapter extends  RecyclerView.Adapter<HotelAdapter.MyViewHolde
 
     private List<HotelData> hotelData;
     private Context mContext;
+    AppPreferences prefs;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, desc;
 
         public MyViewHolder(View view) {
             super(view);
+            prefs = new AppPreferences(mContext);
             title = (TextView) view.findViewById(R.id.hotel_title);
             desc = (TextView) view.findViewById(R.id.hotel_desc);
 
@@ -50,7 +57,28 @@ public class HotelAdapter extends  RecyclerView.Adapter<HotelAdapter.MyViewHolde
     public void onBindViewHolder(MyViewHolder holder, int position) {
         HotelData data = hotelData.get(position);
         holder.title.setText(data.getTitle());
-        holder.desc.setText(data.getDesc());
+        if(data.getDesc().contains("/")){
+
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            String sp[] = data.getDesc().split("/");
+            String part = sp[0];
+            String parts = sp[1];
+
+            String col = part+"\n";
+            SpannableString graySpannable= new SpannableString(col);
+            graySpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, col.length(), 0);
+            builder.append(graySpannable);
+
+            String cols = parts;
+            SpannableString graysSpannable = new SpannableString(cols);
+            graysSpannable.setSpan(new ForegroundColorSpan(Color.GRAY), 0, cols.length(), 0);
+            builder.append(graysSpannable);
+
+            holder.desc.setText(builder, TextView.BufferType.SPANNABLE);
+        }else{
+            holder.desc.setText(data.getDesc());
+        }
+
 
     }
 

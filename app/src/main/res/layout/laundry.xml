@@ -146,6 +146,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/confirm_demand_click"
         android:id="@+id/confirm_demand_click_laundry"
+        android:onClick="confirmDemand"
         android:gravity="center">
 
         <TextView
