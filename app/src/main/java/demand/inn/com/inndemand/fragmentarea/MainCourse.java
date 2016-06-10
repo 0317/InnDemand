@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,20 +19,47 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Cache;
+import com.android.volley.Network;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.MainCourseAdapter;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
+import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.CartData;
+import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.MaincourseData;
+import demand.inn.com.inndemand.utility.AppPreferences;
+import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by akash
  */
 public class MainCourse extends Fragment {
+
+    //Utility
+    AppPreferences prefs;
 
     View view;
 
@@ -41,6 +69,15 @@ public class MainCourse extends Fragment {
     TextView cart_item, cart_total;
     LinearLayout menu_options;
 
+    //Others
+    String id;
+    String itemName;
+    String itemDesc;
+    String category;
+    String food;
+    String restaurant;
+    String subCategory;
+    String amount;
 
     private RecyclerView recyclerView;
     private MainCourseAdapter adapter;
@@ -49,44 +86,13 @@ public class MainCourse extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.maincourse, container, false);
+        prefs = new AppPreferences(getActivity());
 
         //UI initialize
         cart_item = (TextView) view.findViewById(R.id.maincourse_items);
         cart_total = (TextView) view.findViewById(R.id.maincourse_total);
         cart_total.setText("Total: Rs 2000");
         cart_item.setText("(10 items)");
-
-        //UI Linearlayout for Menu Options to select Menu Items
-       /* menu_options = (LinearLayout) view.findViewById(R.id.menu_options);
-        menu_options.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(getActivity(), menu_options);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
-
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-//
-                        switch (item.getItemId()) {
-                            case R.id.action_all:
-
-                                return  true;
-
-                            case R.id.action_veg:
-                                return true;
-
-                            case R.id.action_nonveg:
-                                return true;
-                        }
-                        return true;
-                    }
-                });
-
-                popup.show();//showing popup menu
-            }
-        });*/
 
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
@@ -98,7 +104,8 @@ public class MainCourse extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
-        prepareCart();
+
+        callMethod();
 
         return  view;
     }
@@ -130,34 +137,102 @@ public class MainCourse extends Fragment {
         }
     }
 
-    /**
-     * Adding few stuff for testing
-     */
-    private void prepareCart() {
 
-        MaincourseData a = new MaincourseData("Indian", "Shahi Paneer: ","Indian zaika's special", "Rs: 360");
-        cardList.add(a);
+    public void callMethod(){
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("restaurant_id", prefs.getRestaurant_Id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("Check API Data", obj.toString());
 
-        a = new MaincourseData("", "Chicken kabab: ","crust cream filled kababs", "Rs: 440");
-        cardList.add(a);
+        postJsonData(Config.innDemand+"restaurant_items/details/", obj.toString());
+    }
 
-        a = new MaincourseData("", "Chicken Korma: ","served with salad a full platte...", "Rs: 520");
-        cardList.add(a);
+    public void postJsonData(String url, String userData) {
 
-        a = new MaincourseData("Thai", "Chicken Curry: ","Thai curry with grilled stuff...", "Rs: 480");
-        cardList.add(a);
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
 
-        a = new MaincourseData("", "Spinach Curry: ","",  "Rs: 460");
-        cardList.add(a);
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
 
-        a = new MaincourseData("Italian", "Chicken Scallopini: ","fresh chicken served wit...", "Rs: 500");
-        cardList.add(a);
-        a = new MaincourseData("", "Veneto Chicken: ","",  "Rs: 480");
-        cardList.add(a);
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
 
-        a = new MaincourseData("", "Mediterranean Pasta:", "refreshing sea food wit...", "Rs: 430");
-        cardList.add(a);
+        // Start the queue
+        mRequestQueue.start();
 
-        adapter.notifyDataSetChanged();
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha==data==success===" + response);
+
+                JSONArray array = null;
+                try {
+                    array = new JSONArray(response);
+
+                    Log.d("API", "API D"+array);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < array.length(); i++) {
+                    try {
+                        JSONObject object = array.getJSONObject(i);
+                        Log.d("API", "API Daa"+array);
+//                        id = object.getString(String.valueOf(id));
+                        Log.d("API", "API ID"+id);
+                        itemName = object.getString("name");
+                        Log.d("API", "API na"+itemName);
+                        itemDesc = object.getString("description");
+                        category = object.getString("category");
+                        Log.d("API", "API Ca"+category);
+                        food = object.getString("food");
+//                        restaurant = object.getString(String.valueOf(restaurant));
+                        subCategory = object.getString("subcategory");
+                        amount = object.getString("price");
+
+                        if(category.contains("Main") || category.equalsIgnoreCase("Main")) {
+                            MaincourseData a = new MaincourseData(category, itemName, itemDesc, "Rs:"+ amount);
+                            cardList.add(a);
+
+                            adapter.notifyDataSetChanged();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
     }
 }

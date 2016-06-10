@@ -6,7 +6,7 @@ package demand.inn.com.inndemand.constants;
 public class AppetiserData {
 
     private String title, name, rupees, details;
-    private int count;
+    private int count = 0;
 
     public AppetiserData() {
     }
@@ -44,7 +44,7 @@ public class AppetiserData {
     }
 
     public int getCount() {
-        return count;
+        return count++;
     }
 
     public void setCount(int count) {

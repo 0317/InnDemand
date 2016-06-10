@@ -183,13 +183,13 @@ public class Cab extends AppCompatActivity {
                     JSONObject obj = new JSONObject();
 
                     try {
-                        obj.put("checkin_id", "2");
+                        obj.put("checkin_id", prefs.getCheckin_Id());
                         obj.put("request_time", formattedDate);
                         obj.put("req_time", finalTime);
                         obj.put("comments", saySomething);
                         obj.put("destination", choosenAddress);
 
-                        postJsonData(Config.innDemand + "cab/save", obj.toString());
+                        postJsonData(Config.innDemand + "cab/save/", obj.toString());
 
                         say_something.getText().clear();
 

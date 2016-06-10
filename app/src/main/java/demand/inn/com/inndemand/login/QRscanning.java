@@ -29,6 +29,7 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -77,9 +78,13 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.qrscanning);
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
+
+        prefs.setIs_task_completed(true);
+        prefs.setIs_In_Hotel(false);
 
         getSupportActionBar().setTitle("InnDemand");
         getSupportActionBar().invalidateOptionsMenu();
@@ -132,33 +137,49 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         Log.e("handler", rawResult.getText()); // Prints scan results
         Log.e("handler", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode)
 
-//        splitData = rawResult.getText();
+        splitData = rawResult.getText();
 
-//        if(rawResult.getText().contains("-")) {
-//            String[] details = splitData.split("-");
-//            hotelID = details[0];
-//            roomID = details[1];
+        if(rawResult.getText().contains("-")) {
+            String[] details = splitData.split("-");
+            hotelID = details[0];
+            roomID = details[1];
 //            qrCode = details[2];
-        /*}else{
 
-        }*/
+            // show the scanner result into dialog box.
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Hotel Details");
+            builder.setMessage("Hotel Details are fetched. Please press Ok to enjoy Services");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    makeJsonObjectRequest();
+                    Intent in = new Intent(QRscanning.this, HotelDetails.class);
+                    startActivity(in);
+                    finish();
+                }
+            });
 
-        // show the scanner result into dialog box.
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Details");
-        builder.setMessage(rawResult.getText());
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                makeJsonObjectRequest();
-                Intent in = new Intent(QRscanning.this, HotelDetails.class);
-                startActivity(in);
-                finish();
-            }
-        });
+            AlertDialog alert1 = builder.create();
+            alert1.show();
 
-        AlertDialog alert1 = builder.create();
-        alert1.show();
+        }else{
+            // show the scanner result into dialog box.
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Details");
+            builder.setMessage(rawResult.getText());
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    makeJsonObjectRequest();
+                    Intent in = new Intent(QRscanning.this, HotelDetails.class);
+                    startActivity(in);
+                    finish();
+                }
+            });
+
+            AlertDialog alert1 = builder.create();
+            alert1.show();
+        }
 
         // If you would like to resume scanning, call this method below:
         // mScannerView.resumeCameraPreview(this);
@@ -225,9 +246,9 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         JSONObject obj = new JSONObject();
         try{
             obj.put("customer", prefs.getCustomer_Id());
-            obj.put("hotel", "1");
+            obj.put("hotel", hotelID);
             obj.put("room", "1");
-            obj.put("qr", "3456");
+            obj.put("qr", roomID);
             obj.put("checkin_time", formattedDate);
 
         }catch (JSONException e){
@@ -236,6 +257,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 
         Log.d("Check Json", obj.toString());
 
+        prefs.setHotel_id(hotelID);
         postJsonData(Config.innDemand+"checkins/checkin/", obj.toString());
 
     }

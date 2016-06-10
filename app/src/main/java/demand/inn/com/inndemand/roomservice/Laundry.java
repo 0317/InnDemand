@@ -2,9 +2,11 @@ package demand.inn.com.inndemand.roomservice;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
@@ -57,6 +59,7 @@ public class Laundry extends AppCompatActivity {
     TextView now, pickTime;
     private Calendar calendar;
     TimePicker timePick;
+    Toolbar toolbar;
 
     //Others
     String saySomething;
@@ -84,8 +87,19 @@ public class Laundry extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Laundry");
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.mipmap.ic_cancel);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         //UI initialize area
-        backpress = (LinearLayout) findViewById(R.id.backPress_laundry);
         say_something = (EditText) findViewById(R.id.say_something_laundry);
 
         //TextView UI Initialize area
@@ -199,12 +213,12 @@ public class Laundry extends AppCompatActivity {
             JSONObject obj = new JSONObject();
 
             try {
-                obj.put("checkin_id", "2");
+                obj.put("checkin_id", prefs.getCheckin_Id());
                 obj.put("request_time", formattedDate);
                 obj.put("req_time", finalTime);
                 obj.put("comments", saySomething);
 
-                postJsonData(Config.innDemand + "laundry/save", obj.toString());
+                postJsonData(Config.innDemand + "laundry/save/", obj.toString());
 
                 say_something.getText().clear();
 

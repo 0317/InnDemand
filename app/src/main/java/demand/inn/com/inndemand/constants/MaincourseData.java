@@ -6,6 +6,7 @@ package demand.inn.com.inndemand.constants;
 public class MaincourseData {
 
     private String title, name, rupees, details;
+    int count, counter;
 
     public MaincourseData() {
     }
@@ -47,5 +48,22 @@ public class MaincourseData {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public int getCount() {
+        return count++;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getCounter() {
+        counter = count;
+        return counter--;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 }

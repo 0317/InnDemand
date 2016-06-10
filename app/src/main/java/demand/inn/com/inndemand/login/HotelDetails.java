@@ -93,6 +93,7 @@ public class HotelDetails extends AppCompatActivity {
     String callHotel;
     String URL, TAG;
     String about_hotel;
+    String hotelName;
 
     //List Items Bottom
     private RecyclerView recyclerView;
@@ -107,6 +108,8 @@ public class HotelDetails extends AppCompatActivity {
         nu = new NetworkUtility(HotelDetails.this);
         prefs = new AppPreferences(HotelDetails.this);
         prefs.setCheckout("2");
+        prefs.setIs_task_completed(true);
+        prefs.setIs_In_Hotel(true);
 
         URL = "";
 
@@ -156,7 +159,7 @@ public class HotelDetails extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle("InnDemand");
+                    collapsingToolbarLayout.setTitle(hotelName);
                     isShow = true;
                 } else if (isShow) {
                     collapsingToolbarLayout.setTitle("");
@@ -243,19 +246,38 @@ public class HotelDetails extends AppCompatActivity {
     //Button onClicklistener to Checkout from the hotel & redirect to Splash Screen
     public void checkOut(View view) {
 
-        //Json Parsing to send hotel details to checkout.
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("checkin_id", prefs.getCheckin_Id());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(HotelDetails.this);
+        builder.setMessage("It seems like you want to checkout?")
+                .setPositiveButton("Checkout", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Json Parsing to send hotel details to checkout.
+                        JSONObject obj = new JSONObject();
+                        try {
+                            obj.put("checkin_id", prefs.getCheckin_Id());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
-        postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
-        prefs.setCheckout("1");
-        Intent in = new Intent(HotelDetails.this, SplashScreen.class);
-        startActivity(in);
-        finish();
+                        postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
+                        prefs.setCheckout("1");
+                        prefs.setIs_In_Hotel(false);
+                        Toast.makeText(HotelDetails.this, "Successfully Checked Out", Toast.LENGTH_LONG).show();
+                        Intent in = new Intent(HotelDetails.this, SplashScreen.class);
+                        startActivity(in);
+                        finish();
+                    }
+                })
+                .setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.setTitle("Are you Sure?");
+        dialog.show();
     }
 
     public void direction(View view) {
@@ -265,6 +287,18 @@ public class HotelDetails extends AppCompatActivity {
 
     //OnClick to go to Restaurant Screen
     public void restaurantClick(View view) {
+        JSONObject obj = new JSONObject();
+
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Api Hotel Data", obj.toString());
+
+        postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
+
         Intent in = new Intent(HotelDetails.this, Restaurant.class);
         startActivity(in);
     }
@@ -297,7 +331,7 @@ public class HotelDetails extends AppCompatActivity {
         JSONObject obj = new JSONObject();
 
         try {
-            obj.put("hotel_id", "1");
+            obj.put("hotel_id", prefs.getHotel_id());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -311,7 +345,7 @@ public class HotelDetails extends AppCompatActivity {
         JSONObject objt = new JSONObject();
 
         try {
-            objt.put("hotel_id", "1");
+            objt.put("hotel_id", prefs.getHotel_id());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -346,7 +380,7 @@ public class HotelDetails extends AppCompatActivity {
                 try {
                     JSONObject object = new JSONObject(response);
 
-                    String name = object.getString("name");
+                    hotelName = object.getString("name");
                     String location = object.getString("location");
                     String latitude = object.getString("latitude");
                     String longitude = object.getString("longitude");
@@ -362,12 +396,15 @@ public class HotelDetails extends AppCompatActivity {
                     String spa_img = object.getString("spa_image");
                     about_hotel = object.getString("about_hotel");
 
-                    hotel_Name.setText(name);
+                    hotel_Name.setText(hotelName);
                     hotel_Address.setText(address);
 
                     Picasso.with(HotelDetails.this).load(restaurant_image).into(main_backdrop);
 
-                    Log.d("Name_", name);
+                    prefs.setHotel_latitude(latitude);
+                    prefs.setHotel_longitude(longitude);
+
+                    Log.d("Name_", hotelName);
                     Log.d("Address_", address);
                     Log.d("Image", restaurant_image);
                     Log.d("COntact", number);
@@ -537,6 +574,78 @@ public class HotelDetails extends AppCompatActivity {
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
+
+    public void postJsonRestaurant(String url, String userData){
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha=restautant=success===" + response);
+
+
+                JSONArray array = null;
+                try {
+                    array = new JSONArray(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < array.length(); i++) {
+                    try {
+                        JSONObject object = array.getJSONObject(i);
+
+                        String restaurant = object.getString("id");
+                        String rest_name = object.getString("name");
+                        String hotel = object.getString("hotel");
+
+                        prefs.setRestaurant_Id(restaurant);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
 
     @Override
     public void onBackPressed() {

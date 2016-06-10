@@ -70,7 +70,7 @@ public class WakeUp extends AppCompatActivity {
     //Date & Time
     Calendar c;
     SimpleDateFormat df, date;
-    String formattedDate, getDate;
+    String formattedDate, getDate, getFinal;
     String finalTime;
 
     @Override
@@ -139,7 +139,7 @@ public class WakeUp extends AppCompatActivity {
                     JSONObject obj = new JSONObject();
 
                     try {
-                        obj.put("checkin_id", "2");
+                        obj.put("checkin_id", prefs.getCheckin_Id());
                         obj.put("request_time", formattedDate);
                         obj.put("req_time", finalTime);
                         obj.put("comments", saySomething);
@@ -227,7 +227,7 @@ public class WakeUp extends AppCompatActivity {
 
         // Append in a StringBuilder
         getTime = new StringBuilder().append(hours).append(':')
-                .append(minutes).append(" "+timeSet).toString();
+                .append(minutes).append(":").append("00").toString(); /*append(timeSet).toString()*/
 
         setTime.setText(getTime);
         changeTime.setVisibility(View.VISIBLE);

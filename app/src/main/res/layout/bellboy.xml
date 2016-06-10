@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/coordinatorLayout">
 
@@ -8,48 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/wake_up_click"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|snap"
+            />
 
-    <LinearLayout
-        android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:id="@+id/backpress_bell"
-        android:onClick="backPress"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_cancel"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bell_boy"
-            android:textSize="@dimen/twenty_sp"
-            android:textColor="@android:color/white"
-            android:padding="10dp"/>
-
-</LinearLayout>
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="40dp"
+            >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
-        android:orientation="vertical"
-        android:weightSum="3">
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="180dp"
             android:src="@drawable/ic_menu_camera"
             android:layout_weight="2"/>
 
@@ -81,6 +66,8 @@
     </LinearLayout>
 
     </LinearLayout>
+
+        </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"

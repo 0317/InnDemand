@@ -66,8 +66,8 @@ public class CheckDetails extends AppCompatActivity {
     private ProgressDialog pDialog;
 
     //Others
-    String name, email, dp, l_name, gender, bDay, fb_location;
-    String gName, gEmail, gDP, gGender, gbBday;
+    String name, email, dp, l_name, gender, bDay, gGender, fb_location, gToken;
+    String gName, gEmail, gDP, gbBday, gLoc;
     String mName, mEmail;
     int yourAge;
     StringBuilder strBuild;
@@ -85,10 +85,7 @@ public class CheckDetails extends AppCompatActivity {
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
         prefs  =new AppPreferences(CheckDetails.this);
 
-        prefs.setIs_task_completed(true);
-
         pDialog = new ProgressDialog(CheckDetails.this);
-
 
         //UI Initialized here
         detail_name = (EditText) findViewById(R.id.fb_name);
@@ -104,8 +101,30 @@ public class CheckDetails extends AppCompatActivity {
             gName = prefs.getUser_gname();
             gEmail = prefs.getUser_gemail();
             gDP = prefs.getUser_gpicture();
+            gGender = String.valueOf(prefs.getGoogle_gender());
+            gbBday = prefs.getGoogle_bday();
+            gLoc  =prefs.getGoogle_location();
+            gToken = prefs.getG_Token();
+
+            if(gGender.equalsIgnoreCase("0"))
+                gGender = "0";
+            else
+                gGender = "1";
+
+            if(gbBday == "")
+                bDay = "none";
+            else
+                bDay = prefs.getGoogle_bday();
+
+            if(gLoc == "")
+                gLoc = "none";
+            else
+                gLoc = prefs.getGoogle_location();
+
+            Log.d("Check", "Check bday "+prefs.getGoogle_bday());
+            Log.d("Check", "Check Loc "+prefs.getGoogle_location());
         }
-        else{
+        else {
             name = getBundle.getString("first_name");
             email = getBundle.getString("email");
             dp = getBundle.getString("profile_pic");
@@ -113,36 +132,36 @@ public class CheckDetails extends AppCompatActivity {
             gender = getBundle.getString("gender");
             bDay = getBundle.getString("birthday");
             fb_location = getBundle.getString("location");
+
+            if (gender.equalsIgnoreCase("Male"))
+                gender = "0";
+            else
+                gender = "1";
+
+            String dob = bDay;
+            String dobSplit[] = dob.split("/");
+            String day = dobSplit[0];
+            String month = dobSplit[1];
+            String year = dobSplit[2];
+
+            int days =  Integer.parseInt(day);
+            int months =  Integer.parseInt(month);
+            int years =  Integer.parseInt(year);
+
+            strBuild = new StringBuilder();
+
+            // enter your date of birth
+            Calendar dateOfYourBirth = new GregorianCalendar(years , months , days);
+            Calendar today = Calendar.getInstance();
+            yourAge = today.get(Calendar.YEAR) - dateOfYourBirth.get(Calendar.YEAR);
+            dateOfYourBirth.add(Calendar.YEAR, yourAge);
+            if (today.before(dateOfYourBirth)) {
+                yourAge--;
+            }
+
+            strBuild.append(yourAge);
         }
 
-        if(gender.equalsIgnoreCase("Male"))
-            gender = "1";
-        else
-            gender = "2";
-
-
-        String dob = bDay;
-        String dobSplit[] = dob.split("/");
-        String day = dobSplit[0];
-        String month = dobSplit[1];
-        String year = dobSplit[2];
-
-        int days =  Integer.parseInt(day);
-        int months =  Integer.parseInt(month);
-        int years =  Integer.parseInt(year);
-
-        strBuild = new StringBuilder();
-
-        // enter your date of birth
-        Calendar dateOfYourBirth = new GregorianCalendar(years , months , days);
-        Calendar today = Calendar.getInstance();
-        yourAge = today.get(Calendar.YEAR) - dateOfYourBirth.get(Calendar.YEAR);
-        dateOfYourBirth.add(Calendar.YEAR, yourAge);
-        if (today.before(dateOfYourBirth)) {
-            yourAge--;
-        }
-
-        strBuild.append(yourAge);
 
         //details set from facebook/google data
         if(name == null)
@@ -196,17 +215,31 @@ public class CheckDetails extends AppCompatActivity {
         try {
             obj.put("name", mName);
             obj.put("email", mEmail);
-            if (dp == null) {
+
+            if (dp == null)
                 obj.put("image", prefs.getUser_gpicture());
-            } else {
+            else
                 obj.put("image", dp);
-            }
+
             obj.put("mobile_number", "9899123456");
-            obj.put("age", strBuild);
-            obj.put("city", fb_location);
-            obj.put("gender", gender);
+
+            if(bDay == null)
+                obj.put("age", bDay);
+            else
+                obj.put("age", strBuild);
+
+            if(fb_location == null)
+                obj.put("city", gLoc);
+            else
+                obj.put("city", fb_location);
+
+            if(gender == null)
+                obj.put("gender", gGender);
+            else
+                obj.put("gender", gender);
+
             if (prefs.getFb_Token() == null)
-                obj.put("facebook_auth", prefs.getG_Token());
+                obj.put("google_auth", prefs.getG_Token());
             else
                 obj.put("facebook_auth", prefs.getFb_Token());
 

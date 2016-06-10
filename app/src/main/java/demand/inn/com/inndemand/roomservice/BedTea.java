@@ -106,9 +106,7 @@ public class BedTea extends AppCompatActivity {
 
         //UI Initialize area
         tea = (TextView) findViewById(R.id.teaCount_bedTea);
-        teaText = tea.getText().toString().trim();
         coffee = (TextView) findViewById(R.id.coffeeCount_bedTea);
-        coffeeText = coffee.getText().toString().trim();
         confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_bedTea);
 
         //TextView UI Initialize area
@@ -126,6 +124,7 @@ public class BedTea extends AppCompatActivity {
         teaMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                teaText = tea.getText().toString().trim();
 
                 if(teaText == "0"){
                     teaMinus.setEnabled(false);
@@ -193,7 +192,7 @@ public class BedTea extends AppCompatActivity {
 
                     JSONObject obj = new JSONObject();
                     try{
-                        obj.put("checkin_id", "2");
+                        obj.put("checkin_id", prefs.getCheckin_Id());
                         obj.put("request_time", formattedDate);
                         obj.put("req_time", finalTime);
                         obj.put("tea_count", teaData);
@@ -279,8 +278,9 @@ public class BedTea extends AppCompatActivity {
     }
 
     public void coffeeMinus(View view){
+        coffeeText = coffee.getText().toString().trim();
 
-        if(coffee.getText().toString() == "0"){
+        if(coffeeText == "0"){
             coffeeMinus.setEnabled(false);
             coffee.setText("0");
         }else {

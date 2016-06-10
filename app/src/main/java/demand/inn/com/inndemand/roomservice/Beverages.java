@@ -56,7 +56,7 @@ public class Beverages extends AppCompatActivity {
     EditText say_Something;
 
     //Others
-    String water_value = "0", soda_value= "0", ice_value = "0", glass_value;
+    String water_value = "0", soda_value= "0", ice_value = "0", glass_value = "0";
 
     //Date & Time
     Calendar c;
@@ -176,7 +176,7 @@ public class Beverages extends AppCompatActivity {
                 }else{
                     JSONObject obj  =new JSONObject();
                     try {
-                        obj.put("checkin_id", "2");
+                        obj.put("checkin_id", prefs.getCheckin_Id());
                         obj.put("request_time", formattedDate);
                         obj.put("comments", saySomething);
                         obj.put("water", water_value);
@@ -184,7 +184,7 @@ public class Beverages extends AppCompatActivity {
                         obj.put("ice", ice_value);
                         obj.put("glass", glass_value);
 
-                        postJsonData(Config.innDemand+"beverages/save/", obj.toString());
+                        postJsonData(Config.innDemand+"water/save/", obj.toString());
 
                         say_Something.getText().clear();
                     } catch (JSONException e) {

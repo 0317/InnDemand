@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -162,6 +163,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                .requestProfile()
                 .requestEmail()
                 .build();
 
@@ -212,6 +214,20 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
 
         terms_conditions.setText(builder, TextView.BufferType.SPANNABLE);
 
+        facebookPost();
+
+    }
+
+    private void facebookPost() {
+        //check login
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken == null) {
+            Log.d(TAG, ">>>" + "Signed Out");
+
+        } else {
+            Log.d(TAG, ">>>" + "Signed In");
+            LoginManager.getInstance().logOut();
+        }
     }
 
     private Bundle getFacebookData(JSONObject object) {
@@ -334,6 +350,16 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
             prefs.setUser_gemail(result.getSignInAccount().getEmail());
             prefs.setUser_gpicture(result.getSignInAccount().getPhotoUrl().toString());
             prefs.setG_Token(acct.getIdToken());
+            Log.d("G_Token", "check"+ acct.getGrantedScopes());
+            Log.d("G_Token", "ID"+ acct.getId());
+            Log.d("G_Token", "check"+ acct.getServerAuthCode());
+            Person person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            prefs.setGoogle_bday(person.getBirthday());
+            prefs.setGoogle_gender(person.getGender());
+            prefs.setGoogle_location(person.getCurrentLocation());
+            Log.d("Age range:", "Check "+person.getBirthday());
+            Log.d("Bday range:", "Check "+person.getGender());
+            Log.d("Loc range:", "Check "+person.getCurrentLocation());
             Intent in = new Intent(Loginscreen.this, CheckDetails.class);
             prefs.setGoogle_logged_In(true);
             startActivity(in);
@@ -415,24 +441,6 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-
-            Person person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            person.getBirthday();
-            prefs.setGoogle_bday(person.getBirthday());
-            person.getAgeRange();
-            prefs.setGoogle_location(person.getCurrentLocation());
-            Log.d("Agre range:", "Check "+person.getBirthday());
-            Log.d("Bday range:", "Check "+person.getGender());
-            Log.d("Loc range:", "Check "+person.getCurrentLocation());
         }
-
     }
-
-    //Intent fire to go to Check Profile Details Page
-    public void nextScreen(View view){
-//        Intent in = new Intent(Loginscreen.this, CheckDetails.class);
-//        startActivity(in);
-//        finish();
-    }
-
 }

@@ -48,7 +48,7 @@
             android:lines="1"
             android:layout_marginLeft="15dp"
             android:id="@+id/restaurant_listitems_name"
-            android:textColor="@color/view_gray"
+            android:textColor="@color/confirm_demand_click"
             android:textStyle="bold"/>
 
                     <TextView

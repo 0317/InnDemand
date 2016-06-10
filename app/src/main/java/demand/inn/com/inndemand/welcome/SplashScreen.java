@@ -76,16 +76,18 @@ public class SplashScreen extends BaseActivity {
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                         } else if (prefs.getIs_task_completed() == true) {
-                            Intent in = new Intent(SplashScreen.this, QRscanning.class);
-                            startActivity(in);
-                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                            finish();
-                        }/* else if(prefs.getCheckout() == "2"){
+                            if(prefs.getIs_In_Hotel() == false) {
+                                Intent in = new Intent(SplashScreen.this, QRscanning.class);
+                                startActivity(in);
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                finish();
+                            }else if(prefs.getIs_In_Hotel() == true){
                             Intent in = new Intent(SplashScreen.this, HotelDetails.class);
                             startActivity(in);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
-                        }*/
+                            }
+                        }
                     }else{
                         snackbar = Snackbar.make(coordinatorLayout, "Oops! No Internet Connection", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null);

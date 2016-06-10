@@ -47,9 +47,12 @@ public class Mapping extends FragmentActivity implements LocationListener {
 
     GoogleMap mGoogleMap;
     ArrayList<LatLng> mMarkerPoints;
+    ArrayList<LatLng> hell;
     double mLatitude = 0;
     double mLongitude = 0;
-
+    double lat = 28.4345552;
+    double lon =  77.0578855;
+    LatLng point;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +77,9 @@ public class Mapping extends FragmentActivity implements LocationListener {
 
             // Getting Map for the SupportMapFragment
             mGoogleMap = fm.getMap();
+            mGoogleMap.isMyLocationEnabled();
+            mGoogleMap.isTrafficEnabled();
+            mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
             // Enable MyLocation Button in the Map
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -108,15 +114,15 @@ public class Mapping extends FragmentActivity implements LocationListener {
             locationManager.requestLocationUpdates(provider, 20000, 0, this);
 
             // Setting onclick event listener for the map
-            mGoogleMap.setOnMapClickListener(new OnMapClickListener() {
-
-                @Override
-                public void onMapClick(LatLng point) {
+//            mGoogleMap.setOnMapClickListener(new OnMapClickListener() {
+//
+//                @Override
+//                public void onMapClick(LatLng point) {
 
                     // Already map contain destination location
                     if(mMarkerPoints.size()>1){
 
-                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentManager fmm = getSupportFragmentManager();
                         mMarkerPoints.clear();
                         mGoogleMap.clear();
                         LatLng startPoint = new LatLng(mLatitude, mLongitude);
@@ -128,8 +134,9 @@ public class Mapping extends FragmentActivity implements LocationListener {
                     // Checks, whether start and end locations are captured
                     if(mMarkerPoints.size() >= 2){
                         LatLng origin = mMarkerPoints.get(0);
-                        LatLng dest = mMarkerPoints.get(1);
+                        LatLng dest = new LatLng(lat, lon);
 
+                        drawMarker(dest);
                         // Getting URL to the Google Directions API
                         String url = getDirectionsUrl(origin, dest);
 
@@ -138,8 +145,8 @@ public class Mapping extends FragmentActivity implements LocationListener {
                         // Start downloading json data from Google Directions API
                         downloadTask.execute(url);
                     }
-                }
-            });
+//                }
+//            });
         }
     }
 
@@ -147,6 +154,9 @@ public class Mapping extends FragmentActivity implements LocationListener {
 
         // Origin of route
         String str_origin = "origin="+origin.latitude+","+origin.longitude;
+
+//        double lat = dest.latitude;
+//        double lon = dest.longitude;
 
         // Destination of route
         String str_dest = "destination="+dest.latitude+","+dest.longitude;
@@ -322,12 +332,13 @@ public class Mapping extends FragmentActivity implements LocationListener {
          */
         if(mMarkerPoints.size()==1){
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            // Add new marker to the Google Map Android API V2
+            mGoogleMap.addMarker(options.title("Your Location").draggable(false));
         }else if(mMarkerPoints.size()==2){
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            // Add new marker to the Google Map Android API V2
         }
-
-        // Add new marker to the Google Map Android API V2
-        mGoogleMap.addMarker(options);
+//            mGoogleMap.addMarker(options.title("Destination").draggable(false));
     }
 
     @Override

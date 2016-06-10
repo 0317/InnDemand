@@ -1,10 +1,12 @@
 package demand.inn.com.inndemand.roomservice;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -51,6 +53,7 @@ public class BellBoy extends AppCompatActivity {
     EditText say_something;
     Snackbar snackbar;
     CoordinatorLayout coordinatorLayout;
+    Toolbar toolbar;
 
     //Others
     String saySomething;
@@ -72,6 +75,18 @@ public class BellBoy extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Bell-boy");
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.mipmap.ic_cancel);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
@@ -82,7 +97,6 @@ public class BellBoy extends AppCompatActivity {
         //UI initialize arae
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
-        backPress = (LinearLayout) findViewById(R.id.backpress_bell);
         say_something = (EditText) findViewById(R.id.say_something_bell);
 
         confirm_demand_click = (LinearLayout) findViewById(R.id.confirm_demand_click);
@@ -105,11 +119,11 @@ public class BellBoy extends AppCompatActivity {
                     JSONObject obj = new JSONObject();
 
                     try {
-                        obj.put("checkin_id", "2");
+                        obj.put("checkin_id", prefs.getCheckin_Id());
                         obj.put("request_time", formattedDate);
                         obj.put("comments", saySomething);
 
-                        postJsonData(Config.innDemand + "bellboy/save", obj.toString());
+                        postJsonData(Config.innDemand + "bellboy/save/", obj.toString());
 
                         say_something.getText().clear();
 

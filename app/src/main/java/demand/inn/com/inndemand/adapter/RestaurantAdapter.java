@@ -18,6 +18,8 @@ import java.util.logging.Handler;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.CartData;
+import demand.inn.com.inndemand.roomservice.Restaurant;
+import demand.inn.com.inndemand.utility.AppPreferences;
 
 /**
  * Created by akash
@@ -27,9 +29,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
     private List<AppetiserData> cartData;
     private Context mContext;
-    int counter;
+    int counter = 0;
 
     RecyclerView.Adapter adapter;
+    AppPreferences prefs;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, subtitle, rupees, count, details;
@@ -57,6 +60,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     public RestaurantAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurantadapt, parent, false);
+        prefs = new AppPreferences(mContext);
 
         return new MyViewHolder(itemView);
     }
@@ -65,7 +69,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     public void onBindViewHolder(final RestaurantAdapter.MyViewHolder holder, final int position) {
         final AppetiserData data = cartData.get(position);
         holder.title.setText(data.getTitle());
-        holder.subtitle.setText(data.getName());
+        holder.subtitle.setText(data.getName()+" ");
         holder.rupees.setText(data.getRupees());
         holder.details.setText(data.getDetails());
 
@@ -73,22 +77,23 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
             holder.title.setVisibility(View.GONE);
         }
 
+        holder.plus.setTag(position);
+        holder.minus.setTag(position);
+        holder.count.setTag(position);
+
         holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                counter++;
-                data.setCount(counter);
-//                counter ++;// update new value
-//                holder.count.setText(data.getCount());
+                counter = data.getCount();// update new value
+                holder.count.setText(String.valueOf(counter));
             }
         });
 
         holder.minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                counter--;
-                data.setCount(counter);
-//                holder.count.setText(data.getCount());
+                int count = counter--;
+                holder.count.setText(String.valueOf(count));
             }
         });
     }
@@ -97,5 +102,4 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     public int getItemCount() {
         return cartData.size();
     }
-
 }

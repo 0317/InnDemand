@@ -16,9 +16,8 @@ public class AppPreferences {
 
     private String customer_Id = "customer_Id",
             checkin_Id = "checkin_Id",
+            restaurant_Id = "restaurant_Id",
             user_gender = "user_gender",
-            user_phone = "user_phone",
-            user_picture = "user_picture",
             user_bday = "user_bday",
             user_lname = "user_lname",
             user_gname = "user_gname",
@@ -29,16 +28,22 @@ public class AppPreferences {
             google_location = "google_location",
             deviceToken = "device_token_pref",
             appVersion = "app_version_pref",
-            hotel_Name = "hotel_Name",
             checkout = "checkout",
-            user_fbname = "user_fbname",
             user_fbemail = "user_fbemail",
             fb_Token = "fb_Token",
             g_Token = "g_Token",
             hotel_id = "hotel_id",
+            hotel_latitude = "hotel_latitude",
+            hotel_longitude  ="hotel_longitude",
+            itemName = "itemName",
+            itemDesc = "itemDesc",
+            price = "price",
+            category = "category",
+            restaurant_food = "restaurant_food",
             save_data = "save_data";
 
     private String is_task_completed = "is_task_completed",
+            is_In_Hotel = "is_In_Hotel",
             facebook_logged_In = "facebook_logged_In",
             google_logged_In = "google_logged_IN";
 
@@ -79,6 +84,14 @@ public class AppPreferences {
         prefEditor.putString(checkin_Id, _checkin_Id).commit();
     }
 
+    public String getRestaurant_Id() {
+        return appSharedpref.getString(restaurant_Id, "");
+    }
+
+    public void setRestaurant_Id(String _restaurant_Id) {
+        prefEditor.putString(restaurant_Id, _restaurant_Id).commit();
+    }
+
     public String getG_Token() {
         return appSharedpref.getString(g_Token, "");
     }
@@ -103,14 +116,6 @@ public class AppPreferences {
         prefEditor.putString(user_gender, _user_gender).commit();
     }
 
-    public String getUser_fbname() {
-        return appSharedpref.getString(user_fbname, "");
-    }
-
-    public void setUser_fbname(String _user_fbname) {
-        prefEditor.putString(user_fbname, _user_fbname).commit();
-    }
-
     public String getUser_fbemail() {
         return appSharedpref.getString(user_fbemail, "");
     }
@@ -125,6 +130,14 @@ public class AppPreferences {
 
     public void setIs_task_completed(Boolean _is_task_completed) {
         prefEditor.putBoolean(String.valueOf(is_task_completed), _is_task_completed).commit();
+    }
+
+    public boolean getIs_In_Hotel() {
+        return appSharedpref.getBoolean(String.valueOf(is_In_Hotel), false);
+    }
+
+    public void setIs_In_Hotel(Boolean _is_In_Hotel) {
+        prefEditor.putBoolean(String.valueOf(is_In_Hotel), _is_In_Hotel).commit();
     }
 
     public boolean getFacebook_logged_In() {
@@ -164,14 +177,6 @@ public class AppPreferences {
         prefEditor.putInt(appVersion, _appVersion).commit();
     }
 
-    public int getUser_phone() {
-        return appSharedpref.getInt(user_phone, Integer.MIN_VALUE);
-    }
-
-    public void setUser_phone(int _user_phone) {
-        prefEditor.putInt(user_phone, _user_phone).commit();
-    }
-
     public String getCheckout() {
         return appSharedpref.getString(checkout, "");
     }
@@ -180,32 +185,12 @@ public class AppPreferences {
         prefEditor.putString(checkout, _checkout).commit();
     }
 
-    public String getHotel_Name() {
-        return appSharedpref.getString(hotel_Name, "");
-    }
-
-    public void setHotel_Name(String _hotel_Name) {
-        prefEditor.putString(hotel_Name, _hotel_Name).commit();
-    }
-
-    public String getUser_picture() {
-        return appSharedpref.getString(user_picture, "");
-    }
-
-    public void setUser_picture(String _user_picture) {
-        prefEditor.putString(user_picture, _user_picture).commit();
-    }
-
     public String getUser_bday() {
         return appSharedpref.getString(user_bday, "");
     }
 
     public void setUser_bday(String _user_bday) {
         prefEditor.putString(user_bday, _user_bday).commit();
-    }
-
-    public static String getSkillPrefs() {
-        return SKILL_PREFS;
     }
 
     public String getUser_gname() {
@@ -241,12 +226,12 @@ public class AppPreferences {
         prefEditor.putString(hotel_id, _hotel_id).commit();
     }
 
-    public String getGoogle_gender() {
-        return appSharedpref.getString(google_gender, "");
+    public int getGoogle_gender() {
+        return appSharedpref.getInt(google_gender, 0);
     }
 
-    public void setGoogle_gender(String _google_gender) {
-        prefEditor.putString(google_gender, _google_gender).commit();
+    public void setGoogle_gender(int _google_gender) {
+        prefEditor.putInt(google_gender, _google_gender).commit();
     }
 
     public String getGoogle_bday() {
@@ -271,5 +256,61 @@ public class AppPreferences {
 
     public void setSave_data(String _save_data) {
         prefEditor.putString(save_data, _save_data).commit();
+    }
+
+    public String getHotel_latitude() {
+        return appSharedpref.getString(hotel_latitude, "");
+    }
+
+    public void setHotel_latitude(String _hotel_latitude) {
+        prefEditor.putString(hotel_latitude, _hotel_latitude).commit();
+    }
+
+    public String getHotel_longitude() {
+        return appSharedpref.getString(hotel_longitude, "");
+    }
+
+    public void setHotel_longitude(String _hotel_longitude) {
+        prefEditor.putString(hotel_longitude, _hotel_longitude).commit();
+    }
+
+    public String getItemName() {
+        return appSharedpref.getString(itemName, "");
+    }
+
+    public void setItemName(String _itemName) {
+        prefEditor.putString(itemName, _itemName).commit();
+    }
+
+    public String getItemDesc() {
+        return appSharedpref.getString(itemDesc, "");
+    }
+
+    public void setItemDesc(String _itemDesc) {
+        prefEditor.putString(itemDesc, _itemDesc).commit();
+    }
+
+    public String getPrice() {
+        return appSharedpref.getString(price, "");
+    }
+
+    public void setPrice(String _price) {
+        prefEditor.putString(price, _price).commit();
+    }
+
+    public String getCategory() {
+        return appSharedpref.getString(category, "");
+    }
+
+    public void setCategory(String _category) {
+        prefEditor.putString(category, _category).commit();
+    }
+
+    public String getRestaurant_food() {
+        return appSharedpref.getString(restaurant_food, "");
+    }
+
+    public void setRestaurant_food(String _restaurant_food) {
+        prefEditor.putString(restaurant_food, _restaurant_food).commit();
     }
 }

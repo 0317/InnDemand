@@ -3,8 +3,10 @@ package demand.inn.com.inndemand.roomservice;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -53,6 +55,7 @@ public class RoomCleaning extends AppCompatActivity {
     LinearLayout backpress, confirm_demand_click_roomClean;
     EditText say_something;
     TextView now, pickTime;
+    Toolbar toolbar;
 
     //Others
     String saySomething;
@@ -69,6 +72,7 @@ public class RoomCleaning extends AppCompatActivity {
     SimpleDateFormat df, date;
     String formattedDate, getDate;
     String finalTime;
+    String comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +83,19 @@ public class RoomCleaning extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Room cleaning");
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.mipmap.ic_cancel);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         //UI initialize area
-        backpress = (LinearLayout) findViewById(R.id.backpress_roomClean);
         confirm_demand_click_roomClean = (LinearLayout) findViewById(R.id.confirm_demand_click_roomClean);
         say_something = (EditText) findViewById(R.id.say_something_roomClean);
 
@@ -123,28 +138,27 @@ public class RoomCleaning extends AppCompatActivity {
                 //string call to get value of edittext
                 saySomething = say_something.getText().toString().trim();
 
-                if(saySomething == null){
-
-                }else {
+                if(saySomething == "")
+                    saySomething = "none";
+                else
+                    saySomething = say_something.getText().toString().trim();
 
                     JSONObject obj = new JSONObject();
 
                     try {
-                        obj.put("checkin_id", "2");
+                        obj.put("checkin_id", prefs.getCheckin_Id());
                         obj.put("request_time", formattedDate);
                         obj.put("req_time", finalTime);
                         obj.put("comments", saySomething);
 
-                        postJsonData(Config.innDemand+"roomcleaning/save", obj.toString());
-
-                        say_something.getText().clear();
+                        postJsonData(Config.innDemand + "roomcleaning/save/", obj.toString());
 
                         say_something.getText().clear();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
+
             }
         });
 

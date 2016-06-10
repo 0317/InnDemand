@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
@@ -21,9 +24,12 @@ public class MainCourseAdapter extends  RecyclerView.Adapter<MainCourseAdapter.M
 
     private List<MaincourseData> cartData;
     private Context mContext;
+    ArrayList<Integer> counters = new ArrayList<Integer>();
+    int counter = 0;
+    int count;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, subtitle, rupees, details;
+        public TextView title, subtitle, rupees, details, count;
         public ImageView plus, minus;
 
         public MyViewHolder(View view) {
@@ -32,7 +38,9 @@ public class MainCourseAdapter extends  RecyclerView.Adapter<MainCourseAdapter.M
             subtitle = (TextView) view.findViewById(R.id.restaurant_listitems_name);
             rupees = (TextView) view.findViewById(R.id.restaurant_listitems_rupees);
             details = (TextView) view.findViewById(R.id.restaurant_listitems_details);
-
+            count = (TextView) view.findViewById(R.id.restaurant_counts);
+            plus = (ImageView) view.findViewById(R.id.restaurant_plus);
+            minus = (ImageView) view.findViewById(R.id.restaurant_minus);
         }
     }
 
@@ -50,8 +58,8 @@ public class MainCourseAdapter extends  RecyclerView.Adapter<MainCourseAdapter.M
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        MaincourseData data = cartData.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        final MaincourseData data = cartData.get(position);
         holder.title.setText(data.getTitle());
         holder.subtitle.setText(data.getName());
         holder.details.setText(data.getDetails());
@@ -60,6 +68,27 @@ public class MainCourseAdapter extends  RecyclerView.Adapter<MainCourseAdapter.M
         if(holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null){
             holder.title.setVisibility(View.GONE);
         }
+
+        holder.plus.setTag(position);
+        holder.minus.setTag(position);
+        holder.count.setTag(position);
+
+
+        holder.plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    counter = data.getCount();
+                    holder.count.setText(String.valueOf(counter));
+            }
+        });
+
+        holder.minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                count = counter--;
+                holder.count.setText(String.valueOf(count));
+            }
+        });
     }
 
     @Override
