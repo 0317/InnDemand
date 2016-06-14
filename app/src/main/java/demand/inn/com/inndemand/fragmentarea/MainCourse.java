@@ -198,7 +198,7 @@ public class MainCourse extends Fragment {
                         amount = object.getString("price");
 
                         if(category.contains("Main") || category.equalsIgnoreCase("Main")) {
-                            MaincourseData a = new MaincourseData(category, itemName, itemDesc, "Rs:"+ amount);
+                            MaincourseData a = new MaincourseData(category, itemName, itemDesc, "Rs: "+ amount);
                             cardList.add(a);
 
                             adapter.notifyDataSetChanged();

@@ -70,6 +70,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:id="@+id/bath_towel"
                         android:orientation="horizontal">
 
                         <RelativeLayout
@@ -107,6 +108,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:id="@+id/bath_soap"
                         android:orientation="horizontal">
 
                         <RelativeLayout
@@ -144,6 +146,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:id="@+id/bath_maintenance"
                         android:orientation="horizontal">
 
                         <RelativeLayout

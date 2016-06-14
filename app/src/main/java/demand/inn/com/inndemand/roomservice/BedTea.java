@@ -57,6 +57,10 @@ public class BedTea extends AppCompatActivity {
     TextView tea, coffee;
     ImageView teaPlus, teaMinus, coffeePlus, coffeeMinus;
     LinearLayout confirmDemand, backpress_bedTea;
+
+    //Linearlayout for (Tea/Coffee) options by Hotel
+    LinearLayout bed_tea, bed_coffee;
+
     EditText say_something_bell;
     Toolbar toolbar;
     TextView now, pickTime;
@@ -105,6 +109,9 @@ public class BedTea extends AppCompatActivity {
         // formattedDate have current date/time
 
         //UI Initialize area
+        bed_tea = (LinearLayout) findViewById(R.id.bed_tea);
+        bed_coffee = (LinearLayout) findViewById(R.id.bed_coffee);
+
         tea = (TextView) findViewById(R.id.teaCount_bedTea);
         coffee = (TextView) findViewById(R.id.coffeeCount_bedTea);
         confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_bedTea);
@@ -120,6 +127,18 @@ public class BedTea extends AppCompatActivity {
         teaPlus = (ImageView) findViewById(R.id.teaPlus_bedTea);
         coffeeMinus = (ImageView) findViewById(R.id.coffeeMinus_bedTea);
         coffeePlus = (ImageView) findViewById(R.id.coffeePlus_bedTea);
+
+        //Area to set Bed Tea/Coffe Options
+        if(prefs.getTea() == false)
+            bed_tea.setVisibility(View.GONE);
+        else
+            bed_tea.setVisibility(View.VISIBLE);
+
+        if(prefs.getCoffee() == false)
+            bed_coffee.setVisibility(View.GONE);
+        else
+            bed_coffee.setVisibility(View.VISIBLE);
+
 
         teaMinus.setOnClickListener(new View.OnClickListener() {
             @Override

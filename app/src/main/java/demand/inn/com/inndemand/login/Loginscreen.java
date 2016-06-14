@@ -348,14 +348,25 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
             System.out.print("Google Details========"+result.getSignInAccount().getDisplayName());
             prefs.setUser_gname(result.getSignInAccount().getDisplayName());
             prefs.setUser_gemail(result.getSignInAccount().getEmail());
-            prefs.setUser_gpicture(result.getSignInAccount().getPhotoUrl().toString());
-            prefs.setG_Token(acct.getIdToken());
-            Log.d("G_Token", "check"+ acct.getGrantedScopes());
+//            prefs.setUser_gpicture(result.getSignInAccount().getPhotoUrl().toString());
+//            prefs.setUser_gpicture(acct.getPhotoUrl().toString());
+//            prefs.setG_Token(acct.getIdToken());
+            Log.d("G_Token", "check Pic"+ acct.getPhotoUrl());
             Log.d("G_Token", "ID"+ acct.getId());
             Log.d("G_Token", "check"+ acct.getServerAuthCode());
             Person person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
             prefs.setGoogle_bday(person.getBirthday());
             prefs.setGoogle_gender(person.getGender());
+            JSONObject obj = null;
+            try {
+                obj = new JSONObject(String.valueOf(person.getImage()));
+                String img = obj.getString("url");
+                prefs.setUser_gpicture(img);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Log.d("G_Token", "check Pic Plus"+ person.getImage());
             prefs.setGoogle_location(person.getCurrentLocation());
             Log.d("Age range:", "Check "+person.getBirthday());
             Log.d("Bday range:", "Check "+person.getGender());

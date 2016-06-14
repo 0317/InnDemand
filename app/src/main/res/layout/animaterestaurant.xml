@@ -53,6 +53,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/note_restaurant"
                         android:textSize="@dimen/ten_sp"
+                        android:id="@+id/restaurant_text"
                         android:textColor="@android:color/white"/>
 
                 </LinearLayout>
@@ -81,12 +82,13 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             android:background="@color/theme_gray"
             style="@style/AlertDialog.AppCompat"
             app:tabSelectedTextColor="@color/confirm_demand_click"
             app:tabTextColor="@color/view_gray"
-            app:tabGravity="fill"/>
+            app:tabGravity="center"
+            />
 
     </android.support.v4.widget.NestedScrollView>
 

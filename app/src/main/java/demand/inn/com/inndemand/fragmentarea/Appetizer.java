@@ -1,28 +1,20 @@
 package demand.inn.com.inndemand.fragmentarea;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +43,6 @@ import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Config;
-import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -164,7 +155,7 @@ public class Appetizer extends Fragment {
     public void postJsonData(String url, String userData) {
 
         RequestQueue mRequestQueue;
-        Cache cache = new DiskBasedCache(getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
+        final Cache cache = new DiskBasedCache(getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
 
         // Set up the network to use HttpURLConnection as the HTTP client.
         Network network = new BasicNetwork(new HurlStack());
@@ -209,9 +200,16 @@ public class Appetizer extends Fragment {
                         amount = object.getString("price");
 
                         if(category.contains("starter") || category.equalsIgnoreCase("Starter")) {
-                            AppetiserData a = new AppetiserData(category, itemName, itemDesc, "Rs:"+amount);
-                            cardList.add(a);
 
+                            prefs.setCategory(category);
+
+                            if(category.equals("")) {
+                                AppetiserData a = new AppetiserData("", itemName, itemDesc, "Rs: " + amount);
+                                cardList.add(a);
+                            }else {
+                                AppetiserData a = new AppetiserData(category, itemName, itemDesc, "Rs: " + amount);
+                                cardList.add(a);
+                            }
                             adapter.notifyDataSetChanged();
                         }
 

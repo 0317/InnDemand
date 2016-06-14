@@ -33,10 +33,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -215,8 +215,6 @@ public class Mapping extends FragmentActivity implements LocationListener {
         return data;
     }
 
-
-
     /** A class to download data from Google Directions URL */
     private class DownloadTask extends AsyncTask<String, Void, String>{
 
@@ -338,6 +336,9 @@ public class Mapping extends FragmentActivity implements LocationListener {
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
             // Add new marker to the Google Map Android API V2
         }
+//        Marker m = mGoogleMap.addMarker(new MarkerOptions().position(point).title("Destination"));
+
+//        return m;
 //            mGoogleMap.addMarker(options.title("Destination").draggable(false));
     }
 

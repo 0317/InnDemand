@@ -67,8 +67,8 @@ public class CheckDetails extends AppCompatActivity {
 
     //Others
     String name, email, dp, l_name, gender, bDay, gGender, fb_location, gToken;
-    String gName, gEmail, gDP, gbBday, gLoc;
-    String mName, mEmail;
+    String gName, gEmail, gDP, gbBday = "none", gLoc = "none";
+    String mName, mEmail, phoneNo = "none";
     int yourAge;
     StringBuilder strBuild;
 
@@ -221,7 +221,7 @@ public class CheckDetails extends AppCompatActivity {
             else
                 obj.put("image", dp);
 
-            obj.put("mobile_number", "9899123456");
+            obj.put("mobile_number", phoneNo);
 
             if(bDay == null)
                 obj.put("age", bDay);

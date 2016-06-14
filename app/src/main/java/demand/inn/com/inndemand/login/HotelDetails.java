@@ -24,10 +24,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,14 +58,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.HotelAdapter;
+import demand.inn.com.inndemand.adapter.ListAdapter;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.HotelData;
+import demand.inn.com.inndemand.constants.ListData;
 import demand.inn.com.inndemand.mapdirection.Mapping;
+import demand.inn.com.inndemand.roomservice.Bar;
 import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.utility.AppPreferences;
@@ -89,6 +98,9 @@ public class HotelDetails extends AppCompatActivity {
     ImageView main_backdrop;
     Toolbar toolbar;
 
+    //Area to Show Details of Hotel(Includes Restaurant/ Services/ Spa/ Bar or not)
+    LinearLayout restaurant_area, service_area, spa_area, bar_area;
+
     //Others
     String callHotel;
     String URL, TAG;
@@ -96,9 +108,28 @@ public class HotelDetails extends AppCompatActivity {
     String hotelName;
 
     //List Items Bottom
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, restaurantList;
     private HotelAdapter adapter;
+    private ListAdapter restaurantAdapter;
     private List<HotelData> hotelData;
+    private List<ListData> restaurantData;
+
+    //Timings Call
+    String fm_bar;
+    String fm_spa;
+    String fm_service;
+    String fm_restaurant;
+    String to_bar;
+    String to_spa;
+    String to_service;
+    String to_restaurant;
+
+    //Date & Time
+    Calendar c;
+    SimpleDateFormat df, timeFormat;
+    String formattedDate, getTime;
+
+    boolean bar, spa, restaurant, service;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -146,6 +177,21 @@ public class HotelDetails extends AppCompatActivity {
             }
         });
 
+        c = Calendar.getInstance();
+        System.out.println("Current time => "+c.getTime());
+
+        df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        timeFormat = new SimpleDateFormat("HH:mm:ss");
+        formattedDate = df.format(c.getTime());
+        getTime = timeFormat.format(c.getTime());
+        // formattedDate have current date/time
+
+        //Method to get Inclusion data for Hotel (Boolean values)
+        inclusion();
+
+        //Mehod to get Timings for Hotel Services
+        timings();
+
         //Title set for Collapsing Toolbar
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
@@ -167,6 +213,12 @@ public class HotelDetails extends AppCompatActivity {
                 }
             }
         });
+
+        //UI Initialize
+        restaurant_area = (LinearLayout) findViewById(R.id.hotel_restaurant);
+        service_area = (LinearLayout) findViewById(R.id.hotel_roomservice);
+        spa_area = (LinearLayout) findViewById(R.id.hotel_spa);
+        bar_area = (LinearLayout) findViewById(R.id.hotel_bar);
 
         main_backdrop = (ImageView) findViewById(R.id.main_backdrop);
         // If you are using normal ImageView
@@ -194,10 +246,35 @@ public class HotelDetails extends AppCompatActivity {
         //variable to get Hotel contact number
         callHotel = "";
 
+        //Condition area for Hotel Details
+        if(prefs.getRestaurant() == false)
+            restaurant_area.setVisibility(View.GONE);
+        else
+            restaurant_area.setVisibility(View.VISIBLE);
+
+        if(prefs.getRoom_service() == false)
+            service_area.setVisibility(View.GONE);
+        else
+            service_area.setVisibility(View.VISIBLE);
+
+        if(prefs.getBar()== false)
+            bar_area.setVisibility(View.GONE);
+        else
+            bar_area.setVisibility(View.VISIBLE);
+
+        if(prefs.getSpa()== false)
+            spa_area.setVisibility(View.GONE);
+        else
+            spa_area.setVisibility(View.VISIBLE);
+
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.hotel_recycler_view);
+        restaurantList = (RecyclerView) findViewById(R.id.hotel_recycler_list);
+        restaurantList.setVisibility(View.GONE);
         hotelData = new ArrayList<>();
+        restaurantData  = new ArrayList<>();
         adapter = new HotelAdapter(this, hotelData);
+        restaurantAdapter = new ListAdapter(this, restaurantData);
 
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -205,14 +282,31 @@ public class HotelDetails extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
+        RecyclerView.LayoutManager mLayoutManagers = new LinearLayoutManager(this);
+        restaurantList.setLayoutManager(mLayoutManagers);
+        restaurantList.setItemAnimator(new DefaultItemAnimator());
+        restaurantList.addItemDecoration(new SimpleDividerItemDecoration(this));
+        prepareData();
+
 //        if(nu.isConnectingToInternet()) {
         recyclerView.setAdapter(adapter);
+        restaurantList.setAdapter(restaurantAdapter);
 
         makeJsonObjectRequest();
         makeJsonRequestBottom();
-       /* }else{
 
-        }*/
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                ListData data = restaurantData.get(position);
+                Toast.makeText(HotelDetails.this, data.getTitle(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
     }
 
@@ -241,6 +335,32 @@ public class HotelDetails extends AppCompatActivity {
                 mDivider.draw(c);
             }
         }
+    }
+
+    public void inclusion(){
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Api Hotel Data", obj.toString());
+
+        postJsonDataInclusion(Config.innDemand+"inclusion/details/", obj.toString());
+    }
+
+    public void timings(){
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Api Hotel Data", obj.toString());
+
+        postJsonDataTimings(Config.innDemand+"timing/details/", obj.toString());
     }
 
     //Button onClicklistener to Checkout from the hotel & redirect to Splash Screen
@@ -285,22 +405,29 @@ public class HotelDetails extends AppCompatActivity {
         startActivity(in);
     }
 
-    //OnClick to go to Restaurant Screen
+    //OnClick to show Restaurant List of the Hotel
     public void restaurantClick(View view) {
-        JSONObject obj = new JSONObject();
-
-        try {
-            obj.put("hotel_id", prefs.getHotel_id());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if(prefs.getCheck_list() == false) {
+            restaurantList.setVisibility(View.VISIBLE);
+            prefs.setCheck_list(true);
+        }else if(prefs.getCheck_list() == true){
+            restaurantList.setVisibility(View.GONE);
+            prefs.setCheck_list(false);
         }
-
-        Log.d("Api Hotel Data", obj.toString());
-
-        postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
-
-        Intent in = new Intent(HotelDetails.this, Restaurant.class);
-        startActivity(in);
+//        JSONObject obj = new JSONObject();
+//
+//        try {
+//            obj.put("hotel_id", prefs.getHotel_id());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Log.d("Api Hotel Data", obj.toString());
+//
+//        postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
+//
+//        Intent in = new Intent(HotelDetails.this, Restaurant.class);
+//        startActivity(in);
     }
 
     //OnClick to go to Room Services Screen
@@ -312,8 +439,8 @@ public class HotelDetails extends AppCompatActivity {
 
     //OnClick to go to Bar Screen
     public void barClick(View view) {
-//        Intent in = new Intent(HotelDetails.this, Beverages.class);
-//        startActivity(in);
+        Intent in = new Intent(HotelDetails.this, Bar.class);
+        startActivity(in);
     }
 
     //OnClick to go to Spa Screen
@@ -677,4 +804,412 @@ public class HotelDetails extends AppCompatActivity {
 //        }
     }
 
+    public void prepareData(){
+        ListData data = new ListData("DownUnder", "Restaurant no: 1");
+        restaurantData.add(data);
+
+        data = new ListData("Dine Hall", "Restaurant no: 2");
+        restaurantData.add(data);
+
+    }
+
+    public interface ClickListener {
+        void onClick(View view, int position);
+
+        void onLongClick(View view, int position);
+    }
+
+    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private GestureDetector gestureDetector;
+        private HotelDetails.ClickListener clickListener;
+
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final HotelDetails.ClickListener clickListener) {
+            this.clickListener = clickListener;
+            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && clickListener != null) {
+                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
+                clickListener.onClick(child, rv.getChildPosition(child));
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((ListAdapter) restaurantAdapter).setOnItemClickListener(new ListAdapter.MyClickListener() {
+
+            @Override
+            public void onItemClick(int position, View v) {
+                Log.i("TAG", " Clicked on Item " + position);
+                JSONObject obj = new JSONObject();
+//
+            try {
+                obj.put("hotel_id", prefs.getHotel_id());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Log.d("Api Hotel Data", obj.toString());
+
+            postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
+
+            Intent in = new Intent(HotelDetails.this, Restaurant.class);
+            startActivity(in);
+            }
+        });
+    }
+
+    public void postJsonDataInclusion(String url, String userData){
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post inclusion json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha=inclusion=success===" + response);
+
+
+                JSONObject object = null;
+                try {
+                    object = new JSONObject(response);
+
+                    Boolean bar = object.getBoolean("bar");
+                    Boolean spa = object.getBoolean("spa");
+                    Boolean restaurant = object.getBoolean("restaurant");
+                    Boolean room_service = object.getBoolean("room_service");
+                    Boolean room_clean = object.getBoolean("room_clean");
+                    Boolean laundry = object.getBoolean("laundry");
+                    Boolean cab = object.getBoolean("cab");
+                    Boolean bath_ess = object.getBoolean("bathroom_essentials");
+                    Boolean bathroom_essentials_towels = object.getBoolean("bathroom_essentials_towels");
+                    Boolean bathroom_essentials_toiletries = object.getBoolean("bathroom_essentials_toiletries");
+                    Boolean bathroom_essentials_maintenance = object.getBoolean("bathroom_essentials_maintenance");
+                    Boolean water = object.getBoolean("water");
+                    Boolean mineral_water = object.getBoolean("mineral_water");
+                    Boolean ice_bucket = object.getBoolean("ice_bucket");
+                    Boolean soda = object.getBoolean("soda");
+                    Boolean glass = object.getBoolean("glass");
+                    Boolean wake_me_up = object.getBoolean("wake_me_up");
+                    Boolean tea_coffee = object.getBoolean("tea_coffee");
+                    Boolean tea = object.getBoolean("tea");
+                    Boolean coffee = object.getBoolean("coffee");
+                    Boolean bell_boy = object.getBoolean("bell_boy");
+
+                    prefs.setBell_boy(bell_boy);
+                    prefs.setCoffee(coffee);
+                    prefs.setTea(tea);
+                    prefs.setBed_tea(tea_coffee);
+                    prefs.setWake_up(wake_me_up);
+                    prefs.setBar(bar);
+                    prefs.setSpa(spa);
+                    prefs.setRestaurant(restaurant);
+                    prefs.setRoom_service(room_service);
+                    prefs.setRoom_clean(room_clean);
+                    prefs.setLaundry(laundry);
+                    prefs.setCab(cab);
+                    prefs.setBathroom(bath_ess);
+                    prefs.setBath_towel(bathroom_essentials_towels);
+                    prefs.setBath_toiletries(bathroom_essentials_toiletries);
+                    prefs.setBath_maintenance(bathroom_essentials_maintenance);
+                    prefs.setBeverage(water);
+                    prefs.setWater(mineral_water);
+                    prefs.setIce_bucket(ice_bucket);
+                    prefs.setSoda(soda);
+                    prefs.setGlass(glass);
+
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    //Method to get timings of all hotel services(Restaurant timings/Spa timings(if there) & others like same)
+    public void postJsonDataTimings(String url, String userData){
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post timings json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha=timings=success===" + response);
+
+
+                JSONObject object = null;
+                try {
+                    object = new JSONObject(response);
+
+                    fm_bar = object.getString("from_bar");
+                    fm_spa = object.getString("from_spa");
+                    fm_service = object.getString("from_room_services");
+                    fm_restaurant = object.getString("from_restaurant");
+                    to_bar = object.getString("to_bar");
+                    to_spa = object.getString("to_spa");
+                    to_service = object.getString("to_room_services");
+                    to_restaurant = object.getString("to_restaurant");
+
+                    try {
+                        isTimeBetweenTwoTime(fm_service, to_service, getTime);
+                        isTimeBetweenRestaurant(fm_restaurant, to_restaurant, getTime);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    public boolean isTimeBetweenTwoTime(String argStartTime,
+                                        String argEndTime, String argCurrentTime) throws ParseException {
+        String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
+//        AppPreferences pref = new AppPreferences(HotelDetails.this);
+        //
+        if (argStartTime.matches(reg) && argEndTime.matches(reg) && argCurrentTime.matches(reg)) {
+            boolean valid = false;
+            // Start Time
+            java.util.Date startTime = new SimpleDateFormat("HH:mm:ss").parse(argStartTime);
+            Calendar startCalendar = Calendar.getInstance();
+            startCalendar.setTime(startTime);
+
+            // Current Time
+            java.util.Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(argCurrentTime);
+            Calendar currentCalendar = Calendar.getInstance();
+            currentCalendar.setTime(currentTime);
+
+            // End Time
+            java.util.Date endTime = new SimpleDateFormat("HH:mm:ss").parse(argEndTime);
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(endTime);
+
+            //
+            if (currentTime.compareTo(endTime) < 0) {
+
+                currentCalendar.add(Calendar.DATE, 1);
+                currentTime = currentCalendar.getTime();
+
+            }
+
+            if (startTime.compareTo(endTime) < 0) {
+
+                startCalendar.add(Calendar.DATE, 1);
+                startTime = startCalendar.getTime();
+
+            }
+            //
+            if (currentTime.before(startTime)) {
+
+                System.out.println(" Time is Lesser ");
+                prefs.setFm_service(true);
+                valid = false;
+                System.out.println("Values , Start Time /n " + prefs.getFm_service());
+            } else {
+
+                if (currentTime.after(endTime)) {
+                    endCalendar.add(Calendar.DATE, 1);
+                    endTime = endCalendar.getTime();
+
+                }
+
+                System.out.println("Comparing , Start Time /n " + startTime);
+                System.out.println("Comparing , End Time /n " + endTime);
+                System.out
+                        .println("Comparing , Current Time /n " + currentTime);
+
+                if (currentTime.before(endTime)) {
+                    System.out.println("RESULT, Time lies b/w");
+                    prefs.setFm_service(false);
+                    valid = true;
+                } else {
+                    valid = false;
+                    System.out.println("RESULT, Time does not lies b/w");
+                    prefs.setFm_service(true);
+                }
+
+            }
+            return valid;
+
+        } else {
+            throw new IllegalArgumentException(
+                    "Not a valid time, expecting HH:MM:SS format");
+        }
+    }
+
+    public boolean isTimeBetweenRestaurant(String argStartTime,
+                                        String argEndTime, String argCurrentTime) throws ParseException {
+        String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
+//        AppPreferences pref = new AppPreferences(HotelDetails.this);
+        //
+        if (argStartTime.matches(reg) && argEndTime.matches(reg) && argCurrentTime.matches(reg)) {
+            boolean valid = false;
+            // Start Time
+            java.util.Date startTime = new SimpleDateFormat("HH:mm:ss").parse(argStartTime);
+            Calendar startCalendar = Calendar.getInstance();
+            startCalendar.setTime(startTime);
+
+            // Current Time
+            java.util.Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(argCurrentTime);
+            Calendar currentCalendar = Calendar.getInstance();
+            currentCalendar.setTime(currentTime);
+
+            // End Time
+            java.util.Date endTime = new SimpleDateFormat("HH:mm:ss").parse(argEndTime);
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(endTime);
+
+            //
+            if (currentTime.compareTo(endTime) < 0) {
+
+                currentCalendar.add(Calendar.DATE, 1);
+                currentTime = currentCalendar.getTime();
+
+            }
+
+            if (startTime.compareTo(endTime) < 0) {
+
+                startCalendar.add(Calendar.DATE, 1);
+                startTime = startCalendar.getTime();
+
+            }
+            //
+            if (currentTime.before(startTime)) {
+
+                System.out.println(" Time is Lesser ");
+                prefs.setFm_restaurant(true);
+                valid = false;
+                System.out.println("Values , Start Time /n " + prefs.getFm_service());
+            } else {
+
+                if (currentTime.after(endTime)) {
+                    endCalendar.add(Calendar.DATE, 1);
+                    endTime = endCalendar.getTime();
+
+                }
+
+                System.out.println("Comparing , Start Time /n " + startTime);
+                System.out.println("Comparing , End Time /n " + endTime);
+                System.out
+                        .println("Comparing , Current Time /n " + currentTime);
+
+                if (currentTime.before(endTime)) {
+                    System.out.println("RESULT, Time lies b/w");
+                    prefs.setFm_restaurant(false);
+                    valid = true;
+                } else {
+                    valid = false;
+                    System.out.println("RESULT, Time does not lies b/w");
+                    prefs.setFm_restaurant(true);
+                }
+
+            }
+            return valid;
+
+        } else {
+            throw new IllegalArgumentException(
+                    "Not a valid time, expecting HH:MM:SS format");
+        }
+    }
 }

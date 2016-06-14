@@ -6,7 +6,13 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- .......Facebook App ID....... -->
+
     <string name="facebook_app_id">1616387568688991</string>
+
+    <!-- .......Google GCM Sender ID ....... -->
+
+    <string name="gcm_defaultSenderId">252351515610</string>
 
     <!-- .......Google Integration String calls....... -->
 

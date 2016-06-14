@@ -1,12 +1,14 @@
 package demand.inn.com.inndemand.constants;
 
+import java.util.ArrayList;
+
 /**
  * Created by akash
  */
 public class AppetiserData {
 
     private String title, name, rupees, details;
-    private int count = 0;
+    private static int count = 0;
 
     public AppetiserData() {
     }
@@ -58,4 +60,14 @@ public class AppetiserData {
     public void setDetails(String details) {
         this.details = details;
     }
+
+  /*  public static ArrayList<AppetiserData> createList(int counts) {
+        ArrayList<AppetiserData> counter = new ArrayList<AppetiserData>();
+
+        for (int i = 1; i <= counts; i++) {
+            counter.add(new AppetiserData("", String.valueOf(count), String.valueOf(i <= counts/ 2) , ""));
+        }
+
+        return counter;
+    }*/
 }

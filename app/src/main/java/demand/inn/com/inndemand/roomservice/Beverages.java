@@ -53,6 +53,10 @@ public class Beverages extends AppCompatActivity {
     //UI call area
     CheckBox water_check, soda_check, ice_check, glass_check;
     LinearLayout confirmDemand;
+
+    //Linearlayout for Options provided for beverages side services (water, soda, ice, glass)
+    LinearLayout water_bottle, soda_bottle, ice_bottle, glass_bottle;
+
     EditText say_Something;
 
     //Others
@@ -87,6 +91,11 @@ public class Beverages extends AppCompatActivity {
         });
 
         //UI Initialize area
+        water_bottle = (LinearLayout) findViewById(R.id.water_bottle);
+        soda_bottle = (LinearLayout) findViewById(R.id.soda_bottle);
+        ice_bottle = (LinearLayout) findViewById(R.id.ice_bottle);
+        glass_bottle = (LinearLayout) findViewById(R.id.glass_bottle);
+
         confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_beverages);
         water_check = (CheckBox) findViewById(R.id.water_bottles_beverages);
         soda_check = (CheckBox) findViewById(R.id.soda_bottles_beverages);
@@ -102,6 +111,27 @@ public class Beverages extends AppCompatActivity {
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         formattedDate = df.format(c.getTime());
         // formattedDate have current date/time
+
+        //Condition to show which options hotel provides
+        if(prefs.getWater() == false)
+            water_bottle.setVisibility(View.GONE);
+        else
+            water_bottle.setVisibility(View.VISIBLE);
+
+        if(prefs.getSoda() == false)
+            soda_bottle.setVisibility(View.GONE);
+        else
+            soda_bottle.setVisibility(View.VISIBLE);
+
+        if(prefs.getIce_bucket() == false)
+            ice_bottle.setVisibility(View.GONE);
+        else
+            ice_bottle.setVisibility(View.VISIBLE);
+
+        if(prefs.getGlass() == false)
+            glass_bottle.setVisibility(View.GONE);
+        else
+            glass_bottle.setVisibility(View.VISIBLE);
 
         //Click call area (ImageView)
         //Selection of items(Glass/ Water/ Soda/ Ice) for the room

@@ -3,8 +3,10 @@
     package="demand.inn.com.inndemand">
 
     <!-- ...............InnDemand app permissions area............ -->
+    <permission android:name="demand.inn.com.inndemand.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="demand.inn.com.inndemand.permission.C2D_MESSAGE" />
     <uses-permission-sdk-23 android:name="android.permission.CAMERA"></uses-permission-sdk-23>
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- To access accounts configured on device -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -94,6 +96,11 @@
         </activity>
         <activity android:name=".cartarea.MyCart"
             android:screenOrientation="portrait">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
         <activity android:name=".welcome.CommentArea"
             android:screenOrientation="portrait"></activity>
@@ -152,6 +159,18 @@
             </intent-filter>-->
         </activity>
 
+        <!-- ...................Bar Activity Area...................... -->
+
+        <activity android:name=".roomservice.Bar"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+
         <!-- ...................Terms of Use Area...................... -->
 
         <activity android:name=".login.PrivacyPolicy">
@@ -164,8 +183,37 @@
         <activity android:name=".login.TermsCondition"></activity>
 
         <!-- ...................Broadcast call Area....................... -->
+        <activity android:name=".gcm.GCMNotifications"
+            android:screenOrientation="portrait"></activity>
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="demand.inn.com.inndemand.gcm" />
+            </intent-filter>
+        </receiver>
 
         <!-- ...................Services call Area........................ -->
+
+        <service
+            android:name="demand.inn.com.inndemand.gcm.GcmIntentService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="demand.inn.com.inndemand.gcm.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
 
 
         <!-- ...................Map Area....................................-->

@@ -55,6 +55,9 @@ public class Bathroom extends AppCompatActivity {
     EditText say_something_bell;
     Toolbar toolbar;
 
+    //Linearlayout to show/hide options provided by hotel (Towel/Soap/Maintenance)
+    LinearLayout bath_towel, bath_soap, bath_maintenance;
+
     //Class call
     AppController appController;
 
@@ -89,6 +92,9 @@ public class Bathroom extends AppCompatActivity {
 
         //UI Initialize area
         confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_bath);
+        bath_towel = (LinearLayout) findViewById(R.id.bath_towel);
+        bath_soap = (LinearLayout) findViewById(R.id.bath_soap);
+        bath_maintenance = (LinearLayout) findViewById(R.id.bath_maintenance);
 
         //UI CheckBox Initialize area
         towels = (CheckBox) findViewById(R.id.towels_bath);
@@ -103,6 +109,22 @@ public class Bathroom extends AppCompatActivity {
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         formattedDate = df.format(c.getTime());
         // formattedDate have current date/time
+
+        if(prefs.getBath_towel() == false)
+            bath_towel.setVisibility(View.GONE);
+        else
+            bath_towel.setVisibility(View.VISIBLE);
+
+        if(prefs.getBath_toiletries() == false)
+            bath_soap.setVisibility(View.GONE);
+        else
+            bath_soap.setVisibility(View.VISIBLE);
+
+        if(prefs.getBath_maintenance()== false)
+            bath_maintenance.setVisibility(View.GONE);
+        else
+            bath_maintenance.setVisibility(View.VISIBLE);
+
 
         //Selection of items(Towels/Soap/maintainance) for the room
         towels.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

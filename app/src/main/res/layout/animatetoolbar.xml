@@ -165,6 +165,7 @@
                 android:layout_marginTop="15dp"
                 android:onClick="restaurantClick"
                 android:gravity="center_vertical"
+                android:id="@+id/hotel_restaurant"
                 android:background="@mipmap/ic_restaurant_click">
 
                 <ImageView
@@ -184,6 +185,17 @@
 
             </LinearLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/hotel_recycler_list"
+                android:layout_marginLeft="15dp"
+                android:background="@android:color/white"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp">
+
+            </android.support.v7.widget.RecyclerView>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -192,6 +204,7 @@
                 android:layout_marginTop="15dp"
                 android:onClick="roomServiceClick"
                 android:gravity="center_vertical"
+                android:id="@+id/hotel_roomservice"
                 android:background="@mipmap/ic_roomservice_click">
 
                 <ImageView
@@ -219,6 +232,7 @@
                 android:layout_marginTop="15dp"
                 android:onClick="barClick"
                 android:gravity="center_vertical"
+                android:id="@+id/hotel_bar"
                 android:background="@mipmap/ic_bar_click">
 
 
@@ -247,6 +261,7 @@
                 android:layout_marginTop="15dp"
                 android:onClick="spaClick"
                 android:gravity="center_vertical"
+                android:id="@+id/hotel_spa"
                 android:background="@mipmap/ic_spa_click">
 
 

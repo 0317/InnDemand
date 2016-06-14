@@ -16,8 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -39,9 +39,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import demand.inn.com.inndemand.R;
-
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
 import demand.inn.com.inndemand.fragmentarea.Dessert;
@@ -53,17 +53,23 @@ import demand.inn.com.inndemand.volleycall.AppController;
 /**
  * Created by akash
  */
+
 public class Restaurant extends AppCompatActivity {
 
     //Utility
     NetworkUtility nu;
     AppPreferences prefs;
 
+    //UI Call area
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    ViewPagerAdapter adapter;
+    TextView restaurant_text;
+
     View view;
     private Menu menu;
     int position;
+    String value = "";
 
     Toolbar toolbar;
 
@@ -81,6 +87,9 @@ public class Restaurant extends AppCompatActivity {
     String restaurant;
     String subCategory;
     String amount;
+    String tabName;
+
+    private final Random mRandom = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +180,9 @@ public class Restaurant extends AppCompatActivity {
             }
         });
 
+        //UI TextView Initialize
+        restaurant_text = (TextView) findViewById(R.id.restaurant_text);
+
         //tabclass initialization
         mAppetizer = new Appetizer();
         mDessert = new Dessert();
@@ -184,16 +196,37 @@ public class Restaurant extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        if(prefs.getFm_restaurant() == true)
+            restaurant_text.setText("NOTE: Restaurant Services are not available");
+        else
+            restaurant_text.setText("NOTE: It will take a minimum of 60 mins to prepare the food");
+
         getData();
 
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFragment(mAppetizer, "Appetizer");
-            adapter.addFragment(mMaincourse, prefs.getCategory());
-            adapter.addFragment(mDessert, "Dessert");
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+//            adapter.addFragment(mAppetizer, "Appetizer");
+//            adapter.addFragment(mMaincourse, "Main Course");
+//            adapter.addFragment(mDessert, "Dessert");
+        adapter.addTab("Main Course");
+        adapter.removeTab();
         viewPager.setAdapter(adapter);
+    }
+
+    public void addTab(View view) {
+//        String cheese = Cheeses.sCheeseStrings[mRandom.nextInt(Cheeses.sCheeseStrings.length)];
+        String cheese = "Appetiser";
+        adapter.addTab(cheese);
+    }
+    public void selectFirstTab(View view) {
+        if (tabLayout.getTabCount() > 0) {
+            viewPager.setCurrentItem(0);
+        }
+    }
+    public void removeTab(View view) {
+        adapter.removeTab();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -202,6 +235,17 @@ public class Restaurant extends AppCompatActivity {
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
+        }
+
+        public void addTab(String title) {
+            mFragmentTitleList.add(title);
+            notifyDataSetChanged();
+        }
+        public void removeTab() {
+            if (!mFragmentTitleList.isEmpty()) {
+                mFragmentTitleList.remove(mFragmentTitleList.size() - 1);
+                notifyDataSetChanged();
+            }
         }
 
         @Override

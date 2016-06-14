@@ -68,6 +68,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:id="@+id/bed_tea"
                         android:orientation="horizontal">
 
                         <RelativeLayout
@@ -138,6 +139,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:id="@+id/bed_coffee"
                         android:orientation="horizontal">
 
                         <RelativeLayout

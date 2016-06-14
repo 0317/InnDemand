@@ -30,6 +30,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     private List<AppetiserData> cartData;
     private Context mContext;
     int counter = 0;
+    int count = 0;
 
     RecyclerView.Adapter adapter;
     AppPreferences prefs;
@@ -84,16 +85,21 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                counter = data.getCount();// update new value
-                holder.count.setText(String.valueOf(counter));
+                    counter = data.getCount();// update new value
+                    holder.count.setText(String.valueOf(counter));
             }
         });
 
         holder.minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int count = counter--;
-                holder.count.setText(String.valueOf(count));
+                String getData = holder.count.getText().toString();
+                if(getData == "0") {
+                    holder.minus.setEnabled(false);
+                } else {
+                    count = counter--;
+                    holder.count.setText(String.valueOf(count));
+                }
             }
         });
     }

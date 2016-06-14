@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -49,6 +50,7 @@ public class MyCart extends AppCompatActivity {
     EditText input_code;
     RelativeLayout layout;
     Button cancel_promo, apply_promo;
+    CoordinatorLayout coordinatorLayout;
 
     //Class call
     private List<CartData> cardList = new ArrayList<>();
@@ -68,6 +70,8 @@ public class MyCart extends AppCompatActivity {
         cart_total = (TextView) findViewById(R.id.cart_total);
         cart_total.setText("Total: Rs 2000");
         cart_item.setText("(10 items)");
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         input_code = (EditText) findViewById(R.id.input_code);
 //        items_details = (LinearLayout) findViewById(R.id.items_details);
@@ -138,15 +142,15 @@ public class MyCart extends AppCompatActivity {
         });
 
 //        //ListItems in RecyclerView
-//        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-//        cardList = new ArrayList<>();
-//        adapter = new CartAdapter(this, cardList);
-//
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(adapter);
-//        prepareCart();
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        cardList = new ArrayList<>();
+        adapter = new CartAdapter(this, cardList);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MyCart.this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+        prepareCart();
 
 
     }
@@ -173,7 +177,7 @@ public class MyCart extends AppCompatActivity {
         String promoCode = input_code.getText().toString().trim();
 
         if(promoCode == null){
-            Snackbar.make(view, "Please enter valid Code",  Snackbar.LENGTH_LONG)
+            Snackbar.make(coordinatorLayout, "Please enter valid Code",  Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }else{
 
