@@ -51,11 +51,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+         <!--   <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity android:name=".login.Loginscreen"
@@ -78,10 +78,10 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+          <!--  <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity android:name=".login.HotelDetails"
@@ -158,7 +158,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
-
+\
         <!-- ...................Bar Activity Area...................... -->
 
         <activity android:name=".roomservice.Bar"
@@ -183,8 +183,15 @@
         <activity android:name=".login.TermsCondition"></activity>
 
         <!-- ...................Broadcast call Area....................... -->
+
         <activity android:name=".gcm.GCMNotifications"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"

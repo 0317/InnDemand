@@ -6,14 +6,15 @@ package demand.inn.com.inndemand.constants;
 
 public class NotificationData {
 
-    private String title, details;
+    private String title, details, buttonText;
 
     public NotificationData() {
     }
 
-    public NotificationData(String title, String details) {
+    public NotificationData(String title, String details, String text) {
         this.title = title;
         this.details = details;
+        this.buttonText = text;
 
     }
 
@@ -31,5 +32,13 @@ public class NotificationData {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public String getButtonText() {
+        return buttonText;
+    }
+
+    public void setButtonText(String buttonText) {
+        this.buttonText = buttonText;
     }
 }

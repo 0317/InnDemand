@@ -2,9 +2,11 @@ package demand.inn.com.inndemand.login;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -130,6 +132,11 @@ public class HotelDetails extends AppCompatActivity {
     String formattedDate, getTime;
 
     boolean bar, spa, restaurant, service;
+
+    Context context;
+    private SharedPreferences appSharedpref;
+    private SharedPreferences.Editor prefEditor;
+    public static final String SKILL_PREFS = "inn_demand_prefs";
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -884,6 +891,7 @@ public class HotelDetails extends AppCompatActivity {
 
             Intent in = new Intent(HotelDetails.this, Restaurant.class);
             startActivity(in);
+                prefs.setCheck_list(false);
             }
         });
     }

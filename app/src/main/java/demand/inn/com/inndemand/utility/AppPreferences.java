@@ -73,6 +73,9 @@ public class AppPreferences {
                     tea = "tea",
                     coffee = "coffee";
 
+    //Registration ID for GCM
+    private String reg_ID = "reg_ID";
+
     private String is_task_completed = "is_task_completed",
             is_In_Hotel = "is_In_Hotel",
             check_list = "check_list",
@@ -87,10 +90,23 @@ public class AppPreferences {
         this.prefEditor = appSharedpref.edit();
     }
 
+    public void singleCache(Context context){
+        this.appSharedpref = context.getSharedPreferences(SKILL_PREFS, Activity.MODE_PRIVATE);
+        this.prefEditor = appSharedpref.edit();
+    }
+
     public void clearPref() {
         prefEditor.clear().commit();
     }
 
+
+    public String getReg_ID() {
+        return appSharedpref.getString(reg_ID, "");
+    }
+
+    public void setReg_ID(String _reg_ID) {
+        prefEditor.putString(reg_ID, _reg_ID).commit();
+    }
 
     public String getFb_Token() {
         return appSharedpref.getString(fb_Token, "");

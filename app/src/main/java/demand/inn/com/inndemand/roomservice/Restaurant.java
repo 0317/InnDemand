@@ -77,6 +77,7 @@ public class Restaurant extends AppCompatActivity {
     Appetizer mAppetizer;
     Dessert mDessert;
     MainCourse mMaincourse;
+    Fragment fragment;
 
     //Others
     String id;
@@ -188,8 +189,10 @@ public class Restaurant extends AppCompatActivity {
         mDessert = new Dessert();
         mMaincourse = new MainCourse();
 
+        getData();
 
         viewPager = (ViewPager) findViewById(R.id.container);
+
 
         //Tab call area
         setupViewPager(viewPager);
@@ -201,33 +204,27 @@ public class Restaurant extends AppCompatActivity {
         else
             restaurant_text.setText("NOTE: It will take a minimum of 60 mins to prepare the food");
 
-        getData();
-
     }
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-//            adapter.addFragment(mAppetizer, "Appetizer");
-//            adapter.addFragment(mMaincourse, "Main Course");
-//            adapter.addFragment(mDessert, "Dessert");
-        adapter.addTab("Main Course");
-        adapter.removeTab();
+            adapter.addFragment(mAppetizer, category);
         viewPager.setAdapter(adapter);
     }
 
-    public void addTab(View view) {
+//    public void addTab(View view) {
 //        String cheese = Cheeses.sCheeseStrings[mRandom.nextInt(Cheeses.sCheeseStrings.length)];
-        String cheese = "Appetiser";
-        adapter.addTab(cheese);
-    }
-    public void selectFirstTab(View view) {
-        if (tabLayout.getTabCount() > 0) {
-            viewPager.setCurrentItem(0);
-        }
-    }
-    public void removeTab(View view) {
-        adapter.removeTab();
-    }
+//        String cheese = "Appetiser";
+//        adapter.addTab(cheese);
+//    }
+//    public void selectFirstTab(View view) {
+//        if (tabLayout.getTabCount() > 0) {
+//            viewPager.setCurrentItem(0);
+//        }
+//    }
+//    public void removeTab(View view) {
+//        adapter.removeTab();
+//    }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -237,16 +234,16 @@ public class Restaurant extends AppCompatActivity {
             super(manager);
         }
 
-        public void addTab(String title) {
-            mFragmentTitleList.add(title);
-            notifyDataSetChanged();
-        }
-        public void removeTab() {
-            if (!mFragmentTitleList.isEmpty()) {
-                mFragmentTitleList.remove(mFragmentTitleList.size() - 1);
-                notifyDataSetChanged();
-            }
-        }
+//        public void addTab(String title) {
+//            mFragmentTitleList.add(title);
+//            notifyDataSetChanged();
+//        }
+//        public void removeTab() {
+//            if (!mFragmentTitleList.isEmpty()) {
+//                mFragmentTitleList.remove(mFragmentTitleList.size() - 1);
+//                notifyDataSetChanged();
+//            }
+//        }
 
         @Override
         public Fragment getItem(int position) {

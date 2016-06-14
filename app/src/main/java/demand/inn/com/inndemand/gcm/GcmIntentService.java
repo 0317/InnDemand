@@ -68,6 +68,7 @@ public class GcmIntentService extends IntentService {
 					msg = extras.getString("message");
 					title = extras.getString("notification_title");
 
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -97,7 +98,7 @@ public class GcmIntentService extends IntentService {
 		PendingIntent contentIntent = PendingIntent.getActivity(this, no, resultIntent, PendingIntent.FLAG_ONE_SHOT);
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
 		
-		.setContentTitle("InnDemand");
+		.setContentTitle(title);
 		if(counter == 0){
 			mBuilder.setContentText(msg)
 
