@@ -5,16 +5,17 @@ package demand.inn.com.inndemand.constants;
  */
 public class DessertData {
 
-    private String title, name, rupees, details;
+    private String title, name, rupees, details, food;
 
     public DessertData() {
     }
 
-    public DessertData(String title, String name, String details, String rupees) {
+    public DessertData(String title, String name, String details, String rupees, String food) {
         this.title = title;
         this.name = name;
         this.details = details;
         this.rupees = rupees;
+        this.food = food;
     }
 
     public String getTitle() {
@@ -47,5 +48,13 @@ public class DessertData {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public String getFood() {
+        return food;
+    }
+
+    public void setFood(String food) {
+        this.food = food;
     }
 }

@@ -11,7 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/view_gray">
+            android:background="@color/light_grey">
 
        <TextView
            android:layout_width="wrap_content"
@@ -21,9 +21,9 @@
            android:lines="1"
            android:textSize="@dimen/sixteen_sp"
            android:layout_marginLeft="15dp"
+           android:layout_marginBottom="2dp"
            android:id="@+id/restaurant_listitems_head"
-           android:textColor="@color/colorPrimary"
-           android:textStyle="bold"/>
+           android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
 
@@ -48,6 +48,7 @@
             android:lines="1"
             android:layout_marginLeft="15dp"
             android:id="@+id/restaurant_listitems_name"
+            android:fontFamily="sans-serif-thin"
             android:textColor="@color/confirm_demand_click"
             android:textStyle="bold"/>
 
@@ -59,6 +60,7 @@
                         android:maxLines="1"
                         android:lines="1"
                         android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif-thin"
                         android:id="@+id/restaurant_listitems_details"
                         android:textColor="@color/view_gray"
                         android:textStyle="bold"/>

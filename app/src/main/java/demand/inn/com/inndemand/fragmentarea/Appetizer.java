@@ -1,5 +1,6 @@
 package demand.inn.com.inndemand.fragmentarea;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -78,6 +79,11 @@ public class Appetizer extends Fragment {
     private RestaurantAdapter adapter;
     private List<AppetiserData> cardList;
 
+    //Loading call area
+    ProgressDialog dialog;
+
+    AppetiserData a;
+
     String filterName = "", filterDesc = "", filterPrice = "";
 
     @Nullable
@@ -141,6 +147,7 @@ public class Appetizer extends Fragment {
 
 
     public void callMethod(){
+        dialog = new ProgressDialog(getActivity());
         JSONObject obj = new JSONObject();
         try {
             obj.put("restaurant_id", prefs.getRestaurant_Id());
@@ -201,18 +208,11 @@ public class Appetizer extends Fragment {
 
                         if(category.contains("starter") || category.equalsIgnoreCase("Starter")) {
 
-                            prefs.setCategory(category);
-
-                            if(category.equals("")) {
-                                AppetiserData a = new AppetiserData("", itemName, itemDesc, "Rs: " + amount);
+                                a = new AppetiserData(subCategory, itemName, itemDesc, "Rs: " + amount, food);
                                 cardList.add(a);
-                            }else {
-                                AppetiserData a = new AppetiserData(category, itemName, itemDesc, "Rs: " + amount);
-                                cardList.add(a);
-                            }
+////                            }
                             adapter.notifyDataSetChanged();
                         }
-
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -244,5 +244,9 @@ public class Appetizer extends Fragment {
         };
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    public void notifyChange(){
+        adapter.notifyDataSetChanged();
     }
 }

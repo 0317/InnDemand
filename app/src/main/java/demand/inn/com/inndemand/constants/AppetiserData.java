@@ -7,17 +7,18 @@ import java.util.ArrayList;
  */
 public class AppetiserData {
 
-    private String title, name, rupees, details;
+    private String title, name, rupees, details, food;
     private static int count = 0;
 
     public AppetiserData() {
     }
 
-    public AppetiserData(String title, String name, String details, String rupees) {
+    public AppetiserData(String title, String name, String details, String rupees, String food) {
         this.title = title;
         this.name = name;
         this.details = details;
         this.rupees = rupees;
+        this.food = food;
 
     }
 
@@ -61,13 +62,11 @@ public class AppetiserData {
         this.details = details;
     }
 
-  /*  public static ArrayList<AppetiserData> createList(int counts) {
-        ArrayList<AppetiserData> counter = new ArrayList<AppetiserData>();
+    public String getFood() {
+        return food;
+    }
 
-        for (int i = 1; i <= counts; i++) {
-            counter.add(new AppetiserData("", String.valueOf(count), String.valueOf(i <= counts/ 2) , ""));
-        }
-
-        return counter;
-    }*/
+    public void setFood(String food) {
+        this.food = food;
+    }
 }

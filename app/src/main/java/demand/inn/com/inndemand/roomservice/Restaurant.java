@@ -1,10 +1,12 @@
 package demand.inn.com.inndemand.roomservice;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.design.widget.TabLayout.OnTabSelectedListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -42,10 +44,14 @@ import java.util.List;
 import java.util.Random;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.adapter.RestaurantAdapter;
+import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
+import demand.inn.com.inndemand.fragmentarea.DefaultFragment;
 import demand.inn.com.inndemand.fragmentarea.Dessert;
 import demand.inn.com.inndemand.fragmentarea.MainCourse;
+import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -69,7 +75,6 @@ public class Restaurant extends AppCompatActivity {
     View view;
     private Menu menu;
     int position;
-    String value = "";
 
     Toolbar toolbar;
 
@@ -77,7 +82,7 @@ public class Restaurant extends AppCompatActivity {
     Appetizer mAppetizer;
     Dessert mDessert;
     MainCourse mMaincourse;
-    Fragment fragment;
+    DefaultFragment fragment;
 
     //Others
     String id;
@@ -118,6 +123,9 @@ public class Restaurant extends AppCompatActivity {
 //                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }else if(id == R.id.action_notification){
+                    Intent in = new Intent(Restaurant.this, GCMNotifications.class);
+                    startActivity(in);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }else if(id == R.id.action_food){
                     final View menuItemView = findViewById(R.id.action_food);
@@ -131,15 +139,51 @@ public class Restaurant extends AppCompatActivity {
 //
                             switch (item.getItemId()) {
                                 case R.id.action_all:
+                                    mAppetizer.notifyChange();
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter);
+                                    JSONObject obj = new JSONObject();
+                                    try {
+                                        obj.put("restaurant_id", prefs.getRestaurant_Id());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.d("Check API Data", obj.toString());
+
+                                    mAppetizer.postJsonData(Config.innDemand + "restaurant_items/details/", obj.toString());
+
                                     return  true;
 
                                 case R.id.action_veg:
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter_green);
+                                    JSONObject objs = new JSONObject();
+                                    try {
+                                        objs.put("restaurant_id", prefs.getRestaurant_Id());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.d("Check API Data", prefs.getRestaurant_food());
+
+                                    if(food == "1") {
+                                        mAppetizer.postJsonData(Config.innDemand + "restaurant_items/details/", objs.toString());
+                                    }
+
                                     return true;
 
                                 case R.id.action_nonveg:
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter_red);
+
+                                    JSONObject objt = new JSONObject();
+                                    try {
+                                        objt.put("restaurant_id", prefs.getRestaurant_Id());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.d("Check API Data", objt.toString());
+
+                                    if(food == "2") {
+                                        mAppetizer.postJsonData(Config.innDemand + "restaurant_items/details/", objt.toString());
+                                    }
+
                                     return true;
                             }
                             return true;
@@ -188,16 +232,21 @@ public class Restaurant extends AppCompatActivity {
         mAppetizer = new Appetizer();
         mDessert = new Dessert();
         mMaincourse = new MainCourse();
-
-        getData();
+        fragment  = new DefaultFragment();
 
         viewPager = (ViewPager) findViewById(R.id.container);
 
 
         //Tab call area
-        setupViewPager(viewPager);
+//        setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+
+        if(mAppetizer.isVisible())
+            Toast.makeText(getApplicationContext(), "Appetiser", Toast.LENGTH_LONG).show();
+        else if(mMaincourse.isVisible())
+            Toast.makeText(getApplicationContext(), "Main Course", Toast.LENGTH_LONG).show();
+
+        getData();
 
         if(prefs.getFm_restaurant() == true)
             restaurant_text.setText("NOTE: Restaurant Services are not available");
@@ -207,9 +256,7 @@ public class Restaurant extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFragment(mAppetizer, category);
-        viewPager.setAdapter(adapter);
+
     }
 
 //    public void addTab(View view) {
@@ -234,16 +281,16 @@ public class Restaurant extends AppCompatActivity {
             super(manager);
         }
 
-//        public void addTab(String title) {
-//            mFragmentTitleList.add(title);
-//            notifyDataSetChanged();
-//        }
-//        public void removeTab() {
-//            if (!mFragmentTitleList.isEmpty()) {
-//                mFragmentTitleList.remove(mFragmentTitleList.size() - 1);
-//                notifyDataSetChanged();
-//            }
-//        }
+        public void addTab(String title) {
+            mFragmentTitleList.add(title);
+            notifyDataSetChanged();
+        }
+        public void removeTab() {
+            if (!mFragmentTitleList.isEmpty()) {
+                mFragmentTitleList.remove(mFragmentTitleList.size() - 1);
+                notifyDataSetChanged();
+            }
+        }
 
         @Override
         public Fragment getItem(int position) {
@@ -310,17 +357,17 @@ public class Restaurant extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                for (int i = 0; i < array.length(); i++) {
+                for (int i = 0; i < array.length(); i++)
                     try {
                         JSONObject object = array.getJSONObject(i);
-                        Log.d("API", "API Daa"+array);
+                        Log.d("API", "API Daa" + array);
 //                        id = object.getString(String.valueOf(id));
-                        Log.d("API", "API ID"+id);
+                        Log.d("API", "API ID" + id);
                         itemName = object.getString("name");
-                        Log.d("API", "API na"+itemName);
+                        Log.d("API", "API na" + itemName);
                         itemDesc = object.getString("description");
                         category = object.getString("category");
-                        Log.d("API", "API Ca"+category);
+                        Log.d("API", "API Ca" + category);
                         food = object.getString("food");
 //                        restaurant = object.getString(String.valueOf(restaurant));
                         subCategory = object.getString("subcategory");
@@ -329,13 +376,28 @@ public class Restaurant extends AppCompatActivity {
                         prefs.setItemName(itemName);
                         prefs.setItemDesc(itemDesc);
                         prefs.setPrice(amount);
-                        prefs.setCategory(category);
+//                        prefs.setCategory(category);
                         prefs.setRestaurant_food(food);
+
+                        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+//                        adapter.addFragment(fragment, category);
+//                        adapter.addFragment(fragment, category);
+//                        adapter.addFragment(fragment, category);
+//                        adapter.addFragment(fragment, category);
+//                        adapter.addFragment(fragment, category);
+                        adapter.addFragment(mAppetizer, "Appetiser");
+                        adapter.addFragment(mMaincourse, "Main Course");
+                        adapter.addFragment(mDessert, category);
+
+                        adapter.notifyDataSetChanged();
+                        viewPager.setAdapter(adapter);
+
+                        tabLayout.setupWithViewPager(viewPager);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
 
             }
         }, new Response.ErrorListener() {

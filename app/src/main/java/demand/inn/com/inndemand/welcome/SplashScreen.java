@@ -82,6 +82,7 @@ public class SplashScreen extends BaseActivity {
             gcm = GoogleCloudMessaging.getInstance(this);
             regid = getRegistrationId(context);//GCM Token ID
             prefs.setReg_ID(regid);
+            Log.i(TAG, "REG ID "+regid);
 
             if (regid.isEmpty()) {
 
@@ -91,6 +92,7 @@ public class SplashScreen extends BaseActivity {
                     DeviceUpdate update = new DeviceUpdate();
                     update.execute(regid);
                     prefs.setReg_ID(regid);
+                    Log.i(TAG, "REG ID "+regid);
                 }
             }
         } else {

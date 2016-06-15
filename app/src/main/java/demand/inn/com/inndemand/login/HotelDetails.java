@@ -72,6 +72,7 @@ import demand.inn.com.inndemand.adapter.ListAdapter;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
+import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.mapdirection.Mapping;
 import demand.inn.com.inndemand.roomservice.Bar;
 import demand.inn.com.inndemand.roomservice.Restaurant;
@@ -162,7 +163,6 @@ public class HotelDetails extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
 
-                //noinspection SimplifiableIfStatement
                 if (id == R.id.action_settings) {
                     return true;
                 } else if (id == R.id.action_cart) {
@@ -171,7 +171,9 @@ public class HotelDetails extends AppCompatActivity {
 //                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 } else if (id == R.id.action_notification) {
-
+                    Intent in = new Intent(HotelDetails.this, GCMNotifications.class);
+                    startActivity(in);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
                 return true;
             }

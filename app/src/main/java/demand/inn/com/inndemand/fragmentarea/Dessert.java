@@ -196,7 +196,7 @@ public class Dessert extends Fragment {
 
                         if(category.contains("Desert") || category.equalsIgnoreCase("Desert")) {
 
-                            DessertData a = new DessertData(category, itemName, itemDesc, "Rs: "+amount);
+                            DessertData a = new DessertData(subCategory, itemName, itemDesc, "Rs: "+amount, food);
                             cardList.add(a);
 
                             adapter.notifyDataSetChanged();

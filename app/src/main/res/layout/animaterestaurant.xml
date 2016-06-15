@@ -87,7 +87,8 @@
             style="@style/AlertDialog.AppCompat"
             app:tabSelectedTextColor="@color/confirm_demand_click"
             app:tabTextColor="@color/view_gray"
-            app:tabGravity="center"
+            app:tabGravity="fill"
+            android:clickable="true"
             />
 
     </android.support.v4.widget.NestedScrollView>
@@ -97,12 +98,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/frame_layout">
-
-    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

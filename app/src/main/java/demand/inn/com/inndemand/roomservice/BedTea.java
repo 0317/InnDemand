@@ -139,15 +139,15 @@ public class BedTea extends AppCompatActivity {
         else
             bed_coffee.setVisibility(View.VISIBLE);
 
-
         teaMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                teaText = tea.getText().toString().trim();
+                int s1=(Integer.parseInt(tea.getText().toString()));
 
-                if(teaText == "0"){
+                if(s1 < 0) {
                     teaMinus.setEnabled(false);
-                }else {
+                } else if(s1 > 0) {
+                    teaMinus.setEnabled(true);
                     --tea_count;
                     tea.setText(String.valueOf(tea_count));
                 }
@@ -297,15 +297,17 @@ public class BedTea extends AppCompatActivity {
     }
 
     public void coffeeMinus(View view){
-        coffeeText = coffee.getText().toString().trim();
 
-        if(coffeeText == "0"){
+        int s2=(Integer.parseInt(coffee.getText().toString()));
+
+        if(s2 < 0) {
             coffeeMinus.setEnabled(false);
-            coffee.setText("0");
-        }else {
+        } else if(s2 > 0) {
+            coffeeMinus.setEnabled(true);
             --coffee_count;
             coffee.setText(String.valueOf(coffee_count));
         }
+
     }
 
     public void coffeePlus(View view){

@@ -78,6 +78,11 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
             holder.title.setVisibility(View.GONE);
         }
 
+        if(data.getFood() == "2" || data.getFood().equalsIgnoreCase("2"))
+            holder.subtitle.setTextColor(Color.RED);
+        else
+            holder.subtitle.setTextColor(Color.GREEN);
+
         holder.plus.setTag(position);
         holder.minus.setTag(position);
         holder.count.setTag(position);
@@ -94,7 +99,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
             @Override
             public void onClick(View v) {
                 String getData = holder.count.getText().toString();
-                if(getData == "0") {
+                if(holder.count.getText() == "0") {
                     holder.minus.setEnabled(false);
                 } else {
                     count = counter--;
