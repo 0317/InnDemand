@@ -5,14 +5,14 @@ package demand.inn.com.inndemand.constants;
  */
 public class ListData {
 
-    String title, desc;
+    String title, status;
 
     public ListData() {
     }
 
-    public ListData(String title, String desc) {
+    public ListData(String title,String status) {
         this.title = title;
-        this.desc = desc;
+        this.status = status;
     }
 
     public String getTitle() {
@@ -23,12 +23,11 @@ public class ListData {
         this.title = title;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setStatus(String status) {
+        this.status = status;
     }
-
 }

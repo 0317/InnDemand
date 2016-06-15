@@ -180,20 +180,20 @@ public class AppPreferences {
         prefEditor.putBoolean(String.valueOf(is_task_completed), _is_task_completed).commit();
     }
 
-    public boolean getIs_In_Hotel() {
+    public Boolean getIs_In_Hotel() {
         return appSharedpref.getBoolean(String.valueOf(is_In_Hotel), false);
     }
 
-    public void setIs_In_Hotel(Boolean _is_In_Hotel) {
+    public void setIs_In_Hotel(boolean _is_In_Hotel) {
         prefEditor.putBoolean(String.valueOf(is_In_Hotel), _is_In_Hotel).commit();
     }
 
-    public boolean getCheck_list() {
-        return appSharedpref.getBoolean(String.valueOf(check_list), false);
+    public Boolean getCheck_list() {
+        return appSharedpref.getBoolean(check_list, false);
     }
 
-    public void setCheck_list(Boolean _check_list) {
-        prefEditor.putBoolean(String.valueOf(check_list), _check_list).commit();
+    public void setCheck_list(boolean _check_list) {
+        prefEditor.putBoolean(check_list, _check_list).commit();
     }
 
     public boolean getFacebook_logged_In() {

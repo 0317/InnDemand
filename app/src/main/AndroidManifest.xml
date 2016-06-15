@@ -51,11 +51,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-           <!-- <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
 
         <activity android:name=".login.Loginscreen"
@@ -96,11 +96,6 @@
         </activity>
         <activity android:name=".cartarea.MyCart"
             android:screenOrientation="portrait">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
         <activity android:name=".welcome.CommentArea"
             android:screenOrientation="portrait"></activity>
@@ -140,11 +135,6 @@
         </activity>
         <activity android:name=".roomservice.BellBoy"
             android:screenOrientation="portrait">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
 
         <!-- ................Restaurant Activity Area.......... -->
@@ -152,11 +142,7 @@
         <activity android:name=".roomservice.Restaurant"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 \
         <!-- ...................Bar Activity Area...................... -->
@@ -164,7 +150,7 @@
         <activity android:name=".roomservice.Bar"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>
+        <!--    <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -173,24 +159,16 @@
 
         <!-- ...................Terms of Use Area...................... -->
 
-        <activity android:name=".login.PrivacyPolicy">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+        <activity android:name=".login.PrivacyPolicy"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".login.TermsCondition"></activity>
+        <activity android:name=".login.TermsCondition"
+            android:screenOrientation="portrait"></activity>
 
         <!-- ...................Broadcast call Area....................... -->
 
         <activity android:name=".gcm.GCMNotifications"
             android:screenOrientation="portrait">
-         <!--   <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
 
         <receiver

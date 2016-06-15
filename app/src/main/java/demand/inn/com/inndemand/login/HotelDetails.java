@@ -126,6 +126,7 @@ public class HotelDetails extends AppCompatActivity {
     String to_spa;
     String to_service;
     String to_restaurant;
+    String restaurantId;
 
     //Date & Time
     Calendar c;
@@ -194,6 +195,9 @@ public class HotelDetails extends AppCompatActivity {
         formattedDate = df.format(c.getTime());
         getTime = timeFormat.format(c.getTime());
         // formattedDate have current date/time
+
+        //Getting All Restaurant List
+        restaurantList();
 
         //Method to get Inclusion data for Hotel (Boolean values)
         inclusion();
@@ -295,7 +299,6 @@ public class HotelDetails extends AppCompatActivity {
         restaurantList.setLayoutManager(mLayoutManagers);
         restaurantList.setItemAnimator(new DefaultItemAnimator());
         restaurantList.addItemDecoration(new SimpleDividerItemDecoration(this));
-        prepareData();
 
 //        if(nu.isConnectingToInternet()) {
         recyclerView.setAdapter(adapter);
@@ -344,6 +347,20 @@ public class HotelDetails extends AppCompatActivity {
                 mDivider.draw(c);
             }
         }
+    }
+
+    public void restaurantList(){
+        JSONObject obj = new JSONObject();
+//
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Api Hotel Data", obj.toString());
+
+        postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
     }
 
     public void inclusion(){
@@ -744,11 +761,13 @@ public class HotelDetails extends AppCompatActivity {
                     try {
                         JSONObject object = array.getJSONObject(i);
 
-                        String restaurant = object.getString("id");
+                        restaurantId = object.getString("id");
                         String rest_name = object.getString("name");
                         String hotel = object.getString("hotel");
+                        String status = object.getString("status");
 
-                        prefs.setRestaurant_Id(restaurant);
+                        ListData data = new ListData(rest_name, status);
+                        restaurantData.add(data);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -813,15 +832,6 @@ public class HotelDetails extends AppCompatActivity {
 //        }
     }
 
-    public void prepareData(){
-        ListData data = new ListData("DownUnder", "Restaurant no: 1");
-        restaurantData.add(data);
-
-        data = new ListData("Dine Hall", "Restaurant no: 2");
-        restaurantData.add(data);
-
-    }
-
     public interface ClickListener {
         void onClick(View view, int position);
 
@@ -879,21 +889,11 @@ public class HotelDetails extends AppCompatActivity {
             @Override
             public void onItemClick(int position, View v) {
                 Log.i("TAG", " Clicked on Item " + position);
-                JSONObject obj = new JSONObject();
-//
-            try {
-                obj.put("hotel_id", prefs.getHotel_id());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            Log.d("Api Hotel Data", obj.toString());
-
-            postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
-
+                prefs.setRestaurant_Id(restaurantId);
             Intent in = new Intent(HotelDetails.this, Restaurant.class);
             startActivity(in);
                 prefs.setCheck_list(false);
+                restaurantList.setVisibility(View.GONE);
             }
         });
     }
@@ -1037,8 +1037,10 @@ public class HotelDetails extends AppCompatActivity {
                     to_restaurant = object.getString("to_restaurant");
 
                     try {
+                        //Calling 3 methods to test (Will set only one method finally)
                         isTimeBetweenTwoTime(fm_service, to_service, getTime);
                         isTimeBetweenRestaurant(fm_restaurant, to_restaurant, getTime);
+                        isTimeBetweenBar(fm_bar, to_bar, getTime);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -1212,6 +1214,80 @@ public class HotelDetails extends AppCompatActivity {
                     valid = false;
                     System.out.println("RESULT, Time does not lies b/w");
                     prefs.setFm_restaurant(true);
+                }
+
+            }
+            return valid;
+
+        } else {
+            throw new IllegalArgumentException(
+                    "Not a valid time, expecting HH:MM:SS format");
+        }
+    }
+
+    public boolean isTimeBetweenBar(String argStartTime,
+                                           String argEndTime, String argCurrentTime) throws ParseException {
+        String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
+
+        if (argStartTime.matches(reg) && argEndTime.matches(reg) && argCurrentTime.matches(reg)) {
+            boolean valid = false;
+            // Start Time
+            java.util.Date startTime = new SimpleDateFormat("HH:mm:ss").parse(argStartTime);
+            Calendar startCalendar = Calendar.getInstance();
+            startCalendar.setTime(startTime);
+
+            // Current Time
+            java.util.Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(argCurrentTime);
+            Calendar currentCalendar = Calendar.getInstance();
+            currentCalendar.setTime(currentTime);
+
+            // End Time
+            java.util.Date endTime = new SimpleDateFormat("HH:mm:ss").parse(argEndTime);
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(endTime);
+
+            //
+            if (currentTime.compareTo(endTime) < 0) {
+
+                currentCalendar.add(Calendar.DATE, 1);
+                currentTime = currentCalendar.getTime();
+
+            }
+
+            if (startTime.compareTo(endTime) < 0) {
+
+                startCalendar.add(Calendar.DATE, 1);
+                startTime = startCalendar.getTime();
+
+            }
+            //
+            if (currentTime.before(startTime)) {
+
+                System.out.println(" Time is Lesser ");
+                prefs.setFm_bar(true);
+                valid = false;
+                System.out.println("Values , Start Time /n " + prefs.getFm_service());
+            } else {
+
+                if (currentTime.after(endTime)) {
+                    endCalendar.add(Calendar.DATE, 1);
+                    endTime = endCalendar.getTime();
+
+                }
+
+                System.out.println("Comparing , Start Time /n " + startTime);
+                System.out.println("Comparing , End Time /n " + endTime);
+                System.out
+                        .println("Comparing , Current Time /n " + currentTime);
+
+                if (currentTime.before(endTime)) {
+                    System.out.println("RESULT, Time lies b/w");
+                    prefs.setFm_bar(false);
+                    valid = true;
+                } else {
+                    valid = false;
+                    System.out.println("RESULT, Time does not lies b/w");
+                    prefs.setFm_bar(true);
                 }
 
             }

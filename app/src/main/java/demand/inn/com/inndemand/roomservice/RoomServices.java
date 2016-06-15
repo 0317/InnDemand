@@ -136,7 +136,7 @@ public class RoomServices extends AppCompatActivity {
         //onClick Method Call for different services (Linearlayout)
 
         //Beverages Click Method
-    public void beverages_click(){
+    public void beverages_click(View view){
         Intent in = new Intent(RoomServices.this, Beverages.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

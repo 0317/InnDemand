@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.fragmentarea.AppetiserBar;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 
@@ -38,12 +39,18 @@ public class Bar extends AppCompatActivity{
     private TabLayout tabLayout;
     private ViewPager viewPager;
     ViewPagerAdapter adapter;
+    TextView restaurant_text;
 
     //UI call
     Toolbar toolbar;
 
     View view;
     private Menu menu;
+
+    //Fragment Class
+    AppetiserBar mAppetiser;
+    MainBar mMain;
+    DessertBar mDessert;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -134,19 +141,32 @@ public class Bar extends AppCompatActivity{
             }
         });
 
+        mAppetiser = new AppetiserBar();
+        mMain = new MainBar();
+        mDessert = new DessertBar();
+
         viewPager = (ViewPager) findViewById(R.id.container);
 
         //Tab call area
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        //UI TextView Initialize
+        restaurant_text = (TextView) findViewById(R.id.restaurant_text);
+
+        if(prefs.getFm_restaurant() == true)
+            restaurant_text.setText("NOTE: Bar Services are not available");
+        else
+            restaurant_text.setText("NOTE: It will take a minimum of 60 mins to get the order");
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-//            adapter.addFragment(mAppetizer, "Appetizer");
-//            adapter.addFragment(mMaincourse, "Main Course");
-//            adapter.addFragment(mDessert, "Dessert");
+            adapter.addFragment(mAppetiser, "Appetizer");
+            adapter.addFragment(mMain, "Main Course");
+            adapter.addFragment(mDessert, "Dessert");
         viewPager.setAdapter(adapter);
     }
 
