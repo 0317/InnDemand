@@ -5,14 +5,23 @@ package demand.inn.com.inndemand.constants;
  */
 public class ListData {
 
-    String title, status;
+    String id, title, status;
 
     public ListData() {
     }
 
-    public ListData(String title,String status) {
+    public ListData(String id, String title,String status) {
         this.title = title;
         this.status = status;
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {

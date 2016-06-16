@@ -44,8 +44,6 @@ import java.util.List;
 import java.util.Random;
 
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.adapter.RestaurantAdapter;
-import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
 import demand.inn.com.inndemand.fragmentarea.DefaultFragment;
@@ -74,7 +72,7 @@ public class Restaurant extends AppCompatActivity {
 
     View view;
     private Menu menu;
-    int position;
+    int positions;
 
     Toolbar toolbar;
 
@@ -90,10 +88,11 @@ public class Restaurant extends AppCompatActivity {
     String itemDesc;
     String category;
     String food;
-    String restaurant;
     String subCategory;
     String amount;
-    String tabName;
+    String catName;
+    String catType;
+    String catStatus;
 
     private final Random mRandom = new Random();
 
@@ -108,7 +107,6 @@ public class Restaurant extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
         toolbar.inflateMenu(R.menu.restaurant_menu);
-        this.menu = menu;
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -240,12 +238,31 @@ public class Restaurant extends AppCompatActivity {
         //Tab call area
 //        setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab){
+                positions = tab.getPosition();
+                viewPager.setCurrentItem(tab.getPosition());
+                Log.d("Tab Position: ", String.valueOf(positions));
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         if(mAppetizer.isVisible())
             Toast.makeText(getApplicationContext(), "Appetiser", Toast.LENGTH_LONG).show();
         else if(mMaincourse.isVisible())
             Toast.makeText(getApplicationContext(), "Main Course", Toast.LENGTH_LONG).show();
 
+        getCategory();
         getData();
 
         if(prefs.getFm_restaurant() == true)
@@ -313,6 +330,19 @@ public class Restaurant extends AppCompatActivity {
         }
     }
 
+    public void getCategory(){
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("Check API Data", obj.toString());
+
+        postJsonDataCategory(Config.innDemand+"category/details/", obj.toString());
+
+    }
+
     public void getData(){
         JSONObject obj = new JSONObject();
         try {
@@ -361,7 +391,6 @@ public class Restaurant extends AppCompatActivity {
                     try {
                         JSONObject object = array.getJSONObject(i);
                         Log.d("API", "API Daa" + array);
-//                        id = object.getString(String.valueOf(id));
                         Log.d("API", "API ID" + id);
                         itemName = object.getString("name");
                         Log.d("API", "API na" + itemName);
@@ -369,7 +398,7 @@ public class Restaurant extends AppCompatActivity {
                         category = object.getString("category");
                         Log.d("API", "API Ca" + category);
                         food = object.getString("food");
-//                        restaurant = object.getString(String.valueOf(restaurant));
+
                         subCategory = object.getString("subcategory");
                         amount = object.getString("price");
 
@@ -379,16 +408,87 @@ public class Restaurant extends AppCompatActivity {
 //                        prefs.setCategory(category);
                         prefs.setRestaurant_food(food);
 
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    public void postJsonDataCategory(String url, String userData) {
+
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha==category==success===" + response);
+
+                JSONArray array = null;
+                try {
+                    array = new JSONArray(response);
+
+                    Log.d("API", "API D"+array);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < array.length(); i++)
+                    try {
+                        JSONObject object = array.getJSONObject(i);
+
+                        //catName = Response (category names to show in tablayout)
+                        catName = object.getString("name");
+
+                        //catType = Response 1/2/3 (1 = Bar, 2 = Restaurant, 3 = Spa)
+                        catType = object.getString("category_type");
+
+                        //catStatus = Response 0/1 (check if 0, remove the tab attribute)
+//                        catStatus = object.getString("status");
+                        Log.d("API", "API Category: " + category);
+
                         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-//                        adapter.addFragment(fragment, category);
-//                        adapter.addFragment(fragment, category);
-//                        adapter.addFragment(fragment, category);
-//                        adapter.addFragment(fragment, category);
-//                        adapter.addFragment(fragment, category);
                         adapter.addFragment(mAppetizer, "Appetiser");
                         adapter.addFragment(mMaincourse, "Main Course");
-                        adapter.addFragment(mDessert, category);
+                        adapter.addFragment(mDessert, catName);
 
                         adapter.notifyDataSetChanged();
                         viewPager.setAdapter(adapter);

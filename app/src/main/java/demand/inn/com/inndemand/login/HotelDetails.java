@@ -766,7 +766,7 @@ public class HotelDetails extends AppCompatActivity {
                         String hotel = object.getString("hotel");
                         String status = object.getString("status");
 
-                        ListData data = new ListData(rest_name, status);
+                        ListData data = new ListData(restaurantId, rest_name, status);
                         restaurantData.add(data);
 
                     } catch (JSONException e) {
@@ -889,7 +889,8 @@ public class HotelDetails extends AppCompatActivity {
             @Override
             public void onItemClick(int position, View v) {
                 Log.i("TAG", " Clicked on Item " + position);
-                prefs.setRestaurant_Id(restaurantId);
+                prefs.setRestaurant_Id(restaurantData.get(position).getId());
+                Log.d("Restaurant_id: ", prefs.getRestaurant_Id());
             Intent in = new Intent(HotelDetails.this, Restaurant.class);
             startActivity(in);
                 prefs.setCheck_list(false);

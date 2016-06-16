@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.Image;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.logging.Handler;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.CartData;
+import demand.inn.com.inndemand.constants.ListData;
 import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.utility.AppPreferences;
 
@@ -31,6 +33,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     private Context mContext;
     int counter = 0;
     int count = 0;
+    String total_price;
 
     RecyclerView.Adapter adapter;
     AppPreferences prefs;
@@ -90,18 +93,28 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    counter = data.getCount();// update new value
-                    holder.count.setText(String.valueOf(counter));
+                int s1=(Integer.parseInt(holder.count.getText().toString()));
+
+                    if(s1 == 0){
+//                        counter = data.getCount();// update new value
+                        holder.count.setText(String.valueOf(counter++));
+                    }
+                    if(s1 > 0) {
+                        counter = ++count;// update new value
+                        holder.count.setText(String.valueOf(counter));
+                    }
             }
         });
 
         holder.minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String getData = holder.count.getText().toString();
-                if(holder.count.getText() == "0") {
+                int s2=(Integer.parseInt(holder.count.getText().toString()));
+
+                if(s2 < 0) {
                     holder.minus.setEnabled(false);
-                } else {
+                } else if(s2 > 0){
+                    holder.minus.setEnabled(true);
                     count = counter--;
                     holder.count.setText(String.valueOf(count));
                 }

@@ -13,8 +13,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +72,9 @@ public class Appetizer extends Fragment {
     String subCategory;
     String amount;
 
+    //Cart Click
+    String result_price;
+
     //UI call area
     TextView cart_item, cart_total;
     LinearLayout menu_options;
@@ -96,8 +101,8 @@ public class Appetizer extends Fragment {
         //UI initialize
         cart_item = (TextView) view.findViewById(R.id.appetiser_items);
         cart_total = (TextView) view.findViewById(R.id.appetiser_total);
-        cart_total.setText("Total: Rs 2000");
-        cart_item.setText("(10 items)");
+        cart_total.setText("Total Rs: "+result_price);
+        cart_item.setText("("+" "+")");
 
 
         //ListItems in RecyclerView
@@ -248,5 +253,16 @@ public class Appetizer extends Fragment {
 
     public void notifyChange(){
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int listPosition = info.position;
+        String price= cardList.get(listPosition).getRupees();//list item price
+
+        result_price = price;
+
+        return  true;
     }
 }
