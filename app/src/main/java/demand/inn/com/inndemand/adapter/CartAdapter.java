@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -26,14 +27,13 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.MyViewHolder>
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, subtitle, rupees, count;
         public ImageView plus, minus;
+        public LinearLayout gray_back;
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.restaurant_listitems_head);
             subtitle = (TextView) view.findViewById(R.id.restaurant_listitems_name);
             rupees = (TextView) view.findViewById(R.id.restaurant_listitems_rupees);
-//            count = (TextView) view.findViewById(R.id.restaurant_counting);
-
+            gray_back = (LinearLayout) view.findViewById(R.id.gray_back);
         }
     }
 
@@ -53,9 +53,12 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.MyViewHolder>
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         CartData data = cartData.get(position);
-        holder.title.setText(data.getTitle());
         holder.subtitle.setText(data.getName());
         holder.rupees.setText(data.getRupees());
+
+        if(data.getTitle() == null || data.getTitle().equalsIgnoreCase("")){
+            holder.gray_back.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -2,24 +2,37 @@ package demand.inn.com.inndemand.cartarea;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +42,12 @@ import demand.inn.com.inndemand.adapter.CartAdapter;
 import demand.inn.com.inndemand.adapter.MainCourseAdapter;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.constants.CartData;
+import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.MaincourseData;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.welcome.CommentArea;
+import demand.inn.com.inndemand.welcome.SplashScreen;
 
 /**
  * Created by akash
@@ -44,13 +59,12 @@ public class MyCart extends AppCompatActivity {
     AppPreferences prefs;
 
     //UI call area
-    LinearLayout write_comment, enterPromo,edit_promocode, items_details;
+    LinearLayout write_comment, enterPromo;
     RecyclerView list;
-    TextView promo_text, cart_item, cart_total;
+    TextView cart_item, cart_total;
     EditText input_code;
-    RelativeLayout layout;
-    Button cancel_promo, apply_promo;
     CoordinatorLayout coordinatorLayout;
+    Toolbar toolbar;
 
     //Class call
     private List<CartData> cardList = new ArrayList<>();
@@ -62,73 +76,36 @@ public class MyCart extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mycart);
+        nu = new NetworkUtility(this);
+        prefs = new AppPreferences(this);
 
         getSupportActionBar().hide();
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("My Cart");
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.mipmap.ic_cancel);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         //UI initialize
         cart_item = (TextView) findViewById(R.id.cart_items);
         cart_total = (TextView) findViewById(R.id.cart_total);
-        cart_total.setText("Total: Rs 2000");
-        cart_item.setText("(10 items)");
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         input_code = (EditText) findViewById(R.id.input_code);
-//        items_details = (LinearLayout) findViewById(R.id.items_details);
         enterPromo = (LinearLayout) findViewById(R.id.apply_coupon_code);
-
-        layout = (RelativeLayout) findViewById(R.id.layout_button);
-        layout.setVisibility(View.INVISIBLE);
-
-        promo_text = (TextView) findViewById(R.id.promo_text);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) enterPromo.getLayoutParams();
-        LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) promo_text.getLayoutParams();
-        // Changes the height and width to the specified *pixels*
-        params.height = 50;
-//        enterPromo.setBackgroundResource(R.color.view_gray);
-        enterPromo.setLayoutParams(params);
-        promo_text.setText("Apply Promo Code");
-        param.topMargin = 10;
-        promo_text.setLayoutParams(param);
-        enterPromo.setGravity(Gravity.CENTER_HORIZONTAL);
-//        edit_promocode.setVisibility(View.INVISIBLE);
-        layout.setVisibility(View.INVISIBLE);
-
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        try {
-            display.getRealSize(size);
-        } catch (NoSuchMethodError err) {
-            display.getSize(size);
-        }
-        final int width = size.x;
-        int height = size.y;
 
         enterPromo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) enterPromo.getLayoutParams();
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(width), LinearLayout.LayoutParams.MATCH_PARENT);
-                LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) promo_text.getLayoutParams();
-// Changes the height and width to the specified *pixels*
-                params.height = 200;
-                enterPromo.setBackgroundResource(R.color.colorPrimary);
-                enterPromo.setLayoutParams(params);
-                enterPromo.setLayoutParams(lp);
-                promo_text.setText("Enter Promo Code");
-                param.topMargin = 10;
-                promo_text.setLayoutParams(param);
-                enterPromo.setGravity(Gravity.CENTER_HORIZONTAL);
-//                edit_promocode.setVisibility(View.VISIBLE);
-                layout.setVisibility(View.VISIBLE);
-                layout.setGravity(Gravity.RIGHT);
-            }
-        });
-
-        input_code.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                items_details.setVisibility(View.INVISIBLE);
+                checkoutClick();
             }
         });
 
@@ -141,7 +118,7 @@ public class MyCart extends AppCompatActivity {
             }
         });
 
-//        //ListItems in RecyclerView
+//       ListItems in RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         cardList = new ArrayList<>();
         adapter = new CartAdapter(this, cardList);
@@ -149,85 +126,97 @@ public class MyCart extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MyCart.this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         recyclerView.setAdapter(adapter);
         prepareCart();
 
 
     }
 
-    public void cancelPromo(View view){
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) enterPromo.getLayoutParams();
-        LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) promo_text.getLayoutParams();
-// Changes the height and width to the specified *pixels*
-        params.height = 50;
-//        params.leftMargin = 20;
-//        params.rightMargin = 20;
-        params.setMargins(20, 0, 20, 0);
-        enterPromo.setBackgroundResource(R.color.view_gray);
-        promo_text.setText("Apply Promo Code");
-        param.topMargin = 10;
-        promo_text.setLayoutParams(param);
-        enterPromo.setGravity(Gravity.CENTER_HORIZONTAL);
-//        edit_promocode.setVisibility(View.INVISIBLE);
-        enterPromo.setLayoutParams(params);
-        layout.setVisibility(View.INVISIBLE);
-    }
+    public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
+        private Drawable mDivider;
 
-    public void applyPromo(View view){
-        String promoCode = input_code.getText().toString().trim();
+        public SimpleDividerItemDecoration(Context context) {
+            mDivider = ContextCompat.getDrawable(context, R.drawable.line_divider);
+        }
 
-        if(promoCode == null){
-            Snackbar.make(coordinatorLayout, "Please enter valid Code",  Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }else{
+        @Override
+        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            int left = parent.getPaddingLeft();
+            int right = parent.getWidth() - parent.getPaddingRight();
 
+            int childCount = parent.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View child = parent.getChildAt(i);
+
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+                int top = child.getBottom() + params.bottomMargin;
+                int bottom = top + mDivider.getIntrinsicHeight();
+
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
         }
     }
 
     @Override
     public void onBackPressed() {
-//        items_details.setVisibility(View.VISIBLE);
         super.onBackPressed();
-
     }
 
     /**
      * Adding few stuff for testing
      */
+
     private void prepareCart() {
 
-        CartData a = new CartData("Veg", "Shahi Paneer", "Rs: 250");
+        CartData a = new CartData("", "Shahi Paneer", "Rs: 250");
         cardList.add(a);
 
-        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        a = new CartData("","Chicken Tikka", "Rs: 200");
         cardList.add(a);
 
-        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        a = new CartData("","Chicken Tikka", "Rs: 200");
         cardList.add(a);
 
-        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        a = new CartData("","Chicken Tikka", "Rs: 200");
         cardList.add(a);
 
-        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        a = new CartData("","Chicken Tikka", "Rs: 200");
         cardList.add(a);
 
-        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
+        a = new CartData("","Chicken Tikka", "Rs: 200");
         cardList.add(a);
-
-        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("Non-Veg", "Chicken Tikka", "Rs: 200");
-        cardList.add(a);
-
-
 
         adapter.notifyDataSetChanged();
     }
+
+//  Custom pop-up designed for Apply COUPON Click
+    public void checkoutClick(){
+        // custom dialog
+        final Dialog dialog = new Dialog(MyCart.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.promocode);
+
+        // set the custom dialog components - text, image and button
+        Button checkout = (Button) dialog.findViewById(R.id.cart_promoApply);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        Button cancel = (Button) dialog.findViewById(R.id.cart_promoCancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
+
 }

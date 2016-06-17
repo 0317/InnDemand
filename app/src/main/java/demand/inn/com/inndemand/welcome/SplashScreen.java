@@ -1,5 +1,6 @@
 package demand.inn.com.inndemand.welcome;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,17 +14,23 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.login.HotelDetails;
 import demand.inn.com.inndemand.login.Loginscreen;
 import demand.inn.com.inndemand.login.QRscanning;
@@ -120,7 +127,7 @@ public class SplashScreen extends BaseActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (nu.isConnectingToInternet()) {
+//                    if (nu.isConnectingToInternet()) {
                         if (prefs.getIs_task_completed() == false) {
                             Intent in = new Intent(SplashScreen.this, Loginscreen.class);
                             startActivity(in);
@@ -139,15 +146,16 @@ public class SplashScreen extends BaseActivity {
                             finish();
                             }
                         }
-                    }else{
-                        snackbar = Snackbar.make(coordinatorLayout, "Oops! No Internet Connection", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null);
-//                        View snackbarView = snackbar.getView();
-//                        snackbarView.setBackgroundColor(Color.YELLOW);
-//                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-//                        textView.setTextColor(getResources().getColor(R.color.confirm_demand_click));
-                        snackbar.show();
-                    }
+//                    }else{
+//                        networkClick();
+//                        snackbar = Snackbar.make(coordinatorLayout, "Oops! No Internet Connection", Snackbar.LENGTH_LONG)
+//                                .setAction("Action", null);
+////                        View snackbarView = snackbar.getView();
+////                        snackbarView.setBackgroundColor(Color.YELLOW);
+////                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+////                        textView.setTextColor(getResources().getColor(R.color.confirm_demand_click));
+//                        snackbar.show();
+//                    }
                 }
             }, 3000 /* 3sec delay*/);
     }
@@ -319,6 +327,28 @@ public class SplashScreen extends BaseActivity {
             return false;
         }
         return true;
+    }
+
+
+
+    //Custom pop-up for Network Click
+    public void networkClick(){
+        // custom dialog
+        final Dialog dialog = new Dialog(SplashScreen.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.network);
+
+        // set the custom dialog components - text, image and button
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        Button checkout = (Button) dialog.findViewById(R.id.ok_click);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        dialog.show();
     }
 
 }

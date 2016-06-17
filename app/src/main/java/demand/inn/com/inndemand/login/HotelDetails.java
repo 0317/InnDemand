@@ -3,6 +3,7 @@ package demand.inn.com.inndemand.login;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -67,8 +69,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.adapter.BarlistAdapter;
 import demand.inn.com.inndemand.adapter.HotelAdapter;
 import demand.inn.com.inndemand.adapter.ListAdapter;
+import demand.inn.com.inndemand.cartarea.MyCart;
+import demand.inn.com.inndemand.constants.BarlistData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
@@ -111,11 +116,13 @@ public class HotelDetails extends AppCompatActivity {
     String hotelName;
 
     //List Items Bottom
-    private RecyclerView recyclerView, restaurantList;
+    private RecyclerView recyclerView, restaurantList, barList;
     private HotelAdapter adapter;
     private ListAdapter restaurantAdapter;
+    private BarlistAdapter barAdapter;
     private List<HotelData> hotelData;
     private List<ListData> restaurantData;
+    private List<BarlistData> barData;
 
     //Timings Call
     String fm_bar;
@@ -127,6 +134,7 @@ public class HotelDetails extends AppCompatActivity {
     String to_service;
     String to_restaurant;
     String restaurantId;
+    String barId;
 
     //Date & Time
     Calendar c;
@@ -167,9 +175,9 @@ public class HotelDetails extends AppCompatActivity {
                 if (id == R.id.action_settings) {
                     return true;
                 } else if (id == R.id.action_cart) {
-//                    Intent in = new Intent(HotelDetails.this, MyCart.class);
-//                    startActivity(in);
-//                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    Intent in = new Intent(HotelDetails.this, MyCart.class);
+                    startActivity(in);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 } else if (id == R.id.action_notification) {
                     Intent in = new Intent(HotelDetails.this, GCMNotifications.class);
@@ -196,14 +204,26 @@ public class HotelDetails extends AppCompatActivity {
         getTime = timeFormat.format(c.getTime());
         // formattedDate have current date/time
 
-        //Getting All Restaurant List
-        restaurantList();
+//        if(nu.isConnectingToInternet()) {
+            //Getting All Restaurant List of hotel
+            restaurantList();
 
-        //Method to get Inclusion data for Hotel (Boolean values)
-        inclusion();
+            //Getting all Bar list of hotel
+            barList();
 
-        //Mehod to get Timings for Hotel Services
-        timings();
+            //Method to get Inclusion data for Hotel (Boolean values)
+            inclusion();
+
+            //Mehod to get Timings for Hotel Services
+            timings();
+
+            //Loading Data
+            makeJsonObjectRequest();
+            makeJsonRequestBottom();
+
+//        }else{
+//            networkClick();
+//        }
 
         //Title set for Collapsing Toolbar
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
@@ -259,36 +279,18 @@ public class HotelDetails extends AppCompatActivity {
         //variable to get Hotel contact number
         callHotel = "";
 
-        //Condition area for Hotel Details
-        if(prefs.getRestaurant() == false)
-            restaurant_area.setVisibility(View.GONE);
-        else
-            restaurant_area.setVisibility(View.VISIBLE);
-
-        if(prefs.getRoom_service() == false)
-            service_area.setVisibility(View.GONE);
-        else
-            service_area.setVisibility(View.VISIBLE);
-
-        if(prefs.getBar()== false)
-            bar_area.setVisibility(View.GONE);
-        else
-            bar_area.setVisibility(View.VISIBLE);
-
-        if(prefs.getSpa()== false)
-            spa_area.setVisibility(View.GONE);
-        else
-            spa_area.setVisibility(View.VISIBLE);
-
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.hotel_recycler_view);
         restaurantList = (RecyclerView) findViewById(R.id.hotel_recycler_list);
+        barList = (RecyclerView) findViewById(R.id.hotel_barlist);
         restaurantList.setVisibility(View.GONE);
+        barList.setVisibility(View.GONE);
         hotelData = new ArrayList<>();
         restaurantData  = new ArrayList<>();
+        barData = new ArrayList<>();
         adapter = new HotelAdapter(this, hotelData);
         restaurantAdapter = new ListAdapter(this, restaurantData);
-
+        barAdapter = new BarlistAdapter(this, barData);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -300,12 +302,14 @@ public class HotelDetails extends AppCompatActivity {
         restaurantList.setItemAnimator(new DefaultItemAnimator());
         restaurantList.addItemDecoration(new SimpleDividerItemDecoration(this));
 
-//        if(nu.isConnectingToInternet()) {
+        RecyclerView.LayoutManager mLayoutManagerss = new LinearLayoutManager(this);
+        barList.setLayoutManager(mLayoutManagerss);
+        barList.setItemAnimator(new DefaultItemAnimator());
+        barList.addItemDecoration(new SimpleDividerItemDecoration(this));
+
         recyclerView.setAdapter(adapter);
         restaurantList.setAdapter(restaurantAdapter);
-
-        makeJsonObjectRequest();
-        makeJsonRequestBottom();
+        barList.setAdapter(barAdapter);
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
             @Override
@@ -363,6 +367,20 @@ public class HotelDetails extends AppCompatActivity {
         postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
     }
 
+    public void barList(){
+        JSONObject obj = new JSONObject();
+//
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Api Bar Data", obj.toString());
+
+        postJsonDataBar(Config.innDemand+"bars/details/", obj.toString());
+    }
+
     public void inclusion(){
         JSONObject obj = new JSONObject();
         try {
@@ -392,38 +410,40 @@ public class HotelDetails extends AppCompatActivity {
     //Button onClicklistener to Checkout from the hotel & redirect to Splash Screen
     public void checkOut(View view) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(HotelDetails.this);
-        builder.setMessage("It seems like you want to checkout?")
-                .setPositiveButton("Checkout", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Json Parsing to send hotel details to checkout.
-                        JSONObject obj = new JSONObject();
-                        try {
-                            obj.put("checkin_id", prefs.getCheckin_Id());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        checkoutClick();
 
-                        postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
-                        prefs.setCheckout("1");
-                        prefs.setIs_In_Hotel(false);
-                        Toast.makeText(HotelDetails.this, "Successfully Checked Out", Toast.LENGTH_LONG).show();
-                        Intent in = new Intent(HotelDetails.this, SplashScreen.class);
-                        startActivity(in);
-                        finish();
-                    }
-                })
-                .setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.setTitle("Are you Sure?");
-        dialog.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(HotelDetails.this);
+//        builder.setMessage("It seems like you want to checkout?")
+//                .setPositiveButton("Checkout", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //Json Parsing to send hotel details to checkout.
+//                        JSONObject obj = new JSONObject();
+//                        try {
+//                            obj.put("checkin_id", prefs.getCheckin_Id());
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
+//                        prefs.setCheckout("1");
+//                        prefs.setIs_In_Hotel(false);
+//                        Toast.makeText(HotelDetails.this, "Successfully Checked Out", Toast.LENGTH_LONG).show();
+//                        Intent in = new Intent(HotelDetails.this, SplashScreen.class);
+//                        startActivity(in);
+//                        finish();
+//                    }
+//                })
+//                .setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//        AlertDialog dialog = builder.create();
+//        dialog.setTitle("Are you Sure?");
+//        dialog.show();
     }
 
     public void direction(View view) {
@@ -465,8 +485,13 @@ public class HotelDetails extends AppCompatActivity {
 
     //OnClick to go to Bar Screen
     public void barClick(View view) {
-        Intent in = new Intent(HotelDetails.this, Bar.class);
-        startActivity(in);
+        if(prefs.getBarList() == false) {
+            barList.setVisibility(View.VISIBLE);
+            prefs.setBarList(true);
+        }else if(prefs.getBarList() == true){
+            barList.setVisibility(View.GONE);
+            prefs.setBarList(false);
+        }
     }
 
     //OnClick to go to Spa Screen
@@ -508,6 +533,9 @@ public class HotelDetails extends AppCompatActivity {
         postJsonDataBottom(Config.innDemand+"info_centre/details/", objt.toString());
     }
 
+//    Network Response getting all details of Hotel
+//    Details: Picture, name, address, location, contact number etc
+//    Values set to show on the Screen
     public void postJsonData(String url, String userData) {
 
         RequestQueue mRequestQueue;
@@ -653,6 +681,8 @@ public class HotelDetails extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
+//    Method to get response for Miscellaneous values in the hotel
+//    Saving name of title & details to show in the list set at the bottom of page
     public void postJsonDataBottom(String url, String userData){
         RequestQueue mRequestQueue;
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
@@ -728,6 +758,10 @@ public class HotelDetails extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
+//    Method to get response of list of Restaurant in the hotel
+//    Saving name of restaurant & show in the list
+//    Saving ID of restaurant for further usage
+//    Setting status (getting in response) to check which restaurant to Hide/Show through Adapter Class
     public void postJsonRestaurant(String url, String userData){
         RequestQueue mRequestQueue;
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
@@ -881,6 +915,9 @@ public class HotelDetails extends AppCompatActivity {
         }
     }
 
+
+//    OnResume method to set Restaurant/Bars list
+//    Activating OnCLick function, saving value & firing Intent
     @Override
     protected void onResume() {
         super.onResume();
@@ -897,7 +934,26 @@ public class HotelDetails extends AppCompatActivity {
                 restaurantList.setVisibility(View.GONE);
             }
         });
+
+        ((BarlistAdapter) barAdapter).setOnItemClickListener(new BarlistAdapter.MyClickListener() {
+
+            @Override
+            public void onItemClick(int position, View v) {
+                Log.i("TAG", " Clicked on Item " + position);
+                prefs.setBar_Id(barData.get(position).getId());
+                Log.d("Restaurant_id: ", prefs.getBar_Id());
+                Intent in = new Intent(HotelDetails.this, Bar.class);
+                startActivity(in);
+                prefs.setBarList(false);
+                barList.setVisibility(View.GONE);
+            }
+        });
     }
+
+//    Network Call to set Inclusion whether the hotel is having the facilities (Restaurant, Bar, Services, Spa)
+//    Bollean value to set/get whether to show/not
+//    Boolean value to show which room service is available in the hotel
+//    Room services value are also mentioned(Beverages/Bath Essentials/Bed tea/coffee)
 
     public void postJsonDataInclusion(String url, String userData){
         RequestQueue mRequestQueue;
@@ -970,6 +1026,27 @@ public class HotelDetails extends AppCompatActivity {
                     prefs.setSoda(soda);
                     prefs.setGlass(glass);
 
+                    //Condition area for Hotel Details
+                    if(prefs.getRestaurant() == false)
+                        restaurant_area.setVisibility(View.GONE);
+                    else
+                        restaurant_area.setVisibility(View.VISIBLE);
+
+                    if(prefs.getRoom_service() == false)
+                        service_area.setVisibility(View.GONE);
+                    else
+                        service_area.setVisibility(View.VISIBLE);
+
+                    if(prefs.getBar()== false)
+                        bar_area.setVisibility(View.GONE);
+                    else
+                        bar_area.setVisibility(View.VISIBLE);
+
+                    if(prefs.getSpa()== false)
+                        spa_area.setVisibility(View.GONE);
+                    else
+                        spa_area.setVisibility(View.VISIBLE);
+
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }
@@ -1000,7 +1077,8 @@ public class HotelDetails extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-    //Method to get timings of all hotel services(Restaurant timings/Spa timings(if there) & others like same)
+//    Method to get timings of all hotel services(Restaurant timings/Spa timings(if there) & others like same)
+//    Compare timings to Open/Close the Restaurant/Room services/Bar/Spa
     public void postJsonDataTimings(String url, String userData){
         RequestQueue mRequestQueue;
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
@@ -1298,5 +1376,145 @@ public class HotelDetails extends AppCompatActivity {
             throw new IllegalArgumentException(
                     "Not a valid time, expecting HH:MM:SS format");
         }
+    }
+
+//    Method to get response of list of Bars in the hotel
+//    Saving name of bar & show in the list
+//    Saving ID of bar for further usage
+//    Setting status (getting in response) to check which Bar to Hide/Show through Adapter Class
+    public void postJsonDataBar(String url, String userData){
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post barList json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha=barList=success===" + response);
+
+
+                JSONArray array = null;
+                try {
+                    array = new JSONArray(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < array.length(); i++) {
+                    try {
+                        JSONObject object = array.getJSONObject(i);
+
+                        barId = object.getString("id");
+                        String bar_name = object.getString("name");
+                        String hotel = object.getString("hotel");
+                        String status = object.getString("status");
+
+                        BarlistData data = new BarlistData(restaurantId, bar_name, status);
+                        barData.add(data);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+//    Custom pop-up designed for Checkout Click
+//    Checkout click on hotel details page to checkout from hotel
+    public void checkoutClick(){
+        // custom dialog
+        final Dialog dialog = new Dialog(HotelDetails.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.checkout);
+
+        // set the custom dialog components - text, image and button
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        Button checkout = (Button) dialog.findViewById(R.id.checkout_click);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Json Parsing to send hotel details to checkout.
+                        JSONObject obj = new JSONObject();
+                        try {
+                            obj.put("checkin_id", prefs.getCheckin_Id());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
+                        prefs.setCheckout("1");
+                        prefs.setIs_In_Hotel(false);
+                        Toast.makeText(HotelDetails.this, "Successfully Checked Out", Toast.LENGTH_LONG).show();
+                        Intent in = new Intent(HotelDetails.this, SplashScreen.class);
+                        startActivity(in);
+                        finish();
+            }
+        });
+
+        Button not = (Button) dialog.findViewById(R.id.notnow_click);
+        not.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
+
+    //Custom pop-up for Network Click
+    public void networkClick(){
+        // custom dialog
+        final Dialog dialog = new Dialog(HotelDetails.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.network);
+
+        // set the custom dialog components - text, image and button
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        Button checkout = (Button) dialog.findViewById(R.id.ok_click);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        dialog.show();
     }
 }

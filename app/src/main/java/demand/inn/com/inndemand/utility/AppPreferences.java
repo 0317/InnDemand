@@ -17,6 +17,7 @@ public class AppPreferences {
     private String customer_Id = "customer_Id",
             checkin_Id = "checkin_Id",
             restaurant_Id = "restaurant_Id",
+            bar_Id = "bar_Id",
             user_gender = "user_gender",
             user_bday = "user_bday",
             user_lname = "user_lname",
@@ -45,7 +46,8 @@ public class AppPreferences {
     //Check whether Hotel provides mentioned facilities/not
     private String bar = "bar",
                     spa = "spa",
-                    restaurant = "restaurant";
+                    restaurant = "restaurant",
+                    barList = "barList";
 
     //Check timings for the services mentioned
     private String fm_bar = "fm_bar",
@@ -138,6 +140,14 @@ public class AppPreferences {
 
     public void setRestaurant_Id(String _restaurant_Id) {
         prefEditor.putString(restaurant_Id, _restaurant_Id).commit();
+    }
+
+    public String getBar_Id() {
+        return appSharedpref.getString(bar_Id, "");
+    }
+
+    public void setBar_Id(String _bar_Id) {
+        prefEditor.putString(bar_Id, _bar_Id).commit();
     }
 
     public String getG_Token() {
@@ -578,5 +588,13 @@ public class AppPreferences {
 
     public void setCoffee(boolean _coffee) {
         prefEditor.putBoolean(coffee, _coffee).commit();
+    }
+
+    public Boolean getBarList() {
+        return appSharedpref.getBoolean(barList, false);
+    }
+
+    public void setBarList(boolean _barList) {
+        prefEditor.putBoolean(barList, _barList).commit();
     }
 }

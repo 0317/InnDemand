@@ -188,6 +188,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
+
         }
 
     @Override

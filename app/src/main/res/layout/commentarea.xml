@@ -1,39 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/wake_up_click"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:id="@+id/back_press"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_camera"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/write_comment"
-            android:textSize="@dimen/twenty_sp"
-            android:textColor="@android:color/white"
-            android:padding="10dp"/>
-
-    </LinearLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|snap"
+            />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -73,5 +57,5 @@
 
     </LinearLayout>
 
-
 </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

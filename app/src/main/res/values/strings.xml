@@ -68,6 +68,7 @@
     <string name="note_cab">NOTE: Providing Cab services is based on the availability. We will call you to confirm.</string>
     <string name="write_comment_here">Write your comment here</string>
     <string name="write_comment">Write Comment</string>
+    <string name="comment_section">Comment Section</string>
     <string name="submit">SUBMIT</string>
     <string name="my_cart">My Cart</string>
     <string name="mycart">NOTE: Taxes Included</string>
@@ -89,6 +90,7 @@
     <string name="add_number">NOTE: Please add your Mobile number to serve you better.</string>
     <string name="enter_promocode">ENTER PROMO CODE</string>
     <string name="please_scan">Please scan the code below to get Hotel Details</string>
+    <string name="order_summary">Order Summary</string>
 
     <!-- Button labels -->
     <string name="sign_out">Sign Out</string>

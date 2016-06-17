@@ -250,13 +250,13 @@ public class Bar extends AppCompatActivity{
     public void getData(){
         JSONObject obj = new JSONObject();
         try {
-            obj.put("restaurant_id", prefs.getRestaurant_Id());
+            obj.put("bar_id", prefs.getBar_Id());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Log.d("Check API Data", obj.toString());
 
-        postJsonData(Config.innDemand+"", obj.toString());
+        postJsonData(Config.innDemand+"bar_items/details/", obj.toString());
 
     }
 
