@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -19,6 +20,7 @@ import java.util.logging.Handler;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.CartData;
+import demand.inn.com.inndemand.constants.Header;
 import demand.inn.com.inndemand.constants.ListData;
 import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.utility.AppPreferences;
@@ -37,6 +39,11 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
     RecyclerView.Adapter adapter;
     AppPreferences prefs;
+
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
+
+    Header header;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, subtitle, rupees, count, details;

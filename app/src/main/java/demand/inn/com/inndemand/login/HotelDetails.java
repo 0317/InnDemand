@@ -78,6 +78,7 @@ import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
+import demand.inn.com.inndemand.mapdirection.MapArea;
 import demand.inn.com.inndemand.mapdirection.Mapping;
 import demand.inn.com.inndemand.roomservice.Bar;
 import demand.inn.com.inndemand.roomservice.Restaurant;
@@ -135,6 +136,9 @@ public class HotelDetails extends AppCompatActivity {
     String to_restaurant;
     String restaurantId;
     String barId;
+    String location;
+    String latitude;
+    String longitude;
 
     //Date & Time
     Calendar c;
@@ -447,7 +451,9 @@ public class HotelDetails extends AppCompatActivity {
     }
 
     public void direction(View view) {
-        Intent in = new Intent(HotelDetails.this, Mapping.class);
+        Intent in = new Intent(HotelDetails.this, MapArea.class);
+        in.putExtra("latitude", "28.4089");
+        in.putExtra("longitude", "77.3178");
         startActivity(in);
     }
 
@@ -460,20 +466,6 @@ public class HotelDetails extends AppCompatActivity {
             restaurantList.setVisibility(View.GONE);
             prefs.setCheck_list(false);
         }
-//        JSONObject obj = new JSONObject();
-//
-//        try {
-//            obj.put("hotel_id", prefs.getHotel_id());
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Log.d("Api Hotel Data", obj.toString());
-//
-//        postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
-//
-//        Intent in = new Intent(HotelDetails.this, Restaurant.class);
-//        startActivity(in);
     }
 
     //OnClick to go to Room Services Screen
@@ -562,9 +554,9 @@ public class HotelDetails extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
 
                     hotelName = object.getString("name");
-                    String location = object.getString("location");
-                    String latitude = object.getString("latitude");
-                    String longitude = object.getString("longitude");
+                    location = object.getString("location");
+                    latitude = object.getString("latitude");
+                    longitude = object.getString("longitude");
                     String address = object.getString("address");
                     final String number = object.getString("contact_number");
                     Boolean service = object.getBoolean("has_restaurant_service");

@@ -75,6 +75,10 @@ public class AppPreferences {
                     tea = "tea",
                     coffee = "coffee";
 
+    //Location Saves
+    private String currentLocation = "currentLocation",
+                    destination = "destination";
+
     //Registration ID for GCM
     private String reg_ID = "reg_ID";
 
@@ -380,6 +384,24 @@ public class AppPreferences {
         prefEditor.putString(restaurant_food, _restaurant_food).commit();
     }
 
+
+    /* ..................Location Data Details........................... */
+
+    public String getCurrentLocation() {
+        return appSharedpref.getString(currentLocation, "");
+    }
+
+    public void setCurrentLocation(String _currentLocation) {
+        prefEditor.putString(currentLocation, _currentLocation).commit();
+    }
+
+    public String getDestination() {
+        return appSharedpref.getString(destination, "");
+    }
+
+    public void setDestination(String _destination) {
+        prefEditor.putString(destination, _destination).commit();
+    }
 
     /* ..................Hotel Details........................... */
 

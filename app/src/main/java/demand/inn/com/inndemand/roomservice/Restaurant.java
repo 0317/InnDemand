@@ -1,7 +1,9 @@
 package demand.inn.com.inndemand.roomservice;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -43,7 +45,10 @@ import java.util.List;
 import java.util.Random;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.adapter.ViewPagerAdapter;
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.constants.FragmentData;
+import demand.inn.com.inndemand.constants.Header;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
 import demand.inn.com.inndemand.fragmentarea.DefaultFragment;
 import demand.inn.com.inndemand.fragmentarea.Dessert;
@@ -79,7 +84,7 @@ public class Restaurant extends AppCompatActivity {
     Appetizer mAppetizer;
     Dessert mDessert;
     MainCourse mMaincourse;
-    DefaultFragment fragment;
+    DefaultFragment defaultFragment;
 
     //Others
     String id;
@@ -94,6 +99,12 @@ public class Restaurant extends AppCompatActivity {
     String catStatus;
 
     private final Random mRandom = new Random();
+
+    List<FragmentData> tabList;
+
+    List<Fragment> fragments;
+    ArrayList<String> categories;
+    FragmentData data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,7 +240,7 @@ public class Restaurant extends AppCompatActivity {
         mAppetizer = new Appetizer();
         mDessert = new Dessert();
         mMaincourse = new MainCourse();
-        fragment  = new DefaultFragment();
+        defaultFragment  = new DefaultFragment();
 
         viewPager = (ViewPager) findViewById(R.id.container);
 
@@ -256,7 +267,7 @@ public class Restaurant extends AppCompatActivity {
             }
         });
 
-        if(mAppetizer.isVisible())
+        if(mAppetizer.isResumed())
             Toast.makeText(getApplicationContext(), "Appetiser", Toast.LENGTH_LONG).show();
         else if(mMaincourse.isVisible())
             Toast.makeText(getApplicationContext(), "Main Course", Toast.LENGTH_LONG).show();
@@ -269,64 +280,18 @@ public class Restaurant extends AppCompatActivity {
         else
             restaurant_text.setText("NOTE: It will take a minimum of 60 mins to prepare the food");
 
-    }
+        tabList = new ArrayList<>();
 
-    private void setupViewPager(ViewPager viewPager) {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-    }
+//        adapter.addFragment(mAppetizer, "starter");
+//        adapter.addFragment(mMaincourse, "Main Food");
+//        adapter.addFragment(mDessert, "Desert");
 
-//    public void addTab(View view) {
-//        String cheese = Cheeses.sCheeseStrings[mRandom.nextInt(Cheeses.sCheeseStrings.length)];
-//        String cheese = "Appetiser";
-//        adapter.addTab(cheese);
-//    }
-//    public void selectFirstTab(View view) {
-//        if (tabLayout.getTabCount() > 0) {
-//            viewPager.setCurrentItem(0);
-//        }
-//    }
-//    public void removeTab(View view) {
-//        adapter.removeTab();
-//    }
+        adapter.notifyDataSetChanged();
+        viewPager.setAdapter(adapter);
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        public void addTab(String title) {
-            mFragmentTitleList.add(title);
-            notifyDataSetChanged();
-        }
-        public void removeTab() {
-            if (!mFragmentTitleList.isEmpty()) {
-                mFragmentTitleList.remove(mFragmentTitleList.size() - 1);
-                notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     public void getCategory(){
@@ -339,7 +304,6 @@ public class Restaurant extends AppCompatActivity {
         Log.d("Check API Data", obj.toString());
 
         postJsonDataCategory(Config.innDemand+"category/details/", obj.toString());
-
     }
 
     public void getData(){
@@ -481,23 +445,16 @@ public class Restaurant extends AppCompatActivity {
 
                         //catStatus = Response 0/1 (check if 0, remove the tab attribute)
 //                        catStatus = object.getString("status");
-                        Log.d("API", "API Category: " + category);
+                        Log.d("API", "API Category: " + catName);
 
-                        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-                        adapter.addFragment(mAppetizer, "Appetiser");
-                        adapter.addFragment(mMaincourse, "Main Course");
-                        adapter.addFragment(mDessert, catName);
+                        data = new FragmentData(catName);
+                        tabList.add(data);
 
                         adapter.notifyDataSetChanged();
-                        viewPager.setAdapter(adapter);
-
-                        tabLayout.setupWithViewPager(viewPager);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
             }
         }, new Response.ErrorListener() {
             @Override

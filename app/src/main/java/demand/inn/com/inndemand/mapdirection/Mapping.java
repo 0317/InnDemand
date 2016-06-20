@@ -48,16 +48,18 @@ public class Mapping extends FragmentActivity implements LocationListener {
     GoogleMap mGoogleMap;
     ArrayList<LatLng> mMarkerPoints;
     ArrayList<LatLng> hell;
-    double mLatitude = 0;
-    double mLongitude = 0;
-    double lat = 28.4345552;
-    double lon =  77.0578855;
+    double lat = 0;
+    double lon = 0;
     LatLng point;
+    Location location;
+    double mLatitude;
+    double mLongitude;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.googlemap);
+
         // Getting Google Play availability status
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
 
@@ -134,7 +136,7 @@ public class Mapping extends FragmentActivity implements LocationListener {
                     // Checks, whether start and end locations are captured
                     if(mMarkerPoints.size() >= 2){
                         LatLng origin = mMarkerPoints.get(0);
-                        LatLng dest = new LatLng(lat, lon);
+                            LatLng dest = new LatLng(lat, lon);
 
                         drawMarker(dest);
                         // Getting URL to the Google Directions API
