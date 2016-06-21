@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -145,6 +147,9 @@ public class HotelDetails extends AppCompatActivity {
     SimpleDateFormat df, timeFormat;
     String formattedDate, getTime;
 
+    boolean doubleBackToExitPressedOnce = false;
+    private ProgressDialog mProgressDialog;
+
     boolean bar, spa, restaurant, service;
 
     Context context;
@@ -208,8 +213,9 @@ public class HotelDetails extends AppCompatActivity {
         getTime = timeFormat.format(c.getTime());
         // formattedDate have current date/time
 
-//        if(nu.isConnectingToInternet()) {
+        if(nu.isConnectingToInternet()) {
             //Getting All Restaurant List of hotel
+            showProgressDialog();
             restaurantList();
 
             //Getting all Bar list of hotel
@@ -225,9 +231,9 @@ public class HotelDetails extends AppCompatActivity {
             makeJsonObjectRequest();
             makeJsonRequestBottom();
 
-//        }else{
-//            networkClick();
-//        }
+        }else{
+            networkClick();
+        }
 
         //Title set for Collapsing Toolbar
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
@@ -256,6 +262,12 @@ public class HotelDetails extends AppCompatActivity {
         service_area = (LinearLayout) findViewById(R.id.hotel_roomservice);
         spa_area = (LinearLayout) findViewById(R.id.hotel_spa);
         bar_area = (LinearLayout) findViewById(R.id.hotel_bar);
+
+        restaurant_area.setVisibility(View.GONE);
+        service_area.setVisibility(View.GONE);
+        bar_area.setVisibility(View.GONE);
+        spa_area.setVisibility(View.GONE);
+
 
         main_backdrop = (ImageView) findViewById(R.id.main_backdrop);
         // If you are using normal ImageView
@@ -319,7 +331,7 @@ public class HotelDetails extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 ListData data = restaurantData.get(position);
-                Toast.makeText(HotelDetails.this, data.getTitle(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(HotelDetails.this, data.getTitle(), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -727,7 +739,7 @@ public class HotelDetails extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -804,7 +816,7 @@ public class HotelDetails extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -830,7 +842,21 @@ public class HotelDetails extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
     @Override
@@ -1046,7 +1072,7 @@ public class HotelDetails extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -1091,6 +1117,7 @@ public class HotelDetails extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                hideProgressDialog();
                 System.out.println("yohaha=timings=success===" + response);
 
 
@@ -1123,7 +1150,7 @@ public class HotelDetails extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -1424,7 +1451,7 @@ public class HotelDetails extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -1508,5 +1535,21 @@ public class HotelDetails extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("loading details....");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
     }
 }

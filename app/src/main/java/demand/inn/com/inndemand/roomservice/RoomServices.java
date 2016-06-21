@@ -51,7 +51,7 @@ public class RoomServices extends AppCompatActivity {
 //
         //UI elements call
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bell-boy");
+        toolbar.setTitle("Room Services");
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 

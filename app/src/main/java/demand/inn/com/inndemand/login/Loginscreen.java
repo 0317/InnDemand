@@ -327,7 +327,6 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
     // If the user has not previously signed in on this device or the sign-in has expired,
     // this asynchronous branch will attempt to sign in the user silently. Cross-device
     // single sign-on will occur in this branch.
-
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
@@ -371,6 +370,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
             Log.d("Age range:", "Check "+person.getBirthday());
             Log.d("Bday range:", "Check "+person.getGender());
             Log.d("Loc range:", "Check "+person.getCurrentLocation());
+            hideProgressDialog();
             Intent in = new Intent(Loginscreen.this, CheckDetails.class);
             prefs.setGoogle_logged_In(true);
             startActivity(in);
@@ -452,6 +452,22 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+        }
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.verifycredentials));
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
         }
     }
 }

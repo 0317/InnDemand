@@ -2,12 +2,14 @@ package demand.inn.com.inndemand.fragmentarea;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -116,9 +118,22 @@ public class Appetizer extends Fragment {
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        callMethod();
+        if(nu.isConnectingToInternet()) {
+            if(prefs.getFm_restaurant() == true) {
+                new AlertDialog.Builder(getActivity()).setMessage("Restaurant is closed")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }).create().show();
+            } else {
+                //mehtod to send Restaurant ID to server & to get response.
+                callMethod();
+            }
+        }else{
 
-        //mehtod to send Restaurant ID to server & to get response.
+        }
 
         return  view;
     }

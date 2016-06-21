@@ -1,6 +1,8 @@
 package demand.inn.com.inndemand.roomservice;
 
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
@@ -18,6 +20,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +82,7 @@ public class Restaurant extends AppCompatActivity {
     View view;
     private Menu menu;
     int positions;
+    private ProgressDialog mProgressDialog;
 
     Toolbar toolbar;
 
@@ -272,21 +278,31 @@ public class Restaurant extends AppCompatActivity {
         else if(mMaincourse.isVisible())
             Toast.makeText(getApplicationContext(), "Main Course", Toast.LENGTH_LONG).show();
 
-        getCategory();
-        getData();
 
-        if(prefs.getFm_restaurant() == true)
-            restaurant_text.setText("NOTE: Restaurant Services are not available");
-        else
-            restaurant_text.setText("NOTE: It will take a minimum of 60 mins to prepare the food");
+
+        if(nu.isConnectingToInternet()) {
+            showProgressDialog();
+            if(prefs.getFm_restaurant() == true) {
+                restaurant_text.setText("NOTE: Restaurant Services are not available");
+                hideProgressDialog();
+            } else {
+                restaurant_text.setText("NOTE: It will take a minimum of 60 mins to prepare the food");
+//                getCategory();
+//                getData();
+            }
+        }else{
+            networkClick();
+        }
+
+
 
         tabList = new ArrayList<>();
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-//        adapter.addFragment(mAppetizer, "starter");
-//        adapter.addFragment(mMaincourse, "Main Food");
-//        adapter.addFragment(mDessert, "Desert");
+        adapter.addFragment(mAppetizer, "starter");
+        adapter.addFragment(mMaincourse, "Main Food");
+        adapter.addFragment(mDessert, "Desert");
 
         adapter.notifyDataSetChanged();
         viewPager.setAdapter(adapter);
@@ -340,6 +356,7 @@ public class Restaurant extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                hideProgressDialog();
                 System.out.println("yohaha==data==success===" + response);
 
                 JSONArray array = null;
@@ -423,6 +440,7 @@ public class Restaurant extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                hideProgressDialog();
                 System.out.println("yohaha==category==success===" + response);
 
                 JSONArray array = null;
@@ -459,7 +477,7 @@ public class Restaurant extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -480,5 +498,41 @@ public class Restaurant extends AppCompatActivity {
         };
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+    }
+
+    //Custom pop-up for Network Click
+    public void networkClick(){
+        // custom dialog
+        final Dialog dialog = new Dialog(Restaurant.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.network);
+
+        // set the custom dialog components - text, image and button
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        Button checkout = (Button) dialog.findViewById(R.id.ok_click);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        dialog.show();
     }
 }

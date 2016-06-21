@@ -115,7 +115,7 @@
                 android:paddingLeft="5dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/ten_sp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="15dp"
                 android:textColor="@android:color/white"
                 android:background="@drawable/yellow_side_round"/>
 

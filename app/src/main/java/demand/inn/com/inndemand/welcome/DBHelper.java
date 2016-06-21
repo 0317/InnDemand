@@ -7,11 +7,16 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-/**
+import demand.inn.com.inndemand.constants.FragmentData;
+
+    /**
  * Created by akash
  */
+
 public class DBHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
@@ -32,34 +37,38 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // TODO Auto-generated method stub
-        db.execSQL(
-                "create table contacts " +
-                        "(id integer primary key, name text, email text)"
-        );
+        String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
+                + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_NAME + " TEXT,"
+                + COLUMN_EMAIL + " TEXT" + ")";
+        db.execSQL(CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO Auto-generated method stub
-        db.execSQL("DROP TABLE IF EXISTS inndemand");
+        db.execSQL("DROP TABLE IF EXISTS"+ TABLE_NAME);
+        //create table again
         onCreate(db);
     }
 
-    public boolean insertData(String name, String email)
+    public void insertData(String name, String email)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("email", email);
+        contentValues.put(COLUMN_NAME, name);
+        contentValues.put(COLUMN_EMAIL, email);
 
-        db.insert("inndemand", null, contentValues);
-        return true;
+        // Inserting Row
+        db.insert(TABLE_NAME, null, contentValues);
+        //2nd argument is String containing nullColumnHack
+
+        db.close(); // Closing database connection
     }
 
     public Cursor getData(int id){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from inndemand where id="+id+"", null );
-        return res;
+        Cursor cursor =  db.rawQuery( "select * from inndemand where id="+id+"", null );
+        return cursor;
     }
 
     public int numberOfRows(){
@@ -74,15 +83,38 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
         contentValues.put(COLUMN_EMAIL, email);
-        db.update("inndemand", contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        db.update(TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
 
     public Integer deleteData (Integer id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("inndemand",
-                "id = ? ",
-                new String[] { Integer.toString(id) });
+        return db.delete(TABLE_NAME, "id = ? ", new String[] { Integer.toString(id) });
+    }
+
+    public List<FragmentData> getData(){
+        List<FragmentData> dataList = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                FragmentData data = new FragmentData();
+
+                data.setId(Integer.parseInt(cursor.getString(0)));
+                data.setTitle(cursor.getString(1));
+
+                // Adding data to list
+                dataList.add(data);
+            } while (cursor.moveToNext());
+        }
+
+            return dataList;
     }
 }

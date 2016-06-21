@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,7 @@ import java.util.Calendar;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.constants.MarshMallowPermission;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -62,7 +64,11 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     NetworkUtility nu;
     AppPreferences prefs;
 
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 3;
+
     GoogleApiClient mGoogleApiClient;
+
+    MarshMallowPermission marshMallowPermission;
 
     Button button;
 
@@ -83,6 +89,9 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+
+        marshMallowPermission = new MarshMallowPermission(this);
+
         prefs.setIs_task_completed(true);
         prefs.setIs_In_Hotel(false);
 
@@ -101,20 +110,14 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                     }
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
-                try {
-                    if (ContextCompat.checkSelfPermission(QRscanning.this,
-                            Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        try {
+            mScannerView = new ZXingScannerView(QRscanning.this);   // Programmatically initialize the scanner view
+            setContentView(mScannerView);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-
-                        mScannerView = new ZXingScannerView(QRscanning.this);   // Programmatically initialize the scanner view
-                        setContentView(mScannerView);
-
-                        mScannerView.setResultHandler(QRscanning.this); // Register ourselves as a handler for scan results.
-                        mScannerView.startCamera();         // Start camera
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
+        getPhotoFromCamera();
 
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
@@ -122,6 +125,20 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         formattedDate = df.format(c.getTime());
         // formattedDate have current date/time
+    }
+
+    public void getPhotoFromCamera() {
+        if (!marshMallowPermission.checkPermissionForCamera()) {
+            marshMallowPermission.requestPermissionForCamera();
+        } else {
+//                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            try {
+                mScannerView.setResultHandler(QRscanning.this); // Register ourselves as a handler for scan results.
+                mScannerView.startCamera();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -187,9 +204,17 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-
-        }
+            switch (requestCode){
+                case CAMERA_PERMISSION_REQUEST_CODE: {
+                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        mScannerView.setResultHandler(QRscanning.this); // Register ourselves as a handler for scan results.
+                        mScannerView.startCamera();
+                    } else {
+                        Toast.makeText(QRscanning.this, "Permission Denied", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

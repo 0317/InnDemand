@@ -20,6 +20,30 @@
             app:layout_scrollFlags="scroll|snap"
             />
 
+       <!-- <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="30dp"
+               android:orientation="vertical"
+               android:layout_marginLeft="15dp"
+               android:layout_marginRight="15dp"
+               android:gravity="center_vertical"
+               android:layout_marginTop="60dp"
+               android:background="@color/light_grey">-->
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="@string/order_summary"
+              android:textSize="@dimen/forteen_sp"
+              android:layout_marginLeft="5dp"
+              android:layout_marginRight="5dp"
+              android:layout_marginTop="60dp"
+              android:background="@color/light_grey"
+              android:textColor="@color/view_gray"/>
+
+         <!-- </LinearLayout>
+-->
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,26 +54,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="vertical"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center_vertical"
-                android:layout_marginTop="15dp"
-                android:background="@color/light_grey">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/order_summary"
-                android:textSize="@dimen/forteen_sp"
-                android:layout_marginLeft="2dp"
-                android:textColor="@color/view_gray"/>
-
-                </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
@@ -126,6 +130,7 @@
                     android:textSize="@dimen/sixteen_sp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
+                    android:id="@+id/now_cart"
                     android:textColor="@color/view_gray" />
 
             <TextView
@@ -135,6 +140,7 @@
                 android:textSize="16sp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
+                android:id="@+id/picktime_cart"
                 android:textColor="@color/confirm_demand_click"/>
 
         </LinearLayout>
@@ -170,6 +176,7 @@
                 android:layout_margin="5dp"
                 android:background="@null"
                 android:gravity="top"
+                android:maxLength="70"
                 android:hint="@string/write_comment"
                 android:id="@+id/comment_area"/>
 
@@ -225,6 +232,7 @@
             android:layout_weight=".8"
             android:background="@color/confirm_demand_click"
             android:id="@+id/confirm_demand_click_cart"
+            android:onClick="proceed"
             android:orientation="vertical"
             android:gravity="center">
 

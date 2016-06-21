@@ -25,7 +25,7 @@
     <application
         android:allowBackup="true"
         android:name=".volleycall.AppController"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -50,6 +50,7 @@
         <activity android:name=".welcome.SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -84,6 +85,7 @@
             android:label="Hotel"
             android:hardwareAccelerated="false"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".cartarea.MyCart"
@@ -97,31 +99,38 @@
         <activity android:name=".roomservice.RoomServices"
             android:label="@string/room_services"
             android:theme="@style/AppTheme.NoActionBar"
-            android:icon="@drawable/ic_menu_camera"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".roomservice.Bathroom"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.RoomCleaning"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.WakeUp"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.Cab"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.Laundry"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.Beverages"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.BedTea"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.BellBoy"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
         </activity>
 
         <!-- ................Restaurant Activity Area.......... -->
@@ -129,11 +138,6 @@
         <activity android:name=".roomservice.Restaurant"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-         <!--   <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
 \
         <!-- ...................Bar Activity Area...................... -->
@@ -141,11 +145,6 @@
         <activity android:name=".roomservice.Bar"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
 
         <!-- ...................Terms of Use Area...................... -->
@@ -199,6 +198,13 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCNosy5B30fOPeAT7Wcqo14sdtyRawTQ1Q"/>
+
+
+        <!-- ..................Thank You........................... -->
+        <activity android:name=".welcome.Thankyou"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
     </application>
 

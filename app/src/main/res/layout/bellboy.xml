@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:maxLines="3"
+            android:maxLength="120"
             android:id="@+id/say_something_bell"
             android:hint="@string/tap_to_start"
             android:background="@null"/>

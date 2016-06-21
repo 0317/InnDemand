@@ -91,6 +91,9 @@
     <string name="enter_promocode">ENTER PROMO CODE</string>
     <string name="please_scan">Please scan the code below to get Hotel Details</string>
     <string name="order_summary">Order Summary</string>
+    <string name="thankyou">Thank You \n for shopping with us.</string>
+    <string name="pleasantstay">Have a Pleasant Stay.</string>
+    <string name="verifycredentials">Verifying credentials...</string>
 
     <!-- Button labels -->
     <string name="sign_out">Sign Out</string>

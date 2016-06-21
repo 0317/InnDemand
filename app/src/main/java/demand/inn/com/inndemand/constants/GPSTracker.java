@@ -18,7 +18,7 @@ import android.util.Log;
 
 
 /**
- * Created by akash on 20/6/16.
+ * Created by akash
  */
 public class GPSTracker extends Service implements LocationListener {
 
@@ -45,7 +45,7 @@ public class GPSTracker extends Service implements LocationListener {
         getLocation();
     }
 
-    public Location getLocation() {
+    public void getLocation() {
         try {
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);
@@ -74,6 +74,15 @@ public class GPSTracker extends Service implements LocationListener {
                 // if GPS Enabled get lat/long using GPS Services
                 if (isGPSEnabled) {
                     if (location == null) {
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         Log.d("GPS Enabled", "GPS Enabled");
                         if (locationManager != null) {
@@ -90,7 +99,7 @@ public class GPSTracker extends Service implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return location;
+        return;
     }
 
     /**

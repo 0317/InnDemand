@@ -1,12 +1,14 @@
 package demand.inn.com.inndemand.fragmentarea;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -59,6 +61,7 @@ import demand.inn.com.inndemand.volleycall.AppController;
 public class MainCourse extends Fragment {
 
     //Utility
+    NetworkUtility nu;
     AppPreferences prefs;
 
     View view;
@@ -86,6 +89,7 @@ public class MainCourse extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.maincourse, container, false);
+        nu = new NetworkUtility(getActivity());
         prefs = new AppPreferences(getActivity());
 
         //UI initialize
@@ -105,7 +109,16 @@ public class MainCourse extends Fragment {
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        callMethod();
+        if(nu.isConnectingToInternet()) {
+            if(prefs.getFm_restaurant() == true) {
+
+            } else {
+                //mehtod to send Restaurant ID to server & to get response.
+                callMethod();
+            }
+        }else{
+
+        }
 
         return  view;
     }

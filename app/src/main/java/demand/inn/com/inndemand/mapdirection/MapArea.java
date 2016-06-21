@@ -78,7 +78,7 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
     LatLng lon = new LatLng(28.4452895,77.0650809);
 
     String val = "New Delhi";
-    String vol = "";
+    String vol = "Gurgaon";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +100,6 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
 
 //        new AlertDialog.Builder(MapArea.this).setMessage(dLatitude +" "+dLongitude).create().show();
 
-
-
         // check if GPS enabled
         if(gps.canGetLocation()){
 
@@ -111,8 +109,13 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
 
             locAddress.getAddressFromLocation(dLatitude, dLongitude, getApplicationContext(), new GeocoderHandlers());
 
+//            try {
+//                new DirectionFinder(this, prefs.getCurrentLocation(), prefs.getDestination()).execute();
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
             try {
-                new DirectionFinder(this, prefs.getCurrentLocation(), prefs.getDestination()).execute();
+                new DirectionFinder(this, val, vol).execute();
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -124,19 +127,6 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-//        btnFindPath = (Button) findViewById(R.id.btnFindPath);
-
-//        btnFindPath.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//            new DirectionFinder(MapArea.this, prefs.getCurrentLocation(), prefs.getDestination()).execute();
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//            }
-//        });
     }
 
     @Override
@@ -233,9 +223,9 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
             }
             getAddress = locationAddress;
             String sp[] = getAddress.split(":");
-            String main = sp[3];
-            prefs.setCurrentLocation(main);
-//            new AlertDialog.Builder(MapArea.this).setMessage(main).create().show();
+//            String main = sp[3];
+//            prefs.setCurrentLocation(main);
+            new AlertDialog.Builder(MapArea.this).setMessage(locationAddress).create().show();
 //            Toast.makeText(MapArea.this, getAddress+" ", Toast.LENGTH_LONG).show();
 
         }
@@ -255,9 +245,9 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
             }
             getAddress = locationAddress;
             String sp[] = getAddress.split(":");
-            String main = sp[3];
-            prefs.setDestination(main);
-//            new AlertDialog.Builder(MapArea.this).setMessage(main).create().show();
+//            String main = sp[3];
+//            prefs.setDestination(main);
+            new AlertDialog.Builder(MapArea.this).setMessage(locationAddress).create().show();
 //            Toast.makeText(MapArea.this, getAddress+" ", Toast.LENGTH_LONG).show();
 
         }
