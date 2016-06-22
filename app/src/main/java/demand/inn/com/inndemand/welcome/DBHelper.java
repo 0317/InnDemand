@@ -60,7 +60,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Inserting Row
         db.insert(TABLE_NAME, null, contentValues);
-        //2nd argument is String containing nullColumnHack
 
         db.close(); // Closing database connection
     }

@@ -6,8 +6,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.login.HotelDetails;
 
 /**
  * Created by akash
@@ -28,7 +28,7 @@ public class Thankyou extends AppCompatActivity {
             @Override
             public void run() {
 //                    if (nu.isConnectingToInternet()) {
-                    Intent in = new Intent(Thankyou.this, HotelDetails.class);
+                    Intent in = new Intent(Thankyou.this, DashBoard.class);
                     startActivity(in);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     finish();

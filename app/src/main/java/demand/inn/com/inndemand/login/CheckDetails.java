@@ -112,9 +112,9 @@ public class CheckDetails extends AppCompatActivity {
                 gGender = "1";
 
             if(gbBday == "")
-                bDay = "none";
+                gbBday = "none";
             else
-                bDay = prefs.getGoogle_bday();
+                gbBday = prefs.getGoogle_bday();
 
             if(gLoc == "")
                 gLoc = "none";
@@ -132,6 +132,9 @@ public class CheckDetails extends AppCompatActivity {
             gender = getBundle.getString("gender");
             bDay = getBundle.getString("birthday");
             fb_location = getBundle.getString("location");
+            prefs.setUser_fbemail(email);
+            prefs.setUser_fbname(name+" "+l_name);
+            prefs.setUser_fbpic(dp);
 
             if (gender.equalsIgnoreCase("Male"))
                 gender = "0";
@@ -224,7 +227,7 @@ public class CheckDetails extends AppCompatActivity {
             obj.put("mobile_number", phoneNo);
 
             if(bDay == null)
-                obj.put("age", bDay);
+                obj.put("age", gbBday);
             else
                 obj.put("age", strBuild);
 

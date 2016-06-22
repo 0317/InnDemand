@@ -47,6 +47,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.MarshMallowPermission;
@@ -170,7 +171,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     makeJsonObjectRequest();
-                    Intent in = new Intent(QRscanning.this, HotelDetails.class);
+                    Intent in = new Intent(QRscanning.this, DashBoard.class);
                     startActivity(in);
                     finish();
                 }

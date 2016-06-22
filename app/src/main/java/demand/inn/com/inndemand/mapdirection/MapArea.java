@@ -8,6 +8,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
@@ -39,14 +40,19 @@ import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.GPSTracker;
 import demand.inn.com.inndemand.constants.LocationAddress;
 import demand.inn.com.inndemand.utility.AppPreferences;
+import demand.inn.com.inndemand.utility.NetworkUtility;
 
 /**
  * Created by akash
  */
-public class MapArea extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener {
+public class MapArea extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener
+{
 
     //Utility
+    NetworkUtility nu;
     AppPreferences prefs;
+
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 4;
 
     private GoogleMap mMap;
     private Button btnFindPath;
@@ -84,10 +90,9 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
         gps = new GPSTracker(MapArea.this);
-
-        GPSTracker gps = new GPSTracker(this);
 
         mLatitude = gps.getLatitude();
         mLongitude = gps.getLongitude();
@@ -107,7 +112,8 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
             locationAddress.getAddressFromLocation(mLatitude, mLongitude,
                     getApplicationContext(), new GeocoderHandler());
 
-            locAddress.getAddressFromLocation(dLatitude, dLongitude, getApplicationContext(), new GeocoderHandlers());
+            locAddress.getAddressFromLocation(dLatitude, dLongitude, getApplicationContext(),
+                    new GeocoderHandlers());
 
 //            try {
 //                new DirectionFinder(this, prefs.getCurrentLocation(), prefs.getDestination()).execute();
@@ -115,7 +121,7 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
 //                e.printStackTrace();
 //            }
             try {
-                new DirectionFinder(this, val, vol).execute();
+                new DirectionFinder(this, val, prefs.getDestination()).execute();
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -138,7 +144,10 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
                 .title("Your Location")
                 .position(hcmus)));
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat
+                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -245,11 +254,26 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
             }
             getAddress = locationAddress;
             String sp[] = getAddress.split(":");
-//            String main = sp[3];
-//            prefs.setDestination(main);
-            new AlertDialog.Builder(MapArea.this).setMessage(locationAddress).create().show();
+            String main = sp[3];
+            prefs.setDestination(main);
+//            new AlertDialog.Builder(MapArea.this).setMessage(locationAddress).create().show();
 //            Toast.makeText(MapArea.this, getAddress+" ", Toast.LENGTH_LONG).show();
 
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull
+    int[] grantResults) {
+        switch (requestCode){
+            case LOCATION_PERMISSION_REQUEST_CODE:{
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+
+                } else {
+                    Toast.makeText(MapArea.this, "Permission Denied", Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 }

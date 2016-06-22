@@ -3,32 +3,52 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Dashboard" />
+            android:title="Restaurant" />
+       <!-- <item
+            android:id="@+id/nav_restaurant"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Restaurant" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_services"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Services" />
+            android:title="Room Services" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_bar"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Our product" />
+            android:title="Bar" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="About Us" />
+            android:id="@+id/nav_spa"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Spa" />-->
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Order History" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Share InnDemand" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Accounts">
         <menu>
             <item
-                android:id="@+id/nav_contact"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Contact Us" />
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/icon_settings"
+                android:title="Settings" />
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_feedback"
+                android:title="Feedback" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/icon_help"
+                android:title="Help" />
             <item
                 android:id="@+id/nav_signout"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/icon_signout"
                 android:title="Sign Out" />
         </menu>
     </item>

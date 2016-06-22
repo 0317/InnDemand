@@ -52,11 +52,6 @@
             android:screenOrientation="portrait"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name=".login.Loginscreen"
@@ -77,8 +72,8 @@
         <activity
             android:name=".DashBoard"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:screenOrientation="portrait">
+
         </activity>
 
         <activity android:name=".login.HotelDetails"
@@ -138,6 +133,11 @@
         <activity android:name=".roomservice.Restaurant"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 \
         <!-- ...................Bar Activity Area...................... -->
@@ -199,6 +199,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCNosy5B30fOPeAT7Wcqo14sdtyRawTQ1Q"/>
 
+        <!-- ..................Settings Area.......................... -->
+
+        <activity android:name=".setting.Settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!-- ..................Thank You........................... -->
         <activity android:name=".welcome.Thankyou"

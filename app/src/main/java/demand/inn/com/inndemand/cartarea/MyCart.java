@@ -69,6 +69,7 @@ import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.CommentArea;
+import demand.inn.com.inndemand.welcome.DBHelper;
 import demand.inn.com.inndemand.welcome.SplashScreen;
 import demand.inn.com.inndemand.welcome.Thankyou;
 
@@ -110,13 +111,17 @@ public class MyCart extends AppCompatActivity {
     private int hour;
     private int minute;
 
+    //Database
+    DBHelper db;
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mycart);
         nu = new NetworkUtility(this);
-        prefs = new AppPreferences(this);
+
+        db = new DBHelper(this);
 
         getSupportActionBar().hide();
 

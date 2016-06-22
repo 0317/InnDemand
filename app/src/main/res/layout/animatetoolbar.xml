@@ -81,6 +81,7 @@
             android:paddingLeft="15dp"
             android:maxLines="1"
             android:lines="1"
+            android:ellipsize="end"
             android:paddingTop="15dp"
             android:textSize="@dimen/twenty_sp"
             android:textStyle="bold"
@@ -92,6 +93,7 @@
                     android:paddingLeft="15dp"
                     android:maxLines="1"
                     android:lines="1"
+                    android:ellipsize="end"
                     android:id="@+id/hotel_Address"
                     android:paddingTop="5dp"
                     android:textSize="@dimen/forteen_sp"
@@ -115,7 +117,7 @@
                 android:paddingLeft="5dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/ten_sp"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="10dp"
                 android:textColor="@android:color/white"
                 android:background="@drawable/yellow_side_round"/>
 

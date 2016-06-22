@@ -13,25 +13,23 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
+import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.constants.Config;
-import demand.inn.com.inndemand.login.HotelDetails;
 import demand.inn.com.inndemand.login.Loginscreen;
 import demand.inn.com.inndemand.login.QRscanning;
 import demand.inn.com.inndemand.utility.AppPreferences;
@@ -41,7 +39,7 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
  * Created by akash
  */
 
-public class SplashScreen extends BaseActivity {
+public class SplashScreen extends AppCompatActivity {
 
     //Utility Class Area
     NetworkUtility nu;
@@ -140,7 +138,7 @@ public class SplashScreen extends BaseActivity {
                                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 finish();
                             }else if(prefs.getIs_In_Hotel() == true){
-                            Intent in = new Intent(SplashScreen.this, HotelDetails.class);
+                            Intent in = new Intent(SplashScreen.this, DashBoard.class);
                             startActivity(in);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();

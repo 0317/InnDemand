@@ -342,6 +342,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
+            showProgressDialog();
     // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             System.out.print("Google Details========"+result.getSignInAccount().getDisplayName());
@@ -370,7 +371,6 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
             Log.d("Age range:", "Check "+person.getBirthday());
             Log.d("Bday range:", "Check "+person.getGender());
             Log.d("Loc range:", "Check "+person.getCurrentLocation());
-            hideProgressDialog();
             Intent in = new Intent(Loginscreen.this, CheckDetails.class);
             prefs.setGoogle_logged_In(true);
             startActivity(in);

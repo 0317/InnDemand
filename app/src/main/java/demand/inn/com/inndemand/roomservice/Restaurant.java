@@ -4,6 +4,7 @@ package demand.inn.com.inndemand.roomservice;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -78,6 +80,7 @@ public class Restaurant extends AppCompatActivity {
     private ViewPager viewPager;
     ViewPagerAdapter adapter;
     TextView restaurant_text;
+    TextView cart_item, cart_total;
 
     View view;
     private Menu menu;
@@ -272,6 +275,11 @@ public class Restaurant extends AppCompatActivity {
 
             }
         });
+        //UI initialize
+        cart_item = (TextView) findViewById(R.id.bottom_items);
+        cart_total = (TextView) findViewById(R.id.bottom_total);
+        cart_total.setText("Total Rs: ");
+        cart_item.setText("("+" "+" items)");
 
         if(mAppetizer.isResumed())
             Toast.makeText(getApplicationContext(), "Appetiser", Toast.LENGTH_LONG).show();
@@ -287,14 +295,13 @@ public class Restaurant extends AppCompatActivity {
                 hideProgressDialog();
             } else {
                 restaurant_text.setText("NOTE: It will take a minimum of 60 mins to prepare the food");
+                hideProgressDialog();
 //                getCategory();
 //                getData();
             }
         }else{
             networkClick();
         }
-
-
 
         tabList = new ArrayList<>();
 
@@ -308,6 +315,16 @@ public class Restaurant extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    public void addCart(View view){
+        new AlertDialog.Builder(getApplicationContext()).setMessage("Your Food is added to cart")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).create().show();
     }
 
     public void getCategory(){

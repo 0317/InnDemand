@@ -91,10 +91,10 @@ public class Dessert extends Fragment {
         prefs = new AppPreferences(getActivity());
 
         //UI initialize
-        cart_item = (TextView) view.findViewById(R.id.dessert_items);
-        cart_total = (TextView) view.findViewById(R.id.dessert_total);
-        cart_total.setText("Total: Rs 2000");
-        cart_item.setText("(10 items)");
+//        cart_item = (TextView) view.findViewById(R.id.dessert_items);
+//        cart_total = (TextView) view.findViewById(R.id.dessert_total);
+//        cart_total.setText("Total: Rs 2000");
+//        cart_item.setText("(10 items)");
 
 
         //ListItems in RecyclerView

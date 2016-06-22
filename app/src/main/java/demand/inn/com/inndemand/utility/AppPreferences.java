@@ -31,6 +31,8 @@ public class AppPreferences {
             appVersion = "app_version_pref",
             checkout = "checkout",
             user_fbemail = "user_fbemail",
+            user_fbname = "user_fbname",
+            user_fbpic = "user_fbpic",
             fb_Token = "fb_Token",
             g_Token = "g_Token",
             hotel_id = "hotel_id",
@@ -184,6 +186,22 @@ public class AppPreferences {
 
     public void setUser_fbemail(String _user_fbemail) {
         prefEditor.putString(user_fbemail, _user_fbemail).commit();
+    }
+
+    public String getUser_fbname() {
+        return appSharedpref.getString(user_fbname, "");
+    }
+
+    public void setUser_fbname(String _user_fbname) {
+        prefEditor.putString(user_fbname, _user_fbname).commit();
+    }
+
+    public String getUser_fbpic() {
+        return appSharedpref.getString(user_fbpic, "");
+    }
+
+    public void setUser_fbpic(String _user_fbpic) {
+        prefEditor.putString(user_fbpic, _user_fbpic).commit();
     }
 
     public boolean getIs_task_completed() {

@@ -1,8 +1,8 @@
 package demand.inn.com.inndemand.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,19 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
-import java.util.logging.Handler;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.AppetiserData;
-import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Header;
-import demand.inn.com.inndemand.constants.ListData;
-import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.utility.AppPreferences;
 
 /**
@@ -32,9 +25,11 @@ import demand.inn.com.inndemand.utility.AppPreferences;
 public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.MyViewHolder>  {
 
     private List<AppetiserData> cartData;
+    private List<AppetiserData> itemprice;
     private Context mContext;
     int counter = 0;
     int count = 0;
+    int finalamount;
     String total_price;
 
     RecyclerView.Adapter adapter;
@@ -78,17 +73,17 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
     @Override
     public void onBindViewHolder(final RestaurantAdapter.MyViewHolder holder, final int position) {
-        final AppetiserData data = cartData.get(position);
+        AppetiserData data = cartData.get(position);
         holder.title.setText(data.getTitle());
-        holder.subtitle.setText(data.getName()+" ");
+        holder.subtitle.setText(data.getName() + " ");
         holder.rupees.setText(data.getRupees());
         holder.details.setText(data.getDetails());
 
-        if(holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null){
+        if (holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null) {
             holder.title.setVisibility(View.GONE);
         }
 
-        if(data.getFood() == "2" || data.getFood().equalsIgnoreCase("2"))
+        if (data.getFood() == "2" || data.getFood().equalsIgnoreCase("2"))
             holder.subtitle.setTextColor(Color.RED);
         else
             holder.subtitle.setTextColor(Color.GREEN);
@@ -97,7 +92,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         holder.minus.setTag(position);
         holder.count.setTag(position);
 
-        holder.plus.setOnClickListener(new View.OnClickListener() {
+       /* holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int s1=(Integer.parseInt(holder.count.getText().toString()));
@@ -126,11 +121,96 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                     holder.count.setText(String.valueOf(count));
                 }
             }
-        });
+        });*/
+
+
+//        holder.plus.setOnClickListener(new PlusButtonListener(position, data, holder.count));
+//        holder.minus.setOnClickListener(new MinusButtonListener(position, data, holder.count));
+
+        finalamount =0;
+        for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
+            data = itemprice.get(temp1);
+        {
+//            data.setProductsaleprice(data.getRupees() * data.getUserQty());
+            finalamount += Integer.parseInt(data.getProductsaleprice());
+            holder.count.setText("Rs."+finalamount);
+        }
+        Log.d("TAG", "Total Price is:" + finalamount);
+        RestaurantAdapter.this.notifyDataSetChanged();
+
     }
+
+//        class PlusButtonListener implements View.OnClickListener {
+//            private int position;
+//            AppetiserData data;
+//            TextView totalTextView;
+//
+//            PlusButtonListener(int position, AppetiserData data, TextView totalTextView) {
+//                this.position = position;
+//                this.totalTextView=totalTextView;
+//                this.data = data;
+//            }
+//
+//            @Override
+//            public void onClick(View v) {
+//                if (data.getUserQty() < 10)
+//                {
+//                    data.setUserQty(data.getUserQty() + 1);// incrementing item quantity by 1
+//
+//                    totalTextView.setText(String.valueOf(data.getUserQty()));
+//                    for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
+//                        data = itemprice.get(temp1);
+//                    {
+//                        data.setProductsaleprice(data.getRupees() * data.getUserQty());
+//                        finalamount += Integer.parseInt(data.getProductsaleprice());
+////                        holder.count.setText("Rs."+finalamount);
+//                    }
+//                }
+//            }
+//        }
+//
+//        class MinusButtonListener implements View.OnClickListener {
+//            private int position;
+//            AppetiserData data;
+//            TextView totalTextView;
+//
+//            MinusButtonListener(int position, AppetiserData data, TextView totalTextView) {
+//                this.position = position;
+//                this.totalTextView = totalTextView;
+//                this.data = data;
+//            }
+//
+//            @Override
+//            public void onClick(View v) {
+//                if (data.getUserQty() > 0) {
+//                    data.setUserQty(data.getUserQty() - 1);// incrementing item quantity by 1
+//
+//                    totalTextView.setText(String.valueOf(data.getUserQty()));
+//                    for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
+//                        data = itemprice.get(temp1);
+//                    {
+//                        data.setProductsaleprice(data.getRupees() * data.getUserQty());
+//                        finalamount += Integer.parseInt(data.getProductsaleprice());
+////                        holder.count.setText("Rs." + finalamount);
+//                    }
+//                }
+//
+//            }
+//        }
 
     @Override
     public int getItemCount() {
         return cartData.size();
     }
+
+   /* private void calculateGrandTotal(List<AppetiserData> cartBeans){
+        double total = 0;
+        for(AppetiserData cart: cartBeans){
+            total += (cart.getRupees() * cart.getQuantity());
+        }
+        String price = grandPriceSuffix(total);
+        grandAmount.setText(price);
+    }
+*/
+
 }

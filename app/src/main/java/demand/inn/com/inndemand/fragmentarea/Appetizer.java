@@ -77,11 +77,6 @@ public class Appetizer extends Fragment {
     //Cart Click
     String result_price;
 
-    //UI call area
-    TextView cart_item, cart_total;
-    LinearLayout menu_options;
-
-
     private RecyclerView recyclerView;
     private RestaurantAdapter adapter;
     private List<AppetiserData> cardList;
@@ -91,20 +86,12 @@ public class Appetizer extends Fragment {
 
     AppetiserData a;
 
-    String filterName = "", filterDesc = "", filterPrice = "";
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.appetizer, container, false);
         nu = new NetworkUtility(getActivity());
         prefs = new AppPreferences(getActivity());
-
-        //UI initialize
-        cart_item = (TextView) view.findViewById(R.id.appetiser_items);
-        cart_total = (TextView) view.findViewById(R.id.appetiser_total);
-        cart_total.setText("Total Rs: "+result_price);
-        cart_item.setText("("+" "+")");
 
 
         //ListItems in RecyclerView
