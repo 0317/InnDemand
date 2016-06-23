@@ -82,6 +82,7 @@ public class GcmIntentService extends IntentService {
 		GcmBroadcastReceiver.completeWakefulIntent(intent);
 	}
 
+
 	// Put the message into a notification and post it.
 	// This is just one simple example of what you might choose to do with
 	// a GCM message.
@@ -103,7 +104,7 @@ public class GcmIntentService extends IntentService {
 		if(counter == 0){
 			mBuilder.setContentText(msg)
 
-		.setSmallIcon(R.mipmap.ic_logo)
+		.setSmallIcon(R.mipmap.ic_launcher)
 		.setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
 		.setPriority(NotificationCompat.PRIORITY_HIGH)
 		.setSound(notification)

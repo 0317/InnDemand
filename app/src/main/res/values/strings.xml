@@ -12,9 +12,7 @@
 
     <!-- .......Google GCM Sender ID ....... -->
 
-    <string name="gcm_defaultSenderId">252351515610</string>
-
-    <string name="fcm_defaultSenderId">252351515610</string>
+    <string name="fcm_defaultSenderId">609144095308</string>
 
     <!-- .......Google Integration String calls....... -->
 

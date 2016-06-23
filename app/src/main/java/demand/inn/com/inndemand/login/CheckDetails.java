@@ -122,19 +122,19 @@ public class CheckDetails extends AppCompatActivity {
         detail_email = (EditText) findViewById(R.id.fb_email);
 
         //if the device is registered
-        if(isRegistered()){
-            startService(new Intent(this, NotificationListener.class));
-        }
-
-//        if the device is not already registered
-        if (!isRegistered()) {
-//            registering the device
-            registerDevice();
-        } else {
-//            if the device is already registered
-//            displaying a toast
-            Toast.makeText(CheckDetails.this, "Already registered...", Toast.LENGTH_SHORT).show();
-        }
+//        if(isRegistered()){
+//            startService(new Intent(this, NotificationListener.class));
+//        }
+//
+////        if the device is not already registered
+//        if (!isRegistered()) {
+////            registering the device
+//            registerDevice();
+//        } else {
+////            if the device is already registered
+////            displaying a toast
+//            Toast.makeText(CheckDetails.this, "Already registered...", Toast.LENGTH_SHORT).show();
+//        }
 
         fb_dp = (ImageView) findViewById(R.id.fb_dp);
 
@@ -473,8 +473,8 @@ public class CheckDetails extends AppCompatActivity {
                 prefs.clearPref();
             LoginManager.getInstance().logOut();
             prefs.setFacebook_logged_In(false);
-            Intent in = new Intent(CheckDetails.this, SplashScreen.class);
-            startActivity(in);
+//            Intent in = new Intent(CheckDetails.this, SplashScreen.class);
+//            startActivity(in);
             finish();
 
         }else if(prefs.getGoogle_logged_In() == true){
@@ -485,8 +485,8 @@ public class CheckDetails extends AppCompatActivity {
                         @Override
                         public void onResult(Status status) {
                             prefs.clearPref();
-                            Intent in = new Intent(CheckDetails.this, SplashScreen.class);
-                            startActivity(in);
+//                            Intent in = new Intent(CheckDetails.this, SplashScreen.class);
+//                            startActivity(in);
                             finish();
                         }
                     });
