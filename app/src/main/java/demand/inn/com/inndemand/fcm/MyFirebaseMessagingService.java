@@ -12,6 +12,9 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 
@@ -30,14 +33,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // If the application is in the foreground handle both data and notification messages here.
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
+//        Log.d(TAG, "From: " + remoteMessage.getFrom());
+//        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
+//
+//        Log.d(TAG, "Notification Title: " + remoteMessage.getNotification().getTitle());
 
-        Log.d(TAG, "Notification Title: " + remoteMessage.getNotification().getTitle());
+        title = String.valueOf(remoteMessage.getNotification());
 
-        title = remoteMessage.getNotification().getTitle();
+        Log.d(TAG, "Notification Title: " + String.valueOf(remoteMessage.getData()));
 
-        msg = remoteMessage.getNotification().getBody();
+        JSONObject obj = new JSONObject(remoteMessage.getData());
+        try {
+            title = obj.getString("Title");
+            msg = obj.getString("Message");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+//        msg = remoteMessage.getNotification().getBody();
 
         sendNotification(msg);
     }
@@ -59,7 +72,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("InnDemand")
+                .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
