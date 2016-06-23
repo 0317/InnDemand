@@ -1,35 +1,25 @@
 {
   "project_info": {
-    "project_number": "252351515610",
-    "project_id": "inndemand-1321"
+    "project_number": "609144095308",
+    "firebase_url": "https://inndemand-10c1d.firebaseio.com",
+    "project_id": "inndemand-10c1d",
+    "storage_bucket": "inndemand-10c1d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:252351515610:android:63b019769a7232c0",
+        "mobilesdk_app_id": "1:609144095308:android:63b019769a7232c0",
         "android_client_info": {
           "package_name": "demand.inn.com.inndemand"
         }
       },
       "oauth_client": [
         {
-          "client_id": "252351515610-hmmh2nrfg43l32701rcj59qeaoo44uma.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "demand.inn.com.inndemand",
-            "certificate_hash": "3DF7C067323374B077AC540EE7616141CDC0D193"
-          }
-        },
-        {
-          "client_id": "252351515610-ke53g1loddku1t2rh7glvf59rnl6u8gq.apps.googleusercontent.com",
+          "client_id": "609144095308-l6f2oa5hm0c0a6h19l5v7idnrre5khgh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCNosy5B30fOPeAT7Wcqo14sdtyRawTQ1Q"
-        }
-      ],
+      "api_key": [],
       "services": {
         "analytics_service": {
           "status": 1
@@ -39,7 +29,7 @@
           "other_platform_oauth_client": []
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

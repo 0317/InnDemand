@@ -61,7 +61,7 @@ public class SplashScreen extends AppCompatActivity {
 
     GoogleCloudMessaging gcm;
 
-    String SENDER_ID = "252351515610";
+    String SENDER_ID = "551529436128";
     String regid = "";
     private final static String TAG = "Splash Screen";
     public static final String PROPERTY_REG_ID = "registration_id";
@@ -104,6 +104,11 @@ public class SplashScreen extends AppCompatActivity {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
 
+        if(prefs.getHotel_check() == true){
+            Intent in = new Intent(SplashScreen.this, DashBoard.class);
+            startActivity(in);
+        }
+
         //To add shortcut App icon on the desktop of mobile
         addShortcut();
 
@@ -140,19 +145,13 @@ public class SplashScreen extends AppCompatActivity {
                             }else if(prefs.getIs_In_Hotel() == true){
                             Intent in = new Intent(SplashScreen.this, DashBoard.class);
                             startActivity(in);
-                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                             }
                         }
 //                    }else{
 //                        networkClick();
-//                        snackbar = Snackbar.make(coordinatorLayout, "Oops! No Internet Connection", Snackbar.LENGTH_LONG)
-//                                .setAction("Action", null);
-////                        View snackbarView = snackbar.getView();
-////                        snackbarView.setBackgroundColor(Color.YELLOW);
-////                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-////                        textView.setTextColor(getResources().getColor(R.color.confirm_demand_click));
-//                        snackbar.show();
+//
 //                    }
                 }
             }, 3000 /* 3sec delay*/);
@@ -188,6 +187,7 @@ public class SplashScreen extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 msg = regid;
+                Log.d("ID mesg:", msg);
 
                 // You should send the registration ID to your server over
                 // HTTP,
@@ -326,8 +326,6 @@ public class SplashScreen extends AppCompatActivity {
         }
         return true;
     }
-
-
 
     //Custom pop-up for Network Click
     public void networkClick(){

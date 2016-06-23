@@ -189,9 +189,9 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     makeJsonObjectRequest();
-                    Intent in = new Intent(QRscanning.this, HotelDetails.class);
-                    startActivity(in);
-                    finish();
+//                    Intent in = new Intent(QRscanning.this, HotelDetails.class);
+//                    startActivity(in);
+//                    finish();
                 }
             });
 

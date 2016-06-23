@@ -7,7 +7,8 @@ import java.util.ArrayList;
  */
 public class AppetiserData {
 
-    private String title, name, rupees, details, food, productsaleprice, userqty;
+    private String title, name, rupees, details, food;
+    int userqty, productsaleprice;
     private static int count = 0;
 
     public AppetiserData(String title, String name, String details, String rupees, String food) {
@@ -18,7 +19,7 @@ public class AppetiserData {
         this.food = food;
     }
 
-    public AppetiserData(String title, String name, String details, String rupees, String food, String productsaleprice, String userqty) {
+    public AppetiserData(String title, String name, String details, String rupees, String food, int productsaleprice, int userqty) {
         this.title = title;
         this.name = name;
         this.details = details;
@@ -29,11 +30,19 @@ public class AppetiserData {
 
     }
 
-    public String getProductsaleprice() {
+    public int getUserqty() {
+        return userqty;
+    }
+
+    public void setUserqty(int userqty) {
+        this.userqty = userqty;
+    }
+
+    public int getProductsaleprice() {
         return productsaleprice;
     }
 
-    public void setProductsaleprice(String productsaleprice) {
+    public void setProductsaleprice(int productsaleprice) {
         this.productsaleprice = productsaleprice;
     }
 

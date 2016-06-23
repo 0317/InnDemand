@@ -185,6 +185,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         prefs = new AppPreferences(DashBoard.this);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
+        prefs.setHotel_check(true);
+
         URL = "";
         imageLoader = AppController.getInstance().getImageLoader();
 
@@ -479,7 +481,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Check this out - https//www.facebook.com");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Inndemand App - https://play.google.com/store?hl=en");
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
         } else if (id == R.id.nav_settings) {

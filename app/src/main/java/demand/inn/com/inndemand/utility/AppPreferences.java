@@ -43,7 +43,9 @@ public class AppPreferences {
             price = "price",
             category = "category",
             restaurant_food = "restaurant_food",
-            save_data = "save_data";
+            save_data = "save_data",
+            total_cash = "total_cash",
+            total_items = "total_items";
 
     //Check whether Hotel provides mentioned facilities/not
     private String bar = "bar",
@@ -85,6 +87,7 @@ public class AppPreferences {
     private String reg_ID = "reg_ID";
 
     private String is_task_completed = "is_task_completed",
+            hotel_check = "hotel_check",
             is_In_Hotel = "is_In_Hotel",
             check_list = "check_list",
             facebook_logged_In = "facebook_logged_In",
@@ -107,6 +110,13 @@ public class AppPreferences {
         prefEditor.clear().commit();
     }
 
+    public Boolean getHotel_check() {
+        return appSharedpref.getBoolean(hotel_check, false);
+    }
+
+    public void setHotel_check(boolean _hotel_check) {
+        prefEditor.putBoolean(hotel_check, _hotel_check).commit();
+    }
 
     public String getReg_ID() {
         return appSharedpref.getString(reg_ID, "");
@@ -636,5 +646,24 @@ public class AppPreferences {
 
     public void setBarList(boolean _barList) {
         prefEditor.putBoolean(barList, _barList).commit();
+    }
+
+
+//    Total cash for Restaurant/ Bar/ Spa
+
+    public String getTotal_cash() {
+        return appSharedpref.getString(total_cash, "");
+    }
+
+    public String getTotal_items() {
+        return appSharedpref.getString(total_items, "");
+    }
+
+    public void setTotal_items(String _total_items) {
+        prefEditor.putString(total_items, _total_items).commit();
+    }
+
+    public void setTotal_cash(String _total_cash) {
+        prefEditor.putString(total_cash, _total_cash).commit();
     }
 }

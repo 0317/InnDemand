@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,14 +36,13 @@ public class GcmIntentService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		InstanceID instanceID = InstanceID.getInstance(this);
+		/*InstanceID instanceID = InstanceID.getInstance(this);
 		try {
 			token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
+*/
 		Bundle extras = intent.getExtras();
 		GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
 		// The getMessageType() intent parameter must be the intent you received
@@ -65,8 +65,9 @@ public class GcmIntentService extends IntentService {
 
 				String msg = "";
 				try {
-					msg = extras.getString("message");
-					title = extras.getString("notification_title");
+					msg = extras.getString("Message");
+					title = extras.getString("Title");
+
 
 
 				} catch (Exception e) {
@@ -90,19 +91,19 @@ public class GcmIntentService extends IntentService {
 		Random random = new Random();
 		int no = random.nextInt(1000000000);
 		Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-		
+
 		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		Intent resultIntent  = new Intent(this, GCMNotifications.class);;
 
 		PendingIntent contentIntent = PendingIntent.getActivity(this, no, resultIntent, PendingIntent.FLAG_ONE_SHOT);
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-		
+
 		.setContentTitle(title);
 		if(counter == 0){
 			mBuilder.setContentText(msg)
 
-		.setSmallIcon(R.mipmap.ic_launcher)
+		.setSmallIcon(R.mipmap.ic_logo)
 		.setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
 		.setPriority(NotificationCompat.PRIORITY_HIGH)
 		.setSound(notification)
@@ -111,6 +112,17 @@ public class GcmIntentService extends IntentService {
 			counter++;
 		}
 		mBuilder.setContentIntent(contentIntent);
-		mNotificationManager.notify(no, mBuilder.build());
+		mNotificationManager.notify(1, mBuilder.build());
+
+//		android.support.v7.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(this);
+//		builder.setSmallIcon(R.mipmap.ic_launcher);
+//		Intent intent = new Intent(this, GCMNotifications.class);
+//		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//		builder.setContentIntent(pendingIntent);
+//		builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+//		builder.setContentTitle(title);
+//		builder.setContentText(msg);
+//		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//		notificationManager.notify(1, builder.build());
 	}
 }

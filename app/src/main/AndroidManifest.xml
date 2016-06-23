@@ -52,6 +52,11 @@
             android:screenOrientation="portrait"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".login.Loginscreen"
@@ -133,11 +138,7 @@
         <activity android:name=".roomservice.Restaurant"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 \
         <!-- ...................Bar Activity Area...................... -->
@@ -191,13 +192,16 @@
         </service>
 
 
+        <service android:name=".fcm.NotificationListener"></service>
+
+
         <!-- ...................Map Area....................................-->
 
         <activity android:name=".mapdirection.MapArea"
             android:screenOrientation="portrait"></activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCNosy5B30fOPeAT7Wcqo14sdtyRawTQ1Q"/>
+            android:value="AIzaSyBrD28TFE4myXxwFBkU9hNLzwkLURY88xA"/>
 
         <!-- ..................Settings Area.......................... -->
 

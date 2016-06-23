@@ -160,6 +160,10 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
         mMap.setMyLocationEnabled(true);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     @Override
     public void onDirectionFinderStart() {

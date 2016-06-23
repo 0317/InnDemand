@@ -97,13 +97,21 @@ public class Appetizer extends Fragment {
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         cardList = new ArrayList<>();
-        adapter = new RestaurantAdapter(getActivity(), cardList);
+        adapter = new RestaurantAdapter(getActivity(), cardList, cardList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
+
+        a = new AppetiserData("Veg", "cheese", "well done", "200", food);
+        cardList.add(a);
+
+        a = new AppetiserData("", "Chinese", "well done", "100", food);
+        cardList.add(a);
+
+        adapter.notifyDataSetChanged();
 
         if(nu.isConnectingToInternet()) {
             if(prefs.getFm_restaurant() == true) {
@@ -215,9 +223,12 @@ public class Appetizer extends Fragment {
 
                         if(category.contains("starter") || category.equalsIgnoreCase("Starter")) {
 
-                                a = new AppetiserData(subCategory, itemName, itemDesc, "Rs: " + amount, food);
-                                cardList.add(a);
-////                            }
+//                                a = new AppetiserData(subCategory, itemName, itemDesc, "Rs: " + amount, food);
+//                                cardList.add(a);
+
+                            a = new AppetiserData("starter", "cheese", "well done", "Rs: " + "200", food);
+                            cardList.add(a);
+
                             adapter.notifyDataSetChanged();
                         }
 

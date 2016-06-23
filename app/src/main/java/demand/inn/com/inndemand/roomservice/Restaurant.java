@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Random;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.adapter.ViewPagerAdapter;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.FragmentData;
@@ -114,6 +115,11 @@ public class Restaurant extends AppCompatActivity {
     List<Fragment> fragments;
     ArrayList<String> categories;
     FragmentData data;
+
+    //Adapter Class
+    RestaurantAdapter adapt;
+    String cash, items;
+    Bundle getBundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -275,11 +281,14 @@ public class Restaurant extends AppCompatActivity {
 
             }
         });
+
+        adapt = new RestaurantAdapter(Restaurant.this);
         //UI initialize
+
         cart_item = (TextView) findViewById(R.id.bottom_items);
         cart_total = (TextView) findViewById(R.id.bottom_total);
-        cart_total.setText("Total Rs: ");
-        cart_item.setText("("+" "+" items)");
+        cart_total.setText("Total Rs: "+cash);
+        cart_item.setText("("+items+" items)");
 
         if(mAppetizer.isResumed())
             Toast.makeText(getApplicationContext(), "Appetiser", Toast.LENGTH_LONG).show();
@@ -296,8 +305,8 @@ public class Restaurant extends AppCompatActivity {
             } else {
                 restaurant_text.setText("NOTE: It will take a minimum of 60 mins to prepare the food");
                 hideProgressDialog();
-//                getCategory();
-//                getData();
+                getCategory();
+                getData();
             }
         }else{
             networkClick();

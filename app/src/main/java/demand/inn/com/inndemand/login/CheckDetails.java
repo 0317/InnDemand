@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,16 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.firebase.client.Firebase;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -35,14 +46,18 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.CircleTransform;
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.fcm.NotificationListener;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.BaseActivity;
+import demand.inn.com.inndemand.welcome.SplashScreen;
 
 /**
  * Created by akash
@@ -76,20 +91,50 @@ public class CheckDetails extends AppCompatActivity {
     private String jsonResponse;
     private static String TAG = CheckDetails.class.getSimpleName();
 
+    GoogleApiClient mGoogleApiClient;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.checkdetails);
+        Firebase.setAndroidContext(getApplicationContext());
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
         prefs  =new AppPreferences(CheckDetails.this);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+                    }
+                }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
         pDialog = new ProgressDialog(CheckDetails.this);
 
         //UI Initialized here
         detail_name = (EditText) findViewById(R.id.fb_name);
         detail_email = (EditText) findViewById(R.id.fb_email);
+
+        //if the device is registered
+        if(isRegistered()){
+            startService(new Intent(this, NotificationListener.class));
+        }
+
+//        if the device is not already registered
+        if (!isRegistered()) {
+//            registering the device
+            registerDevice();
+        } else {
+//            if the device is already registered
+//            displaying a toast
+            Toast.makeText(CheckDetails.this, "Already registered...", Toast.LENGTH_SHORT).show();
+        }
 
         fb_dp = (ImageView) findViewById(R.id.fb_dp);
 
@@ -314,5 +359,138 @@ public class CheckDetails extends AppCompatActivity {
         };
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+
+    //Notification Area
+
+    private boolean isRegistered() {
+        //Getting shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF, MODE_PRIVATE);
+
+        //Getting the value from shared preferences
+        //The second parameter is the default value
+        //if there is no value in sharedprference then it will return false
+        //that means the device is not registered
+        return sharedPreferences.getBoolean(Config.REGISTERED, false);
+    }
+
+    private void registerDevice() {
+        //Creating a firebase object
+        Firebase firebase = new Firebase(Config.FIREBASE_APP);
+
+        //Pushing a new element to firebase it will automatically create a unique id
+        Firebase newFirebase = firebase.push();
+
+        //Creating a map to store name value pair
+        Map<String, String> val = new HashMap<>();
+
+        //pushing msg = none in the map
+        val.put("msg", "none");
+
+        //saving the map to firebase
+        newFirebase.setValue(val);
+
+        //Getting the unique id generated at firebase
+        String uniqueId = newFirebase.getKey();
+
+        Log.d("FCM Unique ID", uniqueId);
+
+        //Finally we need to implement a method to store this unique id to our server
+//        sendIdToServer(uniqueId);
+    }
+
+    private void sendIdToServer(final String uniqueId) {
+        //Creating a progress dialog to show while it is storing the data on server
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Registering device...");
+        progressDialog.show();
+
+        //getting the email entered
+        final String email = detail_email.getText().toString().trim();
+
+        //Creating a string request
+        StringRequest req = new StringRequest(Request.Method.POST, Config.REGISTER_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //dismissing the progress dialog
+                        progressDialog.dismiss();
+
+                        //if the server returned the string success
+                        if (response.trim().equalsIgnoreCase("success")) {
+                            //Displaying a success toast
+                            Toast.makeText(CheckDetails.this, "Registered successfully", Toast.LENGTH_SHORT).show();
+
+                            //Opening shared preference
+                            SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF, MODE_PRIVATE);
+
+                            //Opening the shared preferences editor to save values
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                            //Storing the unique id
+                            editor.putString(Config.UNIQUE_ID, uniqueId);
+
+                            //Saving the boolean as true i.e. the device is registered
+                            editor.putBoolean(Config.REGISTERED, true);
+
+                            //Applying the changes on sharedpreferences
+                            editor.apply();
+
+                            //Starting our listener service once the device is registered
+                            startService(new Intent(getBaseContext(), NotificationListener.class));
+                        } else {
+                            Toast.makeText(CheckDetails.this, "Choose a different email", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                //adding parameters to post request as we need to send firebase id and email
+                params.put("firebaseid", uniqueId);
+                params.put("email", email);
+                return params;
+            }
+        };
+
+        //Adding the request to the queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(req);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(prefs.getFacebook_logged_In() == true){
+            if(LoginManager.getInstance()!=null)
+                prefs.clearPref();
+            LoginManager.getInstance().logOut();
+            prefs.setFacebook_logged_In(false);
+            Intent in = new Intent(CheckDetails.this, SplashScreen.class);
+            startActivity(in);
+            finish();
+
+        }else if(prefs.getGoogle_logged_In() == true){
+            prefs.setGoogle_logged_In(false);
+//                if(mGoogleApiClient.isConnected())
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            prefs.clearPref();
+                            Intent in = new Intent(CheckDetails.this, SplashScreen.class);
+                            startActivity(in);
+                            finish();
+                        }
+                    });
+//                mGoogleApiClient.disconnect();
+        }
     }
 }

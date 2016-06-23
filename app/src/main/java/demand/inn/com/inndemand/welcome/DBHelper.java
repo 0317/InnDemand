@@ -13,13 +13,13 @@ import java.util.List;
 
 import demand.inn.com.inndemand.constants.FragmentData;
 
-    /**
+/**
  * Created by akash
  */
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    // If you change the database schema, you must increment the database version.
+    // If change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Inndemand.db";
     public static final String TABLE_NAME = "inndemand";
