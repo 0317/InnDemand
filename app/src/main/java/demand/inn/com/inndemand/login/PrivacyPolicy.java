@@ -1,5 +1,6 @@
 package demand.inn.com.inndemand.login;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -34,15 +35,19 @@ public class PrivacyPolicy extends AppCompatActivity {
         nu = new NetworkUtility(PrivacyPolicy.this);
         prefs = new AppPreferences(PrivacyPolicy.this);
 
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbar.setNavigationIcon(R.mipmap.ic_cancel);
-//
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onBackPressed();
-//            }
-//        });
+        getSupportActionBar().hide();
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Privacy policy");
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.mipmap.ic_back);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         //UI Initialize
         text = (TextView) findViewById(R.id.privacycontent);

@@ -15,6 +15,8 @@ import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.MaincourseData;
+import demand.inn.com.inndemand.utility.AppPreferences;
+import demand.inn.com.inndemand.welcome.DBHelper;
 
 /**
  * Created by akash
@@ -23,6 +25,8 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.MyViewHolder>
 
     private List<CartData> cartData;
     private Context mContext;
+    DBHelper db;
+    AppPreferences prefs;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, subtitle, rupees, count;
@@ -46,6 +50,8 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.MyViewHolder>
     public CartAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurantadapt, parent, false);
+        prefs = new AppPreferences(mContext);
+        db = new DBHelper(mContext);
 
         return new MyViewHolder(itemView);
     }
@@ -56,9 +62,9 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.MyViewHolder>
         holder.subtitle.setText(data.getName());
         holder.rupees.setText(data.getRupees());
 
-        if(data.getTitle() == null || data.getTitle().equalsIgnoreCase("")){
-            holder.gray_back.setVisibility(View.GONE);
-        }
+//        if(data.getName() == null || data.getName().equalsIgnoreCase("")){
+//            holder.gray_back.setVisibility(View.GONE);
+//        }
     }
 
     @Override

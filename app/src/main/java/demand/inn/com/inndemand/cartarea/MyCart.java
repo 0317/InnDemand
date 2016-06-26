@@ -9,6 +9,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -70,7 +72,6 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.CommentArea;
 import demand.inn.com.inndemand.welcome.DBHelper;
-import demand.inn.com.inndemand.welcome.SplashScreen;
 import demand.inn.com.inndemand.welcome.Thankyou;
 
 /**
@@ -113,6 +114,7 @@ public class MyCart extends AppCompatActivity {
 
     //Database
     DBHelper db;
+    int m_here=  0;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -122,7 +124,7 @@ public class MyCart extends AppCompatActivity {
         nu = new NetworkUtility(this);
 
         db = new DBHelper(this);
-
+        ArrayList arrayList = (ArrayList) db.getAllData();
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -177,7 +179,6 @@ public class MyCart extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         recyclerView.setAdapter(adapter);
-        prepareCart();
 
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
@@ -187,6 +188,28 @@ public class MyCart extends AppCompatActivity {
         formattedDate = df.format(c.getTime());
         getDate = date.format(c.getTime());
         // formattedDate have current date/time
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            int Value = extras.getInt("id");
+
+            if(Value>0) {
+                Cursor cursor = db.getData(Value);
+                m_here = Value;
+                cursor.moveToFirst();
+
+                String itemHead = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_NAME));
+                String itemDesc = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_DESC));
+                String itemPrice = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RUPEES));
+
+                if(!cursor.isClosed()){
+                    cursor.close();
+                }
+
+                CartData a = new CartData(itemHead,itemDesc, "Rs: "+itemPrice);
+                cardList.add(a);
+            }
+        }
 
         now.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,6 +233,15 @@ public class MyCart extends AppCompatActivity {
 
         commentData = comment_area.getText().toString();
 
+    }
+
+    public void update(View view){
+        Bundle extras = getIntent().getExtras();
+        if(extras !=null) {
+            int Value = extras.getInt("id");
+            if (Value > 0) {
+            }
+        }
     }
 
     public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
@@ -307,33 +339,6 @@ public class MyCart extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-    }
-
-    /**
-     * Adding few stuff for testing
-     */
-
-    private void prepareCart() {
-
-        CartData a = new CartData("", "Shahi Paneer", "Rs: 250");
-        cardList.add(a);
-
-        a = new CartData("","Chicken Tikka", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("","Chicken Tikka", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("","Chicken Tikka", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("","Chicken Tikka", "Rs: 200");
-        cardList.add(a);
-
-        a = new CartData("","Chicken Tikka", "Rs: 200");
-        cardList.add(a);
-
-        adapter.notifyDataSetChanged();
     }
 
 //  Custom pop-up designed for Apply COUPON Click

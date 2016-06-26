@@ -5,24 +5,16 @@ package demand.inn.com.inndemand.constants;
  */
 public class CartData {
 
-    private String title, name, rupees;
+    private String name, desc, rupees;
     private int count;
 
     public CartData() {
     }
 
-    public CartData(String title, String name, String rupees) {
-        this.title = title;
+    public CartData(String name, String desc, String rupees) {
         this.name = name;
+        this.desc = desc;
         this.rupees = rupees;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getName() {
@@ -31,6 +23,14 @@ public class CartData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getRupees() {

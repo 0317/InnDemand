@@ -90,7 +90,7 @@ public class DessertBar extends Fragment {
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         cardList = new ArrayList<>();
-        adapter = new DessertAdapter(getActivity(), cardList);
+        adapter = new DessertAdapter(getActivity(), cardList, cardList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);

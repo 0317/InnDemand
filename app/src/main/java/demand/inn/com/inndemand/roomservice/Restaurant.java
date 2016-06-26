@@ -3,9 +3,11 @@ package demand.inn.com.inndemand.roomservice;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -14,6 +16,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +57,7 @@ import java.util.Random;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.adapter.ViewPagerAdapter;
+import demand.inn.com.inndemand.cartarea.MyCart;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.FragmentData;
 import demand.inn.com.inndemand.constants.Header;
@@ -62,6 +66,7 @@ import demand.inn.com.inndemand.fragmentarea.DefaultFragment;
 import demand.inn.com.inndemand.fragmentarea.Dessert;
 import demand.inn.com.inndemand.fragmentarea.MainCourse;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
+import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -70,7 +75,7 @@ import demand.inn.com.inndemand.volleycall.AppController;
  * Created by akash
  */
 
-public class Restaurant extends AppCompatActivity {
+public class Restaurant extends AppCompatActivity implements demand.inn.com.inndemand.Helper.OnItemCLick {
 
     //Utility
     NetworkUtility nu;
@@ -120,6 +125,7 @@ public class Restaurant extends AppCompatActivity {
     RestaurantAdapter adapt;
     String cash, items;
     Bundle getBundle;
+    List<ResturantDataModel> resturantDataModelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +168,6 @@ public class Restaurant extends AppCompatActivity {
 //
                             switch (item.getItemId()) {
                                 case R.id.action_all:
-                                    mAppetizer.notifyChange();
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter);
                                     JSONObject obj = new JSONObject();
                                     try {
@@ -172,7 +177,6 @@ public class Restaurant extends AppCompatActivity {
                                     }
                                     Log.d("Check API Data", obj.toString());
 
-                                    mAppetizer.postJsonData(Config.innDemand + "restaurant_items/details/", obj.toString());
 
                                     return  true;
 
@@ -282,18 +286,16 @@ public class Restaurant extends AppCompatActivity {
             }
         });
 
-        adapt = new RestaurantAdapter(Restaurant.this);
         //UI initialize
-
         cart_item = (TextView) findViewById(R.id.bottom_items);
         cart_total = (TextView) findViewById(R.id.bottom_total);
-        cart_total.setText("Total Rs: "+cash);
-        cart_item.setText("("+items+" items)");
 
-        if(mAppetizer.isResumed())
-            Toast.makeText(getApplicationContext(), "Appetiser", Toast.LENGTH_LONG).show();
-        else if(mMaincourse.isVisible())
-            Toast.makeText(getApplicationContext(), "Main Course", Toast.LENGTH_LONG).show();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message"));
+
+//        if(mAppetizer.isResumed())
+//            Toast.makeText(getApplicationContext(), "Appetiser", Toast.LENGTH_LONG).show();
+//        else if(mMaincourse.isVisible())
+//            Toast.makeText(getApplicationContext(), "Main Course", Toast.LENGTH_LONG).show();
 
 
 
@@ -313,12 +315,29 @@ public class Restaurant extends AppCompatActivity {
         }
 
         tabList = new ArrayList<>();
+        resturantDataModelList = new ArrayList<>();
+
+
+        for (int i =0 ;i<=10;i++){
+            ResturantDataModel dataModel = new ResturantDataModel();
+            dataModel.setCategory("apc");
+            resturantDataModelList.add(dataModel);
+        }
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(mAppetizer, "starter");
-        adapter.addFragment(mMaincourse, "Main Food");
-        adapter.addFragment(mDessert, "Desert");
+        for (ResturantDataModel dataModel:resturantDataModelList){
+
+            Bundle bundle = new Bundle();
+            bundle.putString("","");
+
+            Fragment appFrf = new Appetizer();
+            appFrf.setArguments(bundle);
+
+            adapter.addFragment(appFrf, dataModel.getCategory());
+
+        }
+
 
         adapter.notifyDataSetChanged();
         viewPager.setAdapter(adapter);
@@ -326,9 +345,32 @@ public class Restaurant extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String totalCash = intent.getStringExtra("totalCash");
+            String totalItems = intent.getStringExtra("totalItems");
+
+            prefs.setTotal_cash(totalCash);
+            prefs.setTotal_items(totalItems);
+
+            cart_total.setText(totalCash);
+            cart_item.setText(totalItems);
+        }
+    };
+
     public void addCart(View view){
-        new AlertDialog.Builder(getApplicationContext()).setMessage("Your Food is added to cart")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(Restaurant.this).setMessage("Your Food is added to cart")
+                .setPositiveButton(R.string.viewcart, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent in = new Intent(Restaurant.this, MyCart.class);
+                        startActivity(in);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -384,7 +426,7 @@ public class Restaurant extends AppCompatActivity {
             public void onResponse(String response) {
                 hideProgressDialog();
                 System.out.println("yohaha==data==success===" + response);
-
+resturantDataModelList = new ArrayList<>();
                 JSONArray array = null;
                 try {
                     array = new JSONArray(response);
@@ -396,9 +438,11 @@ public class Restaurant extends AppCompatActivity {
                 for (int i = 0; i < array.length(); i++)
                     try {
                         JSONObject object = array.getJSONObject(i);
+                        ResturantDataModel dataModel = new ResturantDataModel();
                         Log.d("API", "API Daa" + array);
                         Log.d("API", "API ID" + id);
                         itemName = object.getString("name");
+
                         Log.d("API", "API na" + itemName);
                         itemDesc = object.getString("description");
                         category = object.getString("category");
@@ -407,22 +451,50 @@ public class Restaurant extends AppCompatActivity {
 
                         subCategory = object.getString("subcategory");
                         amount = object.getString("price");
+                        dataModel.setName(itemName);
+                        dataModel.setCategory(category);
 
-                        prefs.setItemName(itemName);
-                        prefs.setItemDesc(itemDesc);
-                        prefs.setPrice(amount);
-//                        prefs.setCategory(category);
-                        prefs.setRestaurant_food(food);
+
+//                        prefs.setItemName(itemName);
+//                        prefs.setItemDesc(itemDesc);
+//                        prefs.setPrice(amount);
+////                        prefs.setCategory(category);
+//                        prefs.setRestaurant_food(food);
+
+                        resturantDataModelList.add(dataModel);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
+
+                for (int i =0 ;i<=10;i++){
+                    ResturantDataModel dataModel = new ResturantDataModel();
+                    dataModel.setCategory("apc");
+                }
+
+                adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+
+
+
+                for (ResturantDataModel dataModel:resturantDataModelList){
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("","");
+
+                     Fragment appFrf = new Appetizer();
+                    appFrf.setArguments(bundle);
+
+                            adapter.addFragment(appFrf, dataModel.getCategory());
+
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -560,5 +632,10 @@ public class Restaurant extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    @Override
+    public void onClick(String total) {
+        cart_total.setText("Total Rs: "+total);
     }
 }

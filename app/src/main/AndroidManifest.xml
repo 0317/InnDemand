@@ -138,7 +138,6 @@
         <activity android:name=".roomservice.Restaurant"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
 \
         <!-- ...................Bar Activity Area...................... -->

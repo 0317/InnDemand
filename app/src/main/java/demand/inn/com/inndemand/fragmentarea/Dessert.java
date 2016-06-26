@@ -91,22 +91,20 @@ public class Dessert extends Fragment {
         prefs = new AppPreferences(getActivity());
 
         //UI initialize
-//        cart_item = (TextView) view.findViewById(R.id.dessert_items);
-//        cart_total = (TextView) view.findViewById(R.id.dessert_total);
-//        cart_total.setText("Total: Rs 2000");
-//        cart_item.setText("(10 items)");
-
 
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         cardList = new ArrayList<>();
-        adapter = new DessertAdapter(getActivity(), cardList);
+        adapter = new DessertAdapter(getActivity(), cardList, cardList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
+
+         DessertData a = new DessertData("Ice Cream", "Sundae", "Taste when chilled", "200", food);
+                            cardList.add(a);
 
         if(nu.isConnectingToInternet()) {
             if(prefs.getFm_restaurant() == true) {
@@ -210,8 +208,8 @@ public class Dessert extends Fragment {
 
                         if(category.contains("Desert") || category.equalsIgnoreCase("Desert")) {
 
-                            DessertData a = new DessertData(subCategory, itemName, itemDesc, "Rs: "+amount, food);
-                            cardList.add(a);
+                           /* DessertData a = new DessertData(subCategory, itemName, itemDesc, "Rs: "+amount, food);
+                            cardList.add(a);*/
 
                             adapter.notifyDataSetChanged();
                         }

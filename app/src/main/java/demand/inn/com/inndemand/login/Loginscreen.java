@@ -12,6 +12,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
@@ -83,7 +86,6 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
     String accessToken;
 
     //UI call
-    ImageView logo_next;
     ProgressDialog progressDialog;
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
@@ -101,7 +103,6 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         prefs = new AppPreferences(this);
 
         //UI initialized
-//        logo_next = (ImageView) findViewById(R.id.logo_next);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         //Socail Integration Facebook/Google is Implemented Below
@@ -192,6 +193,22 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         terms_conditions = (TextView) findViewById(R.id.terms_conditions);
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
+        ClickableSpan terms = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Intent in = new Intent(Loginscreen.this, TermsCondition.class);
+                startActivity(in);
+            }
+        };
+
+        ClickableSpan privacy = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Intent in = new Intent(Loginscreen.this, PrivacyPolicy.class);
+                startActivity(in);
+            }
+        };
+
         String gray = "By signing-up you agree to our ";
         SpannableString graySpannable= new SpannableString(gray);
         graySpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, gray.length(), 0);
@@ -212,10 +229,12 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         yellowsSpannables.setSpan(new ForegroundColorSpan(Color.YELLOW), 0, yellows.length(), 0);
         builder.append(yellowsSpannables);
 
+        builder.setSpan(terms, 31, 47, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(privacy, 50, 64, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         terms_conditions.setText(builder, TextView.BufferType.SPANNABLE);
+        terms_conditions.setMovementMethod(LinkMovementMethod.getInstance());
 
         facebookPost();
-
     }
 
     private void facebookPost() {
@@ -365,7 +384,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+            Log.d("Details Google", "Check"+person);
             Log.d("G_Token", "check Pic Plus"+ person.getImage());
             prefs.setGoogle_location(person.getCurrentLocation());
             Log.d("Age range:", "Check "+person.getBirthday());

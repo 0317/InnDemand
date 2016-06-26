@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Header;
@@ -34,6 +36,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     int finalamount;
     String total_price;
 
+    private OnItemCLick mCallback;
     RecyclerView.Adapter adapter;
     AppPreferences prefs;
 
@@ -57,10 +60,6 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
             plus = (ImageView) view.findViewById(R.id.restaurant_plus);
             minus = (ImageView) view.findViewById(R.id.restaurant_minus);
         }
-    }
-
-    public RestaurantAdapter(Context context){
-
     }
 
     public RestaurantAdapter(Context mContext, List<AppetiserData> cartData, List<AppetiserData> itemprice) {
@@ -157,7 +156,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
             public void onClick(View v) {
                 if (cartData.get(position).getUserqty() < 10)
                 {
-                    data.setUserqty(data.getUserqty() + 1);// incrementing item quantity by 1
+                    data.setUserqty(data.getUserqty() + 1); // incrementing item quantity by 1
 
                     Log.d("Quantity", "Check: "+data.getUserqty());
 
@@ -171,8 +170,13 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                         finalamount = data.getProductsaleprice();
 //                        holder.count.setText("Rs."+finalamount);
                         Log.d("Price", "Check: "+finalamount);
-                        prefs.setTotal_cash(String.valueOf(finalamount));
-                        prefs.setTotal_items(String.valueOf(data.getUserqty()));
+                        String value = String.valueOf(data.getProductsaleprice());
+                        String quantity = String.valueOf(data.getUserqty());
+                        Intent in = new Intent("custom-message");
+                        in.putExtra("totalCash", value);
+                        in.putExtra("totalItems", quantity);
+                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(in);
+
                     }
                 }
             }
@@ -200,13 +204,16 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                     {
                         data.setProductsaleprice(Integer.parseInt(data.getRupees()) * data.getUserqty());
                         finalamount = data.getProductsaleprice();
-//                        holder.count.setText("Rs." + finalamount);
                         Log.d("Price", "Check: "+finalamount);
-                        prefs.setTotal_cash(String.valueOf(finalamount));
-                        prefs.setTotal_items(String.valueOf(data.getUserqty()));
                         Bundle bundle = new Bundle();
                         bundle.putString("selectitems", String.valueOf(data.getUserqty()));
                         bundle.putString("selectcash", String.valueOf(finalamount));
+                        String value = String.valueOf(data.getProductsaleprice());
+                        String quantity = String.valueOf(data.getUserqty());
+                        Intent in = new Intent("custom-message");
+                        in.putExtra("totalCash", value);
+                        in.putExtra("totalItems", quantity);
+                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(in);
                     }
                 }
 
@@ -217,15 +224,4 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     public int getItemCount() {
         return cartData.size();
     }
-
-   /* private void calculateGrandTotal(List<AppetiserData> cartBeans){
-        double total = 0;
-        for(AppetiserData cart: cartBeans){
-            total += (cart.getRupees() * cart.getQuantity());
-        }
-        String price = grandPriceSuffix(total);
-        grandAmount.setText(price);
-    }
-*/
-
 }

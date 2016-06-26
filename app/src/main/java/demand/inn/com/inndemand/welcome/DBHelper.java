@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.FragmentData;
 
 /**
@@ -25,7 +26,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "inndemand";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_EMAIL = "email";
+    public static final String COLUMN_DESC = "desc";
+    public static final String COLUMN_RUPEES = "rupees";
 
     private HashMap hp;
 
@@ -39,7 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_NAME + " TEXT,"
-                + COLUMN_EMAIL + " TEXT" + ")";
+                + COLUMN_DESC + " TEXT," +COLUMN_RUPEES + "TEXT" + ")";
         db.execSQL(CREATE_TABLE);
     }
 
@@ -51,12 +53,13 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertData(String name, String email)
+    public void insertData(String name, String desc, String price)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
-        contentValues.put(COLUMN_EMAIL, email);
+        contentValues.put(COLUMN_DESC, desc);
+        contentValues.put(COLUMN_RUPEES, price);
 
         // Inserting Row
         db.insert(TABLE_NAME, null, contentValues);
@@ -76,12 +79,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    public boolean updateData (Integer id, String name, String email)
+    public boolean updateData (Integer id, String name, String email, String price)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
-        contentValues.put(COLUMN_EMAIL, email);
+        contentValues.put(COLUMN_DESC, email);
+        contentValues.put(COLUMN_RUPEES, price);
         db.update(TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
@@ -92,8 +96,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_NAME, "id = ? ", new String[] { Integer.toString(id) });
     }
 
-    public List<FragmentData> getData(){
-        List<FragmentData> dataList = new ArrayList<>();
+    public List<CartData> getAllData(){
+        List<CartData> dataList = new ArrayList<>();
 
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_NAME;
@@ -104,10 +108,11 @@ public class DBHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                FragmentData data = new FragmentData();
+                CartData data = new CartData();
 
-                data.setId(Integer.parseInt(cursor.getString(0)));
-                data.setTitle(cursor.getString(1));
+                data.setName(cursor.getString(0));
+                data.setDesc(cursor.getString(1));
+                data.setRupees(cursor.getString(2));
 
                 // Adding data to list
                 dataList.add(data);

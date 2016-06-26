@@ -83,26 +83,26 @@ public class SplashScreen extends AppCompatActivity {
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         //GCM Area (Notifications)
-        if (checkPlayServices()) {
-            gcm = GoogleCloudMessaging.getInstance(this);
-            regid = getRegistrationId(context);//GCM Token ID
-            prefs.setReg_ID(regid);
-            Log.i(TAG, "REG ID "+regid);
-
-            if (regid.isEmpty()) {
-
-                registerInBackground();
-            }else{
-                if(nu.isConnectingToInternet()){
-                    DeviceUpdate update = new DeviceUpdate();
-                    update.execute(regid);
-                    prefs.setReg_ID(regid);
-                    Log.i(TAG, "REG ID "+regid);
-                }
-            }
-        } else {
-            Log.i(TAG, "No valid Google Play Services APK found.");
-        }
+//        if (checkPlayServices()) {
+//            gcm = GoogleCloudMessaging.getInstance(this);
+//            regid = getRegistrationId(context);//GCM Token ID
+//            prefs.setReg_ID(regid);
+//            Log.i(TAG, "REG ID "+regid);
+//
+//            if (regid.isEmpty()) {
+//
+//                registerInBackground();
+//            }else{
+//                if(nu.isConnectingToInternet()){
+//                    DeviceUpdate update = new DeviceUpdate();
+//                    update.execute(regid);
+//                    prefs.setReg_ID(regid);
+//                    Log.i(TAG, "REG ID "+regid);
+//                }
+//            }
+//        } else {
+//            Log.i(TAG, "No valid Google Play Services APK found.");
+//        }
 
         if(prefs.getHotel_check() == true){
             Intent in = new Intent(SplashScreen.this, DashBoard.class);

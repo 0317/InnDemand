@@ -62,7 +62,7 @@ public class NotificationListener extends Service {
                 //If the value is anything other than none that means a notification has arrived
                 //calling the method to show notification
                 //String msg is containing the msg that has to be shown with the notification
-                showNotification(msg);
+//                showNotification(msg);
             }
 
             @Override

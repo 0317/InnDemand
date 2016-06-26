@@ -44,6 +44,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.constants.AppetiserData;
@@ -80,6 +81,7 @@ public class Appetizer extends Fragment {
     private RecyclerView recyclerView;
     private RestaurantAdapter adapter;
     private List<AppetiserData> cardList;
+    OnItemCLick onCLick;
 
     //Loading call area
     ProgressDialog dialog;
@@ -92,6 +94,9 @@ public class Appetizer extends Fragment {
         view = inflater.inflate(R.layout.appetizer, container, false);
         nu = new NetworkUtility(getActivity());
         prefs = new AppPreferences(getActivity());
+
+
+//        getArguments().getString("gdgd")
 
 
         //ListItems in RecyclerView

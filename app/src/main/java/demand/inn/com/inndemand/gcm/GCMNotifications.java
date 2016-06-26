@@ -62,7 +62,7 @@ public class GCMNotifications extends AppCompatActivity {
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		toolbar.setTitle("Notification");
 		toolbar.setTitleTextColor(Color.WHITE);
-		toolbar.setNavigationIcon(R.mipmap.ic_cancel);
+		toolbar.setNavigationIcon(R.mipmap.ic_back);
 
 		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 			@Override

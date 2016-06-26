@@ -94,8 +94,10 @@
     <string name="thankyou">Thank You \n for shopping with us.</string>
     <string name="pleasantstay">Have a Pleasant Stay.</string>
     <string name="verifycredentials">Verifying credentials...</string>
-    <string name="viewcart">View cart</string>
+    <string name="addcart">Add to cart</string>
+    <string name="viewcart">View Cart</string>
     <string name="deleteaccount">Delete Account</string>
+    <string name="no">No</string>
 
     <!-- Button labels -->
     <string name="sign_out">Sign Out</string>
