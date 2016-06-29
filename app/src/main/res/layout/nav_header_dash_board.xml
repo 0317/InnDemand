@@ -12,7 +12,7 @@
         android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:paddingTop="@dimen/ten_sp"
+        android:paddingTop="@dimen/fifteen_sp"
         android:layout_marginLeft="10dp"
         android:src="@android:drawable/sym_def_app_icon" />
 
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/drawer_name"
         android:layout_marginLeft="15dp"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:paddingTop="@dimen/ten_sp"
         android:text="Inn Demand"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

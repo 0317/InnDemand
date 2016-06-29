@@ -2,6 +2,10 @@ package demand.inn.com.inndemand.mapdirection;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -11,6 +15,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
@@ -80,11 +85,7 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
 
     String getAddress;
 
-    LatLng lan = new LatLng(mLatitude,mLongitude);
-    LatLng lon = new LatLng(28.4452895,77.0650809);
-
-    String val = "New Delhi";
-    String vol = "Gurgaon";
+    String val = "Gurgaon";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,7 +239,7 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
             String sp[] = getAddress.split(":");
 //            String main = sp[3];
 //            prefs.setCurrentLocation(main);
-            new AlertDialog.Builder(MapArea.this).setMessage(locationAddress).create().show();
+//            new AlertDialog.Builder(MapArea.this).setMessage(locationAddress).create().show();
 //            Toast.makeText(MapArea.this, getAddress+" ", Toast.LENGTH_LONG).show();
 
         }
@@ -260,7 +261,7 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
             String sp[] = getAddress.split(":");
             String main = sp[3];
             prefs.setDestination(main);
-//            new AlertDialog.Builder(MapArea.this).setMessage(locationAddress).create().show();
+            new AlertDialog.Builder(MapArea.this).setMessage(locationAddress).create().show();
 //            Toast.makeText(MapArea.this, getAddress+" ", Toast.LENGTH_LONG).show();
 
         }

@@ -8,6 +8,6 @@
     tools:context="demand.inn.com.inndemand.roomservice.Bar"
     >
 
-    <include layout="@layout/animaterestaurant"></include>
+    <include layout="@layout/animatebar"></include>
 
 </RelativeLayout>

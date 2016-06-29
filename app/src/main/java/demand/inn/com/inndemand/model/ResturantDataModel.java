@@ -22,6 +22,41 @@ public class ResturantDataModel {
     String category;
     String food;
     String subcategory;
+    String price;
+
+    int userqty, productsaleprice;
+
+    public ResturantDataModel(){
+
+    }
+
+    public ResturantDataModel(int i){
+
+    }
+
+    public ResturantDataModel(String title, String name, String details, String rupees, String food) {
+        this.name = title;
+        this.name = name;
+        this.description = details;
+        this.price = rupees;
+        this.food = food;
+    }
+
+    public int getProductsaleprice() {
+        return productsaleprice;
+    }
+
+    public void setProductsaleprice(int productsaleprice) {
+        this.productsaleprice = productsaleprice;
+    }
+
+    public int getUserqty() {
+        return userqty;
+    }
+
+    public void setUserqty(int userqty) {
+        this.userqty = userqty;
+    }
 
     public String getPrice() {
         return price;
@@ -70,8 +105,5 @@ public class ResturantDataModel {
     public void setName(String name) {
         this.name = name;
     }
-
-    String price;
-
 
 }

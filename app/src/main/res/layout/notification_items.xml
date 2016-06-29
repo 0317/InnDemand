@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12:00:00"
@@ -57,12 +57,12 @@
                     android:id="@+id/noti_time"
                     android:layout_marginTop="5dp"
                     android:textSize="@dimen/ten_sp"
-                    />
+                    />-->
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:text="Click"
+                    android:text=""
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
                     android:id="@+id/noti_click"

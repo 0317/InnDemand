@@ -215,9 +215,21 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBrD28TFE4myXxwFBkU9hNLzwkLURY88xA"/>
 
-        <!-- ..................Settings Area.......................... -->
+        <!-- ..................Settings Area(Menu Area).......................... -->
 
         <activity android:name=".setting.Settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".setting.Feedback"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".setting.OrderHistory"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".setting.ProductPage"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
@@ -226,6 +238,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d41faf1bafcf634b25cd4c680c0f048567e1cef9" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d41faf1bafcf634b25cd4c680c0f048567e1cef9"
+            />
 
     </application>
 

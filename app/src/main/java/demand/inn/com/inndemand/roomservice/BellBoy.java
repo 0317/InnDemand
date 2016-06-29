@@ -106,14 +106,14 @@ public class BellBoy extends AppCompatActivity {
                 //string call to get value of edittext
                 saySomething = say_something.getText().toString().trim();
 
-                if(saySomething == null){
-            snackbar = Snackbar.make(coordinatorLayout, "Please fill to confirm", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null);
+                if(saySomething == null || saySomething.equalsIgnoreCase("")){
+//            snackbar = Snackbar.make(coordinatorLayout, "Please fill to confirm", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null);
 //                        View snackbarView = snackbar.getView();
 //                        snackbarView.setBackgroundColor(Color.YELLOW);
 //                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
 //                        textView.setTextColor(getResources().getColor(R.color.confirm_demand_click));
-            snackbar.show();
+//            snackbar.show();
                 }else {
 
                     JSONObject obj = new JSONObject();

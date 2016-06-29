@@ -1,7 +1,9 @@
 package demand.inn.com.inndemand.adapter;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -20,7 +22,10 @@ import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Header;
+import demand.inn.com.inndemand.model.ResturantDataModel;
+import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.utility.AppPreferences;
+import demand.inn.com.inndemand.welcome.DBHelper;
 
 /**
  * Created by akash
@@ -28,13 +33,15 @@ import demand.inn.com.inndemand.utility.AppPreferences;
 
 public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.MyViewHolder>  {
 
-    private List<AppetiserData> cartData;
-    private List<AppetiserData> itemprice;
+    private List<ResturantDataModel> cartData;
+    private List<ResturantDataModel> itemprice;
     private Context mContext;
     int counter = 0;
     int count = 0;
     int finalamount;
     String total_price;
+    String dataItem;
+    String dataCash;
 
     private OnItemCLick mCallback;
     RecyclerView.Adapter adapter;
@@ -45,7 +52,11 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
     Header header;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    //DATABASE
+    DBHelper db;
+    private static MyClickListener myClickListener;
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView title, subtitle, rupees, count, details;
         public ImageView plus, minus;
 
@@ -59,10 +70,20 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
             count = (TextView) view.findViewById(R.id.restaurant_counts);
             plus = (ImageView) view.findViewById(R.id.restaurant_plus);
             minus = (ImageView) view.findViewById(R.id.restaurant_minus);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            myClickListener.onItemClick(getPosition(), v);
         }
     }
 
-    public RestaurantAdapter(Context mContext, List<AppetiserData> cartData, List<AppetiserData> itemprice) {
+    public void setOnItemClickListener(MyClickListener myClickListener) {
+        this.myClickListener = myClickListener;
+    }
+
+    public RestaurantAdapter(Context mContext, List<ResturantDataModel> cartData, List<ResturantDataModel> itemprice) {
         this.mContext = mContext;
         this.cartData = cartData;
         this.itemprice = itemprice;
@@ -73,17 +94,20 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurantadapt, parent, false);
         prefs = new AppPreferences(mContext);
+        db = new DBHelper(mContext);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final RestaurantAdapter.MyViewHolder holder, final int position) {
-        AppetiserData data = cartData.get(position);
-        holder.title.setText(data.getTitle());
+        ResturantDataModel data = cartData.get(position);
+        holder.title.setText(data.getSubcategory());
         holder.subtitle.setText(data.getName() + " ");
-        holder.rupees.setText(data.getRupees());
-        holder.details.setText(data.getDetails());
+        holder.rupees.setText(data.getPrice());
+        holder.details.setText(data.getDescription());
+
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(mMessageReceiver, new IntentFilter("data-message"));
 
         if (holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null) {
             holder.title.setVisibility(View.GONE);
@@ -91,8 +115,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
 //        if (data.getFood() == "2" || data.getFood().equalsIgnoreCase("2"))
 //            holder.subtitle.setTextColor(Color.RED);
-//        else
-//            holder.subtitle.setTextColor(Color.GREEN);
+        else
+            holder.subtitle.setTextColor(Color.parseColor("#006600"));
+
+        db.insertData(data.getName(), data.getDescription(), data.getPrice());
 
        /* holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,8 +152,8 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         });*/
 
 
-        holder.plus.setOnClickListener(new PlusButtonListener(position, data, holder.count));
-        holder.minus.setOnClickListener(new MinusButtonListener(position, data, holder.count));
+        holder.plus.setOnClickListener(new PlusButtonListener(position, data, holder.count, holder.title));
+        holder.minus.setOnClickListener(new MinusButtonListener(position, data, holder.count, holder.title));
 
         finalamount =0;
         for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
@@ -143,12 +169,13 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
         class PlusButtonListener implements View.OnClickListener {
             private int position;
-            AppetiserData data = cartData.get(position);
-            TextView totalTextView;
+            ResturantDataModel data = cartData.get(position);
+            TextView totalTextView, title;
 
-            PlusButtonListener(int position, AppetiserData data, TextView totalTextView) {
+            PlusButtonListener(int position, ResturantDataModel data, TextView totalTextView, TextView title) {
                 this.position = position;
                 this.totalTextView=totalTextView;
+                this.title = title;
                 this.data = data;
             }
 
@@ -160,18 +187,19 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
                     Log.d("Quantity", "Check: "+data.getUserqty());
 
-                    Log.d("Rupees", "Check: "+data.getRupees());
+                    Log.d("Rupees", "Check: "+data.getPrice());
 
                     totalTextView.setText(String.valueOf(data.getUserqty()));
                     for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
                         data = itemprice.get(temp1);
                     {
-                        data.setProductsaleprice(Integer.parseInt(data.getRupees()) * data.getUserqty());
+                        data.setProductsaleprice((int) (Float.parseFloat(data.getPrice()) * data.getUserqty()));
                         finalamount = data.getProductsaleprice();
 //                        holder.count.setText("Rs."+finalamount);
                         Log.d("Price", "Check: "+finalamount);
                         String value = String.valueOf(data.getProductsaleprice());
                         String quantity = String.valueOf(data.getUserqty());
+                        Log.d("Broadcast", "check"+dataItem);
                         Intent in = new Intent("custom-message");
                         in.putExtra("totalCash", value);
                         in.putExtra("totalItems", quantity);
@@ -184,12 +212,13 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
         class MinusButtonListener implements View.OnClickListener {
             private int position;
-            AppetiserData data;
-            TextView totalTextView;
+            ResturantDataModel data;
+            TextView totalTextView, title;
 
-            MinusButtonListener(int position, AppetiserData data, TextView totalTextView) {
+            MinusButtonListener(int position, ResturantDataModel data, TextView totalTextView, TextView title) {
                 this.position = position;
                 this.totalTextView = totalTextView;
+                this.title = title;
                 this.data = data;
             }
 
@@ -198,11 +227,12 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                 if (data.getUserqty() > 0) {
                     data.setUserqty(data.getUserqty() - 1);// decrementing item quantity by 1
 
+                    String titleValue = title.getText().toString();
                     totalTextView.setText(String.valueOf(data.getUserqty()));
                     for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
                         data = itemprice.get(temp1);
                     {
-                        data.setProductsaleprice(Integer.parseInt(data.getRupees()) * data.getUserqty());
+                        data.setProductsaleprice((int) (Float.parseFloat(data.getPrice()) * data.getUserqty()));
                         finalamount = data.getProductsaleprice();
                         Log.d("Price", "Check: "+finalamount);
                         Bundle bundle = new Bundle();
@@ -213,6 +243,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                         Intent in = new Intent("custom-message");
                         in.putExtra("totalCash", value);
                         in.putExtra("totalItems", quantity);
+                        in.putExtra("itemName", titleValue);
                         LocalBroadcastManager.getInstance(mContext).sendBroadcast(in);
                     }
                 }
@@ -223,5 +254,18 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     @Override
     public int getItemCount() {
         return cartData.size();
+    }
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            dataItem = intent.getStringExtra("cartItem");
+            dataCash = intent.getStringExtra("cartTotal");
+        }
+    };
+
+    public interface MyClickListener {
+        public void onItemClick(int position, View v);
     }
 }

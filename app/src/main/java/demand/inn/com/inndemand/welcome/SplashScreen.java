@@ -104,10 +104,10 @@ public class SplashScreen extends AppCompatActivity {
 //            Log.i(TAG, "No valid Google Play Services APK found.");
 //        }
 
-        if(prefs.getHotel_check() == true){
+      /*  if(prefs.getHotel_check() == true){
             Intent in = new Intent(SplashScreen.this, DashBoard.class);
             startActivity(in);
-        }
+        }*/
 
         //To add shortcut App icon on the desktop of mobile
         addShortcut();

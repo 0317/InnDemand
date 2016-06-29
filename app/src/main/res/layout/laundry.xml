@@ -23,12 +23,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="50dp">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="@mipmap/laundry" />
+            android:layout_height="160dp"
+            android:background="@mipmap/towel" />
 
         <LinearLayout
             android:layout_width="match_parent"

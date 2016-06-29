@@ -90,6 +90,8 @@ import demand.inn.com.inndemand.mapdirection.MapArea;
 import demand.inn.com.inndemand.roomservice.Bar;
 import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.roomservice.RoomServices;
+import demand.inn.com.inndemand.setting.Feedback;
+import demand.inn.com.inndemand.setting.OrderHistory;
 import demand.inn.com.inndemand.setting.Settings;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
@@ -476,7 +478,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             finish();
 
         }*/ else if (id == R.id.nav_history) {
-
+            Intent in = new Intent(DashBoard.this, OrderHistory.class);
+            startActivity(in);
         } else if (id == R.id.nav_share) {
 
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -488,7 +491,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             Intent in = new Intent(DashBoard.this, Settings.class);
             startActivity(in);
         }else if (id == R.id.nav_feedback) {
-
+            Intent in = new Intent(DashBoard.this, Feedback.class);
+            startActivity(in);
         }else if (id == R.id.nav_help) {
 
         } else if (id == R.id.nav_signout) {

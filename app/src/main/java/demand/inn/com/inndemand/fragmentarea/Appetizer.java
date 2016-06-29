@@ -1,21 +1,27 @@
 package demand.inn.com.inndemand.fragmentarea;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -46,9 +52,17 @@ import java.util.List;
 
 import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.adapter.BarlistAdapter;
+import demand.inn.com.inndemand.adapter.ListAdapter;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.constants.ListData;
+import demand.inn.com.inndemand.model.ResturantDataModel;
+import demand.inn.com.inndemand.model.SimpleDividerItemDecoration;
+import demand.inn.com.inndemand.roomservice.Bar;
+import demand.inn.com.inndemand.roomservice.Restaurant;
+import demand.inn.com.inndemand.setting.ProductPage;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -80,13 +94,16 @@ public class Appetizer extends Fragment {
 
     private RecyclerView recyclerView;
     private RestaurantAdapter adapter;
-    private List<AppetiserData> cardList;
+    private List<ResturantDataModel> cardList;
     OnItemCLick onCLick;
 
     //Loading call area
     ProgressDialog dialog;
 
-    AppetiserData a;
+    ResturantDataModel a;
+    public String subCat, names, desc, price, foods;
+
+    ResturantDataModel resturantDataModel;
 
     @Nullable
     @Override
@@ -96,8 +113,14 @@ public class Appetizer extends Fragment {
         prefs = new AppPreferences(getActivity());
 
 
-//        getArguments().getString("gdgd")
+        subCat = getArguments().getString("subCategory");
+        names  = getArguments().getString("name");
+        desc = getArguments().getString("desc");
+        price = getArguments().getString("price");
+        foods = getArguments().getString("food");
 
+        Log.d("names", "name"+subCat);
+        Log.d("names", "cat"+names);
 
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
@@ -110,16 +133,27 @@ public class Appetizer extends Fragment {
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        a = new AppetiserData("Veg", "cheese", "well done", "200", food);
-        cardList.add(a);
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                ResturantDataModel data = cardList.get(position);
+//                Toast.makeText(HotelDetails.this, data.getTitle(), Toast.LENGTH_LONG).show();
+            }
 
-        a = new AppetiserData("", "Chinese", "well done", "100", food);
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+
+        a = new ResturantDataModel(subCat, names, desc, price, foods);
         cardList.add(a);
 
         adapter.notifyDataSetChanged();
 
-        if(nu.isConnectingToInternet()) {
-            if(prefs.getFm_restaurant() == true) {
+        if (nu.isConnectingToInternet()) {
+            if (prefs.getFm_restaurant() == true) {
                 new AlertDialog.Builder(getActivity()).setMessage("Restaurant is closed")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
@@ -129,41 +163,23 @@ public class Appetizer extends Fragment {
                         }).create().show();
             } else {
                 //mehtod to send Restaurant ID to server & to get response.
-                callMethod();
+//                callMethod();
             }
-        }else{
+        } else {
 
         }
 
-        return  view;
+        return view;
     }
 
-    public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
-        private Drawable mDivider;
-
-        public SimpleDividerItemDecoration(Context context) {
-            mDivider = ContextCompat.getDrawable(context,R.drawable.line_divider);
-        }
-
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
-        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            int left = parent.getPaddingLeft();
-            int right = parent.getWidth() - parent.getPaddingRight();
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String data = intent.getStringExtra("bundle");
 
-            int childCount = parent.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View child = parent.getChildAt(i);
-
-                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-
-                int top = child.getBottom() + params.bottomMargin;
-                int bottom = top + mDivider.getIntrinsicHeight();
-
-                mDivider.setBounds(left, top, right, bottom);
-                mDivider.draw(c);
-            }
         }
-    }
+    };
 
 
     public void callMethod(){
@@ -231,8 +247,8 @@ public class Appetizer extends Fragment {
 //                                a = new AppetiserData(subCategory, itemName, itemDesc, "Rs: " + amount, food);
 //                                cardList.add(a);
 
-                            a = new AppetiserData("starter", "cheese", "well done", "Rs: " + "200", food);
-                            cardList.add(a);
+//                            a = new ResturantDataModel(subCategory, itemName, itemDesc, "Rs: " + amount, food);
+//                            cardList.add(a);
 
                             adapter.notifyDataSetChanged();
                         }
@@ -277,10 +293,80 @@ public class Appetizer extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int listPosition = info.position;
-        String price= cardList.get(listPosition).getRupees();//list item price
+        String price= cardList.get(listPosition).getPrice();//list item price
 
         result_price = price;
 
         return  true;
+    }
+
+    public interface ClickListener {
+        void onClick(View view, int position);
+
+        void onLongClick(View view, int position);
+    }
+
+    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private GestureDetector gestureDetector;
+        private Appetizer.ClickListener clickListener;
+
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final Appetizer.ClickListener clickListener) {
+            this.clickListener = clickListener;
+            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && clickListener != null) {
+                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
+                clickListener.onClick(child, rv.getChildPosition(child));
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
+
+
+    //    OnResume method to set Restaurant/Bars list
+//    Activating OnCLick function, saving value & firing Intent
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((RestaurantAdapter) adapter).setOnItemClickListener(new RestaurantAdapter.MyClickListener() {
+
+            @Override
+            public void onItemClick(int position, View v) {
+                Log.i("TAG", " Clicked on Item " + position);
+                Intent in = new Intent(getActivity(), ProductPage.class);
+                in.putExtra("itemname", cardList.get(position).getName());
+                in.putExtra("itemdesc", cardList.get(position).getDescription());
+                in.putExtra("itemprice", cardList.get(position).getPrice());
+                startActivity(in);
+
+            }
+        });
     }
 }

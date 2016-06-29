@@ -2,12 +2,16 @@ package demand.inn.com.inndemand.login;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -90,11 +94,13 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
-
+        Log.d("Reftoken","check"+prefs.getRefreshToken());
         marshMallowPermission = new MarshMallowPermission(this);
 
         prefs.setIs_task_completed(true);
         prefs.setIs_In_Hotel(false);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("reg_id-message"));
 
         getSupportActionBar().setTitle("InnDemand");
         getSupportActionBar().invalidateOptionsMenu();
@@ -188,7 +194,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    makeJsonObjectRequest();
+//                    makeJsonObjectRequest();
 //                    Intent in = new Intent(QRscanning.this, HotelDetails.class);
 //                    startActivity(in);
 //                    finish();
@@ -274,7 +280,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         try{
             obj.put("customer", prefs.getCustomer_Id());
             obj.put("hotel", hotelID);
-            obj.put("room", "1");
+            obj.put("room", roomID);
             obj.put("qr", roomID);
             obj.put("checkin_time", formattedDate);
 
@@ -286,7 +292,6 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 
         prefs.setHotel_id(hotelID);
         postJsonData(Config.innDemand+"checkins/checkin/", obj.toString());
-
     }
 
     public void postJsonData(String url, String userData){
@@ -345,5 +350,79 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
+
+    //Registration ID Call
+    public void dataRegistration(){
+        JSONObject obj = new JSONObject();
+
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+            obj.put("registration_key", prefs.getRefreshToken());
+            obj.put("checkin_id", prefs.getCheckin_Id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Api RefreshToken Data", obj.toString());
+
+        postJsonDataToken(Config.innDemand +"not_registration_key/details/", obj.toString());
+    }
+
+    public void postJsonDataToken(String url, String userData){
+
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data====="+requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Notification===success===" + response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String reg_token = intent.getStringExtra("reg_id");
+            prefs.setRefreshToken(reg_token);
+        }
+    };
 }
 

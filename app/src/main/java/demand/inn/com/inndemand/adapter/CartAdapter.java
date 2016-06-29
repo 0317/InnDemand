@@ -49,7 +49,7 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.MyViewHolder>
     @Override
     public CartAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.restaurantadapt, parent, false);
+                .inflate(R.layout.mycartitems, parent, false);
         prefs = new AppPreferences(mContext);
         db = new DBHelper(mContext);
 

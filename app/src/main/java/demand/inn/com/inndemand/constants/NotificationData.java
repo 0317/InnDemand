@@ -6,16 +6,33 @@ package demand.inn.com.inndemand.constants;
 
 public class NotificationData {
 
-    private String title, details, buttonText;
+    private String title, details, type, service, place;
 
     public NotificationData() {
     }
 
-    public NotificationData(String title, String details, String text) {
+    public NotificationData(String title, String details, String type, String service, String place) {
         this.title = title;
         this.details = details;
-        this.buttonText = text;
+        this.type = type;
+        this.service = service;
+        this.place = place;
+    }
 
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public String getTitle() {
@@ -34,11 +51,11 @@ public class NotificationData {
         this.details = details;
     }
 
-    public String getButtonText() {
-        return buttonText;
+    public String getType() {
+        return type;
     }
 
-    public void setButtonText(String buttonText) {
-        this.buttonText = buttonText;
+    public void setType(String type) {
+        this.type = type;
     }
 }

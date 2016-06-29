@@ -14,6 +14,8 @@ public class AppPreferences {
     private SharedPreferences appSharedpref;
     private SharedPreferences.Editor prefEditor;
 
+    private String refreshToken = "refreshToken";
+
     private String customer_Id = "customer_Id",
             checkin_Id = "checkin_Id",
             restaurant_Id = "restaurant_Id",
@@ -116,6 +118,14 @@ public class AppPreferences {
 
     public void setHotel_check(boolean _hotel_check) {
         prefEditor.putBoolean(hotel_check, _hotel_check).commit();
+    }
+
+    public String getRefreshToken() {
+        return appSharedpref.getString(refreshToken, "");
+    }
+
+    public void setRefreshToken(String _refreshToken) {
+        prefEditor.putString(refreshToken, _refreshToken);
     }
 
     public String getReg_ID() {

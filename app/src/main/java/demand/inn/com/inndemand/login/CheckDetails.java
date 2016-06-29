@@ -1,13 +1,17 @@
 package demand.inn.com.inndemand.login;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -98,7 +102,7 @@ public class CheckDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.checkdetails);
-        Firebase.setAndroidContext(getApplicationContext());
+
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
@@ -122,19 +126,19 @@ public class CheckDetails extends AppCompatActivity {
         detail_email = (EditText) findViewById(R.id.fb_email);
 
         //if the device is registered
-//        if(isRegistered()){
-//            startService(new Intent(this, NotificationListener.class));
-//        }
-//
-////        if the device is not already registered
-//        if (!isRegistered()) {
-////            registering the device
-//            registerDevice();
-//        } else {
-////            if the device is already registered
-////            displaying a toast
-//            Toast.makeText(CheckDetails.this, "Already registered...", Toast.LENGTH_SHORT).show();
-//        }
+      /*  if(isRegistered()){
+            startService(new Intent(this, NotificationListener.class));
+        }
+
+//        if the device is not already registered
+        if (!isRegistered()) {
+//            registering the device
+            registerDevice();
+        } else {
+//            if the device is already registered
+//            displaying a toast
+            Toast.makeText(CheckDetails.this, "Already registered...", Toast.LENGTH_SHORT).show();
+        }*/
 
         fb_dp = (ImageView) findViewById(R.id.fb_dp);
 

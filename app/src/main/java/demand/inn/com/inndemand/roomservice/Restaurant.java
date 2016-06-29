@@ -70,6 +70,7 @@ import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
+import demand.inn.com.inndemand.welcome.DBHelper;
 
 /**
  * Created by akash
@@ -126,6 +127,10 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
     String cash, items;
     Bundle getBundle;
     List<ResturantDataModel> resturantDataModelList;
+    ResturantDataModel dataModel, model;
+
+    //DATABASE
+    DBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +138,9 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
         setContentView(R.layout.restaurant);
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
+
+        model = new ResturantDataModel();
+        db = new DBHelper(Restaurant.this);
 
         //Toolbar call
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -169,46 +177,34 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
                             switch (item.getItemId()) {
                                 case R.id.action_all:
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter);
-                                    JSONObject obj = new JSONObject();
-                                    try {
-                                        obj.put("restaurant_id", prefs.getRestaurant_Id());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    Log.d("Check API Data", obj.toString());
-
 
                                     return  true;
 
                                 case R.id.action_veg:
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter_green);
-                                    JSONObject objs = new JSONObject();
-                                    try {
-                                        objs.put("restaurant_id", prefs.getRestaurant_Id());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    Log.d("Check API Data", prefs.getRestaurant_food());
 
-                                    if(food == "1") {
-                                        mAppetizer.postJsonData(Config.innDemand + "restaurant_items/details/", objs.toString());
-                                    }
+                                    Log.d("Food value", "value"+dataModel.getFood());
+                                    if(dataModel.getFood().contains("1")){
+                                        for(int i = 0; i < 10 ; i++){
+                                            dataModel.setName(dataModel.getName());
+                                            dataModel.setDescription(dataModel.getDescription());
+                                            dataModel.setPrice(dataModel.getPrice());
+                                            dataModel.setFood(dataModel.getFood());
 
+                                            resturantDataModelList.add(dataModel);
+                                        }
+                                    }
                                     return true;
 
                                 case R.id.action_nonveg:
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter_red);
 
-                                    JSONObject objt = new JSONObject();
-                                    try {
-                                        objt.put("restaurant_id", prefs.getRestaurant_Id());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    Log.d("Check API Data", objt.toString());
-
-                                    if(food == "2") {
-                                        mAppetizer.postJsonData(Config.innDemand + "restaurant_items/details/", objt.toString());
+                                    if(model.getFood() == "2"){
+                                        for(int i = 0; i < 10 ; i++){
+                                            dataModel.setName(dataModel.getName());
+                                            dataModel.setDescription(dataModel.getDescription());
+                                            dataModel.setPrice(dataModel.getPrice());
+                                        }
                                     }
 
                                     return true;
@@ -290,6 +286,8 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
         cart_item = (TextView) findViewById(R.id.bottom_items);
         cart_total = (TextView) findViewById(R.id.bottom_total);
 
+//        db.insertData("Cheese chilly", "data", "200");
+
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message"));
 
 //        if(mAppetizer.isResumed())
@@ -307,42 +305,41 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
             } else {
                 restaurant_text.setText("NOTE: It will take a minimum of 60 mins to prepare the food");
                 hideProgressDialog();
-                getCategory();
                 getData();
+                getCategory();
             }
         }else{
             networkClick();
         }
 
         tabList = new ArrayList<>();
-        resturantDataModelList = new ArrayList<>();
-
-
-        for (int i =0 ;i<=10;i++){
-            ResturantDataModel dataModel = new ResturantDataModel();
-            dataModel.setCategory("apc");
-            resturantDataModelList.add(dataModel);
-        }
-
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        for (ResturantDataModel dataModel:resturantDataModelList){
-
-            Bundle bundle = new Bundle();
-            bundle.putString("","");
-
-            Fragment appFrf = new Appetizer();
-            appFrf.setArguments(bundle);
-
-            adapter.addFragment(appFrf, dataModel.getCategory());
-
-        }
-
-
-        adapter.notifyDataSetChanged();
-        viewPager.setAdapter(adapter);
-
-        tabLayout.setupWithViewPager(viewPager);
+//        resturantDataModelList = new ArrayList<>();
+//
+//
+//        for (int i =0 ;i<=5;i++){
+//            ResturantDataModel dataModel = new ResturantDataModel();
+//            dataModel.setCategory(category);
+//            resturantDataModelList.add(dataModel);
+//        }
+//
+//        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+//
+//        for (ResturantDataModel dataModel:resturantDataModelList){
+//
+//            Bundle bundle = new Bundle();
+//            bundle.putString("","");
+//
+//            Fragment appFrf = new Appetizer();
+//            appFrf.setArguments(bundle);
+//
+//            adapter.addFragment(appFrf, dataModel.getCategory());
+//
+//        }
+//
+//        adapter.notifyDataSetChanged();
+//        viewPager.setAdapter(adapter);
+//
+//        tabLayout.setupWithViewPager(viewPager);
     }
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -351,12 +348,19 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
             // Get extra data included in the Intent
             String totalCash = intent.getStringExtra("totalCash");
             String totalItems = intent.getStringExtra("totalItems");
+            String itemName = intent.getStringExtra("itemName");
 
             prefs.setTotal_cash(totalCash);
             prefs.setTotal_items(totalItems);
 
             cart_total.setText(totalCash);
             cart_item.setText(totalItems);
+
+            Intent in = new Intent("data-message");
+            in.putExtra("cartItem", cart_item.getText().toString());
+            in.putExtra("cartTotal", cart_total.getText().toString());
+            LocalBroadcastManager.getInstance(Restaurant.this).sendBroadcast(in);
+
         }
     };
 
@@ -425,8 +429,8 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
             @Override
             public void onResponse(String response) {
                 hideProgressDialog();
-                System.out.println("yohaha==data==success===" + response);
-resturantDataModelList = new ArrayList<>();
+                System.out.println("yohaha==restaurantss==success===" + response);
+                resturantDataModelList = new ArrayList<>();
                 JSONArray array = null;
                 try {
                     array = new JSONArray(response);
@@ -438,7 +442,7 @@ resturantDataModelList = new ArrayList<>();
                 for (int i = 0; i < array.length(); i++)
                     try {
                         JSONObject object = array.getJSONObject(i);
-                        ResturantDataModel dataModel = new ResturantDataModel();
+                        dataModel = new ResturantDataModel(i);
                         Log.d("API", "API Daa" + array);
                         Log.d("API", "API ID" + id);
                         itemName = object.getString("name");
@@ -446,20 +450,17 @@ resturantDataModelList = new ArrayList<>();
                         Log.d("API", "API na" + itemName);
                         itemDesc = object.getString("description");
                         category = object.getString("category");
-                        Log.d("API", "API Ca" + category);
+                        Log.d("API", "API Cat" + category);
                         food = object.getString("food");
 
                         subCategory = object.getString("subcategory");
                         amount = object.getString("price");
                         dataModel.setName(itemName);
                         dataModel.setCategory(category);
-
-
-//                        prefs.setItemName(itemName);
-//                        prefs.setItemDesc(itemDesc);
-//                        prefs.setPrice(amount);
-////                        prefs.setCategory(category);
-//                        prefs.setRestaurant_food(food);
+                        dataModel.setDescription(itemDesc);
+                        dataModel.setFood(food);
+                        dataModel.setPrice(amount);
+                        dataModel.setSubcategory(subCategory);
 
                         resturantDataModelList.add(dataModel);
 
@@ -467,28 +468,57 @@ resturantDataModelList = new ArrayList<>();
                         e.printStackTrace();
                     }
 
+//                resturantDataModelList = new ArrayList<>();
+//
+//
+//                for (int i = 0 ; i < category.length() ; i++){
+//                    ResturantDataModel dataModel = new ResturantDataModel();
+//                    dataModel.setCategory(category);
+//                    resturantDataModelList.add(dataModel);
+//                }
 
-                for (int i =0 ;i<=10;i++){
+                /*for (int i =0 ;i<=10;i++){
                     ResturantDataModel dataModel = new ResturantDataModel();
-                    dataModel.setCategory("apc");
+                    dataModel.setCategory("");
                 }
+*/
 
                 adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
+                for (ResturantDataModel dataModel:resturantDataModelList){
 
+                    Bundle bundle = new Bundle();
+                    bundle.putString("subCategory",dataModel.getSubcategory());
+                    bundle.putString("name", dataModel.getName());
+                    bundle.putString("desc", dataModel.getDescription());
+                    bundle.putString("price", dataModel.getPrice());
+                    bundle.putString("food", dataModel.getFood());
 
+                    Fragment appFrf = new Appetizer();
+                    appFrf.setArguments(bundle);
+
+                    adapter.addFragment(appFrf, dataModel.getCategory());
+
+                }
+/*
+                adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
                 for (ResturantDataModel dataModel:resturantDataModelList){
 
                     Bundle bundle = new Bundle();
                     bundle.putString("","");
 
-                     Fragment appFrf = new Appetizer();
+                    Fragment appFrf = new Appetizer();
                     appFrf.setArguments(bundle);
 
-                            adapter.addFragment(appFrf, dataModel.getCategory());
+                    adapter.addFragment(appFrf, dataModel.getCategory());
 
-                }
+                }*/
+
+                adapter.notifyDataSetChanged();
+                viewPager.setAdapter(adapter);
+
+                tabLayout.setupWithViewPager(viewPager);
 
             }
         }, new Response.ErrorListener() {
@@ -563,16 +593,15 @@ resturantDataModelList = new ArrayList<>();
 //                        catStatus = object.getString("status");
                         Log.d("API", "API Category: " + catName);
 
-                        data = new FragmentData(catName);
-                        tabList.add(data);
-
-                        adapter.notifyDataSetChanged();
+//                        data = new FragmentData(catName);
+//                        tabList.add(data);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
             }
         }, new Response.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
 //                Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();

@@ -57,21 +57,21 @@ public class HotelAdapter extends  RecyclerView.Adapter<HotelAdapter.MyViewHolde
     public void onBindViewHolder(MyViewHolder holder, int position) {
         HotelData data = hotelData.get(position);
         holder.title.setText(data.getTitle());
-        if(data.getDesc().contains("/")){
+        if(data.getDesc().contains("-")){
 
             SpannableStringBuilder builder = new SpannableStringBuilder();
-            String sp[] = data.getDesc().split("/");
+            String sp[] = data.getDesc().split("-");
             String part = sp[0];
             String parts = sp[1];
 
             String col = part+"\n";
             SpannableString graySpannable= new SpannableString(col);
-            graySpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, col.length(), 0);
+            graySpannable.setSpan(new ForegroundColorSpan(Color.GRAY), 0, col.length(), 0);
             builder.append(graySpannable);
 
             String cols = parts;
             SpannableString graysSpannable = new SpannableString(cols);
-            graysSpannable.setSpan(new ForegroundColorSpan(Color.GRAY), 0, cols.length(), 0);
+            graysSpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, cols.length(), 0);
             builder.append(graysSpannable);
 
             holder.desc.setText(builder, TextView.BufferType.SPANNABLE);

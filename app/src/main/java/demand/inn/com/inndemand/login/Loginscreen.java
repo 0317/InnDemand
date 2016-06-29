@@ -33,6 +33,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.firebase.client.Firebase;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -99,6 +100,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.loginscreen);
+        Firebase.setAndroidContext(getApplicationContext());
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
@@ -380,7 +382,11 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
             try {
                 obj = new JSONObject(String.valueOf(person.getImage()));
                 String img = obj.getString("url");
-                prefs.setUser_gpicture(img);
+                String image[] = img.split("sz=");
+                String first = image[0];
+                String pic = first+"sz=200";
+                Log.d("Details Google", "Check"+pic);
+                prefs.setUser_gpicture(pic);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
