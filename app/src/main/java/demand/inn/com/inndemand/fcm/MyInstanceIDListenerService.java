@@ -28,6 +28,7 @@ import java.io.UnsupportedEncodingException;
 
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.NotificationData;
+import demand.inn.com.inndemand.login.QRscanning;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.volleycall.AppController;
 
@@ -54,6 +55,10 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
         refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d("1", "Refreshed token: " + refreshedToken);
         // TODO: Implement this method to send any registration to your app's servers.
+
+        Intent in = new Intent(this, QRscanning.class);
+        in.putExtra("refreshToekn", refreshedToken);
+        startService(in);
         sendRegistrationToServer(refreshedToken);
     }
 

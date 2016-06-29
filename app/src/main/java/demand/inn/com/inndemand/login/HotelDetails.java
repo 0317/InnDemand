@@ -696,11 +696,14 @@ public class HotelDetails extends AppCompatActivity {
                             String info_screen_key = object.getString("screen_key");
 
 
-                            if(info_screen_key == "main" || info_screen_key.equalsIgnoreCase("main")) {
+                            if(info_screen_key.contains("main") && !info_title.contains("Note")) {
+                                hotelData.clear();
                                 HotelData a = new HotelData(info_title, info_value);
                                 hotelData.add(a);
                             }else if(info_screen_key == "laundry" || info_screen_key.equalsIgnoreCase("laundry")){
-                                prefs.setSave_data(info_value);
+                                prefs.setLaundrynote(info_value);
+                            }else if(info_screen_key == "cab" || info_screen_key.equalsIgnoreCase("cab")){
+                                prefs.setCabnote(info_value);
                             }
 
                             adapter.notifyDataSetChanged();
@@ -921,7 +924,6 @@ public class HotelDetails extends AppCompatActivity {
 
         }
     }
-
 
 //    OnResume method to set Restaurant/Bars list
 //    Activating OnCLick function, saving value & firing Intent

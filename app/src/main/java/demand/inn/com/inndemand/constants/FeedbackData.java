@@ -1,15 +1,18 @@
 package demand.inn.com.inndemand.constants;
 
+import android.widget.TextView;
+
 /**
  * Created by akash
  */
 public class FeedbackData {
 
-    String title, desc, about;
+    String title, desc, rate;
 
-    public FeedbackData(String title, String desc){
+    public FeedbackData(String title, String desc, String rate){
         this.title = title;
         this.desc = desc;
+        this.rate = rate;
     }
 
     public String getTitle() {
@@ -28,12 +31,11 @@ public class FeedbackData {
         this.desc = desc;
     }
 
-
-    public String getAbout() {
-        return about;
+    public String getRate() {
+        return rate;
     }
 
-    public void setAbout(String about) {
-        this.about = about;
+    public void setRate(String rate) {
+        this.rate = rate;
     }
 }

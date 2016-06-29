@@ -1,6 +1,5 @@
 package demand.inn.com.inndemand;
 
-import android.*;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -90,7 +89,7 @@ import demand.inn.com.inndemand.mapdirection.MapArea;
 import demand.inn.com.inndemand.roomservice.Bar;
 import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.roomservice.RoomServices;
-import demand.inn.com.inndemand.setting.Feedback;
+import demand.inn.com.inndemand.setting.FeedbackList;
 import demand.inn.com.inndemand.setting.OrderHistory;
 import demand.inn.com.inndemand.setting.Settings;
 import demand.inn.com.inndemand.utility.AppPreferences;
@@ -491,7 +490,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             Intent in = new Intent(DashBoard.this, Settings.class);
             startActivity(in);
         }else if (id == R.id.nav_feedback) {
-            Intent in = new Intent(DashBoard.this, Feedback.class);
+            Intent in = new Intent(DashBoard.this, FeedbackList.class);
             startActivity(in);
         }else if (id == R.id.nav_help) {
 

@@ -19,16 +19,205 @@
             app:layout_scrollFlags="scroll|snap"
             />
 
-        <android.support.v7.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:id="@+id/recycler_view">
+            android:orientation="vertical">
 
-        </android.support.v7.widget.RecyclerView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:textSize="@dimen/eighteen_sp"
+                android:id="@+id/product_title"
+                android:textColor="@color/colorPrimary"
+                android:text=""
+                />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/green"
+                    android:padding="1dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:textSize="@dimen/forteen_sp"
+                    android:id="@+id/product_rating"
+                    android:textColor="@android:color/white"
+                    android:text="4.5"
+                    />
+
+                </RelativeLayout>
+
+                </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textSize="@dimen/forteen_sp"
+                android:id="@+id/product_desc"
+                android:textColor="@color/view_gray"
+                android:text=""
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_marginTop="15dp"
+                android:textSize="@dimen/sixteen_sp"
+                android:textColor="@color/view_gray"
+                android:text="Please rate this product"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:weightSum="5"
+                    android:layout_weight=".8">
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/rating_one"
+                        android:layout_weight="1"
+                        android:onClick="oneRating"
+                        android:layout_marginLeft="15dp"
+                        android:background="@color/theme_gray"/>
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/rating_two"
+                        android:layout_weight="1"
+                        android:onClick="twoRating"
+                        android:layout_margin="1dp"
+                        android:background="@color/theme_gray"/>
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/rating_three"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:onClick="threeRating"
+                        android:background="@color/theme_gray"/>
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/rating_four"
+                        android:onClick="fourRating"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:background="@color/theme_gray"/>
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/rating_five"
+                        android:layout_weight="1"
+                        android:onClick="fiveRating"
+                        android:layout_margin="1dp"
+                        android:background="@color/theme_gray"/>
+
+
+                    </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                   android:layout_weight="1.2">
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:weightSum="1">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/product_feedback"
+                android:layout_marginLeft="15dp"
+                android:background="@null"
+                android:layout_weight=".8"
+                android:layout_marginRight="5dp"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Submit"
+                    android:id="@+id/product_submit"
+                    android:layout_weight=".2"
+                    android:onClick="submitFeedback"
+                    android:layout_marginRight="15dp"
+                    android:textColor="@android:color/black"
+                    android:background="@color/confirm_demand_click"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/dark_gray"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="90dp"></View>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recent Feedback"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/eighteen_sp"/>
+
+        </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:id="@+id/recycler_view">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
 
         </RelativeLayout>
 

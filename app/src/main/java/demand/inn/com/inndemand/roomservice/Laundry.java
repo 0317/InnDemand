@@ -54,11 +54,9 @@ public class Laundry extends AppCompatActivity {
     static final int TIME_DIALOG_ID = 1111;
 
     //UI call area
-    LinearLayout backpress;
     EditText say_something;
     TextView now, pickTime;
-    private Calendar calendar;
-    TimePicker timePick;
+    TextView note;
     Toolbar toolbar;
 
     //Others
@@ -103,6 +101,8 @@ public class Laundry extends AppCompatActivity {
         say_something = (EditText) findViewById(R.id.say_something_laundry);
 
         //TextView UI Initialize area
+        note = (TextView) findViewById(R.id.note_laundry);
+        note.setText(prefs.getLaundrynote());
         now = (TextView) findViewById(R.id.now_laundry);
         pickTime = (TextView) findViewById(R.id.pickTime_laundry);
 

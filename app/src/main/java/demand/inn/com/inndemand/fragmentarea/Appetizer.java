@@ -5,14 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,8 +20,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -52,17 +45,11 @@ import java.util.List;
 
 import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.adapter.BarlistAdapter;
-import demand.inn.com.inndemand.adapter.ListAdapter;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
-import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Config;
-import demand.inn.com.inndemand.constants.ListData;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SimpleDividerItemDecoration;
-import demand.inn.com.inndemand.roomservice.Bar;
-import demand.inn.com.inndemand.roomservice.Restaurant;
-import demand.inn.com.inndemand.setting.ProductPage;
+import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -360,12 +347,13 @@ public class Appetizer extends Fragment {
             @Override
             public void onItemClick(int position, View v) {
                 Log.i("TAG", " Clicked on Item " + position);
-                Intent in = new Intent(getActivity(), ProductPage.class);
+                Log.i("TAG", " Clicked on product " +cardList.get(position).getName());
+                prefs.setRestaurant_item_id(cardList.get(position).getId());
+                Intent in = new Intent(getActivity(), Feedback.class);
                 in.putExtra("itemname", cardList.get(position).getName());
                 in.putExtra("itemdesc", cardList.get(position).getDescription());
                 in.putExtra("itemprice", cardList.get(position).getPrice());
                 startActivity(in);
-
             }
         });
     }

@@ -85,6 +85,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     Calendar c;
     SimpleDateFormat df;
     String formattedDate;
+    String getToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,9 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
-        Log.d("Reftoken","check"+prefs.getRefreshToken());
+        getToken = getIntent().getStringExtra("refreshToekn");
+
+        Log.d("Reftoken","check"+getToken);
         marshMallowPermission = new MarshMallowPermission(this);
 
         prefs.setIs_task_completed(true);

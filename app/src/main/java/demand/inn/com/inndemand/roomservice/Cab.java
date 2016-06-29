@@ -65,6 +65,7 @@ public class Cab extends AppCompatActivity {
     LinearLayout confirm;
     Toolbar toolbar;
     TextView now, pickTime, changeTime, setTime, set_loc;
+    TextView note;
     CoordinatorLayout coordinatorLayout;
     LinearLayout choose_destination, cancel_wakeUp;
     EditText say_something;
@@ -114,6 +115,8 @@ public class Cab extends AppCompatActivity {
         //UI Initialize area
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
+        note = (TextView) findViewById(R.id.note_cab);
+        note.setText(prefs.getCabnote());
         now = (TextView) findViewById(R.id.now_cab);
         pickTime = (TextView) findViewById(R.id.currentTime_cab);
         setTime = (TextView) findViewById(R.id.set_time);

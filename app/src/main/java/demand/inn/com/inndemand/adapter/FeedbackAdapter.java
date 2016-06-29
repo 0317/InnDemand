@@ -52,7 +52,7 @@ public class FeedbackAdapter extends  RecyclerView.Adapter<FeedbackAdapter.MyVie
     public void onBindViewHolder(MyViewHolder holder, int position) {
         FeedbackData data = feedData.get(position);
         holder.title.setText(data.getTitle());
-
+        holder.desc.setText(data.getDesc());
     }
 
     @Override

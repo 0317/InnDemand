@@ -223,13 +223,14 @@
 
         <activity android:name=".setting.Feedback"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".setting.OrderHistory"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <activity android:name=".setting.ProductPage"
+        <activity android:name=".setting.FeedbackList"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 

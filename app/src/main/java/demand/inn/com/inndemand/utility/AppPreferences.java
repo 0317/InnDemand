@@ -19,6 +19,8 @@ public class AppPreferences {
     private String customer_Id = "customer_Id",
             checkin_Id = "checkin_Id",
             restaurant_Id = "restaurant_Id",
+            restaurant_item_id = "restaurant_item_id",
+            rating_value = "rating_value",
             bar_Id = "bar_Id",
             user_gender = "user_gender",
             user_bday = "user_bday",
@@ -79,7 +81,9 @@ public class AppPreferences {
                     soda = "soda",
                     glass = "glass",
                     tea = "tea",
-                    coffee = "coffee";
+                    coffee = "coffee",
+                    laundrynote = "laundrynote",
+                    cabnote = "cabnote";
 
     //Location Saves
     private String currentLocation = "currentLocation",
@@ -166,6 +170,22 @@ public class AppPreferences {
 
     public void setRestaurant_Id(String _restaurant_Id) {
         prefEditor.putString(restaurant_Id, _restaurant_Id).commit();
+    }
+
+    public String getRestaurant_item_id() {
+        return appSharedpref.getString(restaurant_item_id, "");
+    }
+
+    public void setRestaurant_item_id(String _restaurant_item_id) {
+        prefEditor.putString(restaurant_item_id, _restaurant_item_id).commit();
+    }
+
+    public String getRating_value() {
+        return appSharedpref.getString(rating_value, "");
+    }
+
+    public void setRating_value(String _rating_value) {
+        prefEditor.putString(rating_value, _rating_value).commit();
     }
 
     public String getBar_Id() {
@@ -658,8 +678,23 @@ public class AppPreferences {
         prefEditor.putBoolean(barList, _barList).commit();
     }
 
+    public String getLaundrynote() {
+        return appSharedpref.getString(laundrynote, "");
+    }
 
-//    Total cash for Restaurant/ Bar/ Spa
+    public void setLaundrynote(String _laundrynote) {
+        prefEditor.putString(laundrynote, _laundrynote).commit();
+    }
+
+    public String getCabnote() {
+        return appSharedpref.getString(cabnote, "");
+    }
+
+    public void setCabnote(String _cabnote) {
+        prefEditor.putString(cabnote, _cabnote).commit();
+    }
+
+    //    Total cash for Restaurant/ Bar/ Spa
 
     public String getTotal_cash() {
         return appSharedpref.getString(total_cash, "");

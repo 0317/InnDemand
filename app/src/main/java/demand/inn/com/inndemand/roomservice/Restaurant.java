@@ -103,7 +103,7 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
     DefaultFragment defaultFragment;
 
     //Others
-    String id;
+    String ids;
     String itemName;
     String itemDesc;
     String category;
@@ -429,7 +429,7 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
             @Override
             public void onResponse(String response) {
                 hideProgressDialog();
-                System.out.println("yohaha==restaurantss==success===" + response);
+                System.out.println("yohaha==restaurantss==success==" + response);
                 resturantDataModelList = new ArrayList<>();
                 JSONArray array = null;
                 try {
@@ -444,7 +444,8 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
                         JSONObject object = array.getJSONObject(i);
                         dataModel = new ResturantDataModel(i);
                         Log.d("API", "API Daa" + array);
-                        Log.d("API", "API ID" + id);
+                        Log.d("API", "API ID" + ids);
+                        ids = object.getString("id");
                         itemName = object.getString("name");
 
                         Log.d("API", "API na" + itemName);
@@ -455,6 +456,7 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
 
                         subCategory = object.getString("subcategory");
                         amount = object.getString("price");
+                        dataModel.setId(ids);
                         dataModel.setName(itemName);
                         dataModel.setCategory(category);
                         dataModel.setDescription(itemDesc);
