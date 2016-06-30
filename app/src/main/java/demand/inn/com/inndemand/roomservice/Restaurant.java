@@ -20,6 +20,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -76,7 +77,7 @@ import demand.inn.com.inndemand.welcome.DBHelper;
  * Created by akash
  */
 
-public class Restaurant extends AppCompatActivity implements demand.inn.com.inndemand.Helper.OnItemCLick {
+public class Restaurant extends AppCompatActivity implements demand.inn.com.inndemand.Helper.OnItemCLick{
 
     //Utility
     NetworkUtility nu;
@@ -150,7 +151,6 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-
                 //noinspection SimplifiableIfStatement
                 if (id == R.id.action_settings) {
                     return true;

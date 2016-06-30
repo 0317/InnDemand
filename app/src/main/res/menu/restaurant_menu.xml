@@ -5,7 +5,10 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title=""/>
+        android:title="asearch"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always|collapseActionView"
+        android:icon="@drawable/ic_search"/>
 
     <item
         android:id="@+id/action_food"

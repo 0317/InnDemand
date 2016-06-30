@@ -1,7 +1,9 @@
 package demand.inn.com.inndemand.fcm;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -28,6 +30,7 @@ import java.io.UnsupportedEncodingException;
 
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.NotificationData;
+import demand.inn.com.inndemand.login.CheckDetails;
 import demand.inn.com.inndemand.login.QRscanning;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -49,17 +52,13 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
      * you retrieve the token.
      */
     // [START refresh_token]
+
     @Override
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d("1", "Refreshed token: " + refreshedToken);
         // TODO: Implement this method to send any registration to your app's servers.
-
-        Intent in = new Intent(this, QRscanning.class);
-        in.putExtra("refreshToekn", refreshedToken);
-        startService(in);
-        sendRegistrationToServer(refreshedToken);
     }
 
     //Registration ID Call

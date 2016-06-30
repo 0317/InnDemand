@@ -42,6 +42,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.zxing.Result;
 
 import org.json.JSONException;
@@ -55,6 +56,7 @@ import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.MarshMallowPermission;
+import demand.inn.com.inndemand.fcm.NotificationListener;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -85,7 +87,9 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     Calendar c;
     SimpleDateFormat df;
     String formattedDate;
-    String getToken;
+    String checkinId = "";
+    String getting = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,15 +99,14 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
-        getToken = getIntent().getStringExtra("refreshToekn");
+        getting =  FirebaseInstanceId.getInstance().getToken();
+//        getting = getIntent().getStringExtra("toekGet");
+        Log.d("Reftoken","check: "+getting);
 
-        Log.d("Reftoken","check"+getToken);
         marshMallowPermission = new MarshMallowPermission(this);
 
         prefs.setIs_task_completed(true);
         prefs.setIs_In_Hotel(false);
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("reg_id-message"));
 
         getSupportActionBar().setTitle("InnDemand");
         getSupportActionBar().invalidateOptionsMenu();
@@ -295,6 +298,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 
         prefs.setHotel_id(hotelID);
         postJsonData(Config.innDemand+"checkins/checkin/", obj.toString());
+        dataRegistration();
     }
 
     public void postJsonData(String url, String userData){
@@ -323,7 +327,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                 try {
                     JSONObject object = new JSONObject(response);
 
-                    String checkinId = object.getString("checkin_id");
+                    checkinId = object.getString("checkin_id");
                     prefs.setCheckin_Id(checkinId);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -360,7 +364,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 
         try {
             obj.put("hotel_id", prefs.getHotel_id());
-            obj.put("registration_key", prefs.getRefreshToken());
+            obj.put("registration_key", getting);
             obj.put("checkin_id", prefs.getCheckin_Id());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -418,14 +422,5 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
-
-    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
-            String reg_token = intent.getStringExtra("reg_id");
-            prefs.setRefreshToken(reg_token);
-        }
-    };
 }
 

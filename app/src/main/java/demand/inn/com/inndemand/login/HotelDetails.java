@@ -359,6 +359,7 @@ public class HotelDetails extends AppCompatActivity {
 
     public void restaurantList() {
         JSONObject obj = new JSONObject();
+//        JSONObject obbj = new JSONObject();
 //
         try {
             obj.put("hotel_id", prefs.getHotel_id());
@@ -366,9 +367,21 @@ public class HotelDetails extends AppCompatActivity {
             e.printStackTrace();
         }
 
+//        try {
+//            obbj.put("hotel_id", prefs.getHotel_id());
+//            obbj.put("registration_key", prefs.getRefreshToken());
+//            obbj.put("checkin_id", prefs.getCheckin_Id());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Log.d("Api RefreshToken Data", obbj.toString());
+
         Log.d("Api Hotel Data", obj.toString());
 
         postJsonRestaurant(Config.innDemand + "restaurant/details/", obj.toString());
+
+//        postJsonRestaurant(Config.innDemand +"not_registration_key/details/", obbj.toString());
     }
 
     public void getToken(){
@@ -1486,6 +1499,8 @@ public class HotelDetails extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+                Log.d("Checkin Data", "Check"+obj.toString());
 
                         postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
                         prefs.setCheckout("1");

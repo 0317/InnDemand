@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -49,6 +52,7 @@ import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SimpleDividerItemDecoration;
+import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
@@ -92,6 +96,8 @@ public class Appetizer extends Fragment {
 
     ResturantDataModel resturantDataModel;
 
+    private List<String > list = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,6 +105,11 @@ public class Appetizer extends Fragment {
         nu = new NetworkUtility(getActivity());
         prefs = new AppPreferences(getActivity());
 
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+
+        //for crate home button
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
 
         subCat = getArguments().getString("subCategory");
         names  = getArguments().getString("name");
@@ -132,6 +143,41 @@ public class Appetizer extends Fragment {
 
             }
         }));
+
+       /* toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                SearchView search = (SearchView) item.getActionView();
+                search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String query) {
+                        query = query.toLowerCase();
+
+                        final List<String> filteredList = new ArrayList<>();
+
+                        for (int i = 0; i < list.size(); i++) {
+
+                            final String text = list.get(i).toLowerCase();
+                            if (text.contains(query)) {
+
+                                filteredList.add(list.get(i));
+                            }
+                        }
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                        adapter = new RestaurantAdapter(filteredList, list);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();  // data set changed
+                        return true;
+                    }
+                });
+                return true;
+            }
+        });*/
 
 
         a = new ResturantDataModel(subCat, names, desc, price, foods);

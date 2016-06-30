@@ -1,7 +1,6 @@
 package demand.inn.com.inndemand.login;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -42,11 +41,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -85,9 +88,11 @@ public class CheckDetails extends AppCompatActivity {
     private ProgressDialog pDialog;
 
     //Others
-    String name, email, dp, l_name, gender, bDay, gGender, fb_location, gToken;
+    String name, email, dp, l_name, gender, bDay, gGender, fb_location, gToken = "none";
     String gName, gEmail, gDP, gbBday = "none", gLoc = "none";
     String mName, mEmail, phoneNo = "none";
+    String tokenss = "";
+    String customer_id = "";
     int yourAge;
     StringBuilder strBuild;
 
@@ -126,7 +131,7 @@ public class CheckDetails extends AppCompatActivity {
         detail_email = (EditText) findViewById(R.id.fb_email);
 
         //if the device is registered
-      /*  if(isRegistered()){
+       /* if(isRegistered()){
             startService(new Intent(this, NotificationListener.class));
         }
 
@@ -251,6 +256,7 @@ public class CheckDetails extends AppCompatActivity {
         }else {
             makeJsonObjectRequest();
             Intent in = new Intent(CheckDetails.this, QRscanning.class);
+            in.putExtra("customer_id", customer_id);
             startActivity(in);
             finish();
         }
@@ -291,7 +297,7 @@ public class CheckDetails extends AppCompatActivity {
                 obj.put("gender", gender);
 
             if (prefs.getFb_Token() == null)
-                obj.put("google_auth", prefs.getG_Token());
+                obj.put("facebook_auth", gToken);
             else
                 obj.put("facebook_auth", prefs.getFb_Token());
 
@@ -327,13 +333,13 @@ public class CheckDetails extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("yohaha=success==="+response);
+                System.out.println("yohaha=custmor==success==="+response);
 
                 try {
                     JSONObject object = new JSONObject(response);
 
-                    String customer = object.getString("customer_id");
-                    prefs.setCustomer_Id(customer);
+                    customer_id = object.getString("customer_id");
+                    prefs.setCustomer_Id(customer_id);
 //                    Toast.makeText(CheckDetails.this, customer, Toast.LENGTH_LONG).show();
 
                 }catch(JSONException e){
@@ -381,6 +387,9 @@ public class CheckDetails extends AppCompatActivity {
 
     private void registerDevice() {
         //Creating a firebase object
+
+        tokenss =  FirebaseInstanceId.getInstance().getToken();
+        prefs.setRefreshToken(tokenss);
         Firebase firebase = new Firebase(Config.FIREBASE_APP);
 
         //Pushing a new element to firebase it will automatically create a unique id
@@ -398,7 +407,7 @@ public class CheckDetails extends AppCompatActivity {
         //Getting the unique id generated at firebase
         String uniqueId = newFirebase.getKey();
 
-        Log.d("FCM Unique ID", uniqueId);
+        Log.d("FCM Unique ID", tokenss);
 
         //Finally we need to implement a method to store this unique id to our server
 //        sendIdToServer(uniqueId);
@@ -444,7 +453,7 @@ public class CheckDetails extends AppCompatActivity {
                             //Starting our listener service once the device is registered
                             startService(new Intent(getBaseContext(), NotificationListener.class));
                         } else {
-                            Toast.makeText(CheckDetails.this, "Choose a different email", Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 },
