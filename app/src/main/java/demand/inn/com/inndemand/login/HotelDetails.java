@@ -56,12 +56,8 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
-import com.crashlytics.android.Crashlytics;
-import com.firebase.client.Firebase;
-import com.google.gson.JsonArray;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -173,7 +169,7 @@ public class HotelDetails extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
+//        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.hoteldetails);
         nu = new NetworkUtility(HotelDetails.this);
         prefs = new AppPreferences(HotelDetails.this);
@@ -707,17 +703,16 @@ public class HotelDetails extends AppCompatActivity {
                             String info_id = object.getString("id");
                             String info_hotel = object.getString("hotel");
                             String info_screen_key = object.getString("screen_key");
+                            HotelData a = new HotelData(info_title, info_value, info_screen_key);
+                            hotelData.add(a);
 
-
-                            if(info_screen_key.contains("main") && !info_title.contains("Note")) {
-                                hotelData.clear();
-                                HotelData a = new HotelData(info_title, info_value);
-                                hotelData.add(a);
-                            }else if(info_screen_key == "laundry" || info_screen_key.equalsIgnoreCase("laundry")){
-                                prefs.setLaundrynote(info_value);
-                            }else if(info_screen_key == "cab" || info_screen_key.equalsIgnoreCase("cab")){
-                                prefs.setCabnote(info_value);
-                            }
+//                            if(info_screen_key.contains("main") && !info_title.contains("Note")) {
+//
+//                            }else if(info_screen_key == "laundry" || info_screen_key.equalsIgnoreCase("laundry")){
+//                                prefs.setLaundrynote(info_value);
+//                            }else if(info_screen_key == "cab" || info_screen_key.equalsIgnoreCase("cab")){
+//                                prefs.setCabnote(info_value);
+//                            }
 
                             adapter.notifyDataSetChanged();
 

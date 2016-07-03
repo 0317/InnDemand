@@ -16,10 +16,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -50,9 +48,9 @@ import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.model.RecyclerItemClickListener;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SimpleDividerItemDecoration;
-import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
@@ -92,7 +90,7 @@ public class Appetizer extends Fragment {
     ProgressDialog dialog;
 
     ResturantDataModel a;
-    public String subCat, names, desc, price, foods;
+    public String idCat, subCat, names, desc, price, foods;
 
     ResturantDataModel resturantDataModel;
 
@@ -111,6 +109,7 @@ public class Appetizer extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
+        idCat = getArguments().getString("category_id");
         subCat = getArguments().getString("subCategory");
         names  = getArguments().getString("name");
         desc = getArguments().getString("desc");
@@ -131,59 +130,24 @@ public class Appetizer extends Fragment {
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                ResturantDataModel data = cardList.get(position);
-//                Toast.makeText(HotelDetails.this, data.getTitle(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
-
-       /* toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                SearchView search = (SearchView) item.getActionView();
-                search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String query) {
-                        query = query.toLowerCase();
-
-                        final List<String> filteredList = new ArrayList<>();
-
-                        for (int i = 0; i < list.size(); i++) {
-
-                            final String text = list.get(i).toLowerCase();
-                            if (text.contains(query)) {
-
-                                filteredList.add(list.get(i));
-                            }
-                        }
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//                        adapter = new RestaurantAdapter(filteredList, list);
-                        recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();  // data set changed
-                        return true;
-                    }
-                });
-                return true;
-            }
-        });*/
-
-
         a = new ResturantDataModel(subCat, names, desc, price, foods);
         cardList.add(a);
 
         adapter.notifyDataSetChanged();
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Log.i("TAG", " Clicked on Item " + position);
+                Log.i("TAG", " Clicked on product " +cardList.get(position).getName());
+                prefs.setRestaurant_item_id(cardList.get(position).getId());
+                Intent in = new Intent(getActivity(), Feedback.class);
+                in.putExtra("itemname", cardList.get(position).getName());
+                in.putExtra("itemdesc", cardList.get(position).getDescription());
+                in.putExtra("itemprice", cardList.get(position).getPrice());
+                startActivity(in);
+            }
+        }));
 
         if (nu.isConnectingToInternet()) {
             if (prefs.getFm_restaurant() == true) {
@@ -196,7 +160,7 @@ public class Appetizer extends Fragment {
                         }).create().show();
             } else {
                 //mehtod to send Restaurant ID to server & to get response.
-//                callMethod();
+                callMethod();
             }
         } else {
 
@@ -219,13 +183,13 @@ public class Appetizer extends Fragment {
         dialog = new ProgressDialog(getActivity());
         JSONObject obj = new JSONObject();
         try {
-            obj.put("restaurant_id", prefs.getRestaurant_Id());
+            obj.put("category_id", idCat);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Log.d("Check API Data", obj.toString());
 
-        postJsonData(Config.innDemand+"restaurant_items/details/", obj.toString());
+        postJsonData(Config.innDemand+"", obj.toString());
     }
 
     public void postJsonData(String url, String userData) {
@@ -263,7 +227,6 @@ public class Appetizer extends Fragment {
                     try {
                         JSONObject object = array.getJSONObject(i);
                         Log.d("API", "API Daa"+array);
-//                        id = object.getString(String.valueOf(id));
                         Log.d("API", "API ID"+id);
                         itemName = object.getString("name");
                         Log.d("API", "API na"+itemName);
@@ -271,20 +234,13 @@ public class Appetizer extends Fragment {
                         category = object.getString("category");
                         Log.d("API", "API Ca"+category);
                         food = object.getString("food");
-//                        restaurant = object.getString(String.valueOf(restaurant));
                         subCategory = object.getString("subcategory");
                         amount = object.getString("price");
 
-                        if(category.contains("starter") || category.equalsIgnoreCase("Starter")) {
-
-//                                a = new AppetiserData(subCategory, itemName, itemDesc, "Rs: " + amount, food);
-//                                cardList.add(a);
-
-//                            a = new ResturantDataModel(subCategory, itemName, itemDesc, "Rs: " + amount, food);
-//                            cardList.add(a);
+                            a = new ResturantDataModel(subCat, names, desc, price, foods);
+                            cardList.add(a);
 
                             adapter.notifyDataSetChanged();
-                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -331,76 +287,5 @@ public class Appetizer extends Fragment {
         result_price = price;
 
         return  true;
-    }
-
-    public interface ClickListener {
-        void onClick(View view, int position);
-
-        void onLongClick(View view, int position);
-    }
-
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
-
-        private GestureDetector gestureDetector;
-        private Appetizer.ClickListener clickListener;
-
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final Appetizer.ClickListener clickListener) {
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-                    }
-                }
-            });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildPosition(child));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
-    }
-
-
-    //    OnResume method to set Restaurant/Bars list
-//    Activating OnCLick function, saving value & firing Intent
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((RestaurantAdapter) adapter).setOnItemClickListener(new RestaurantAdapter.MyClickListener() {
-
-            @Override
-            public void onItemClick(int position, View v) {
-                Log.i("TAG", " Clicked on Item " + position);
-                Log.i("TAG", " Clicked on product " +cardList.get(position).getName());
-                prefs.setRestaurant_item_id(cardList.get(position).getId());
-                Intent in = new Intent(getActivity(), Feedback.class);
-                in.putExtra("itemname", cardList.get(position).getName());
-                in.putExtra("itemdesc", cardList.get(position).getDescription());
-                in.putExtra("itemprice", cardList.get(position).getPrice());
-                startActivity(in);
-            }
-        });
     }
 }

@@ -77,7 +77,7 @@ import demand.inn.com.inndemand.welcome.DBHelper;
  * Created by akash
  */
 
-public class Restaurant extends AppCompatActivity implements demand.inn.com.inndemand.Helper.OnItemCLick{
+public class Restaurant extends AppCompatActivity{
 
     //Utility
     NetworkUtility nu;
@@ -350,11 +350,29 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
             String totalItems = intent.getStringExtra("totalItems");
             String itemName = intent.getStringExtra("itemName");
 
+            int vals = Integer.parseInt(totalCash);
+            int vas = Integer.parseInt(totalItems);
+
             prefs.setTotal_cash(totalCash);
             prefs.setTotal_items(totalItems);
 
-            cart_total.setText(totalCash);
-            cart_item.setText(totalItems);
+            String cart_value = cart_total.getText().toString();
+            String cart_val = cart_item.getText().toString();
+
+            try {
+                int val = Integer.parseInt(vals+cart_value);
+                int va = Integer.parseInt(vas+cart_val);
+
+                String totCash = String.valueOf(val);
+                String totItem = String.valueOf(va);
+
+                cart_total.setText(totCash);
+                cart_item.setText(totItem);
+
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
             Intent in = new Intent("data-message");
             in.putExtra("cartItem", cart_item.getText().toString());
@@ -490,6 +508,7 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
                 for (ResturantDataModel dataModel:resturantDataModelList){
 
                     Bundle bundle = new Bundle();
+                    bundle.putString("category_id", dataModel.getId());
                     bundle.putString("subCategory",dataModel.getSubcategory());
                     bundle.putString("name", dataModel.getName());
                     bundle.putString("desc", dataModel.getDescription());
@@ -663,10 +682,5 @@ public class Restaurant extends AppCompatActivity implements demand.inn.com.innd
         });
 
         dialog.show();
-    }
-
-    @Override
-    public void onClick(String total) {
-        cart_total.setText("Total Rs: "+total);
     }
 }

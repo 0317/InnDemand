@@ -175,6 +175,11 @@ public class CheckDetails extends AppCompatActivity {
             else
                 gLoc = prefs.getGoogle_location();
 
+            if(gToken == "")
+                gToken = "none";
+            else
+                gToken = prefs.getG_Token();
+
             Log.d("Check", "Check bday "+prefs.getGoogle_bday());
             Log.d("Check", "Check Loc "+prefs.getGoogle_location());
         }

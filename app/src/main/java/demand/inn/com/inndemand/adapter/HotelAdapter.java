@@ -56,27 +56,35 @@ public class HotelAdapter extends  RecyclerView.Adapter<HotelAdapter.MyViewHolde
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         HotelData data = hotelData.get(position);
-        holder.title.setText(data.getTitle());
-        if(data.getDesc().contains("-")){
+        if(data.getScreen_key() == "main" || data.getScreen_key().equalsIgnoreCase("main")) {
+            holder.title.setText(data.getTitle());
+            if (data.getDesc().contains("-")) {
 
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-            String sp[] = data.getDesc().split("-");
-            String part = sp[0];
-            String parts = sp[1];
+                SpannableStringBuilder builder = new SpannableStringBuilder();
+                String sp[] = data.getDesc().split("-");
+                String part = sp[0];
+                String parts = sp[1];
 
-            String col = part+"\n";
-            SpannableString graySpannable= new SpannableString(col);
-            graySpannable.setSpan(new ForegroundColorSpan(Color.GRAY), 0, col.length(), 0);
-            builder.append(graySpannable);
+                String col = part + "\n";
+                SpannableString graySpannable = new SpannableString(col);
+                graySpannable.setSpan(new ForegroundColorSpan(Color.GRAY), 0, col.length(), 0);
+                builder.append(graySpannable);
 
-            String cols = parts;
-            SpannableString graysSpannable = new SpannableString(cols);
-            graysSpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, cols.length(), 0);
-            builder.append(graysSpannable);
+                String cols = parts;
+                SpannableString graysSpannable = new SpannableString(cols);
+                graysSpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, cols.length(), 0);
+                builder.append(graysSpannable);
 
-            holder.desc.setText(builder, TextView.BufferType.SPANNABLE);
+                holder.desc.setText(builder, TextView.BufferType.SPANNABLE);
+            } else {
+                holder.desc.setText(data.getDesc());
+            }
+        }else if(data.getScreen_key() == "laundry" || data.getScreen_key().equalsIgnoreCase("laundry")){
+
+        }else if(data.getScreen_key() == "cab" || data.getScreen_key().equalsIgnoreCase("cab")){
         }else{
-            holder.desc.setText(data.getDesc());
+            holder.title.setVisibility(View.GONE);
+            holder.desc.setVisibility(View.GONE);
         }
 
 
