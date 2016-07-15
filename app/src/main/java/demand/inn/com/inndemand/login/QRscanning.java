@@ -56,7 +56,7 @@ import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.MarshMallowPermission;
-import demand.inn.com.inndemand.fcm.NotificationListener;
+//import demand.inn.com.inndemand.fcm.NotificationListener;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -288,7 +288,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
             obj.put("hotel", hotelID);
             obj.put("room", roomID);
             obj.put("qr", roomID);
-            obj.put("checkin_time", formattedDate);
+//            obj.put("checkin_time", formattedDate);
 
         }catch (JSONException e){
             e.printStackTrace();

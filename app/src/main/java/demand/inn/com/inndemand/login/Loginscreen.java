@@ -33,7 +33,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.firebase.client.Firebase;
+//import com.firebase.client.Firebase;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -100,7 +100,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.loginscreen);
-        Firebase.setAndroidContext(getApplicationContext());
+//        Firebase.setAndroidContext(getApplicationContext());
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 

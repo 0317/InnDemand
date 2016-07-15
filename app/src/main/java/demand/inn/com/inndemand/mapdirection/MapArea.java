@@ -86,6 +86,7 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
     String getAddress;
 
     String val = "Gurgaon";
+    String vol = "New Delhi";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +123,7 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
 //                e.printStackTrace();
 //            }
             try {
-                new DirectionFinder(this, val, prefs.getDestination()).execute();
+                new DirectionFinder(this, val, vol).execute();
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -261,7 +262,7 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
             String sp[] = getAddress.split(":");
             String main = sp[3];
             prefs.setDestination(main);
-            new AlertDialog.Builder(MapArea.this).setMessage(locationAddress).create().show();
+//            new AlertDialog.Builder(MapArea.this).setMessage(locationAddress).create().show();
 //            Toast.makeText(MapArea.this, getAddress+" ", Toast.LENGTH_LONG).show();
 
         }

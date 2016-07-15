@@ -139,7 +139,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-\
+
+        <activity android:name=".model.SearchArea"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <!-- ...................Bar Activity Area...................... -->
 
         <activity android:name=".roomservice.Bar"

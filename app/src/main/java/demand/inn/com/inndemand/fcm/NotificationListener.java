@@ -1,3 +1,4 @@
+/*
 package demand.inn.com.inndemand.fcm;
 
 import android.app.NotificationManager;
@@ -20,9 +21,11 @@ import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 
+*/
 /**
  * Created by Akash
- */
+ *//*
+
 //Class extending service as it is a service that will run in background
 public class NotificationListener extends Service {
 
@@ -88,4 +91,4 @@ public class NotificationListener extends Service {
         notificationManager.cancelAll();
         notificationManager.notify(1, builder.build());
     }
-}
+}*/

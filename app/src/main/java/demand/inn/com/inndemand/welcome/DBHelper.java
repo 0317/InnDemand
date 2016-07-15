@@ -53,13 +53,13 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertData(String name, String desc, String price)
+    public void insertData(CartData cartData)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NAME, name);
-        contentValues.put(COLUMN_DESC, desc);
-        contentValues.put(COLUMN_RUPEES, price);
+        contentValues.put(COLUMN_NAME, cartData.getName());
+        contentValues.put(COLUMN_DESC, cartData.getDesc());
+//        contentValues.put(COLUMN_RUPEES, rupees);
 
         // Inserting Row
         db.insert(TABLE_NAME, null, contentValues);
@@ -79,7 +79,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    public boolean updateData (Integer id, String name, String email, String price)
+    public boolean updateData(Integer id, String name, String email, String price)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -111,9 +111,9 @@ public class DBHelper extends SQLiteOpenHelper {
             do {
                 CartData data = new CartData();
 
-                data.setName(cursor.getString(0));
-                data.setDesc(cursor.getString(1));
-                data.setRupees(cursor.getString(2));
+                data.setName(cursor.getString(1));
+                data.setDesc(cursor.getString(2));
+//                data.setRupees(cursor.getString(2));
 
                 // Adding data to list
                 dataList.add(data);
@@ -122,4 +122,5 @@ public class DBHelper extends SQLiteOpenHelper {
 
             return dataList;
     }
+
 }

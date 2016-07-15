@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -59,6 +60,7 @@ import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.adapter.ViewPagerAdapter;
 import demand.inn.com.inndemand.cartarea.MyCart;
+import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.FragmentData;
 import demand.inn.com.inndemand.constants.Header;
@@ -68,6 +70,7 @@ import demand.inn.com.inndemand.fragmentarea.Dessert;
 import demand.inn.com.inndemand.fragmentarea.MainCourse;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.model.ResturantDataModel;
+import demand.inn.com.inndemand.model.SearchArea;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -114,6 +117,7 @@ public class Restaurant extends AppCompatActivity{
     String catName;
     String catType;
     String catStatus;
+    String type_id;
 
     private final Random mRandom = new Random();
 
@@ -153,7 +157,9 @@ public class Restaurant extends AppCompatActivity{
                 int id = item.getItemId();
                 //noinspection SimplifiableIfStatement
                 if (id == R.id.action_settings) {
-                    return true;
+                    Intent in = new Intent(Restaurant.this, SearchArea.class);
+                    startActivity(in);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }else if(id == R.id.action_cart){
 //                    Intent in = new Intent(Restaurant.this, MyCart.class);
 //                    startActivity(in);
@@ -269,6 +275,9 @@ public class Restaurant extends AppCompatActivity{
                 positions = tab.getPosition();
                 viewPager.setCurrentItem(tab.getPosition());
                 Log.d("Tab Position: ", String.valueOf(positions));
+                Intent in = new Intent("position-message");
+                in.putExtra("positionsof", type_id);
+                LocalBroadcastManager.getInstance(Restaurant.this).sendBroadcast(in);
             }
 
             @Override
@@ -285,8 +294,6 @@ public class Restaurant extends AppCompatActivity{
         //UI initialize
         cart_item = (TextView) findViewById(R.id.bottom_items);
         cart_total = (TextView) findViewById(R.id.bottom_total);
-
-//        db.insertData("Cheese chilly", "data", "200");
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message"));
 
@@ -350,8 +357,8 @@ public class Restaurant extends AppCompatActivity{
             String totalItems = intent.getStringExtra("totalItems");
             String itemName = intent.getStringExtra("itemName");
 
-            int vals = Integer.parseInt(totalCash);
-            int vas = Integer.parseInt(totalItems);
+            double vals = Double.parseDouble(totalCash);
+            double vas = Double.parseDouble(totalItems);
 
             prefs.setTotal_cash(totalCash);
             prefs.setTotal_items(totalItems);
@@ -360,16 +367,18 @@ public class Restaurant extends AppCompatActivity{
             String cart_val = cart_item.getText().toString();
 
             try {
-                int val = Integer.parseInt(vals+cart_value);
-                int va = Integer.parseInt(vas+cart_val);
 
-                String totCash = String.valueOf(val);
-                String totItem = String.valueOf(va);
+                double val = Double.parseDouble(totalCash); //+Double.parseDouble(cart_value);
+                double va = Double.parseDouble(totalItems); //+Double.parseDouble(cart_val);
 
-                cart_total.setText(totCash);
-                cart_item.setText(totItem);
+                Log.d("totalValue", "dataValue"+val);
+                Log.d("totalItem", "dataValue"+va);
 
-            }catch (Exception e)
+
+                cart_total.setText(Double.toString(val));
+                cart_item.setText(Double.toString(va));
+
+            }catch (NumberFormatException e)
             {
                 e.printStackTrace();
             }
@@ -474,15 +483,15 @@ public class Restaurant extends AppCompatActivity{
 
                         subCategory = object.getString("subcategory");
                         amount = object.getString("price");
-                        dataModel.setId(ids);
-                        dataModel.setName(itemName);
-                        dataModel.setCategory(category);
-                        dataModel.setDescription(itemDesc);
-                        dataModel.setFood(food);
-                        dataModel.setPrice(amount);
-                        dataModel.setSubcategory(subCategory);
-
-                        resturantDataModelList.add(dataModel);
+//                        dataModel.setId(ids);
+//                        dataModel.setName(itemName);
+//                        dataModel.setCategory(category);
+//                        dataModel.setDescription(itemDesc);
+//                        dataModel.setFood(food);
+//                        dataModel.setPrice(amount);
+//                        dataModel.setSubcategory(subCategory);
+//
+//                        resturantDataModelList.add(dataModel);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -503,7 +512,7 @@ public class Restaurant extends AppCompatActivity{
                 }
 */
 
-                adapter = new ViewPagerAdapter(getSupportFragmentManager());
+               /* adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
                 for (ResturantDataModel dataModel:resturantDataModelList){
 
@@ -520,7 +529,7 @@ public class Restaurant extends AppCompatActivity{
 
                     adapter.addFragment(appFrf, dataModel.getCategory());
 
-                }
+                }*/
 /*
                 adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -536,10 +545,10 @@ public class Restaurant extends AppCompatActivity{
 
                 }*/
 
-                adapter.notifyDataSetChanged();
+               /* adapter.notifyDataSetChanged();
                 viewPager.setAdapter(adapter);
 
-                tabLayout.setupWithViewPager(viewPager);
+                tabLayout.setupWithViewPager(viewPager);*/
 
             }
         }, new Response.ErrorListener() {
@@ -590,6 +599,7 @@ public class Restaurant extends AppCompatActivity{
             @Override
             public void onResponse(String response) {
                 hideProgressDialog();
+                resturantDataModelList = new ArrayList<>();
                 System.out.println("yohaha==category==success===" + response);
 
                 JSONArray array = null;
@@ -603,8 +613,9 @@ public class Restaurant extends AppCompatActivity{
                 for (int i = 0; i < array.length(); i++)
                     try {
                         JSONObject object = array.getJSONObject(i);
-
+                        dataModel = new ResturantDataModel(i);
                         //catName = Response (category names to show in tablayout)
+                        type_id = object.getString("id");
                         catName = object.getString("name");
 
                         //catType = Response 1/2/3 (1 = Bar, 2 = Restaurant, 3 = Spa)
@@ -614,12 +625,36 @@ public class Restaurant extends AppCompatActivity{
 //                        catStatus = object.getString("status");
                         Log.d("API", "API Category: " + catName);
 
+                        dataModel.setId(type_id);
+                        dataModel.setCategory(catName);
+//                        dataModel.setId(catType);
+                        resturantDataModelList.add(dataModel);
 //                        data = new FragmentData(catName);
 //                        tabList.add(data);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+                for (ResturantDataModel dataModel:resturantDataModelList){
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("category_id", dataModel.getCategory());
+                    bundle.putString("id_type",dataModel.getId());
+
+                    Fragment appFrf = new Appetizer();
+                    appFrf.setArguments(bundle);
+
+                    adapter.addFragment(appFrf, dataModel.getCategory());
+
+                }
+
+                 adapter.notifyDataSetChanged();
+                viewPager.setAdapter(adapter);
+
+                tabLayout.setupWithViewPager(viewPager);
             }
         }, new Response.ErrorListener() {
 

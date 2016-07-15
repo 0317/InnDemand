@@ -78,7 +78,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Price: Rs 1000/-"
+                    android:text=""
+                    android:id="@+id/cart_totalamount"
                     android:textSize="@dimen/forteen_sp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
@@ -91,7 +92,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Items: 4"
+                    android:text=""
+                    android:id="@+id/cart_totalitems"
                     android:layout_alignParentRight="true"
                     android:textSize="@dimen/forteen_sp"
                     android:layout_marginRight="15dp"

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -24,6 +26,7 @@ import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Header;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.roomservice.Restaurant;
+import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.welcome.DBHelper;
 
@@ -56,9 +59,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     DBHelper db;
     private static MyClickListener myClickListener;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, subtitle, rupees, count, details;
         public ImageView plus, minus;
+        private LinearLayout item_click;
 
 
         public MyViewHolder(View view) {
@@ -70,17 +74,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
             count = (TextView) view.findViewById(R.id.restaurant_counts);
             plus = (ImageView) view.findViewById(R.id.restaurant_plus);
             minus = (ImageView) view.findViewById(R.id.restaurant_minus);
-            view.setOnClickListener(this);
+            item_click = (LinearLayout) view.findViewById(R.id.item_click);
+
         }
 
-        @Override
-        public void onClick(View v) {
-            myClickListener.onItemClick(getPosition(), v);
-        }
-    }
-
-    public void setOnItemClickListener(MyClickListener myClickListener) {
-        this.myClickListener = myClickListener;
     }
 
     public RestaurantAdapter(Context mContext, List<ResturantDataModel> cartData, List<ResturantDataModel> itemprice) {
@@ -106,6 +103,16 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         holder.subtitle.setText(data.getName() + " ");
         holder.rupees.setText(data.getPrice());
         holder.details.setText(data.getDescription());
+        holder.item_click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(mContext, Feedback.class);
+                in.putExtra("itemname", cartData.get(position).getName());
+                in.putExtra("itemdesc", cartData.get(position).getDescription());
+                in.putExtra("itemprice", cartData.get(position).getPrice());
+                mContext.startActivity(in);
+            }
+        });
 
         LocalBroadcastManager.getInstance(mContext).registerReceiver(mMessageReceiver, new IntentFilter("data-message"));
 
@@ -118,7 +125,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         else
             holder.subtitle.setTextColor(Color.parseColor("#006600"));
 
-        db.insertData(data.getName(), data.getDescription(), data.getPrice());
+//        db.insertData(data.getName(), data.getDescription(), data.getPrice());
 
        /* holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,7 +235,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                     data.setUserqty(data.getUserqty() - 1);// decrementing item quantity by 1
 
                     String titleValue = title.getText().toString();
-                    totalTextView.setText(String.valueOf(data.getUserqty()));
+//                    totalTextView.setText(String.valueOf(data.getUserqty()));
+                    SharedPreferences settings = mContext.getSharedPreferences("LIST_VALUE", Context.MODE_PRIVATE);
+                    String quantityValue = settings.getString("quantity", "");
+                    totalTextView.setText(quantityValue);
                     for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
                         data = itemprice.get(temp1);
                     {
@@ -240,6 +250,11 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                         bundle.putString("selectcash", String.valueOf(finalamount));
                         String value = String.valueOf(data.getProductsaleprice());
                         String quantity = String.valueOf(data.getUserqty());
+                        //To save
+                        SharedPreferences settingss = mContext.getSharedPreferences("LIST_VALUE", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settingss.edit();
+                        editor.putString("quantity",quantity);
+                        editor.commit();
                         Intent in = new Intent("custom-message");
                         in.putExtra("totalCash", value);
                         in.putExtra("totalItems", quantity);

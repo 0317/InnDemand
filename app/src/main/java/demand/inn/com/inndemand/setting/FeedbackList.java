@@ -19,8 +19,8 @@ public class FeedbackList extends AppCompatActivity {
     Toolbar toolbar;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.feedbacklist);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -132,6 +132,7 @@ public class HotelDetails extends AppCompatActivity {
     private List<HotelData> hotelData;
     private List<ListData> restaurantData;
     private List<BarlistData> barData;
+    HotelData a;
 
     //Timings Call
     String fm_bar;
@@ -301,7 +302,7 @@ public class HotelDetails extends AppCompatActivity {
         //UI initialize
         hotel_Name = (TextView) findViewById(R.id.hotel_Name);
         hotel_Address = (TextView) findViewById(R.id.hotel_Address);
-        call_hotel = (TextView) findViewById(R.id.call_hotel);
+//        call_hotel = (TextView) findViewById(R.id.call_hotel);
 
         //variable to get Hotel contact number
         callHotel = "";
@@ -463,6 +464,45 @@ public class HotelDetails extends AppCompatActivity {
 //        dialog.show();
     }
 
+    public void callHotel(View view){
+        int counter = 0;
+        Log.d("Click call", "count"+counter++);
+        new AlertDialog.Builder(HotelDetails.this).setMessage("You want to call")
+                .setPositiveButton("Call", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (!marshMallowPermission.checkPermissionForCall()) {
+                            marshMallowPermission.requestPermissionForCall();
+                        } else {
+//
+                            try {
+                                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                                callIntent.setData(Uri.parse("+919729305557"));
+                                if (ActivityCompat.checkSelfPermission(HotelDetails.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                    // TODO: Consider calling
+                                    //    ActivityCompat#requestPermissions
+                                    // here to request the missing permissions, and then overriding
+                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                    //                                          int[] grantResults)
+                                    // to handle the case where the user grants the permission. See the documentation
+                                    // for ActivityCompat#requestPermissions for more details.
+                                    return;
+                                }
+                                startActivity(callIntent);
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                }).create().show();
+    }
+
     public void direction(View view) {
         Intent in = new Intent(HotelDetails.this, MapArea.class);
         in.putExtra("latitude", prefs.getHotel_latitude());
@@ -598,13 +638,13 @@ public class HotelDetails extends AppCompatActivity {
                     Log.d("Image", restaurant_image);
                     Log.d("COntact", number);
 
-                    call_hotel.setOnClickListener(new View.OnClickListener() {
+                   /* call_hotel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             getFromCall();
 
                         }
-                    });
+                    });*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -635,32 +675,6 @@ public class HotelDetails extends AppCompatActivity {
         };
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
-    }
-
-    //CALL permissions Area
-    public void getFromCall() {
-        if (!marshMallowPermission.checkPermissionForCall()) {
-            marshMallowPermission.requestPermissionForCall();
-        } else {
-//
-            try {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("+919729305557"));
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                startActivity(callIntent);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
     }
 
 //    Method to get response for Miscellaneous values in the hotel
@@ -703,7 +717,9 @@ public class HotelDetails extends AppCompatActivity {
                             String info_id = object.getString("id");
                             String info_hotel = object.getString("hotel");
                             String info_screen_key = object.getString("screen_key");
-                            HotelData a = new HotelData(info_title, info_value, info_screen_key);
+
+
+                            a = new HotelData(info_title, info_value, info_screen_key);
                             hotelData.add(a);
 
 //                            if(info_screen_key.contains("main") && !info_title.contains("Note")) {

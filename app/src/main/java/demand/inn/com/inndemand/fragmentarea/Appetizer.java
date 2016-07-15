@@ -5,9 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -47,6 +50,7 @@ import java.util.List;
 import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
+import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.model.RecyclerItemClickListener;
 import demand.inn.com.inndemand.model.ResturantDataModel;
@@ -55,6 +59,7 @@ import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
+import demand.inn.com.inndemand.welcome.DBHelper;
 
 /**
  * Created by akash
@@ -86,6 +91,8 @@ public class Appetizer extends Fragment {
     private List<ResturantDataModel> cardList;
     OnItemCLick onCLick;
 
+    ResturantDataModel dataModel;
+
     //Loading call area
     ProgressDialog dialog;
 
@@ -93,6 +100,7 @@ public class Appetizer extends Fragment {
     public String idCat, subCat, names, desc, price, foods;
 
     ResturantDataModel resturantDataModel;
+    DBHelper db;
 
     private List<String > list = new ArrayList<>();
 
@@ -102,6 +110,7 @@ public class Appetizer extends Fragment {
         view = inflater.inflate(R.layout.appetizer, container, false);
         nu = new NetworkUtility(getActivity());
         prefs = new AppPreferences(getActivity());
+        db = new DBHelper(getActivity());
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
 
@@ -109,12 +118,14 @@ public class Appetizer extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
-        idCat = getArguments().getString("category_id");
-        subCat = getArguments().getString("subCategory");
-        names  = getArguments().getString("name");
-        desc = getArguments().getString("desc");
-        price = getArguments().getString("price");
-        foods = getArguments().getString("food");
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter("position-message"));
+
+        idCat = getArguments().getString("id_type");
+//        subCat = getArguments().getString("subCategory");
+//        names  = getArguments().getString("name");
+//        desc = getArguments().getString("desc");
+//        price = getArguments().getString("price");
+//        foods = getArguments().getString("food");
 
         Log.d("names", "name"+subCat);
         Log.d("names", "cat"+names);
@@ -130,12 +141,12 @@ public class Appetizer extends Fragment {
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        a = new ResturantDataModel(subCat, names, desc, price, foods);
-        cardList.add(a);
+//        a = new ResturantDataModel(subCat, names, desc, price, foods);
+//        cardList.add(a);
 
         adapter.notifyDataSetChanged();
 
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+       /* recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Log.i("TAG", " Clicked on Item " + position);
@@ -147,7 +158,7 @@ public class Appetizer extends Fragment {
                 in.putExtra("itemprice", cardList.get(position).getPrice());
                 startActivity(in);
             }
-        }));
+        }));*/
 
         if (nu.isConnectingToInternet()) {
             if (prefs.getFm_restaurant() == true) {
@@ -160,11 +171,13 @@ public class Appetizer extends Fragment {
                         }).create().show();
             } else {
                 //mehtod to send Restaurant ID to server & to get response.
-                callMethod();
+//                callMethod();
             }
         } else {
 
         }
+
+        db.insertData(new CartData("Cheese chilly", "260", ""));
 
         return view;
     }
@@ -173,24 +186,19 @@ public class Appetizer extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
-            String data = intent.getStringExtra("bundle");
+            String dataPositions = intent.getStringExtra("positionsof");
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("category_id", idCat);
+                obj.put("restaurant_id", prefs.getRestaurant_Id());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d("Check CategoryType", obj.toString());
 
+            postJsonData(Config.innDemand+"restaurant_items/details/", obj.toString());
         }
     };
-
-
-    public void callMethod(){
-        dialog = new ProgressDialog(getActivity());
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("category_id", idCat);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("Check API Data", obj.toString());
-
-        postJsonData(Config.innDemand+"", obj.toString());
-    }
 
     public void postJsonData(String url, String userData) {
 
@@ -226,6 +234,7 @@ public class Appetizer extends Fragment {
                 for (int i = 0; i < array.length(); i++) {
                     try {
                         JSONObject object = array.getJSONObject(i);
+                        dataModel = new ResturantDataModel(i);
                         Log.d("API", "API Daa"+array);
                         Log.d("API", "API ID"+id);
                         itemName = object.getString("name");
@@ -237,7 +246,8 @@ public class Appetizer extends Fragment {
                         subCategory = object.getString("subcategory");
                         amount = object.getString("price");
 
-                            a = new ResturantDataModel(subCat, names, desc, price, foods);
+                            cardList.clear();
+                            a = new ResturantDataModel(subCategory, itemName, itemDesc, amount, food);
                             cardList.add(a);
 
                             adapter.notifyDataSetChanged();

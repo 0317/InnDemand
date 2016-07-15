@@ -25,6 +25,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -90,6 +91,7 @@ public class MyCart extends AppCompatActivity {
     LinearLayout write_comment, enterPromo, confirm_demand_click_cart;
     RecyclerView list;
     TextView cart_item, cart_total;
+    TextView cart_totalitems, cart_totalamount;
     EditText comment_area;
     TextView now, pickTime;
     CoordinatorLayout coordinatorLayout;
@@ -143,6 +145,8 @@ public class MyCart extends AppCompatActivity {
         //UI initialize
         cart_item = (TextView) findViewById(R.id.cart_items);
         cart_total = (TextView) findViewById(R.id.cart_total);
+        cart_totalitems = (TextView) findViewById(R.id.cart_totalitems);
+        cart_totalamount  =(TextView) findViewById(R.id.cart_totalamount);
 
         //TextView UI Initialize area
         now = (TextView) findViewById(R.id.now_cart);
@@ -190,27 +194,43 @@ public class MyCart extends AppCompatActivity {
         getDate = date.format(c.getTime());
         // formattedDate have current date/time
 
-        Bundle extras = getIntent().getExtras();
+       /* Bundle extras = getIntent().getExtras();
         if(extras != null) {
             int Value = extras.getInt("id");
 
             if(Value>0) {
                 Cursor cursor = db.getData(Value);
-                m_here = Value;
+//                m_here = Value;
                 cursor.moveToFirst();
 
                 String itemHead = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_NAME));
                 String itemDesc = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_DESC));
                 String itemPrice = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RUPEES));
 
+                Log.d("DbFetchHead", "DB"+itemHead);
+                Log.d("DbFetchDesc", "DB"+itemDesc);
+
                 if(!cursor.isClosed()){
                     cursor.close();
                 }
 
-                CartData a = new CartData(itemHead,itemDesc, "Rs: "+itemPrice);
+                CartData a = new CartData("Gobbi Chilly","", "");
                 cardList.add(a);
             }
-        }
+        }*/
+
+          List<CartData> datas = db.getAllData();
+
+            Log.d("DbFetchDesc", "DB"+datas);
+
+                for(CartData card : datas){
+                    cardList.clear();
+                    CartData a = new CartData(card.getName(), card.getDesc(), "");
+                    cardList.add(a);
+                }
+
+        cart_totalamount.setText("Total Price: Rs "+""+"/-");
+        cart_totalitems.setText("Total Items: ");
 
         now.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -412,10 +432,21 @@ public class MyCart extends AppCompatActivity {
     }
 
     public void proceed(View view){
-        Intent in = new Intent(MyCart.this, Thankyou.class);
-        startActivity(in);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        finish();
+        new AlertDialog.Builder(this).setMessage("Select payment options")
+                .setPositiveButton("Pay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent in = new Intent(MyCart.this, Thankyou.class);
+                        startActivity(in);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                }).create().show();
     }
 
     //Pop-up messages to show data loading.

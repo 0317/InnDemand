@@ -56,7 +56,7 @@ public class HotelAdapter extends  RecyclerView.Adapter<HotelAdapter.MyViewHolde
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         HotelData data = hotelData.get(position);
-        if(data.getScreen_key() == "main" || data.getScreen_key().equalsIgnoreCase("main")) {
+//        if(data.getScreen_key() == "main" || data.getScreen_key().equalsIgnoreCase("main")) {
             holder.title.setText(data.getTitle());
             if (data.getDesc().contains("-")) {
 
@@ -79,13 +79,13 @@ public class HotelAdapter extends  RecyclerView.Adapter<HotelAdapter.MyViewHolde
             } else {
                 holder.desc.setText(data.getDesc());
             }
-        }else if(data.getScreen_key() == "laundry" || data.getScreen_key().equalsIgnoreCase("laundry")){
+       /* }else if(data.getScreen_key() == "laundry" || data.getScreen_key().equalsIgnoreCase("laundry")){
 
         }else if(data.getScreen_key() == "cab" || data.getScreen_key().equalsIgnoreCase("cab")){
         }else{
-            holder.title.setVisibility(View.GONE);
-            holder.desc.setVisibility(View.GONE);
-        }
+//            holder.title.setVisibility(View.GONE);
+//            holder.desc.setVisibility(View.GONE);
+        }*/
 
 
     }

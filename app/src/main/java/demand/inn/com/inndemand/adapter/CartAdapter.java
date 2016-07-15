@@ -60,7 +60,7 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.MyViewHolder>
     public void onBindViewHolder(MyViewHolder holder, int position) {
         CartData data = cartData.get(position);
         holder.subtitle.setText(data.getName());
-        holder.rupees.setText(data.getRupees());
+        holder.rupees.setText(data.getDesc());
 
 //        if(data.getName() == null || data.getName().equalsIgnoreCase("")){
 //            holder.gray_back.setVisibility(View.GONE);

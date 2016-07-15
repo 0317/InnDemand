@@ -34,7 +34,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-import com.firebase.client.Firebase;
+//import com.firebase.client.Firebase;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -59,7 +59,7 @@ import java.util.Map;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.CircleTransform;
 import demand.inn.com.inndemand.constants.Config;
-import demand.inn.com.inndemand.fcm.NotificationListener;
+//import demand.inn.com.inndemand.fcm.NotificationListener;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -390,15 +390,15 @@ public class CheckDetails extends AppCompatActivity {
         return sharedPreferences.getBoolean(Config.REGISTERED, false);
     }
 
-    private void registerDevice() {
+   /* private void registerDevice() {
         //Creating a firebase object
 
         tokenss =  FirebaseInstanceId.getInstance().getToken();
         prefs.setRefreshToken(tokenss);
-        Firebase firebase = new Firebase(Config.FIREBASE_APP);
+//        Firebase firebase = new Firebase(Config.FIREBASE_APP);
 
         //Pushing a new element to firebase it will automatically create a unique id
-        Firebase newFirebase = firebase.push();
+//        Firebase newFirebase = firebase.push();
 
         //Creating a map to store name value pair
         Map<String, String> val = new HashMap<>();
@@ -407,10 +407,10 @@ public class CheckDetails extends AppCompatActivity {
         val.put("msg", "none");
 
         //saving the map to firebase
-        newFirebase.setValue(val);
+//        newFirebase.setValue(val);
 
         //Getting the unique id generated at firebase
-        String uniqueId = newFirebase.getKey();
+//        String uniqueId = newFirebase.getKey();
 
         Log.d("FCM Unique ID", tokenss);
 
@@ -481,7 +481,7 @@ public class CheckDetails extends AppCompatActivity {
         //Adding the request to the queue
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(req);
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

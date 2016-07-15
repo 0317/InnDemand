@@ -39,7 +39,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/item_click">
 
         <TextView
             android:layout_width="wrap_content"
@@ -95,8 +96,8 @@
                     android:layout_gravity="bottom">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@mipmap/ic_subtract"
                         android:id="@+id/restaurant_minus"/>
 
@@ -105,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textSize="@dimen/forteen_sp"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:id="@+id/restaurant_counts"
@@ -113,8 +114,8 @@
                         android:textStyle="bold"/>
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@mipmap/ic_plus"
                         android:id="@+id/restaurant_plus"/>
 

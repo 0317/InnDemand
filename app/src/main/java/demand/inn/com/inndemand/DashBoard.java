@@ -930,8 +930,6 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
                         prefs.setSave_data(info_value);
 
-                        HotelData a = new HotelData(info_title, info_value);
-                        hotelData.add(a);
 
                         adapter.notifyDataSetChanged();
 
