@@ -9,16 +9,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/round_white"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="60dp"
                 android:layout_height="50dp"
+                android:gravity="center"
                 android:id="@+id/search_back">
 
             <ImageView
@@ -48,6 +46,12 @@
                 android:layout_marginBottom="5dp"></View>
 
         </LinearLayout>
+
+        <!-- List View -->
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

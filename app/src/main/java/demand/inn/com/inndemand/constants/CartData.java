@@ -6,7 +6,10 @@ package demand.inn.com.inndemand.constants;
 public class CartData {
 
     private String name, desc, rupees;
+    String price;
     private int count;
+
+    int userqty, productsaleprice;
 
     public CartData() {
     }
@@ -15,6 +18,30 @@ public class CartData {
         this.name = name;
         this.desc = desc;
         this.rupees = rupees;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public int getUserqty() {
+        return userqty;
+    }
+
+    public void setUserqty(int userqty) {
+        this.userqty = userqty;
+    }
+
+    public int getProductsaleprice() {
+        return productsaleprice;
+    }
+
+    public void setProductsaleprice(int productsaleprice) {
+        this.productsaleprice = productsaleprice;
     }
 
     public String getName() {

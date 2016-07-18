@@ -225,12 +225,12 @@ public class MyCart extends AppCompatActivity {
 
                 for(CartData card : datas){
                     cardList.clear();
-                    CartData a = new CartData(card.getName(), card.getDesc(), "");
+                    CartData a = new CartData(card.getName(), "", "");
                     cardList.add(a);
-                }
 
-        cart_totalamount.setText("Total Price: Rs "+""+"/-");
-        cart_totalitems.setText("Total Items: ");
+                    cart_totalamount.setText("Total Price: Rs "+card.getDesc()+"/-");
+                    cart_totalitems.setText("Total Items: ");
+                }
 
         now.setOnClickListener(new View.OnClickListener() {
             @Override

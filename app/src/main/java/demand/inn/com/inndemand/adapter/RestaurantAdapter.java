@@ -11,6 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,9 @@ import demand.inn.com.inndemand.welcome.DBHelper;
  * Created by akash
  */
 
-public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.MyViewHolder>  {
+public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.MyViewHolder> {
+
+    private SparseBooleanArray selectedItems;
 
     private List<ResturantDataModel> cartData;
     private List<ResturantDataModel> itemprice;
@@ -53,11 +56,46 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
+    // Start with first item selected
+    private int selectedItem = 0;
+
     Header header;
 
     //DATABASE
     DBHelper db;
     private static MyClickListener myClickListener;
+
+    @Override
+    public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        // Handle key up and key down and attempt to move selection
+        recyclerView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                RecyclerView.LayoutManager lm = recyclerView.getLayoutManager();
+
+                // Return false if scrolled to the bounds and allow focus to move off the list
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                        return tryMoveSelection(lm, 1);
+                    } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+                        return tryMoveSelection(lm, -1);
+                    }
+                }
+
+                return false;
+            }
+        });
+    }
+
+    private boolean tryMoveSelection(RecyclerView.LayoutManager lm, int direction) {
+        int nextSelectItem = selectedItem + direction;
+
+        // If still within valid bounds, move the selection, notify to redraw, and scroll
+
+        return false;
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, subtitle, rupees, count, details;
@@ -76,6 +114,15 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
             minus = (ImageView) view.findViewById(R.id.restaurant_minus);
             item_click = (LinearLayout) view.findViewById(R.id.item_click);
 
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Redraw the old selection and the new
+                    notifyItemChanged(selectedItem);
+                    selectedItem = getLayoutPosition();
+                    notifyItemChanged(selectedItem);
+                }
+            });
         }
 
     }
@@ -209,6 +256,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                         Log.d("Broadcast", "check"+dataItem);
                         Intent in = new Intent("custom-message");
                         in.putExtra("totalCash", value);
+                        in.putExtra("selectedItem", cartData.get(position).getName());
                         in.putExtra("totalItems", quantity);
                         LocalBroadcastManager.getInstance(mContext).sendBroadcast(in);
 
@@ -257,6 +305,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                         editor.commit();
                         Intent in = new Intent("custom-message");
                         in.putExtra("totalCash", value);
+                        in.putExtra("selectedItem", cartData.get(position).getName());
                         in.putExtra("totalItems", quantity);
                         in.putExtra("itemName", titleValue);
                         LocalBroadcastManager.getInstance(mContext).sendBroadcast(in);

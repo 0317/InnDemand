@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,6 +102,9 @@ public class MapArea extends FragmentActivity implements OnMapReadyCallback, Dir
 
         String lati = getIntent().getStringExtra("latitude");
         String longi = getIntent().getStringExtra("longitude");
+
+        Log.d("latiPosition", "pos"+lati);
+        Log.d("longiPosition", "pos"+longi);
 
         double dLatitude = Double.parseDouble(lati);
         double dLongitude = Double.parseDouble(longi);

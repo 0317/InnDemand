@@ -110,6 +110,7 @@ public class HotelDetails extends AppCompatActivity {
     //UI Call
     Button checkout;
     TextView hotel_Name, hotel_Address, hotel_desc, call_hotel;
+    LinearLayout call_click;
     ImageLoader imageLoader;
     NetworkImageView imageView;
     ImageView main_backdrop;
@@ -280,7 +281,6 @@ public class HotelDetails extends AppCompatActivity {
         bar_area.setVisibility(View.GONE);
         spa_area.setVisibility(View.GONE);
 
-
         main_backdrop = (ImageView) findViewById(R.id.main_backdrop);
         // If you are using normal ImageView
         imageLoader.get(URL, new ImageLoader.ImageListener() {
@@ -302,7 +302,47 @@ public class HotelDetails extends AppCompatActivity {
         //UI initialize
         hotel_Name = (TextView) findViewById(R.id.hotel_Name);
         hotel_Address = (TextView) findViewById(R.id.hotel_Address);
-//        call_hotel = (TextView) findViewById(R.id.call_hotel);
+        call_hotel = (TextView) findViewById(R.id.call_hotel);
+
+        call_hotel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(HotelDetails.this).setMessage("You want to call")
+                        .setPositiveButton("Call", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (!marshMallowPermission.checkPermissionForCall()) {
+                                    marshMallowPermission.requestPermissionForCall();
+                                } else {
+//
+                                    try {
+                                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                                        callIntent.setData(Uri.parse("+919729305557"));
+                                        if (ActivityCompat.checkSelfPermission(HotelDetails.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                            // TODO: Consider calling
+                                            //    ActivityCompat#requestPermissions
+                                            // here to request the missing permissions, and then overriding
+                                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                            //                                          int[] grantResults)
+                                            // to handle the case where the user grants the permission. See the documentation
+                                            // for ActivityCompat#requestPermissions for more details.
+                                            return;
+                                        }
+                                        startActivity(callIntent);
+                                    }catch(Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        }).create().show();
+            }
+        });
 
         //variable to get Hotel contact number
         callHotel = "";
@@ -631,8 +671,8 @@ public class HotelDetails extends AppCompatActivity {
                     prefs.setHotel_longitude(longitude);
 
 
-                    Log.d("lati", latitude);
-                    Log.d("longi", longitude);
+                    Log.d("latiPos", prefs.getHotel_longitude());
+                    Log.d("longiPos", prefs.getHotel_latitude());
                     Log.d("Name_", hotelName);
                     Log.d("Address_", address);
                     Log.d("Image", restaurant_image);

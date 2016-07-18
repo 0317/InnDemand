@@ -3,10 +3,14 @@ package demand.inn.com.inndemand.model;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -46,6 +50,9 @@ public class SearchArea extends AppCompatActivity {
     //UI
     EditText searchArea;
     LinearLayout search_back;
+    ListView list;
+
+    ArrayAdapter<String> adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,7 @@ public class SearchArea extends AppCompatActivity {
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+        list = (ListView) findViewById(R.id.list_view);
         searchArea = (EditText) findViewById(R.id.search_area);
         search_back = (LinearLayout) findViewById(R.id.search_back);
         search_back.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +71,37 @@ public class SearchArea extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
+
+        String products[] = {"Gobbi Chilly", "Butter naan", "Towel", "Soap", "Glass",
+                "Soda", "Water", "Shahi panner", "Kadai paneer", "Noodles", "Fried Rice", "Plain Rice", "Thai Masala",
+                "Indian Thali", "Pizza", "Cheese burger", "Chicken burger"};
+
+        adapter = new ArrayAdapter<String>(this, R.layout.searchlist, R.id.product_name, products);
+        list.setAdapter(adapter);
+        /**
+         * Enabling Search Filter
+         * */
+        searchArea.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                SearchArea.this.adapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
     }
 
     public void getData(){

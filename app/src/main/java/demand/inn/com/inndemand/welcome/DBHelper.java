@@ -1,4 +1,4 @@
-    package demand.inn.com.inndemand.welcome;
+package demand.inn.com.inndemand.welcome;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import demand.inn.com.inndemand.constants.CartData;
-import demand.inn.com.inndemand.constants.FragmentData;
 
 /**
  * Created by akash
@@ -21,7 +20,7 @@ import demand.inn.com.inndemand.constants.FragmentData;
 public class DBHelper extends SQLiteOpenHelper {
 
     // If change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Inndemand.db";
     public static final String TABLE_NAME = "inndemand";
     public static final String COLUMN_ID = "id";
@@ -59,7 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, cartData.getName());
         contentValues.put(COLUMN_DESC, cartData.getDesc());
-//        contentValues.put(COLUMN_RUPEES, rupees);
+//        contentValues.put(COLUMN_RUPEES, cartData.getRupees());
 
         // Inserting Row
         db.insert(TABLE_NAME, null, contentValues);
@@ -113,7 +112,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 data.setName(cursor.getString(1));
                 data.setDesc(cursor.getString(2));
-//                data.setRupees(cursor.getString(2));
+//                data.setRupees(cursor.getString(3));
 
                 // Adding data to list
                 dataList.add(data);

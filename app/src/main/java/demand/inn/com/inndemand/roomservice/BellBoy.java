@@ -66,7 +66,6 @@ public class BellBoy extends AppCompatActivity {
     SimpleDateFormat df;
     String formattedDate;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bellboy);

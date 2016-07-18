@@ -119,6 +119,10 @@ public class Restaurant extends AppCompatActivity{
     String catStatus;
     String type_id;
 
+    String totalCash;
+    String totalItems;
+    String broaditemName;
+
     private final Random mRandom = new Random();
 
     List<FragmentData> tabList;
@@ -353,9 +357,12 @@ public class Restaurant extends AppCompatActivity{
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
-            String totalCash = intent.getStringExtra("totalCash");
-            String totalItems = intent.getStringExtra("totalItems");
-            String itemName = intent.getStringExtra("itemName");
+            totalCash = intent.getStringExtra("totalCash");
+            totalItems = intent.getStringExtra("totalItems");
+            broaditemName = intent.getStringExtra("selectedItem");
+
+            int cash = Integer.parseInt(totalCash);
+            int item = Integer.parseInt(totalItems);
 
             double vals = Double.parseDouble(totalCash);
             double vas = Double.parseDouble(totalItems);
@@ -366,13 +373,18 @@ public class Restaurant extends AppCompatActivity{
             String cart_value = cart_total.getText().toString();
             String cart_val = cart_item.getText().toString();
 
+//            int cart_cash = Integer.parseInt(cart_value);
+//            int cart_item = Integer.parseInt(totalItems);
+
             try {
 
                 double val = Double.parseDouble(totalCash); //+Double.parseDouble(cart_value);
                 double va = Double.parseDouble(totalItems); //+Double.parseDouble(cart_val);
 
-                Log.d("totalValue", "dataValue"+val);
-                Log.d("totalItem", "dataValue"+va);
+                Log.d("totalValue", "dataValue: "+val);
+                Log.d("totalItem", "dataValue: "+va);
+
+                Log.d("SelectedItem", "dataValue: "+broaditemName);
 
 
                 cart_total.setText(Double.toString(val));
@@ -392,6 +404,7 @@ public class Restaurant extends AppCompatActivity{
     };
 
     public void addCart(View view){
+        db.insertData(new CartData(broaditemName, totalCash, totalItems));
         new AlertDialog.Builder(Restaurant.this).setMessage("Your Food is added to cart")
                 .setPositiveButton(R.string.viewcart, new DialogInterface.OnClickListener() {
                     @Override

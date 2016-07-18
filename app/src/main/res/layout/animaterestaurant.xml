@@ -143,7 +143,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:text="0"
                 android:layout_marginLeft="2dp"
                 android:textSize="@dimen/forteen_sp"
                 android:id="@+id/bottom_items"
@@ -170,7 +170,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:text="0"
                     android:layout_marginLeft="2dp"
                     android:textSize="@dimen/forteen_sp"
                     android:id="@+id/bottom_total"

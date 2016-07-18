@@ -177,8 +177,6 @@ public class Appetizer extends Fragment {
 
         }
 
-        db.insertData(new CartData("Cheese chilly", "260", ""));
-
         return view;
     }
 
