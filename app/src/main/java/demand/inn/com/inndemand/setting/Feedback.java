@@ -62,7 +62,7 @@ public class Feedback extends AppCompatActivity {
 
     //UI
     Toolbar toolbar;
-    TextView name, desc, price;
+    TextView name, desc, price, product_rating;
     Button submit;
     Button rating_one, rating_two, rating_three, rating_four, rating_five;
     EditText feedback;
@@ -75,7 +75,7 @@ public class Feedback extends AppCompatActivity {
     FeedbackData data;
 
     //Other variables
-    String itemName, itemDesc, itemPrice;
+    String itemName, itemDesc, itemPrice, itemRating;
 
 
     @Override
@@ -88,6 +88,7 @@ public class Feedback extends AppCompatActivity {
         itemName = getIntent().getStringExtra("itemname");
         itemDesc = getIntent().getStringExtra("itemdesc");
         itemPrice = getIntent().getStringExtra("itemprice");
+        itemRating = getIntent().getStringExtra("itemrating");
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(itemName);
@@ -105,6 +106,7 @@ public class Feedback extends AppCompatActivity {
         //UI Initialize
         name = (TextView) findViewById(R.id.product_title);
         desc = (TextView) findViewById(R.id.product_desc);
+        product_rating = (TextView) findViewById(R.id.product_rating);
 //        price = (TextView) findViewById(R.id.product_price);
 
         rating_one = (Button) findViewById(R.id.rating_one);
@@ -117,6 +119,7 @@ public class Feedback extends AppCompatActivity {
 
         name.setText(itemName);
         desc.setText(itemDesc);
+        product_rating.setText(itemRating);
 //        price.setText(itemPrice);
 
 //        ListItems in RecyclerView

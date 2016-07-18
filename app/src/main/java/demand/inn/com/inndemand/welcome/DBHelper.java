@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import demand.inn.com.inndemand.constants.CartData;
+import demand.inn.com.inndemand.model.ResturantDataModel;
 
 /**
  * Created by akash
@@ -58,6 +59,19 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, cartData.getName());
         contentValues.put(COLUMN_DESC, cartData.getDesc());
+//        contentValues.put(COLUMN_RUPEES, cartData.getRupees());
+
+        // Inserting Row
+        db.insert(TABLE_NAME, null, contentValues);
+
+        db.close(); // Closing database connection
+    }
+
+    public void feedData(ResturantDataModel model){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NAME, model.getName());
+        contentValues.put(COLUMN_DESC, model.getDescription());
 //        contentValues.put(COLUMN_RUPEES, cartData.getRupees());
 
         // Inserting Row
@@ -120,6 +134,33 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
             return dataList;
+    }
+
+    public List<ResturantDataModel> getAllDatas(){
+        List<ResturantDataModel> dataList = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ResturantDataModel data = new ResturantDataModel();
+
+                data.setName(cursor.getString(1));
+                data.setDescription(cursor.getString(2));
+//                data.setRupees(cursor.getString(3));
+
+                // Adding data to list
+                dataList.add(data);
+            } while (cursor.moveToNext());
+        }
+
+        return dataList;
     }
 
 }

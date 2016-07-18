@@ -18,12 +18,14 @@ public class ResturantDataModel {
 //    amount = object.getString("price");
 
     String id;
+    String title;
     String name;
     String description;
     String category;
     String food;
     String subcategory;
     String price;
+    String rating;
 
     int userqty, productsaleprice;
 
@@ -31,16 +33,22 @@ public class ResturantDataModel {
 
     }
 
+    public ResturantDataModel(String title, String name){
+        this.title = title;
+        this.name = name;
+    }
+
     public ResturantDataModel(int i){
 
     }
 
-    public ResturantDataModel(String title, String name, String details, String rupees, String food) {
-        this.name = title;
+    public ResturantDataModel(String title, String name, String details, String rupees, String food, String rating) {
+        this.title = title;
         this.name = name;
         this.description = details;
         this.price = rupees;
         this.food = food;
+        this.rating = rating;
     }
 
     public String getId() {
@@ -57,6 +65,22 @@ public class ResturantDataModel {
 
     public void setProductsaleprice(int productsaleprice) {
         this.productsaleprice = productsaleprice;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
     public int getUserqty() {

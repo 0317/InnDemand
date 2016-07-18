@@ -157,6 +157,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                 in.putExtra("itemname", cartData.get(position).getName());
                 in.putExtra("itemdesc", cartData.get(position).getDescription());
                 in.putExtra("itemprice", cartData.get(position).getPrice());
+                in.putExtra("itemrating", cartData.get(position).getRating());
                 mContext.startActivity(in);
             }
         });

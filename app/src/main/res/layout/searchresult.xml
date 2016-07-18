@@ -19,7 +19,7 @@
         <TextView android:id="@+id/scomma" android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:layout_below="@id/saddress"
             android:layout_toRightOf="@id/scity" style="@android:style/TextAppearance.Small"
-            android:paddingRight="2sp" android:text=","/>
+            android:paddingRight="2sp" android:text=""/>
         <TextView android:id="@+id/sstate" android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:layout_below="@id/saddress"
             android:layout_toRightOf="@id/scomma" style="@android:style/TextAppearance.Small"

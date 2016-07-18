@@ -250,9 +250,13 @@ public class Appetizer extends Fragment {
                         food = object.getString("food");
                         subCategory = object.getString("subcategory");
                         amount = object.getString("price");
+                        JSONObject ob = object.getJSONObject("average");
+                        String average = ob.getString("feedback_points__avg");
+
+//                            db.feedData(new ResturantDataModel(subCategory, itemName));
 
                             cardList.clear();
-                            a = new ResturantDataModel(subCategory, itemName, itemDesc, amount, food);
+                            a = new ResturantDataModel(subCategory, itemName, itemDesc, amount, food, average);
                             cardList.add(a);
 
                             adapter.notifyDataSetChanged();

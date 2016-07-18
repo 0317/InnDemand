@@ -61,7 +61,7 @@
                     android:textSize="@dimen/forteen_sp"
                     android:id="@+id/product_rating"
                     android:textColor="@android:color/white"
-                    android:text="4.5"
+                    android:text=""
                     />
 
                 </RelativeLayout>

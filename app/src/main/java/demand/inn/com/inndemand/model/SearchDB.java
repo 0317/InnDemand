@@ -150,7 +150,7 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
                     // Get the cursor, positioned to the corresponding row in the result set
                     Cursor cursor = (Cursor) mListView.getItemAtPosition(position);
 
-                    if(cursor.equals("club10")){
+                    if(cursor.equals("Starter")){
                         Intent in = new Intent(SearchDB.this, Beverages.class);
                         startActivity(in);
                     }else{
@@ -219,7 +219,7 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
 
                         Log.d("API", "API Category: " + catName);
 
-                        mDbHelper.createDemand(catName, type_id, "hello", "bye", "say", "once", "hey");
+                        mDbHelper.createDemand(catName, "", "", "", "", "", "");
 
 
                     } catch (JSONException e) {
