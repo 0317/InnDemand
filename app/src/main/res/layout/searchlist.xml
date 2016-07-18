@@ -3,11 +3,17 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView android:id="@+id/product_name"
+   <!-- <TextView android:id="@+id/product_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="10dip"
         android:textSize="16dip"
-        android:textStyle="bold"/>
+        android:textStyle="bold"/>-->
+
+    <SearchView android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:id="@+id/search" />
+
+    <ListView android:layout_width="fill_parent" android:id="@+id/list"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

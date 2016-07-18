@@ -59,6 +59,7 @@ import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
+import demand.inn.com.inndemand.welcome.DBAdapter;
 import demand.inn.com.inndemand.welcome.DBHelper;
 
 /**
@@ -101,8 +102,9 @@ public class Appetizer extends Fragment {
 
     ResturantDataModel resturantDataModel;
     DBHelper db;
+    DBAdapter mDbHelper;
 
-    private List<String > list = new ArrayList<>();
+    private List<String> list = new ArrayList<>();
 
     @Nullable
     @Override
@@ -111,6 +113,11 @@ public class Appetizer extends Fragment {
         nu = new NetworkUtility(getActivity());
         prefs = new AppPreferences(getActivity());
         db = new DBHelper(getActivity());
+        mDbHelper = new DBAdapter(getActivity());
+        mDbHelper.open();
+
+        //Clean all Demand
+        mDbHelper.deleteAllDemand();
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
 

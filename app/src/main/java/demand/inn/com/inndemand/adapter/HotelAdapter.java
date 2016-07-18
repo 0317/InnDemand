@@ -87,7 +87,6 @@ public class HotelAdapter extends  RecyclerView.Adapter<HotelAdapter.MyViewHolde
 //            holder.desc.setVisibility(View.GONE);
         }*/
 
-
     }
 
     @Override

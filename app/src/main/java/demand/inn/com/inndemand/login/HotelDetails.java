@@ -300,6 +300,7 @@ public class HotelDetails extends AppCompatActivity {
         });
 
         //UI initialize
+        hotel_desc = (TextView) findViewById(R.id.hotel_desc);
         hotel_Name = (TextView) findViewById(R.id.hotel_Name);
         hotel_Address = (TextView) findViewById(R.id.hotel_Address);
         call_hotel = (TextView) findViewById(R.id.call_hotel);
@@ -664,6 +665,7 @@ public class HotelDetails extends AppCompatActivity {
 
                     hotel_Name.setText(hotelName);
                     hotel_Address.setText(address);
+                    hotel_desc.setText(about_hotel);
 
                     Picasso.with(HotelDetails.this).load(restaurant_image).into(main_backdrop);
 
@@ -761,14 +763,6 @@ public class HotelDetails extends AppCompatActivity {
 
                             a = new HotelData(info_title, info_value, info_screen_key);
                             hotelData.add(a);
-
-//                            if(info_screen_key.contains("main") && !info_title.contains("Note")) {
-//
-//                            }else if(info_screen_key == "laundry" || info_screen_key.equalsIgnoreCase("laundry")){
-//                                prefs.setLaundrynote(info_value);
-//                            }else if(info_screen_key == "cab" || info_screen_key.equalsIgnoreCase("cab")){
-//                                prefs.setCabnote(info_value);
-//                            }
 
                             adapter.notifyDataSetChanged();
 

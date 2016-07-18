@@ -71,6 +71,7 @@ import demand.inn.com.inndemand.fragmentarea.MainCourse;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SearchArea;
+import demand.inn.com.inndemand.model.SearchDB;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -161,7 +162,7 @@ public class Restaurant extends AppCompatActivity{
                 int id = item.getItemId();
                 //noinspection SimplifiableIfStatement
                 if (id == R.id.action_settings) {
-                    Intent in = new Intent(Restaurant.this, SearchArea.class);
+                    Intent in = new Intent(Restaurant.this, SearchDB.class);
                     startActivity(in);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }else if(id == R.id.action_cart){

@@ -272,6 +272,11 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 //                mGoogleApiClient.disconnect();
             }
             return true;
+        }else if(id == R.id.action_rescan){
+            Intent in = new Intent(QRscanning.this, QRscanning.class);
+            startActivity(in);
+
+            return  true;
         }
         return super.onOptionsItemSelected(item);
     }

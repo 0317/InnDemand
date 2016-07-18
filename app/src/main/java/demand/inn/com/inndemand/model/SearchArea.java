@@ -76,8 +76,8 @@ public class SearchArea extends AppCompatActivity {
                 "Soda", "Water", "Shahi panner", "Kadai paneer", "Noodles", "Fried Rice", "Plain Rice", "Thai Masala",
                 "Indian Thali", "Pizza", "Cheese burger", "Chicken burger"};
 
-        adapter = new ArrayAdapter<String>(this, R.layout.searchlist, R.id.product_name, products);
-        list.setAdapter(adapter);
+//        adapter = new ArrayAdapter<String>(this, R.layout.searchlist, R.id.product_name, products);
+//        list.setAdapter(adapter);
         /**
          * Enabling Search Filter
          * */
