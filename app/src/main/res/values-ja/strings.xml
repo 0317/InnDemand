@@ -36,8 +36,8 @@
     <string name="check_out">CHECKOUT</string>
     <string name="cancel_wakeup_call">CANCEL WAKE UP CALL</string>
     <string name="cancel_cab">CANCEL CAB</string>
-    <string name="anything_to_say">Do you have anything to say?</string>
-    <string name="tap_to_start">Tap here to start typing</string>
+    <string name="anything_to_say">あなたが言うには何も持っていますか？</string>
+    <string name="tap_to_start">入力を開始するにはここをタップ</string>
     <string name="when_to_clean">When do you want us to clean  your room?</string>
     <string name="when_to_deliver">When do you want us to deliver?</string>
     <string name="when_to_wake">When do you want us to wake you up?</string>
@@ -99,9 +99,8 @@
     <string name="verifycredentials">Verifying credentials...</string>
     <string name="addcart">Add to cart</string>
     <string name="viewcart">View Cart</string>
-    <string name="deleteaccount">Delete Account</string>
-    <string name="noti_hotel">Notification(Hotel)</string>
-    <string name="noti_inndemand">Notification(InnDemand)</string>
+    <string name="noti_hotel">通知（ホテル）</string>
+    <string name="noti_inndemand">通知（需要の）</string>
     <string name="no">No</string>
     <string name="qr_entry">You have to scan QR Code \n\n Click Ok to Scan QR Code</string>
     <string name="apply">Apply</string>
@@ -111,8 +110,9 @@
 
 
     <!-- Button labels -->
+    <string name="deleteaccount">アカウントを削除する</string>
     <string name="sign_out">Sign Out</string>
-    <string name="confirm_demand">CONFIRM MY DEMAND</string>
+    <string name="confirm_demand">私の需要を確認します</string>
     <string name="confirm">CONFIRM</string>
     <string name="ok_click">OK</string>
     <string name="disconnect">Disconnect</string>

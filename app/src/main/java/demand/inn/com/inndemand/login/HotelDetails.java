@@ -1621,6 +1621,8 @@ public class HotelDetails extends AppCompatActivity {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMessage("loading details....");
             mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.setCancelable(false);
         }
 
         mProgressDialog.show();

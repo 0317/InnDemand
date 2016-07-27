@@ -37,8 +37,8 @@
     <string name="check_out">CHECKOUT</string>
     <string name="cancel_wakeup_call">CANCEL WAKE UP CALL</string>
     <string name="cancel_cab">CANCEL CAB</string>
-    <string name="anything_to_say">Do you have anything to say?</string>
-    <string name="tap_to_start">Tap here to start typing</string>
+    <string name="anything_to_say">Você tem algo a dizer?</string>
+    <string name="tap_to_start">Toque aqui para começar a digitar</string>
     <string name="when_to_clean">When do you want us to clean  your room?</string>
     <string name="when_to_deliver">When do you want us to deliver?</string>
     <string name="when_to_wake">When do you want us to wake you up?</string>
@@ -59,7 +59,7 @@
     </string>
     <string name="note_cab">NOTE: Providing Cab services is based on the availability.
         We will call you to confirm.</string>
-    <string name="write_comment_here">Write your comment here</string>
+    <string name="write_comment_here">Escreva o seu comentário aqui</string>
     <string name="write_comment">Write Comment</string>
     <string name="comment_section">Comment Section</string>
     <string name="submit">SUBMIT</string>
@@ -100,9 +100,8 @@
     <string name="verifycredentials">Verifying credentials...</string>
     <string name="addcart">Add to cart</string>
     <string name="viewcart">View Cart</string>
-    <string name="deleteaccount">Delete Account</string>
-    <string name="noti_hotel">Notification(Hotel)</string>
-    <string name="noti_inndemand">Notification(InnDemand)</string>
+    <string name="noti_hotel">Notificação (Hotel)</string>
+    <string name="noti_inndemand">Notificação (In Demand)</string>
     <string name="no">No</string>
     <string name="qr_entry">You have to scan QR Code \n\n Click Ok to Scan QR Code</string>
     <string name="apply">Apply</string>
@@ -112,8 +111,9 @@
 
 
     <!-- Button labels -->
+    <string name="deleteaccount">Deletar conta</string>
     <string name="sign_out">Sign Out</string>
-    <string name="confirm_demand">CONFIRM MY DEMAND</string>
+    <string name="confirm_demand">Confirmar a minha demanda</string>
     <string name="confirm">CONFIRM</string>
     <string name="ok_click">OK</string>
     <string name="disconnect">Disconnect</string>

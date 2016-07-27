@@ -135,17 +135,55 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 if(pos == 1){
-
-                }else if(pos == 2){
                     Toast.makeText(Settings.this,
-                            "Language: German", Toast.LENGTH_SHORT).show();
-                    setLocale("de");
-                    prefs.setLocaleset("de");
-                }else if(pos == 3){
+                            "Language: English", Toast.LENGTH_SHORT).show();
+                    setLocale("en");
+                    prefs.setLocaleset("en");
+                }else if(pos == 2){
                     Toast.makeText(Settings.this,
                             "Language: French", Toast.LENGTH_SHORT).show();
                     setLocale("fr");
                     prefs.setLocaleset("fr");
+                }else if(pos == 3){
+                    Toast.makeText(Settings.this,
+                            "Language: German", Toast.LENGTH_SHORT).show();
+                    setLocale("de");
+                    prefs.setLocaleset("de");
+                }else if(pos == 4){
+                    Toast.makeText(Settings.this,
+                            "Language: Arabic", Toast.LENGTH_SHORT).show();
+                    setLocale("ar");
+                    prefs.setLocaleset("ar");
+                }else if(pos == 5){
+                    Toast.makeText(Settings.this,
+                            "Language: Portuguese", Toast.LENGTH_SHORT).show();
+                    setLocale("pt");
+                    prefs.setLocaleset("pt");
+                }else if(pos == 6){
+                    Toast.makeText(Settings.this,
+                            "Language: Russian", Toast.LENGTH_SHORT).show();
+                    setLocale("ru");
+                    prefs.setLocaleset("ru");
+                }else if(pos == 7){
+                    Toast.makeText(Settings.this,
+                            "Language: Chinese", Toast.LENGTH_SHORT).show();
+                    setLocale("b+chk");
+                    prefs.setLocaleset("b+chk");
+                }else if(pos == 8){
+                    Toast.makeText(Settings.this,
+                            "Language: Japanese", Toast.LENGTH_SHORT).show();
+                    setLocale("ja");
+                    prefs.setLocaleset("ja");
+                }else if(pos == 9){
+                    Toast.makeText(Settings.this,
+                            "Language: Spanish", Toast.LENGTH_SHORT).show();
+                    setLocale("es");
+                    prefs.setLocaleset("es");
+                }else if(pos == 10){
+                    Toast.makeText(Settings.this,
+                            "Language: Javanese", Toast.LENGTH_SHORT).show();
+                    setLocale("jv");
+                    prefs.setLocaleset("jv");
                 }
             }
 

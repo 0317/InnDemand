@@ -136,10 +136,14 @@
         <item>Choose a language</item>
         <item>English</item>
         <item>French</item>
-        <item>Hindi</item>
         <item>German</item>
-        <item>Chinese</item>
+        <item>Arabic</item>
+        <item>Portuguese</item>
         <item>Russian</item>
+        <item>Chinese</item>
+        <item>Japanese</item>
+        <item>Spanish</item>
+        <item>Javanese</item>
     </string-array>
 
 </resources>
