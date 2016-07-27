@@ -260,7 +260,7 @@ public class CheckDetails extends AppCompatActivity {
                     .setAction("Action", null).show();
         }else {
             makeJsonObjectRequest();
-            Intent in = new Intent(CheckDetails.this, QRscanning.class);
+            Intent in = new Intent(CheckDetails.this, QrEntry.class);
             in.putExtra("customer_id", customer_id);
             startActivity(in);
             finish();

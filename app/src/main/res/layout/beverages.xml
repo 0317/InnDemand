@@ -77,7 +77,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Water Bottles"
+                                android:text="@string/waterbottles"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"
@@ -116,7 +116,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Soda Bottles"
+                                android:text="@string/sodabottles"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"
@@ -155,7 +155,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Ice Buckets"
+                                android:text="@string/icebuckets"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"
@@ -194,7 +194,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Glasses"
+                                android:text="@string/glasses"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"

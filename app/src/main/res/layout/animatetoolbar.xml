@@ -140,7 +140,7 @@
                 android:paddingRight="5dp"
                 android:textColor="@color/confirm_demand_click"
                 android:id="@+id/call_hotel"
-                android:text="CALL"
+                android:text="@string/call_hotel"
                 />
 
                 <TextView

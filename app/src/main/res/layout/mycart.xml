@@ -78,7 +78,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:id="@+id/cart_totalamount"
                     android:textSize="@dimen/forteen_sp"
                     android:layout_marginLeft="15dp"
@@ -92,7 +91,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:id="@+id/cart_totalitems"
                     android:layout_alignParentRight="true"
                     android:textSize="@dimen/forteen_sp"
@@ -128,7 +126,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NOW"
+                    android:text="@string/now"
                     android:textSize="@dimen/sixteen_sp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
@@ -211,7 +209,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Apply"
+                android:text="@string/apply"
                 android:id="@+id/cart_items"
                 android:textSize="@dimen/twelve_sp"
                 android:textStyle="bold"
@@ -220,7 +218,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="COUPON"
+                android:text="@string/coupon"
                 android:textSize="@dimen/forteen_sp"
                 android:id="@+id/cart_total"
                 android:textColor="@color/confirm_demand_click" />

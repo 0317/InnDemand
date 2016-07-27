@@ -3,7 +3,9 @@ package demand.inn.com.inndemand.login;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -90,6 +92,7 @@ import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.utility.Serve;
 import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.BaseActivity;
 import demand.inn.com.inndemand.welcome.SplashScreen;
@@ -226,6 +229,14 @@ public class HotelDetails extends AppCompatActivity {
         getTime = timeFormat.format(c.getTime());
         // formattedDate have current date/time
 
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, 1800000);
+
         if (nu.isConnectingToInternet()) {
             //Getting All Restaurant List of hotel
             showProgressDialog();
@@ -269,6 +280,11 @@ public class HotelDetails extends AppCompatActivity {
                 }
             }
         });
+
+        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent m_intent = new Intent(this, Serve.class);
+        PendingIntent pi = PendingIntent.getService(HotelDetails.this, 2, m_intent, 0);
+        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 60 * 30, pi);
 
         //UI Initialize
         restaurant_area = (LinearLayout) findViewById(R.id.hotel_restaurant);
@@ -319,14 +335,21 @@ public class HotelDetails extends AppCompatActivity {
                                     try {
                                         Intent callIntent = new Intent(Intent.ACTION_CALL);
                                         callIntent.setData(Uri.parse("+919729305557"));
-                                        if (ActivityCompat.checkSelfPermission(HotelDetails.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                        if (ActivityCompat.checkSelfPermission(HotelDetails.this,
+                                                Manifest.permission.CALL_PHONE) !=
+                                                PackageManager.PERMISSION_GRANTED) {
                                             // TODO: Consider calling
                                             //    ActivityCompat#requestPermissions
-                                            // here to request the missing permissions, and then overriding
-                                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                            //                                          int[] grantResults)
-                                            // to handle the case where the user grants the permission. See the documentation
-                                            // for ActivityCompat#requestPermissions for more details.
+                                            // here to request the missing permissions, and then
+                                            // overriding
+                                            //   public void onRequestPermissionsResult
+                                            // (int requestCode, String[] permissions,
+                                            //
+                                            // int[] grantResults)
+                                            // to handle the case where the user grants the
+                                            // permission. See the documentation
+                                            // for ActivityCompat#requestPermissions for more
+                                            // details.
                                             return;
                                         }
                                         startActivity(callIntent);
@@ -519,13 +542,18 @@ public class HotelDetails extends AppCompatActivity {
                             try {
                                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                                 callIntent.setData(Uri.parse("+919729305557"));
-                                if (ActivityCompat.checkSelfPermission(HotelDetails.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                if (ActivityCompat.checkSelfPermission(HotelDetails.this,
+                                        Manifest.permission.CALL_PHONE) !=
+                                        PackageManager.PERMISSION_GRANTED) {
                                     // TODO: Consider calling
                                     //    ActivityCompat#requestPermissions
-                                    // here to request the missing permissions, and then overriding
-                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                    // here to request the missing permissions, and then
+                                    // overriding
+                                    //   public void onRequestPermissionsResult(int requestCode,
+                                    // String[] permissions,
                                     //                                          int[] grantResults)
-                                    // to handle the case where the user grants the permission. See the documentation
+                                    // to handle the case where the user grants the permission.
+                                    // See the documentation
                                     // for ActivityCompat#requestPermissions for more details.
                                     return;
                                 }

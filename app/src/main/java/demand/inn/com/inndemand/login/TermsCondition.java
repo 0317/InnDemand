@@ -37,7 +37,7 @@ public class TermsCondition extends AppCompatActivity {
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Terms & conditions");
+        toolbar.setTitle(R.string.termsconditions);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
 

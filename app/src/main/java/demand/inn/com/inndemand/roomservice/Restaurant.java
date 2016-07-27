@@ -124,6 +124,9 @@ public class Restaurant extends AppCompatActivity{
     String totalItems;
     String broaditemName;
 
+    String cart_value;
+    String cart_val;
+
     private final Random mRandom = new Random();
 
     List<FragmentData> tabList;
@@ -279,6 +282,8 @@ public class Restaurant extends AppCompatActivity{
             public void onTabSelected(TabLayout.Tab tab){
                 positions = tab.getPosition();
                 viewPager.setCurrentItem(tab.getPosition());
+                cart_value = cart_total.getText().toString();
+                cart_val = cart_item.getText().toString();
                 Log.d("Tab Position: ", String.valueOf(positions));
                 Intent in = new Intent("position-message");
                 in.putExtra("positionsof", type_id);
@@ -371,25 +376,26 @@ public class Restaurant extends AppCompatActivity{
             prefs.setTotal_cash(totalCash);
             prefs.setTotal_items(totalItems);
 
-            String cart_value = cart_total.getText().toString();
-            String cart_val = cart_item.getText().toString();
-
-//            int cart_cash = Integer.parseInt(cart_value);
-//            int cart_item = Integer.parseInt(totalItems);
 
             try {
+
+                int cart_cash = Integer.parseInt(cart_value);
+                int cart_itemss = Integer.parseInt(cart_val);
+
+                int totValue = cart_cash+cash;
+                int totItem = cart_itemss+item;
 
                 double val = Double.parseDouble(totalCash); //+Double.parseDouble(cart_value);
                 double va = Double.parseDouble(totalItems); //+Double.parseDouble(cart_val);
 
-                Log.d("totalValue", "dataValue: "+val);
-                Log.d("totalItem", "dataValue: "+va);
+                Log.d("totalValue", "dataValue: "+cart_cash);
+                Log.d("totalItem", "dataValue: "+cart_itemss);
 
                 Log.d("SelectedItem", "dataValue: "+broaditemName);
 
 
-                cart_total.setText(Double.toString(val));
-                cart_item.setText(Double.toString(va));
+                cart_total.setText(String.valueOf(totValue));
+                cart_item.setText(String.valueOf(totItem));
 
             }catch (NumberFormatException e)
             {
@@ -400,7 +406,6 @@ public class Restaurant extends AppCompatActivity{
             in.putExtra("cartItem", cart_item.getText().toString());
             in.putExtra("cartTotal", cart_total.getText().toString());
             LocalBroadcastManager.getInstance(Restaurant.this).sendBroadcast(in);
-
         }
     };
 

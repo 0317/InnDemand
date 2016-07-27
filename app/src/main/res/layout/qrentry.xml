@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qr_entry"
+        android:textSize="@dimen/sixteen_sp"
+        android:layout_margin="15dp"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="sans-serif-thin"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="@string/ok_click"
+        android:id="@+id/click_ok"
+        android:onClick="click_OK"
+        android:textColor="@android:color/black"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/confirm_demand_click"/>
+
+</RelativeLayout>

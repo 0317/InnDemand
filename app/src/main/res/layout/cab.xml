@@ -91,7 +91,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="NOW"
+                            android:text="@string/now"
                             android:textSize="@dimen/sixteen_sp"
                             android:padding="5dp"
                             android:id="@+id/now_cab"
@@ -124,7 +124,6 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text=""
                                     android:layout_marginTop="5dp"
                                     android:id="@+id/set_time"
                                     android:textStyle="bold"/>
@@ -163,7 +162,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Choose Location"
+                    android:text="@string/choose_location"
                     android:id="@+id/set_location"
                     android:textSize="@dimen/sixteen_sp"/>
 

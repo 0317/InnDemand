@@ -38,7 +38,7 @@ public class PrivacyPolicy extends AppCompatActivity {
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Privacy policy");
+        toolbar.setTitle(R.string.privacy_policy);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
 

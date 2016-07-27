@@ -80,7 +80,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Towels"
+                                android:text="@string/towel"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"
@@ -118,7 +118,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Soaps"
+                                android:text="@string/soap"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"
@@ -156,7 +156,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Maintainance"
+                                android:text="@string/maintainance"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"

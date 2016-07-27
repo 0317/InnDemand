@@ -16,6 +16,8 @@ public class AppPreferences {
 
     private String refreshToken = "refreshToken";
 
+    private String localeset = "localeset";
+
     private String customer_Id = "customer_Id",
             checkin_Id = "checkin_Id",
             restaurant_Id = "restaurant_Id",
@@ -114,6 +116,14 @@ public class AppPreferences {
 
     public void clearPref() {
         prefEditor.clear().commit();
+    }
+
+    public String getLocaleset() {
+        return appSharedpref.getString(localeset, "en");
+    }
+
+    public void setLocaleset(String _localeset) {
+        prefEditor.putString(localeset, _localeset).commit();
     }
 
     public Boolean getHotel_check() {

@@ -3,7 +3,6 @@ package demand.inn.com.inndemand.model;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,17 +31,19 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.adapter.ViewPagerAdapter;
+import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
-import demand.inn.com.inndemand.fragmentarea.Appetizer;
+import demand.inn.com.inndemand.constants.SearchConstant;
 import demand.inn.com.inndemand.roomservice.Beverages;
 import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.DBAdapter;
+import demand.inn.com.inndemand.welcome.DBHelper;
 
 /**
  * Created by akash
@@ -61,12 +62,17 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
     private TextView customerText;
     private TextView nameText;
 
+    DBHelper db;
+
+    private List<SearchConstant> cardList = new ArrayList<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.searchlist);
         nu = new NetworkUtility(this);
         prefs  =new AppPreferences(this);
+        db = new DBHelper(this);
 
         searchView = (SearchView) findViewById(R.id.search);
         searchView.setIconifiedByDefault(false);
@@ -83,8 +89,26 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
         //Clean all Demand
         mDbHelper.deleteAllDemand();
         //Add some data as a sample
-        mDbHelper.createDemand("Akash", "Taj", "Noida, Delhi", "Kingfisher", "Kinley", "White towel", "park Avenue");
-        mDbHelper.createDemand("JB", "Oberoi", "Mumbai", "Club10", "Bisleri", "towel", "pears");
+        mDbHelper.createDemand("Taj", "", "", "", "", "", "");
+        mDbHelper.createDemand("Taj Serve", "", "", "", "", "", "");
+        mDbHelper.createDemand("Taj Vivanta", "", "", "", "", "", "");
+        mDbHelper.createDemand("taj Bar", "", "", "", "", "", "");
+        mDbHelper.createDemand("Towel", "", "", "", "", "", "");
+        mDbHelper.createDemand("Soap", "", "", "", "", "", "");
+        mDbHelper.createDemand("Tea", "", "", "", "", "", "");
+        mDbHelper.createDemand("Coffee", "", "", "", "", "", "");
+//        mDbHelper.createDemand("gobbi chilly", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Butter Nan", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Death by Choclate", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Hyderbadi Kalmi", "", "", "", "", "", "");
+//        mDbHelper.createDemand("panner butter masala", "", "", "", "", "", "");
+        mDbHelper.createDemand("Soda", "", "", "", "", "", "");
+        mDbHelper.createDemand("Glass", "", "", "", "", "", "");
+        mDbHelper.createDemand("Ice", "", "", "", "", "", "");
+        mDbHelper.createDemand("Water", "", "", "", "", "", "");
+        mDbHelper.createDemand("Laundry", "", "", "", "", "", "");
+        mDbHelper.createDemand("cab", "", "", "", "", "", "");
+        mDbHelper.createDemand("bell-boy", "", "", "", "", "", "");
     }
 
     @Override
@@ -120,7 +144,7 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
         if (cursor == null) {
             //
         } else {
-            // Specify the columns we want to display in the result
+              // Specify the columns we want to display in the result
             String[] from = new String[]{
                 DBAdapter.KEY_CUSTOMER,
                     DBAdapter.KEY_NAME,
@@ -135,10 +159,11 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
             int[] to = new int[] {
                     R.id.scustomer,
                     R.id.sname,
-                    R.id.saddress,
-                    R.id.scity,
-                    R.id.sstate,
-                    R.id.szipCode};
+//                    R.id.saddress,
+//                    R.id.scity,
+//                    R.id.sstate,
+//                    R.id.szipCode
+            };
 
             // Create a simple cursor adapter for the definitions and apply them to the ListView
             SimpleCursorAdapter customers = new SimpleCursorAdapter(this,R.layout.searchresult, cursor, from, to);
@@ -150,13 +175,13 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
                     // Get the cursor, positioned to the corresponding row in the result set
                     Cursor cursor = (Cursor) mListView.getItemAtPosition(position);
 
-                    if(cursor.equals("Starter")){
+                   /* if(cursor.equals("Starter")){
                         Intent in = new Intent(SearchDB.this, Beverages.class);
                         startActivity(in);
                     }else{
                         Intent in = new Intent(SearchDB.this, Restaurant.class);
                         startActivity(in);
-                    }
+                    }*/
 
                     searchView.setQuery("",true);
                 }

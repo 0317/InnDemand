@@ -135,7 +135,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Items: "
+                    android:text="@string/itemscount"
                     android:id="@+id/bottom_item"
                     android:textSize="@dimen/twelve_sp"
                     android:textColor="@color/view_gray" />
@@ -143,7 +143,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:layout_marginLeft="2dp"
                     android:textSize="@dimen/forteen_sp"
                     android:id="@+id/bottom_items"
@@ -162,7 +161,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total: "
+                    android:text="@string/totalcount"
                     android:id="@+id/bottom_amount"
                     android:textSize="@dimen/twelve_sp"
                     android:textColor="@color/confirm_demand_click" />
@@ -170,7 +169,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:layout_marginLeft="2dp"
                     android:textSize="@dimen/forteen_sp"
                     android:id="@+id/bottom_total"

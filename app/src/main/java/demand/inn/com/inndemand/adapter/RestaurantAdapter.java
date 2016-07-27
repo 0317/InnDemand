@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,6 +31,7 @@ import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.welcome.DBHelper;
+import demand.inn.com.inndemand.welcome.DBList;
 
 /**
  * Created by akash
@@ -63,6 +65,8 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
     //DATABASE
     DBHelper db;
+    DBList dbs;
+    SharedPreferences preferences;
     private static MyClickListener myClickListener;
 
     @Override
@@ -124,7 +128,6 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                 }
             });
         }
-
     }
 
     public RestaurantAdapter(Context mContext, List<ResturantDataModel> cartData, List<ResturantDataModel> itemprice) {
@@ -139,6 +142,8 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                 .inflate(R.layout.restaurantadapt, parent, false);
         prefs = new AppPreferences(mContext);
         db = new DBHelper(mContext);
+        dbs = new DBList(mContext);
+        preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         return new MyViewHolder(itemView);
     }
@@ -146,21 +151,22 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     @Override
     public void onBindViewHolder(final RestaurantAdapter.MyViewHolder holder, final int position) {
         ResturantDataModel data = cartData.get(position);
-        holder.title.setText(data.getSubcategory());
-        holder.subtitle.setText(data.getName() + " ");
-        holder.rupees.setText(data.getPrice());
-        holder.details.setText(data.getDescription());
-        holder.item_click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(mContext, Feedback.class);
-                in.putExtra("itemname", cartData.get(position).getName());
-                in.putExtra("itemdesc", cartData.get(position).getDescription());
-                in.putExtra("itemprice", cartData.get(position).getPrice());
-                in.putExtra("itemrating", cartData.get(position).getRating());
-                mContext.startActivity(in);
-            }
-        });
+
+            holder.title.setText(data.getSubcategory());
+            holder.subtitle.setText(data.getName() + " ");
+            holder.rupees.setText(data.getPrice());
+            holder.details.setText(data.getDescription());
+            holder.item_click.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent in = new Intent(mContext, Feedback.class);
+                    in.putExtra("itemname", cartData.get(position).getName());
+                    in.putExtra("itemdesc", cartData.get(position).getDescription());
+                    in.putExtra("itemprice", cartData.get(position).getPrice());
+                    in.putExtra("itemrating", cartData.get(position).getRating());
+                    mContext.startActivity(in);
+                }
+            });
 
         LocalBroadcastManager.getInstance(mContext).registerReceiver(mMessageReceiver, new IntentFilter("data-message"));
 
@@ -241,10 +247,15 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                     data.setUserqty(data.getUserqty() + 1); // incrementing item quantity by 1
 
                     Log.d("Quantity", "Check: "+data.getUserqty());
-
                     Log.d("Rupees", "Check: "+data.getPrice());
+                    SharedPreferences.Editor edit = preferences.edit();
+                    edit.putString("totaltextview", String.valueOf(data.getUserqty()));
+                    edit.commit();
+                    totalTextView.setText(preferences.getString("totaltextview", ""));
+//                    totalTextView.setText(String.valueOf(data.getUserqty()));
+                    Log.d("TextCheck", "Check: "+totalTextView.getText().toString());
+                    String finalval = preferences.getString("totaltextview", "");
 
-                    totalTextView.setText(String.valueOf(data.getUserqty()));
                     for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
                         data = itemprice.get(temp1);
                     {
@@ -284,10 +295,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                     data.setUserqty(data.getUserqty() - 1);// decrementing item quantity by 1
 
                     String titleValue = title.getText().toString();
-//                    totalTextView.setText(String.valueOf(data.getUserqty()));
-                    SharedPreferences settings = mContext.getSharedPreferences("LIST_VALUE", Context.MODE_PRIVATE);
-                    String quantityValue = settings.getString("quantity", "");
-                    totalTextView.setText(quantityValue);
+                    totalTextView.setText(String.valueOf(data.getUserqty()));
                     for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
                         data = itemprice.get(temp1);
                     {
@@ -299,11 +307,6 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                         bundle.putString("selectcash", String.valueOf(finalamount));
                         String value = String.valueOf(data.getProductsaleprice());
                         String quantity = String.valueOf(data.getUserqty());
-                        //To save
-                        SharedPreferences settingss = mContext.getSharedPreferences("LIST_VALUE", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = settingss.edit();
-                        editor.putString("quantity",quantity);
-                        editor.commit();
                         Intent in = new Intent("custom-message");
                         in.putExtra("totalCash", value);
                         in.putExtra("selectedItem", cartData.get(position).getName());

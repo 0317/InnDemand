@@ -1,19 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">InnDemand</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
-
-    <!-- .......Facebook App ID....... -->
-
-    <string name="facebook_app_id">1616387568688991</string>
-
-    <!-- .......Google GCM Sender ID ....... -->
-
-    <string name="fcm_defaultSenderId">609144095308</string>
-
     <!-- .......Google Integration String calls....... -->
 
     <string name="logout">Logout</string>
@@ -129,17 +116,5 @@
     <string name="confirm">CONFIRM</string>
     <string name="ok_click">OK</string>
     <string name="disconnect">Disconnect</string>
-
-
-    <string name="country_prompt">Choose a language</string>
-    <string-array name="country_languages">
-        <item>Choose a language</item>
-        <item>English</item>
-        <item>French</item>
-        <item>Hindi</item>
-        <item>German</item>
-        <item>Chinese</item>
-        <item>Russian</item>
-    </string-array>
 
 </resources>

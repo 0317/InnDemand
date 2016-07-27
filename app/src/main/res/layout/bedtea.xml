@@ -110,7 +110,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="0"
+                                        android:text="@string/zero"
                                         android:textSize="15sp"
                                         android:id="@+id/teaCount_bedTea"
                                         android:layout_marginTop="15dp"
@@ -181,7 +181,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="0"
+                                        android:text="@string/zero"
                                         android:id="@+id/coffeeCount_bedTea"
                                         android:textSize="15sp"
                                         android:layout_marginTop="15dp"
@@ -232,7 +232,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="NOW"
+                                android:text="@string/now"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:padding="5dp"
                                 android:id="@+id/now_bedtea"

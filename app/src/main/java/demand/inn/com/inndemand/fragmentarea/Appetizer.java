@@ -52,6 +52,7 @@ import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.constants.SearchConstant;
 import demand.inn.com.inndemand.model.RecyclerItemClickListener;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SimpleDividerItemDecoration;
@@ -61,6 +62,7 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.DBAdapter;
 import demand.inn.com.inndemand.welcome.DBHelper;
+import demand.inn.com.inndemand.welcome.DBList;
 
 /**
  * Created by akash
@@ -103,6 +105,7 @@ public class Appetizer extends Fragment {
     ResturantDataModel resturantDataModel;
     DBHelper db;
     DBAdapter mDbHelper;
+    DBList dbs;
 
     private List<String> list = new ArrayList<>();
 
@@ -114,6 +117,7 @@ public class Appetizer extends Fragment {
         prefs = new AppPreferences(getActivity());
         db = new DBHelper(getActivity());
         mDbHelper = new DBAdapter(getActivity());
+        dbs = new DBList(getActivity());
         mDbHelper.open();
 
         //Clean all Demand
@@ -253,12 +257,14 @@ public class Appetizer extends Fragment {
                         JSONObject ob = object.getJSONObject("average");
                         String average = ob.getString("feedback_points__avg");
 
-//                            db.feedData(new ResturantDataModel(subCategory, itemName));
+                        dbs.insertData(new ResturantDataModel(subCategory, itemName, itemDesc, amount, food, average));
 
+                        List<ResturantDataModel> datas = dbs.getAllData();
+                        for(ResturantDataModel card : datas) {
                             cardList.clear();
-                            a = new ResturantDataModel(subCategory, itemName, itemDesc, amount, food, average);
+                            a = new ResturantDataModel(card.getSubcategory(), card.getName(), card.getDescription(), card.getPrice(), card.getFood(), card.getRating());
                             cardList.add(a);
-
+                        }
                             adapter.notifyDataSetChanged();
 
                     } catch (JSONException e) {

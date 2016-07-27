@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">InnDemand</string>
+    <string name="app_name">À la demande</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -21,16 +22,16 @@
 
     <!-- ......Hardcoded string values are under...... -->
 
-    <string name="login_call">LOGIN</string>
-    <string name="get_direction">GET DIRECTION</string>
-    <string name="login_terms_lines">By signing-up you agree to our</string>
-    <string name="terms_conditions">terms of service</string>
-    <string name="termsconditions">Terms &amp; conditions</string>
+    <string name="login_call">"S'IDENTIFIER"</string>
+    <string name="get_direction">Obtenez Direction</string>
+    <string name="login_terms_lines">En signant-up vous acceptez nos</string>
+    <string name="terms_conditions">"conditions d'utilisation"</string>
+    <string name="termsconditions">Termes &amp; conditions</string>
     <string name="and">&amp;</string>
-    <string name="privacy_policy">Privacy policy</string>
-    <string name="room_services">Room Service</string>
-    <string name="bell_boy">Bell-boy</string>
-    <string name="room_cleaning">Room cleaning</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="room_services">Service de chambre</string>
+    <string name="bell_boy">Groom</string>
+    <string name="room_cleaning">Nettoyage de la chambre</string>
     <string name="laundry">Laundry</string>
     <string name="cab_call">Cab</string>
     <string name="restaurant">Restaurant</string>
@@ -46,11 +47,11 @@
     <string name="select_date">Select Date</string>
     <string name="select_time">Select Time</string>
     <string name="change_time">CHANGE TIME</string>
-    <string name="check_out">CHECKOUT</string>
-    <string name="cancel_wakeup_call">CANCEL WAKE UP CALL</string>
-    <string name="cancel_cab">CANCEL CAB</string>
-    <string name="anything_to_say">Do you have anything to say?</string>
-    <string name="tap_to_start">Tap here to start typing</string>
+    <string name="check_out">Commander</string>
+    <string name="cancel_wakeup_call">ANNULER WAKE UP CALL</string>
+    <string name="cancel_cab">ANNULER CAB</string>
+    <string name="anything_to_say">Avez-vous quelque chose à dire?</string>
+    <string name="tap_to_start">Appuyez ici pour commencer à taper</string>
     <string name="when_to_clean">When do you want us to clean  your room?</string>
     <string name="when_to_deliver">When do you want us to deliver?</string>
     <string name="when_to_wake">When do you want us to wake you up?</string>
@@ -77,8 +78,8 @@
     <string name="submit">SUBMIT</string>
     <string name="my_cart">My Cart</string>
     <string name="mycart">NOTE: Taxes Included</string>
-    <string name="proceed">PROCEED</string>
-    <string name="apply_coupon">Apply Discount Code</string>
+    <string name="proceed">PROCÉDER</string>
+    <string name="apply_coupon">Appliquer un code de réduction</string>
     <string name="food_delivery_time">Food Delivery Time</string>
     <string name="appetizer_fragment_headline">Our Restaurant Serves both Vegetarian &amp;
         Non-Vegeterian</string>
@@ -98,7 +99,7 @@
     <string name="spa">SPA</string>
     <string name="zero">0</string>
     <string name="call_hotel">CALL</string>
-    <string name="room_service">ROOM SERVICE</string>
+    <string name="room_service">Les services de la chambre</string>
     <string name="mis_info">MISCELLANEOUS INFO</string>
     <string name="hotel_restau_timing">Restaurant Timing(s)</string>
     <string name="swim_timing">Swimming Pool Timing(s)</string>
@@ -112,9 +113,9 @@
     <string name="verifycredentials">Verifying credentials...</string>
     <string name="addcart">Add to cart</string>
     <string name="viewcart">View Cart</string>
-    <string name="deleteaccount">Delete Account</string>
-    <string name="noti_hotel">Notification(Hotel)</string>
-    <string name="noti_inndemand">Notification(InnDemand)</string>
+
+    <string name="noti_hotel">Avis (Hôtel)</string>
+    <string name="noti_inndemand">Avis (In Demand)</string>
     <string name="no">No</string>
     <string name="qr_entry">You have to scan QR Code \n\n Click Ok to Scan QR Code</string>
     <string name="apply">Apply</string>
@@ -124,22 +125,11 @@
 
 
     <!-- Button labels -->
-    <string name="sign_out">Sign Out</string>
-    <string name="confirm_demand">CONFIRM MY DEMAND</string>
-    <string name="confirm">CONFIRM</string>
-    <string name="ok_click">OK</string>
-    <string name="disconnect">Disconnect</string>
-
-
-    <string name="country_prompt">Choose a language</string>
-    <string-array name="country_languages">
-        <item>Choose a language</item>
-        <item>English</item>
-        <item>French</item>
-        <item>Hindi</item>
-        <item>German</item>
-        <item>Chinese</item>
-        <item>Russian</item>
-    </string-array>
+    <string name="deleteaccount">Supprimer le compte</string>
+    <string name="sign_out">Se déconnecter</string>
+    <string name="confirm_demand">CONFIRMER MA DEMANDE</string>
+    <string name="confirm">CONFIRMER</string>
+    <string name="ok_click">"D'accord"</string>
+    <string name="disconnect">couper</string>
 
 </resources>
