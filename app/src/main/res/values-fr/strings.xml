@@ -2,10 +2,10 @@
 <resources>
     <string name="app_name">À la demande</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">navigation tiroir ouvert</string>
+    <string name="navigation_drawer_close">fermez le tiroir de navigation</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Réglages</string>
 
     <!-- .......Facebook App ID....... -->
 
@@ -17,8 +17,8 @@
 
     <!-- .......Google Integration String calls....... -->
 
-    <string name="logout">Logout</string>
-    <string name="loginText">Please login with your Google Account</string>
+    <string name="logout">déconnexion</string>
+    <string name="loginText">S'il vous plaît vous connecter avec votre compte Google</string>
 
     <!-- ......Hardcoded string values are under...... -->
 
@@ -32,37 +32,37 @@
     <string name="room_services">Service de chambre</string>
     <string name="bell_boy">Groom</string>
     <string name="room_cleaning">Nettoyage de la chambre</string>
-    <string name="laundry">Laundry</string>
-    <string name="cab_call">Cab</string>
+    <string name="laundry">blanchisserie</string>
+    <string name="cab_call">cabine</string>
     <string name="restaurant">Restaurant</string>
-    <string name="wakeup_call">Wake me up</string>
-    <string name="bath_essentials">Bathroom Essentials</string>
-    <string name="bed_tea_call">Bed Tea/Coffee</string>
-    <string name="beverages">Beverages</string>
-    <string name="itemscount">Items: </string>
-    <string name="totalcount">Total: </string>
-    <string name="pick_time">PICK A TIME</string>
-    <string name="pick_date">Pick Up Date</string>
-    <string name="pick_up_time">Pick Up Time</string>
-    <string name="select_date">Select Date</string>
-    <string name="select_time">Select Time</string>
-    <string name="change_time">CHANGE TIME</string>
+    <string name="wakeup_call">me réveiller</string>
+    <string name="bath_essentials">Essentials de salle de bain</string>
+    <string name="bed_tea_call">Plateau / café</string>
+    <string name="beverages">boissons</string>
+    <string name="itemscount">articles: </string>
+    <string name="totalcount">total: </string>
+    <string name="pick_time">choisir un moment</string>
+    <string name="pick_date">Pick-up jour</string>
+    <string name="pick_up_time">choisir un moment</string>
+    <string name="select_date">sélectionnez date</string>
+    <string name="select_time">sélectionnez Heure</string>
+    <string name="change_time">CHANGER LE TEMPS</string>
     <string name="check_out">Commander</string>
-    <string name="cancel_wakeup_call">ANNULER WAKE UP CALL</string>
+    <string name="cancel_wakeup_call">ANNULER Réveil téléphonique</string>
     <string name="cancel_cab">ANNULER CAB</string>
     <string name="anything_to_say">Avez-vous quelque chose à dire?</string>
     <string name="tap_to_start">Appuyez ici pour commencer à taper</string>
-    <string name="when_to_clean">When do you want us to clean  your room?</string>
-    <string name="when_to_deliver">When do you want us to deliver?</string>
-    <string name="when_to_wake">When do you want us to wake you up?</string>
-    <string name="when_to_pick">When do you want us to pick you?</string>
-    <string name="pick_clothes">When do you want us to pick up clothes?</string>
-    <string name="no_of_water_bottles">Select No. of  Water Bottles</string>
-    <string name="no_of_soda_bottles">Select No. of  Soda Bottles</string>
-    <string name="no_of_ice_bottles">Select Noll. of  Ice Buckets</string>
-    <string name="no_of_glasses">Select No. of  Glasses</string>
-    <string name="bed_tea_tea">Tea</string>
-    <string name="bed_tea_coffee">Coffee</string>
+    <string name="when_to_clean">Quand pensez-vous que nous nettoyer votre chambre?</string>
+    <string name="when_to_deliver">Quand voulez-vous nous livrer?</string>
+    <string name="when_to_wake">Quand voulez-vous que nous vous réveiller?</string>
+    <string name="when_to_pick">Quand voulez-vous que nous vous chercher?</string>
+    <string name="pick_clothes">Quand voulez-vous nous chercher des vêtements?</string>
+    <string name="no_of_water_bottles">Sélectionnez Non Eau de Hot</string>
+    <string name="no_of_soda_bottles">Sélectionnez Non Bouteilles Soda</string>
+    <string name="no_of_ice_bottles">Sélectionnez Noll. des seaux de glace</string>
+    <string name="no_of_glasses">Sélectionnez Non Lunettes de</string>
+    <string name="bed_tea_tea">thé</string>
+    <string name="bed_tea_coffee">café</string>
     <string name="note_bed_tea">NOTE: We cost Rs 25  per  Tea/Coffee. It will  take us 20 mins to
         prepare your drink</string>
     <string name="note_beverage">NOTE: We will reach the service to you in 15 minutes</string>
@@ -72,56 +72,56 @@
     </string>
     <string name="note_cab">NOTE: Providing Cab services is based on the availability.
         We will call you to confirm.</string>
-    <string name="write_comment_here">Write your comment here</string>
-    <string name="write_comment">Write Comment</string>
-    <string name="comment_section">Comment Section</string>
-    <string name="submit">SUBMIT</string>
-    <string name="my_cart">My Cart</string>
-    <string name="mycart">NOTE: Taxes Included</string>
+    <string name="write_comment_here">Écrivez votre commentaire ici</string>
+    <string name="write_comment">Ecrire un commentaire</string>
+    <string name="comment_section">Commentaire Section</string>
+    <string name="submit">SOUMETTRE</string>
+    <string name="my_cart">Mon panier</string>
+    <string name="mycart">NOTE: Taxes Incluses</string>
     <string name="proceed">PROCÉDER</string>
     <string name="apply_coupon">Appliquer un code de réduction</string>
-    <string name="food_delivery_time">Food Delivery Time</string>
+    <string name="food_delivery_time">Nourriture Livraison</string>
     <string name="appetizer_fragment_headline">Our Restaurant Serves both Vegetarian &amp;
         Non-Vegeterian</string>
     <string name="restaurant_timing">Restaurant Timings - 7AM to 11PM</string>
     <string name="note_restaurant">NOTE: It will take a minimum of 60 mins to prepare the food
     </string>
-    <string name="towel">Towel</string>
-    <string name="soap">Soap</string>
-    <string name="maintainance">Maintainance</string>
-    <string name="waterbottles">Water Bottles</string>
-    <string name="sodabottles">Soda Bottles</string>
-    <string name="icebuckets">Ice Buckets</string>
-    <string name="glasses">Glasses</string>
-    <string name="food_type">FOOD TYPE: </string>
+    <string name="towel">serviette</string>
+    <string name="soap">savon</string>
+    <string name="maintainance">maintainance</string>
+    <string name="waterbottles">Bouteilles d'eau</string>
+    <string name="sodabottles">Bouteilles de soda</string>
+    <string name="icebuckets">Seaux à glace</string>
+    <string name="glasses">lunettes</string>
+    <string name="food_type">TYPE FOOD: </string>
     <string name="restaurants">RESTAURANT</string>
     <string name="bar">BAR</string>
     <string name="spa">SPA</string>
     <string name="zero">0</string>
-    <string name="call_hotel">CALL</string>
+    <string name="call_hotel">APPEL</string>
     <string name="room_service">Les services de la chambre</string>
-    <string name="mis_info">MISCELLANEOUS INFO</string>
+    <string name="mis_info">INFORMATIONS DIVERSES</string>
     <string name="hotel_restau_timing">Restaurant Timing(s)</string>
     <string name="swim_timing">Swimming Pool Timing(s)</string>
     <string name="about_hotel">ABOUT HOTEL</string>
     <string name="add_number">NOTE: Please add your Mobile number to serve you better.</string>
-    <string name="enter_promocode">ENTER PROMO CODE</string>
-    <string name="please_scan">Please scan the code below to get Hotel Details</string>
-    <string name="order_summary">Order Summary</string>
-    <string name="thankyou">Thank You \n for shopping with us.</string>
-    <string name="pleasantstay">Have a Pleasant Stay.</string>
-    <string name="verifycredentials">Verifying credentials...</string>
-    <string name="addcart">Add to cart</string>
-    <string name="viewcart">View Cart</string>
+    <string name="enter_promocode">ENTRER CODE PROMO</string>
+    <string name="please_scan">S'il vous plaît scanner le code ci-dessous pour obtenir les détails Hôtel</string>
+    <string name="order_summary">Résumé de la commande</string>
+    <string name="thankyou">Merci de \n magasiner avec nous.</string>
+    <string name="pleasantstay">Passez un agréable séjour.</string>
+    <string name="verifycredentials">la vérification des pouvoirs...</string>
+    <string name="addcart">Ajouter au panier</string>
+    <string name="viewcart">détails panier</string>
 
     <string name="noti_hotel">Avis (Hôtel)</string>
     <string name="noti_inndemand">Avis (In Demand)</string>
-    <string name="no">No</string>
+    <string name="no">aucun</string>
     <string name="qr_entry">You have to scan QR Code \n\n Click Ok to Scan QR Code</string>
-    <string name="apply">Apply</string>
-    <string name="coupon">Coupon</string>
-    <string name="now">Now</string>
-    <string name="choose_location">Choose Location</string>
+    <string name="apply">appliquer</string>
+    <string name="coupon">coupon</string>
+    <string name="now"> maintenant</string>
+    <string name="choose_location">Choisir un emplacement</string>
 
 
     <!-- Button labels -->
