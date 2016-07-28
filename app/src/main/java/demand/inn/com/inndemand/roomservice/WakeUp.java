@@ -83,7 +83,7 @@ public class WakeUp extends AppCompatActivity {
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Wake me up");
+        toolbar.setTitle(R.string.wakeup_call);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 

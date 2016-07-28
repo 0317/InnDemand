@@ -88,7 +88,7 @@ public class BedTea extends AppCompatActivity {
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bed Tea/Coffee");
+        toolbar.setTitle(R.string.bed_tea_call);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 

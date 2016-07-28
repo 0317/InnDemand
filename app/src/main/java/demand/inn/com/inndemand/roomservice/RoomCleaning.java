@@ -84,7 +84,7 @@ public class RoomCleaning extends AppCompatActivity {
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Room cleaning");
+        toolbar.setTitle(R.string.room_cleaning);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 

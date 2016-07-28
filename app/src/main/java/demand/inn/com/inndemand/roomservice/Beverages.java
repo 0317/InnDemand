@@ -79,7 +79,7 @@ public class Beverages extends AppCompatActivity {
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Beverages");
+        toolbar.setTitle(R.string.beverages);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 

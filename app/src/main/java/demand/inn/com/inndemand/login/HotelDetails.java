@@ -1620,11 +1620,10 @@ public class HotelDetails extends AppCompatActivity {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMessage("loading details....");
-            mProgressDialog.setIndeterminate(true);
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.setCancelable(false);
         }
-
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
     }
 

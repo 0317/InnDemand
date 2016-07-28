@@ -66,7 +66,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BEVERAGES ETC"
+                android:text="@string/servebeverages_etc"
                 android:textSize="10sp"
                 android:gravity="center"
                 android:paddingTop="5dp"/>
@@ -91,7 +91,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ROOM CLEANING"
+                android:text="@string/serveroomclean"
                 android:textSize="10sp"
                 android:gravity="center"
                 android:paddingTop="5dp"/>
@@ -116,7 +116,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LAUNDRY"
+                android:text="@string/servelaundry"
                 android:textSize="10sp"
                 android:gravity="center"
                 android:paddingTop="5dp"/>
@@ -151,7 +151,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CAB"
+                android:text="@string/servecab"
                 android:gravity="center"
                 android:textSize="10sp"
                 android:paddingTop="10dp"/>
@@ -175,7 +175,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BED TEA/COFFEE"
+                android:text="@string/servetea_coffee"
                 android:gravity="center"
                 android:textSize="10sp"
                 android:paddingTop="10dp"/>
@@ -200,7 +200,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="WAKE ME UP"
+                android:text="@string/servewake_up"
                 android:gravity="center"
                 android:textSize="10sp"
                 android:paddingTop="10dp"/>
@@ -235,7 +235,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BELL-BOY"
+                android:text="@string/servebell_boy"
                 android:gravity="center"
                 android:textSize="10sp"
                 android:paddingTop="10dp"/>
@@ -260,7 +260,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BATHROOM ESSENTIALS"
+                android:text="@string/servebath_essentials"
                 android:gravity="center"
                 android:textSize="10sp"
                 android:paddingTop="10dp"/>

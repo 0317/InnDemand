@@ -131,7 +131,7 @@ public class MyCart extends AppCompatActivity {
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("My Cart");
+        toolbar.setTitle(R.string.my_cart);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
 
@@ -228,7 +228,7 @@ public class MyCart extends AppCompatActivity {
                     CartData a = new CartData(card.getName(), "", "");
                     cardList.add(a);
 
-                    cart_totalamount.setText("Total Price: Rs "+card.getDesc()+"/-");
+                    cart_totalamount.setText("Total Price"+": "+card.getDesc()+"/-");
                     cart_totalitems.setText("Total Items: ");
                 }
 
@@ -351,7 +351,7 @@ public class MyCart extends AppCompatActivity {
                 String input = input_code.getText().toString();
 
                 if(input == null || input.equalsIgnoreCase("")){
-                    new AlertDialog.Builder(MyCart.this).setMessage("Please enter Coupon code")
+                    new AlertDialog.Builder(MyCart.this).setMessage(R.string.promoplease_enterpromo)
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -432,8 +432,8 @@ public class MyCart extends AppCompatActivity {
     }
 
     public void proceed(View view){
-        new AlertDialog.Builder(this).setMessage("Select payment options")
-                .setPositiveButton("Pay", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this).setMessage(R.string.cartselectpayment_option)
+                .setPositiveButton(R.string.cartselectpayment_pay, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent in = new Intent(MyCart.this, Thankyou.class);
@@ -441,7 +441,7 @@ public class MyCart extends AppCompatActivity {
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.promocancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();

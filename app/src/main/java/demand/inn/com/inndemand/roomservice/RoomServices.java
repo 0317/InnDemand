@@ -51,7 +51,7 @@ public class RoomServices extends AppCompatActivity {
 //
         //UI elements call
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Room Services");
+        toolbar.setTitle(R.string.room_services);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 
@@ -75,7 +75,7 @@ public class RoomServices extends AppCompatActivity {
         services_text = (TextView) findViewById(R.id.services_text);
 
         if(prefs.getFm_service() == true){
-            services_text.setText("NOTE: Services are not available");
+            services_text.setText(R.string.roomservicesnotavailable);
             beverages_click.setClickable(false);
             beverages_click.setClickable(false);
             laundry_click.setClickable(false);

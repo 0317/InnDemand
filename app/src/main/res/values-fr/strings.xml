@@ -18,7 +18,7 @@
     <!-- .......Google Integration String calls....... -->
 
     <string name="logout">déconnexion</string>
-    <string name="loginText">S'il vous plaît vous connecter avec votre compte Google</string>
+    <string name="loginText">"S'il vous plaît vous connecter avec votre compte Google"</string>
 
     <!-- ......Hardcoded string values are under...... -->
 
@@ -89,7 +89,7 @@
     <string name="towel">serviette</string>
     <string name="soap">savon</string>
     <string name="maintainance">maintainance</string>
-    <string name="waterbottles">Bouteilles d'eau</string>
+    <string name="waterbottles">"Bouteilles d'eau"</string>
     <string name="sodabottles">Bouteilles de soda</string>
     <string name="icebuckets">Seaux à glace</string>
     <string name="glasses">lunettes</string>
@@ -105,14 +105,15 @@
     <string name="swim_timing">Swimming Pool Timing(s)</string>
     <string name="about_hotel">ABOUT HOTEL</string>
     <string name="add_number">NOTE: Please add your Mobile number to serve you better.</string>
-    <string name="enter_promocode">ENTRER CODE PROMO</string>
-    <string name="please_scan">S'il vous plaît scanner le code ci-dessous pour obtenir les détails Hôtel</string>
+    <string name="enter_promocode">entrez le code promo</string>
+    <string name="please_scan">"S'il vous plaît scanner le code ci-dessous pour obtenir les détails Hôtel"</string>
     <string name="order_summary">Résumé de la commande</string>
     <string name="thankyou">Merci de \n magasiner avec nous.</string>
     <string name="pleasantstay">Passez un agréable séjour.</string>
     <string name="verifycredentials">la vérification des pouvoirs...</string>
     <string name="addcart">Ajouter au panier</string>
     <string name="viewcart">détails panier</string>
+    <string name="roomservicesnotavailable">REMARQUE: Les services ne sont pas disponibles</string>
 
     <string name="noti_hotel">Avis (Hôtel)</string>
     <string name="noti_inndemand">Avis (In Demand)</string>
@@ -123,6 +124,30 @@
     <string name="now"> maintenant</string>
     <string name="choose_location">Choisir un emplacement</string>
 
+    <!-- ............Restaurant Area................-->
+
+    <string name="restaurant_servenotavailable">REMARQUE: Services de restauration ne sont pas disponibles</string>
+    <string name="restaurant_serveavailable">REMARQUE: Il faudra un minimum de 60 heures pour préparer la nourriture</string>
+
+    <!-- ............Room Services Class........... -->
+
+    <string name="servebeverages_etc">BOISSONS ETC</string>
+    <string name="serveroomclean">CHAMBRE DE NETTOYAGE</string>
+    <string name="servecab">CAB</string>
+    <string name="servelaundry">BUANDERIE</string>
+    <string name="servetea_coffee">thé de lit / café</string>
+    <string name="servewake_up">me réveiller</string>
+    <string name="servebell_boy">groom</string>
+    <string name="servebath_essentials">salle de bains essentiels</string>
+
+    <!-- ......Navigation Menu.................. -->
+
+    <string name="menuorder_history">Historique des commandes</string>
+    <string name="menushare_inndemand">Partager InnDemand</string>
+    <string name="menusetting">Réglages</string>
+    <string name="menufeedback">réaction</string>
+    <string name="menuhelp">aider</string>
+    <string name="menusign_out">déconnecter</string>
 
     <!-- Button labels -->
     <string name="deleteaccount">Supprimer le compte</string>
@@ -131,5 +156,16 @@
     <string name="confirm">CONFIRMER</string>
     <string name="ok_click">"D'accord"</string>
     <string name="disconnect">couper</string>
+
+    <!-- .......My cart & Promo pop-up.....-->
+
+    <string name="carttotal_price">Prix total</string>
+    <string name="carttotal_items">Total des éléments</string>
+    <string name="promoenter_code">entrez le code</string>
+    <string name="promocancel">annuler</string>
+    <string name="promoapply">appliquer</string>
+    <string name="promoplease_enterpromo">"S'il vous plaît entrer votre code promo"</string>
+    <string name="cartselectpayment_option">Sélectionnez les options de paiement</string>
+    <string name="cartselectpayment_pay">payer</string>
 
 </resources>

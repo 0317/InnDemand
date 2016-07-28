@@ -317,10 +317,10 @@ public class Restaurant extends AppCompatActivity{
         if(nu.isConnectingToInternet()) {
             showProgressDialog();
             if(prefs.getFm_restaurant() == true) {
-                restaurant_text.setText("NOTE: Restaurant Services are not available");
+                restaurant_text.setText(R.string.restaurant_servenotavailable);
                 hideProgressDialog();
             } else {
-                restaurant_text.setText("NOTE: It will take a minimum of 60 mins to prepare the food");
+                restaurant_text.setText(R.string.restaurant_serveavailable);
                 hideProgressDialog();
                 getData();
                 getCategory();

@@ -79,7 +79,7 @@ public class Bathroom extends AppCompatActivity {
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bathroom Essentials");
+        toolbar.setTitle(R.string.bath_essentials);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 

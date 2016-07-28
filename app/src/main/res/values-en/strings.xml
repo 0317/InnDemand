@@ -151,6 +151,7 @@
     <string name="menuhelp">Help</string>
     <string name="menusign_out">Sign-out</string>
 
+
     <!-- Button labels -->
     <string name="sign_out">Sign Out</string>
     <string name="confirm_demand">CONFIRM MY DEMAND</string>
@@ -158,17 +159,15 @@
     <string name="ok_click">OK</string>
     <string name="disconnect">Disconnect</string>
 
+    <!-- .....Promo pop-up.....-->
 
-    <!-- .....My cart & Promo pop-up.....-->
-
-    <string name="carttotal_price">Total Price</string>
-    <string name="carttotal_items">Total Items</string>
     <string name="promoenter_code">ENTER CODE</string>
     <string name="promocancel">Cancel</string>
     <string name="promoapply">Apply</string>
     <string name="promoplease_enterpromo">Please enter Coupon code</string>
     <string name="cartselectpayment_option">Select payment option</string>
     <string name="cartselectpayment_pay">Pay</string>
+
 
     <string name="country_prompt">Choose a language</string>
     <string-array name="country_languages">

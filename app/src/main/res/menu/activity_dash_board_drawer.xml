@@ -5,7 +5,7 @@
         <item
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Restaurant" />
+            android:title="@string/restaurant" />
        <!-- <item
             android:id="@+id/nav_restaurant"
             android:icon="@drawable/ic_menu_camera"
@@ -25,11 +25,11 @@
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Order History" />
+            android:title="@string/menuorder_history" />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_share"
-            android:title="Share InnDemand" />
+            android:title="@string/menushare_inndemand" />
     </group>
 
     <item android:title="Accounts">
@@ -37,19 +37,19 @@
             <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/icon_settings"
-                android:title="Settings" />
+                android:title="@string/menusetting" />
             <item
                 android:id="@+id/nav_feedback"
                 android:icon="@drawable/ic_feedback"
-                android:title="Feedback" />
+                android:title="@string/menufeedback" />
             <item
                 android:id="@+id/nav_help"
                 android:icon="@drawable/icon_help"
-                android:title="Help" />
+                android:title="@string/menuhelp" />
             <item
                 android:id="@+id/nav_signout"
                 android:icon="@drawable/icon_signout"
-                android:title="Sign Out" />
+                android:title="@string/menusign_out" />
         </menu>
     </item>
 
