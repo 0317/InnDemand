@@ -411,7 +411,7 @@ public class Restaurant extends AppCompatActivity{
 
     public void addCart(View view){
         db.insertData(new CartData(broaditemName, totalCash, totalItems));
-        new AlertDialog.Builder(Restaurant.this).setMessage("Your Food is added to cart")
+        new AlertDialog.Builder(Restaurant.this).setMessage(R.string.restaurant_foodadded_tocart)
                 .setPositiveButton(R.string.viewcart, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

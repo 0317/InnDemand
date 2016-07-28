@@ -111,6 +111,7 @@
 
     <!-- ............Restaurant Area................-->
 
+    <string name="restaurant_foodadded_tocart">あなたの食べ物はカートに追加されます</string>
     <string name="restaurant_servenotavailable">注：レストランのサービスは利用できません</string>
     <string name="restaurant_serveavailable">注：それは食べ物を準備するために60時間以上かかります</string>
 

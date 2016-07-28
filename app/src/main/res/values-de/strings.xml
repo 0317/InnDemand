@@ -112,6 +112,7 @@
 
     <!-- ............Restaurant Area................-->
 
+    <string name="restaurant_foodadded_tocart">Ihre Nahrung wird in den Warenkorb gelegt</string>
     <string name="restaurant_servenotavailable">HINWEIS: Restaurant Dienstleistungen sind nicht verfügbar</string>
     <string name="restaurant_serveavailable">HINWEIS: Es wird mindestens 60 Stunden dauern, um das Essen zu bereiten</string>
 

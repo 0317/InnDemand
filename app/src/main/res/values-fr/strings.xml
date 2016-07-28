@@ -126,6 +126,7 @@
 
     <!-- ............Restaurant Area................-->
 
+    <string name="restaurant_foodadded_tocart">Votre alimentation est ajouté au panier</string>
     <string name="restaurant_servenotavailable">REMARQUE: Services de restauration ne sont pas disponibles</string>
     <string name="restaurant_serveavailable">REMARQUE: Il faudra un minimum de 60 heures pour préparer la nourriture</string>
 
