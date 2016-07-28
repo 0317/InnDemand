@@ -1,5 +1,6 @@
 package demand.inn.com.inndemand.utility;
 
+import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -32,10 +33,23 @@ import demand.inn.com.inndemand.volleycall.AppController;
 /**
  * Created by akash
  */
-public class Serve extends Service {
+public class Serve extends IntentService {
 
     AppPreferences prefs;
     Context mContext;
+
+    public Serve(String name) {
+        super(name);
+    }
+
+    private boolean mRunning;
+
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
+        mRunning = false;
+    }
 
     @Nullable
     @Override
@@ -44,6 +58,22 @@ public class Serve extends Service {
         Toast.makeText(getApplicationContext(), "Notification Service Started", Toast.LENGTH_LONG).show();
         notiHit();
         return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (!mRunning) {
+            mRunning = true;
+            // do something
+            Toast.makeText(getApplicationContext(), "Notification Service Started", Toast.LENGTH_LONG).show();
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        Toast.makeText(getApplicationContext(), "Notification Service Started", Toast.LENGTH_LONG).show();
+        notiHit();
     }
 
     public void notiHit() {

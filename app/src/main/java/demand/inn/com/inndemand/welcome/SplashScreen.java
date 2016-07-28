@@ -80,6 +80,8 @@ public class SplashScreen extends AppCompatActivity {
 
         prefs.setCheckout("1");
 
+//        ((LocaleApp)getApplicationContext()).changeLang(prefs.getLocaleset());
+
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         //GCM Area (Notifications)

@@ -144,21 +144,25 @@ public class Settings extends AppCompatActivity {
                             "Language: French", Toast.LENGTH_SHORT).show();
                     setLocale("fr");
                     prefs.setLocaleset("fr");
+                    prefs.setLocaleset(myLocale.getLanguage());
                 }else if(pos == 3){
                     Toast.makeText(Settings.this,
                             "Language: German", Toast.LENGTH_SHORT).show();
                     setLocale("de");
                     prefs.setLocaleset("de");
+                    prefs.setLocaleset(myLocale.getLanguage());
                 }else if(pos == 4){
                     Toast.makeText(Settings.this,
                             "Language: Arabic", Toast.LENGTH_SHORT).show();
                     setLocale("ar");
                     prefs.setLocaleset("ar");
+                    prefs.setLocaleset(myLocale.getLanguage());
                 }else if(pos == 5){
                     Toast.makeText(Settings.this,
                             "Language: Portuguese", Toast.LENGTH_SHORT).show();
                     setLocale("pt");
                     prefs.setLocaleset("pt");
+                    prefs.setLocaleset(myLocale.getLanguage());
                 }else if(pos == 6){
                     Toast.makeText(Settings.this,
                             "Language: Russian", Toast.LENGTH_SHORT).show();

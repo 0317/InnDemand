@@ -281,10 +281,13 @@ public class HotelDetails extends AppCompatActivity {
             }
         });
 
-        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent m_intent = new Intent(this, Serve.class);
-        PendingIntent pi = PendingIntent.getService(HotelDetails.this, 2, m_intent, 0);
-        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 60 * 30, pi);
+        Intent serviceIntent = new Intent(this, Serve.class);
+        startService(serviceIntent);
+
+//        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        Intent m_intent = new Intent(this, Serve.class);
+//        PendingIntent pi = PendingIntent.getService(HotelDetails.this, 2, m_intent, 0);
+//        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pi);
 
         //UI Initialize
         restaurant_area = (LinearLayout) findViewById(R.id.hotel_restaurant);

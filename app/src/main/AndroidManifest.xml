@@ -161,35 +161,42 @@
 
         <activity android:name=".roomservice.Restaurant"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity android:name=".model.SearchArea"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".model.SearchDB"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!-- ...................Bar Activity Area...................... -->
 
         <activity android:name=".roomservice.Bar"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <!-- ...................Terms of Use Area...................... -->
 
         <activity android:name=".login.PrivacyPolicy"
+            android:configChanges="locale"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".login.TermsCondition"
+            android:configChanges="locale"
             android:screenOrientation="portrait"></activity>
 
         <!-- ...................Broadcast call Area....................... -->
 
         <activity android:name=".gcm.GCMNotifications"
+            android:configChanges="locale"
             android:screenOrientation="portrait">
         </activity>
 
@@ -207,11 +214,7 @@
         <!-- ...................Services call Area........................ -->
 
 
-        <service android:name=".utility.Serve"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE"></action>
-            </intent-filter>
+        <service android:name=".utility.Serve">
         </service>
 
        <!-- <service
@@ -250,6 +253,7 @@
         <!-- ...................Map Area....................................-->
 
         <activity android:name=".mapdirection.MapArea"
+            android:configChanges="locale"
             android:screenOrientation="portrait"></activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -259,24 +263,29 @@
 
         <activity android:name=".setting.Settings"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".setting.Feedback"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".setting.OrderHistory"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".setting.FeedbackList"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!-- ..................Thank You........................... -->
         <activity android:name=".welcome.Thankyou"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
