@@ -159,6 +159,8 @@
     <string name="confirm">CONFIRM</string>
     <string name="ok_click">OK</string>
     <string name="disconnect">Disconnect</string>
+    <string name="delete_account">Its seems like you want to delete your account.</string>
+    <string name="delete">Delete</string>
 
     <!-- .....Promo pop-up.....-->
 

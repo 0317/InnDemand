@@ -87,6 +87,7 @@ import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.mapdirection.MapArea;
 import demand.inn.com.inndemand.mapdirection.Mapping;
 import demand.inn.com.inndemand.model.SimpleDividerItemDecor;
+import demand.inn.com.inndemand.model.Utils;
 import demand.inn.com.inndemand.roomservice.Bar;
 import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.roomservice.RoomServices;
@@ -280,9 +281,6 @@ public class HotelDetails extends AppCompatActivity {
                 }
             }
         });
-
-        Intent serviceIntent = new Intent(this, Serve.class);
-        startService(serviceIntent);
 
 //        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 //        Intent m_intent = new Intent(this, Serve.class);
@@ -694,8 +692,11 @@ public class HotelDetails extends AppCompatActivity {
                     String spa_img = object.getString("spa_image");
                     about_hotel = object.getString("about_hotel");
 
-                    hotel_Name.setText(hotelName);
-                    hotel_Address.setText(address);
+                    Utils.getTraslatedString("en", prefs.getLocaleset(), hotelName);
+//                    hotel_Name.setText(Utils.destinationString);
+//                    Utils.getTraslatedString("en", prefs.getLocaleset(), hotelName);
+//                    hotel_Address.setText(address);
+                    Utils.getTraslatedString("en", prefs.getLocaleset(), address);
                     hotel_desc.setText(about_hotel);
 
                     Picasso.with(HotelDetails.this).load(restaurant_image).into(main_backdrop);

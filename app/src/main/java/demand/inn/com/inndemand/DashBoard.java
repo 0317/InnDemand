@@ -1,5 +1,6 @@
 package demand.inn.com.inndemand;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -111,6 +112,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
     NetworkImageView imageView;
     ImageView main_backdrop;
     Toolbar toolbar;
+    public static Activity dash;
 
     //Navigation Details
     ImageView dp;
@@ -185,6 +187,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         nu = new NetworkUtility(DashBoard.this);
         prefs = new AppPreferences(DashBoard.this);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
+        dash = this;
 
         prefs.setHotel_check(true);
 

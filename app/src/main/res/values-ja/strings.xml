@@ -144,6 +144,8 @@
     <string name="confirm">確認します</string>
     <string name="ok_click">[OK]</string>
     <string name="disconnect">切断</string>
+    <string name="delete_account">アカウントを削除するようにその思えます.</string>
+    <string name="delete">削除</string>
 
     <!-- .....My cart & Promo pop-up.....-->
 

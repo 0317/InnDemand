@@ -72,6 +72,7 @@ import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SearchArea;
 import demand.inn.com.inndemand.model.SearchDB;
+import demand.inn.com.inndemand.model.Utils;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -636,6 +637,8 @@ public class Restaurant extends AppCompatActivity{
                         //catName = Response (category names to show in tablayout)
                         type_id = object.getString("id");
                         catName = object.getString("name");
+                        String finalVal = null;
+                        String valCat = Utils.getTraslatedString(catName, "", prefs.getLocaleset(), finalVal);
 
                         //catType = Response 1/2/3 (1 = Bar, 2 = Restaurant, 3 = Spa)
                         catType = object.getString("category_type");
@@ -645,7 +648,7 @@ public class Restaurant extends AppCompatActivity{
                         Log.d("API", "API Category: " + catName);
 
                         dataModel.setId(type_id);
-                        dataModel.setCategory(catName);
+                        dataModel.setCategory(finalVal);
 //                        dataModel.setId(catType);
                         resturantDataModelList.add(dataModel);
 //                        data = new FragmentData(catName);

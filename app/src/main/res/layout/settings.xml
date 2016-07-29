@@ -105,7 +105,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <Spinner
                     android:id="@+id/languages"
@@ -117,6 +118,31 @@
                     android:background="@color/light_grey"
                     android:entries="@array/country_languages"
                     android:prompt="@string/country_prompt" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/language_selected"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/sixteen_sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/language_selected"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/eighteen_sp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

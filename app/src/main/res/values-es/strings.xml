@@ -143,6 +143,8 @@
     <string name="confirm">CONFIRMAR</string>
     <string name="ok_click">DE ACUERDO</string>
     <string name="disconnect">Desconectar</string>
+    <string name="delete_account">Sus parece como si desea eliminar su cuenta</string>
+    <string name="delete">Borrar</string>
 
     <!-- .....My cart & Promo pop-up.....-->
 

@@ -157,6 +157,8 @@
     <string name="confirm">CONFIRMER</string>
     <string name="ok_click">"D'accord"</string>
     <string name="disconnect">couper</string>
+    <string name="delete_account">Son semble que vous voulez supprimer votre compte.</string>
+    <string name="delete">Effacer</string>
 
     <!-- .......My cart & Promo pop-up.....-->
 

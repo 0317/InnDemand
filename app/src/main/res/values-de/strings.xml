@@ -139,11 +139,13 @@
 
     <!-- Button labels -->
     <string name="deleteaccount">Konto löschen</string>
-    <string name="sign_out">Sign Out</string>
+    <string name="sign_out">austragen</string>
     <string name="confirm_demand">Bestätigen Sie meine Nachfrage</string>
     <string name="confirm">BESTÄTIGEN</string>
     <string name="ok_click">OK</string>
-    <string name="disconnect">Disconnect</string>
+    <string name="disconnect">Trennen</string>
+    <string name="delete_account">Sein scheint, wie Sie Ihr Konto löschen möchten.</string>
+    <string name="delete">Löschen</string>
 
     <!-- .....My cart & Promo pop-up.....-->
 

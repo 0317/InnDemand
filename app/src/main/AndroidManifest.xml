@@ -223,6 +223,14 @@
 
         <service android:name=".fcm.NotificationListener"></service>
 -->
+
+        <service android:name=".utility.Serve"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE"></action>
+            </intent-filter>
+        </service>
+
         <service
             android:name=".fcm.MyInstanceIDListenerService">
             <intent-filter>
@@ -280,10 +288,10 @@
             android:name="io.fabric.ApiKey"
             android:value="d41faf1bafcf634b25cd4c680c0f048567e1cef9" />
 
-       <!-- <meta-data
+        <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d41faf1bafcf634b25cd4c680c0f048567e1cef9"
-            />-->
+            />
 
     </application>
 

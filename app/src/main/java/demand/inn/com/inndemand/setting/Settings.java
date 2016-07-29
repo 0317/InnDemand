@@ -1,5 +1,6 @@
 package demand.inn.com.inndemand.setting;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,14 +18,21 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.bumptech.glide.util.Util;
+
 import java.util.Locale;
 
+import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.model.Translate;
+import demand.inn.com.inndemand.model.Utils;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.welcome.SplashScreen;
 
 /**
  * Created by akash
@@ -43,6 +51,7 @@ public class Settings extends AppCompatActivity {
     ToggleButton notiHotel, notiInndemand;
     Button deleteAccount;
     Spinner languages;
+    TextView selected_language;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +79,7 @@ public class Settings extends AppCompatActivity {
         //UI Initialize
         notiHotel = (ToggleButton) findViewById(R.id.hotel_noti);
         notiInndemand = (ToggleButton) findViewById(R.id.inndemand_noti);
+        selected_language = (TextView) findViewById(R.id.language_selected);
 
         SharedPreferences sharedPrefs = getSharedPreferences("demand.inn.com.inndemand", MODE_PRIVATE);
         boolean noti_hotel = sharedPrefs.getBoolean("noti_hotel", false);
@@ -137,57 +147,74 @@ public class Settings extends AppCompatActivity {
                 if(pos == 1){
                     Toast.makeText(Settings.this,
                             "Language: English", Toast.LENGTH_SHORT).show();
-                    setLocale("en");
+//                    setLocale("en");
+                    settingLocale("en");
                     prefs.setLocaleset("en");
+                    selected_language.setText("English");
                 }else if(pos == 2){
                     Toast.makeText(Settings.this,
                             "Language: French", Toast.LENGTH_SHORT).show();
-                    setLocale("fr");
+//                    setLocale("fr");
+                    settingLocale("fr");
                     prefs.setLocaleset("fr");
-                    prefs.setLocaleset(myLocale.getLanguage());
+                    selected_language.setText("French");
                 }else if(pos == 3){
                     Toast.makeText(Settings.this,
                             "Language: German", Toast.LENGTH_SHORT).show();
-                    setLocale("de");
+//                    setLocale("de");
+                    settingLocale("de");
                     prefs.setLocaleset("de");
-                    prefs.setLocaleset(myLocale.getLanguage());
+                    selected_language.setText("German");
                 }else if(pos == 4){
                     Toast.makeText(Settings.this,
                             "Language: Arabic", Toast.LENGTH_SHORT).show();
-                    setLocale("ar");
+//                    setLocale("ar");
+                    settingLocale("ar");
                     prefs.setLocaleset("ar");
-                    prefs.setLocaleset(myLocale.getLanguage());
+                    selected_language.setText("Arabic");
                 }else if(pos == 5){
                     Toast.makeText(Settings.this,
                             "Language: Portuguese", Toast.LENGTH_SHORT).show();
-                    setLocale("pt");
+//                    setLocale("pt");
+                    settingLocale("pt");
                     prefs.setLocaleset("pt");
-                    prefs.setLocaleset(myLocale.getLanguage());
+                    selected_language.setText("Protuguese");
                 }else if(pos == 6){
                     Toast.makeText(Settings.this,
                             "Language: Russian", Toast.LENGTH_SHORT).show();
-                    setLocale("ru");
+//                    setLocale("ru");
+                    settingLocale("ru");
                     prefs.setLocaleset("ru");
+                    Utils.getTraslatedString("Hello mam How are you?", "", "ru");
+                    selected_language.setText("Russian");
                 }else if(pos == 7){
                     Toast.makeText(Settings.this,
                             "Language: Chinese", Toast.LENGTH_SHORT).show();
-                    setLocale("b+chk");
+//                    setLocale("b+chk");
+                    settingLocale("b+chk");
                     prefs.setLocaleset("b+chk");
+                    selected_language.setText("Chinese");
                 }else if(pos == 8){
                     Toast.makeText(Settings.this,
                             "Language: Japanese", Toast.LENGTH_SHORT).show();
-                    setLocale("ja");
+//                    setLocale("ja");
+                    settingLocale("ja");
                     prefs.setLocaleset("ja");
+                    selected_language.setText("Japanese");
                 }else if(pos == 9){
                     Toast.makeText(Settings.this,
                             "Language: Spanish", Toast.LENGTH_SHORT).show();
-                    setLocale("es");
+//                    setLocale("es");
+                    settingLocale("es");
                     prefs.setLocaleset("es");
+                    selected_language.setText("Spanish");
                 }else if(pos == 10){
                     Toast.makeText(Settings.this,
                             "Language: Javanese", Toast.LENGTH_SHORT).show();
-                    setLocale("jv");
+//                    setLocale("jv");
+                    settingLocale("jv");
                     prefs.setLocaleset("jv");
+                    selected_language.setText("Javanese ");
                 }
             }
 
@@ -212,14 +239,27 @@ public class Settings extends AppCompatActivity {
         finish();
     }
 
+    public void settingLocale(String language){
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
+        Intent refresh = new Intent(this, SplashScreen.class);
+        startActivity(refresh);
+        finish();
+        DashBoard.dash.finish();
+    }
+
     public void deleteAccount(View view){
-        new AlertDialog.Builder(Settings.this).setMessage("Its seems like you want to delete your account.")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(Settings.this).setMessage(R.string.delete_account)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.promocancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();

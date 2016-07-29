@@ -53,20 +53,7 @@ public class LocaleApp extends Application {
             ed.commit();
 
             locale = new Locale(lang);
-            Locale.setDefault(locale);
-            Configuration conf = new Configuration(config);
-            conf.locale = locale;
-            getBaseContext().getResources().updateConfiguration(conf, getBaseContext().getResources().getDisplayMetrics());
-        }
-    }
-
-    public String getLang(){
-        return PreferenceManager.getDefaultSharedPreferences(this).getString(this.getString(R.string.app_name), "");
-    }
-
-
-
-    /*public void onCreate() {
+            Locale.setDefault(locale); /*public void onCreate() {
         super.onCreate();
         prefs = new AppPreferences(this);
 
@@ -93,4 +80,13 @@ public class LocaleApp extends Application {
         finish();
     }*/
 
+            Configuration conf = new Configuration(config);
+            conf.locale = locale;
+            getBaseContext().getResources().updateConfiguration(conf, getBaseContext().getResources().getDisplayMetrics());
+        }
+    }
+
+    public String getLang(){
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(this.getString(R.string.app_name), "");
+    }
 }

@@ -124,6 +124,7 @@
     <string name="coupon">Coupon</string>
     <string name="now">Now</string>
     <string name="choose_location">Choose Location</string>
+    <string name="language_selected">Language: </string>
     <string name="roomservicesnotavailable">NOTE: Services are not available</string>
 
     <!-- ............Restaurant Area................-->
@@ -158,7 +159,8 @@
     <string name="confirm">CONFIRM</string>
     <string name="ok_click">OK</string>
     <string name="disconnect">Disconnect</string>
-
+    <string name="delete_account">Its seems like you want to delete your account.</string>
+    <string name="delete">Delete</string>
 
     <!-- .....My cart & Promo pop-up.....-->
 

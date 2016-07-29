@@ -1,5 +1,8 @@
 package demand.inn.com.inndemand.roomservice;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,8 +19,10 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.login.HotelDetails;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
+import demand.inn.com.inndemand.utility.Serve;
 import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
@@ -62,6 +67,12 @@ public class RoomServices extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
             }
         });
+
+        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent m_intent = new Intent(this, Serve.class);
+        PendingIntent pi = PendingIntent.getService(RoomServices.this, 2, m_intent, 0);
+        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 60 * 30 , pi);
+
 
         //Linearlayout click call for different services
         beverages_click = (Button) findViewById(R.id.beverages_click);

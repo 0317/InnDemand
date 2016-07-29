@@ -4,7 +4,9 @@ import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
@@ -33,14 +35,14 @@ import demand.inn.com.inndemand.volleycall.AppController;
 /**
  * Created by akash
  */
-public class Serve extends IntentService {
+
+public class Serve extends Service {
 
     AppPreferences prefs;
     Context mContext;
+    SharedPreferences settings;
 
-    public Serve(String name) {
-        super(name);
-    }
+    String name;
 
     private boolean mRunning;
 
@@ -55,39 +57,42 @@ public class Serve extends IntentService {
     @Override
     public IBinder onBind(Intent intent) {
         prefs = new AppPreferences(mContext);
-        Toast.makeText(getApplicationContext(), "Notification Service Started", Toast.LENGTH_LONG).show();
-        notiHit();
+        settings = getSharedPreferences("InDemand", MODE_PRIVATE);
+        String restoredText = settings.getString("checkin", null);
+        if (restoredText != null) {
+            name = settings.getString("checkin", "");
+        }
+        Log.d("Hotel ID"," Check: "+prefs.getHotel_id());
+        Log.d("Checkin ID"," Check: "+prefs.getCheckin_Id());
         return null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        settings = PreferenceManager.getDefaultSharedPreferences(mContext);
+
         if (!mRunning) {
             mRunning = true;
             // do something
+            notiHit();
             Toast.makeText(getApplicationContext(), "Notification Service Started", Toast.LENGTH_LONG).show();
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        Toast.makeText(getApplicationContext(), "Notification Service Started", Toast.LENGTH_LONG).show();
-        notiHit();
-    }
-
     public void notiHit() {
+
         JSONObject obj = new JSONObject();
         try {
-            obj.put("hotel_id", prefs.getHotel_id());
-            obj.put("checkin_id", prefs.getCheckin_Id());
+            obj.put("hotel_id", settings.getString("hotelID", ""));
+            obj.put("checkin_id", settings.getString("checkinID", ""));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         Log.d("Api Notification Data", obj.toString());
 
-        postJsonData(Config.innDemand + "checkins/notification_for_new_checkin", obj.toString());
+        postJsonData(Config.innDemand + "checkins/notification_for_new_checkin/", obj.toString());
     }
 
     //API call method to POST data to the server

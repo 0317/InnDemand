@@ -145,6 +145,8 @@
     <string name="confirm">تأكيد</string>
     <string name="ok_click">حسنا</string>
     <string name="disconnect">قطع الاتصال</string>
+    <string name="delete_account">لها يبدو أنك تريد حذف حسابك.</string>
+    <string name="delete">حذف</string>
 
     <!-- .....My cart & Promo pop-up.....-->
 

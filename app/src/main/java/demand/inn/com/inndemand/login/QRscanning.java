@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -70,6 +72,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     //Utitlity Class call
     NetworkUtility nu;
     AppPreferences prefs;
+    SharedPreferences settings;
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 3;
 
@@ -98,6 +101,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         setContentView(R.layout.qrscanning);
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
+        PreferenceManager.getDefaultSharedPreferences(QRscanning.this);
 
         getting =  FirebaseInstanceId.getInstance().getToken();
 //        getting = getIntent().getStringExtra("toekGet");
@@ -295,6 +299,10 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
             obj.put("qr", roomID);
 //            obj.put("checkin_time", formattedDate);
 
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("hotelID", hotelID);
+            editor.commit();
+
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -334,6 +342,10 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 
                     checkinId = object.getString("checkin_id");
                     prefs.setCheckin_Id(checkinId);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("checkinID", checkinId);
+                    editor.commit();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

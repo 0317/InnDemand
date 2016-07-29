@@ -144,6 +144,8 @@
     <string name="confirm">ПОДТВЕРДИТЬ</string>
     <string name="ok_click">хорошо</string>
     <string name="disconnect">отключать</string>
+    <string name="delete_account">Его кажется, что вы хотите удалить свой аккаунт.</string>
+    <string name="delete">Удалить</string>
 
 
     <!-- .....My cart & Promo pop-up.....-->

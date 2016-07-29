@@ -143,6 +143,8 @@
     <string name="confirm">CONFIRMAR</string>
     <string name="ok_click">Está bem</string>
     <string name="disconnect">desligar</string>
+    <string name="delete_account">Sua parece que você quer apagar sua conta.</string>
+    <string name="delete">Excluir</string>
 
     <!-- .....My cart & Promo pop-up.....-->
 
