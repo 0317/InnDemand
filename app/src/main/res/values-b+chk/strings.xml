@@ -7,6 +7,8 @@
     <string name="logout">登出</string>
     <string name="loginText">请与您的谷歌帐户登录</string>
 
+    <string name="action_settings">设置</string>
+
     <!-- ......Hardcoded string values are under...... -->
 
     <string name="login_call">登录</string>

@@ -7,6 +7,8 @@
     <string name="logout">Ausloggen</string>
     <string name="loginText">Bitte melden Sie sich mit Ihrem Google-Konto</string>
 
+    <string name="action_settings">Einstellungen</string>
+
     <!-- ......Hardcoded string values are under...... -->
 
     <string name="login_call">LOGIN</string>

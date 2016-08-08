@@ -692,11 +692,9 @@ public class HotelDetails extends AppCompatActivity {
                     String spa_img = object.getString("spa_image");
                     about_hotel = object.getString("about_hotel");
 
-                    Utils.getTraslatedString("en", prefs.getLocaleset(), hotelName);
 //                    hotel_Name.setText(Utils.destinationString);
 //                    Utils.getTraslatedString("en", prefs.getLocaleset(), hotelName);
 //                    hotel_Address.setText(address);
-                    Utils.getTraslatedString("en", prefs.getLocaleset(), address);
                     hotel_desc.setText(about_hotel);
 
                     Picasso.with(HotelDetails.this).load(restaurant_image).into(main_backdrop);

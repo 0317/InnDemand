@@ -6,6 +6,8 @@
     <string name="logout">ログアウト</string>
     <string name="loginText">Googleアカウントでログインしてください</string>
 
+    <string name="action_settings">[設定]</string>
+
     <!-- ......Hardcoded string values are under...... -->
 
     <string name="login_call">ログイン</string>

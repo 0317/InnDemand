@@ -9,9 +9,9 @@
     <uses-permission android:name="demand.inn.com.inndemand.permission.C2D_MESSAGE" />
     <uses-permission-sdk-23 android:name="android.permission.CAMERA"></uses-permission-sdk-23>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- To access accounts configured on device -->
+    <!-- ..........To access accounts configured on device........ -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <!-- To use account credentials -->
+    <!-- ..........To use account credentials...................... -->
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -83,7 +83,6 @@
             android:screenOrientation="portrait">
 
         </activity>
-
 
         <activity
             android:name=".DashBoard"

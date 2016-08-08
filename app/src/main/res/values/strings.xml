@@ -126,6 +126,8 @@
     <string name="choose_location">Choose Location</string>
     <string name="language_selected">Language: </string>
     <string name="roomservicesnotavailable">NOTE: Services are not available</string>
+    <string name="successful_logout">Successfully logged-out</string>
+    <string name="sign_out_hotel">You want to Sign out?</string>
 
     <!-- ............Restaurant Area................-->
 
@@ -172,6 +174,11 @@
     <string name="promoplease_enterpromo">Please enter Coupon code</string>
     <string name="cartselectpayment_option">Select payment option</string>
     <string name="cartselectpayment_pay">Pay</string>
+
+    <!-- .............Pop-ups........... -->
+
+    <string name="restart_app">To Change language, You need to restart your App or Click restart</string>
+    <string name="restart">Restart</string>
 
     <string name="country_prompt">Choose a language</string>
     <string-array name="country_languages">

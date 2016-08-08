@@ -89,7 +89,6 @@ public class MyCart extends AppCompatActivity {
 
     //UI call area
     LinearLayout write_comment, enterPromo, confirm_demand_click_cart;
-    RecyclerView list;
     TextView cart_item, cart_total;
     TextView cart_totalitems, cart_totalamount;
     EditText comment_area;

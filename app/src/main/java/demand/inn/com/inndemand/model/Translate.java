@@ -7,9 +7,8 @@ package demand.inn.com.inndemand.model;
 public class Translate {
 
     String title;
-    public static String translate_url = "https://www.googleapis.com/language/translate/v2?";
-    public static String translate_key = "key=";
-    public static String translate_source = "&source=";
+    public static String translate_url = "https://www.googleapis.com/language/translate/v2?" +
+            "key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source=en";
     public static String translate_target = "&target=";
     public static String translate_value = "&q=";
 

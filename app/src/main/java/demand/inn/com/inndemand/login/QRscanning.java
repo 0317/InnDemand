@@ -299,9 +299,9 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
             obj.put("qr", roomID);
 //            obj.put("checkin_time", formattedDate);
 
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("hotelID", hotelID);
-            editor.commit();
+//            SharedPreferences.Editor editor = settings.edit();
+//            editor.putString("hotelID", hotelID);
+//            editor.commit();
 
         }catch (JSONException e){
             e.printStackTrace();

@@ -55,6 +55,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -499,7 +500,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
         } else if (id == R.id.nav_signout) {
             AlertDialog.Builder builder = new AlertDialog.Builder(DashBoard.this);
-            builder.setMessage("You want to Sign out?")
+            builder.setMessage(R.string.sign_out_hotel)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -507,7 +508,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                                 if(LoginManager.getInstance()!=null)
                                     prefs.clearPref();
                                 LoginManager.getInstance().logOut();
-                                Toast.makeText(DashBoard.this, "Successfully logged-out", Toast.LENGTH_LONG).show();
+                                Toast.makeText(DashBoard.this, R.string.successful_logout , Toast.LENGTH_LONG).show();
                                 prefs.setFacebook_logged_In(false);
                                 Intent in = new Intent(DashBoard.this, SplashScreen.class);
                                 startActivity(in);
@@ -521,7 +522,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                                             @Override
                                             public void onResult(Status status) {
                                                 prefs.clearPref();
-                                                Toast.makeText(DashBoard.this, "Successfully logged-out", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(DashBoard.this, R.string.successful_logout , Toast.LENGTH_LONG).show();
                                                 Intent in = new Intent(DashBoard.this, SplashScreen.class);
                                                 startActivity(in);
                                                 finish();
@@ -792,7 +793,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                     hotel_Name.setText(hotelName);
                     hotel_Address.setText(address);
 
-                    Picasso.with(DashBoard.this).load(restaurant_image).into(main_backdrop);
+                    Glide.with(DashBoard.this).load(restaurant_image).into(main_backdrop);
 
                     prefs.setHotel_latitude(latitude);
                     prefs.setHotel_longitude(longitude);
@@ -800,7 +801,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                     Log.d("Name_", hotelName);
                     Log.d("Address_", address);
                     Log.d("Image", restaurant_image);
-                    Log.d("COntact", number);
+                    Log.d("Contact", number);
 
                     call_hotel.setOnClickListener(new View.OnClickListener() {
                         @Override

@@ -68,10 +68,10 @@ public class RoomServices extends AppCompatActivity {
             }
         });
 
-        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent m_intent = new Intent(this, Serve.class);
-        PendingIntent pi = PendingIntent.getService(RoomServices.this, 2, m_intent, 0);
-        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 60 * 30 , pi);
+//        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        Intent m_intent = new Intent(this, Serve.class);
+//        PendingIntent pi = PendingIntent.getService(RoomServices.this, 2, m_intent, 0);
+//        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 60 * 30 , pi);
 
 
         //Linearlayout click call for different services

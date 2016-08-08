@@ -16,7 +16,8 @@ public class AppPreferences {
 
     private String refreshToken = "refreshToken";
 
-    private String localeset = "localeset";
+    private String localeset = "localeset",
+                selectedLanguage = "selectedLanguage";
 
     private String customer_Id = "customer_Id",
             checkin_Id = "checkin_Id",
@@ -124,6 +125,14 @@ public class AppPreferences {
 
     public void setLocaleset(String _localeset) {
         prefEditor.putString(localeset, _localeset).commit();
+    }
+
+    public String getSelectedLanguage() {
+        return appSharedpref.getString(selectedLanguage, "");
+    }
+
+    public void setSelectedLanguage(String _selectedLanguage) {
+        prefEditor.putString(selectedLanguage, _selectedLanguage).commit();
     }
 
     public Boolean getHotel_check() {

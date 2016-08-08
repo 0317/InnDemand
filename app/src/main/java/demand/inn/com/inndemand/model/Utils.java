@@ -47,6 +47,7 @@ import org.json.JSONObject;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.net.ssl.HttpsURLConnection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -1119,12 +1120,12 @@ public class Utils  {
 
     /**
      *
-     * @param sourceString  string from api response
-     * @param sourceLang    en in our case
-     * @param destinationLang user setting lang
+//     * @param sourceString  string from api response
+//     * @param sourceLang    en in our case
+//     * @param destinationLang user setting lang
      * @return
      */
-    public String getTraslatedString(String sourceString, String sourceLang, String destinationLang){
+    public static String getTraslatedString(String destinationLang, String sourceString){
 
         String trasRequest = "https://www.googleapis.com/language/translate/v2?key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source=en&target="+destinationLang+"&q="+sourceString;
 
@@ -1146,23 +1147,43 @@ public class Utils  {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         return destinationString;
     }
 
+ /*   public static String getTraslatedString(String trasRequest){
+
+        try {
+            String responseString = executeHttpGet(trasRequest);
+
+            JSONObject dataObj = getJsonObject(new JSONObject(responseString),"data");
+
+            JSONArray translationArray = getJsonArray(dataObj,"translations");
+            if(translationArray!=null && translationArray.length()>0){
+
+                for (int i = 0; i <translationArray.length() ; i++) {
+                    JSONObject jsonObject = translationArray.getJSONObject(i);
+                    destinationString = getString(jsonObject,"translatedText");
+
+                    Log.d("Check Responce", "Here: "+destinationString);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return destinationString;
+    }
+*/
 
     public static String executeHttpGet(String url) throws Exception {
 
 
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        URL obj = new URL(url.replace(" ", "%20"));
+        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
         // optional default is GET
         con.setRequestMethod("GET");
 
         //add request header
-        con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
         int responseCode = con.getResponseCode();
         System.out.println("\nSending 'GET' request to URL : " + url);
@@ -1184,8 +1205,6 @@ public class Utils  {
         return  response.toString();
 
     }
-
-
     /**
      * get String from {@link JSONObject}.
      *
