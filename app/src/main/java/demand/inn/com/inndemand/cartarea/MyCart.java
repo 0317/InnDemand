@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -52,14 +53,21 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.CartAdapter;
@@ -118,12 +126,16 @@ public class MyCart extends AppCompatActivity {
     DBHelper db;
     int m_here=  0;
 
+
+    public String destinationString = "";
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mycart);
         nu = new NetworkUtility(this);
+        prefs = new AppPreferences(this);
 
         db = new DBHelper(this);
         ArrayList arrayList = (ArrayList) db.getAllData();
@@ -224,8 +236,17 @@ public class MyCart extends AppCompatActivity {
 
                 for(CartData card : datas){
                     cardList.clear();
-                    CartData a = new CartData(card.getName(), "", "");
-                    cardList.add(a);
+                    try {
+                        String dataName = new getTraslatedString().execute(prefs.getLocaleset(),
+                                card.getName()).get();
+
+                        CartData a = new CartData(dataName, "", "");
+                        cardList.add(a);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
 
                     cart_totalamount.setText("Total Price"+": "+card.getDesc()+"/-");
                     cart_totalitems.setText("Total Items: ");
@@ -484,5 +505,155 @@ public class MyCart extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    //API call to translate data
+    //Translation coding to get DB data into translated form
+    public class getTraslatedString extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String[] target) {
+
+            String trasRequest = "https://www.googleapis.com/language/translate/v2?key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source=en&target="+target[0]+"&q="+target[1];
+
+            try {
+                String responseString = executeHttpGet(trasRequest);
+
+                JSONObject dataObj = getJsonObject(new JSONObject(responseString),"data");
+
+                JSONArray translationArray = getJsonArray(dataObj,"translations");
+                if(translationArray!=null && translationArray.length()>0){
+
+                    for (int i = 0; i <translationArray.length() ; i++) {
+                        JSONObject jsonObject = translationArray.getJSONObject(i);
+                        destinationString = getString(jsonObject,"translatedText");
+                        Log.d("Check Responce", "Here: "+destinationString);
+                        System.out.print("Pls give "+destinationString);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.print("ExceptionGen: "+e);
+            }
+            return destinationString;
+        }
+
+        @Override
+        protected void onPostExecute(String valuee) {
+            Log.d("Check Responce", "Here: "+destinationString);
+
+            Log.d("Check Responce", "There: "+valuee);
+        }
+    }
+
+    public String executeHttpGet(String url) throws Exception {
+
+        URL obj = new URL(url.replace(" ", "%20"));
+        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+        // optional default is GET
+        con.setRequestMethod("GET");
+
+        //add request header
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        System.out.println(response.toString());
+
+        return  response.toString();
+
+    }
+
+    /**
+     * get String from {@link JSONObject}.
+     *
+     * @param jsonObject
+     * @param key
+     * @return value
+     */
+    public String getString(JSONObject jsonObject, String key) {
+        try {
+            if (jsonObject != null) {
+                if (!jsonObject.isNull(key)) {
+                    return jsonObject.getString(key);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * get {@link JSONObject}.
+     *
+     * @param jsonObject
+     * @param key
+     * @return
+     */
+    public JSONObject getJsonObject(JSONObject jsonObject, String key) {
+
+        try {
+            if (jsonObject != null) {
+                if (!jsonObject.isNull(key)) {
+                    return jsonObject.getJSONObject(key);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * get {@link JSONObject}.
+     *
+     * @param resString
+     * @return
+     */
+    public JSONObject getJsonObjectFromResponse(String resString) {
+
+        try {
+            if (resString != null) {
+                if (resString.length()>0) {
+                    return new JSONObject(resString);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * get {@link JSONArray}.
+     *
+     * @param jsonObject
+     * @param key
+     * @return
+     */
+    public JSONArray getJsonArray(JSONObject jsonObject, String key) {
+
+        try {
+            if (jsonObject != null) {
+                if (!jsonObject.isNull(key)) {
+                    return jsonObject.getJSONArray(key);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -48,20 +49,17 @@ public class BellBoy extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //UI call area
+    //UI Class call for the screen
     LinearLayout backPress, confirm_demand_click;
     EditText say_something;
     Snackbar snackbar;
     CoordinatorLayout coordinatorLayout;
     Toolbar toolbar;
 
-    //Others
+    //Others to comment in the area provided in the screen
     String saySomething;
 
-    //Class call
-    AppController appController;
-
-    //Date & Time
+//    String and others to get current time and date
     Calendar c;
     SimpleDateFormat df;
     String formattedDate;
@@ -69,11 +67,15 @@ public class BellBoy extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bellboy);
+//        Utility Class Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.bell_boy);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -86,18 +88,21 @@ public class BellBoy extends AppCompatActivity {
             }
         });
 
+//        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         formattedDate = df.format(c.getTime());
         // formattedDate have current date/time
 
-        //UI initialize arae
+//        UI Class Initialisation for the screen
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-
         say_something = (EditText) findViewById(R.id.say_something_bell);
 
+//        Button Click at the bottom of the screen
+//        Sending all requirements to server with this click
         confirm_demand_click = (LinearLayout) findViewById(R.id.confirm_demand_click);
         confirm_demand_click.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,12 +139,7 @@ public class BellBoy extends AppCompatActivity {
         });
     }
 
-    public void backPress(View view){
-        onBackPressed();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;
@@ -186,5 +186,10 @@ public class BellBoy extends AppCompatActivity {
         };
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    public void backPress(View view){
+        onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

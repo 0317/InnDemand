@@ -192,7 +192,7 @@ public class Settings extends AppCompatActivity {
                             "Language: Chinese", Toast.LENGTH_SHORT).show();
 //                    setLocale("b+chk");
                     settingLocale("b+chk");
-                    prefs.setLocaleset("b+chk");
+                    prefs.setLocaleset("zh-CN");
                     prefs.setSelectedLanguage("Chinese");
                 }else if(pos == 8){
                     Toast.makeText(Settings.this,

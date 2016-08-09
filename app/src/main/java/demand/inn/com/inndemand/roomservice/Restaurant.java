@@ -28,7 +28,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -54,6 +53,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -64,16 +64,13 @@ import demand.inn.com.inndemand.cartarea.MyCart;
 import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.FragmentData;
-import demand.inn.com.inndemand.constants.Header;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
 import demand.inn.com.inndemand.fragmentarea.DefaultFragment;
 import demand.inn.com.inndemand.fragmentarea.Dessert;
 import demand.inn.com.inndemand.fragmentarea.MainCourse;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.model.ResturantDataModel;
-import demand.inn.com.inndemand.model.SearchArea;
 import demand.inn.com.inndemand.model.SearchDB;
-import demand.inn.com.inndemand.model.Utils;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -85,31 +82,31 @@ import demand.inn.com.inndemand.welcome.DBHelper;
 
 public class Restaurant extends AppCompatActivity{
 
-    //Utility
+    //Utility Class area
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //UI Call area
+    //UI Call area for the screen
     private TabLayout tabLayout;
     private ViewPager viewPager;
     ViewPagerAdapter adapter;
     TextView restaurant_text;
     TextView cart_item, cart_total;
+    Toolbar toolbar;
 
+//    Others requirements (if need)
     View view;
     private Menu menu;
     int positions;
+
+//    Alert-dialog
     private ProgressDialog mProgressDialog;
 
-    Toolbar toolbar;
-
-    //TabClass Call
+//    TabClass Class call for
     Appetizer mAppetizer;
-    Dessert mDessert;
-    MainCourse mMaincourse;
-    DefaultFragment defaultFragment;
 
-    //Others
+//    String to define to value
+//    Values fetching from APIs in the form of String
     String ids;
     String itemName;
     String itemDesc;
@@ -121,47 +118,45 @@ public class Restaurant extends AppCompatActivity{
     String catType;
     String catStatus;
     String type_id;
-
     String totalCash;
     String totalItems;
     String broaditemName;
 
+//    Adding values in the cart in the form of String
     String cart_value;
     String cart_val;
 
-    private final Random mRandom = new Random();
-
+//  Fragments data in the screen and List of tabs in tab layout shown
     List<FragmentData> tabList;
-
-    List<Fragment> fragments;
-    ArrayList<String> categories;
     FragmentData data;
 
-    //Adapter Class
+    //Adapter Class with String requirements
     RestaurantAdapter adapt;
     String cash, items;
     Bundle getBundle;
     List<ResturantDataModel> resturantDataModelList;
     ResturantDataModel dataModel, model;
 
-    //DATABASE
+    //DATABASE Class
     DBHelper db;
 
-
+//    String which provides final result after Translation
     public String destinationString = "";
-    public String valCat = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurant);
+//        Utility Class Initialize
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        Constant Class n Database calss initialize
         model = new ResturantDataModel();
         db = new DBHelper(Restaurant.this);
 
-        //Toolbar call
+        //Toolbar call for the screen
+//        Includes menu on the top right through restaurant_menu.xml file and back press icon
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
         toolbar.inflateMenu(R.menu.restaurant_menu);
@@ -246,7 +241,10 @@ public class Restaurant extends AppCompatActivity{
             }
         });
 
-        //Title set for Collapsing Toolbar
+
+//        Happens when We scroll up the screen and the Image turned into toolbar
+//        It is basically that effect toggling Image into toolbar n vice-versa
+//        Setting title for Collapsing Toolbar as Restaurant Name also
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -273,9 +271,6 @@ public class Restaurant extends AppCompatActivity{
 
         //tabclass initialization
         mAppetizer = new Appetizer();
-        mDessert = new Dessert();
-        mMaincourse = new MainCourse();
-        defaultFragment  = new DefaultFragment();
 
         viewPager = (ViewPager) findViewById(R.id.container);
 
@@ -336,36 +331,10 @@ public class Restaurant extends AppCompatActivity{
         }
 
         tabList = new ArrayList<>();
-//        resturantDataModelList = new ArrayList<>();
-//
-//
-//        for (int i =0 ;i<=5;i++){
-//            ResturantDataModel dataModel = new ResturantDataModel();
-//            dataModel.setCategory(category);
-//            resturantDataModelList.add(dataModel);
-//        }
-//
-//        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-//
-//        for (ResturantDataModel dataModel:resturantDataModelList){
-//
-//            Bundle bundle = new Bundle();
-//            bundle.putString("","");
-//
-//            Fragment appFrf = new Appetizer();
-//            appFrf.setArguments(bundle);
-//
-//            adapter.addFragment(appFrf, dataModel.getCategory());
-//
-//        }
-//
-//        adapter.notifyDataSetChanged();
-//        viewPager.setAdapter(adapter);
-//
-//        tabLayout.setupWithViewPager(viewPager);
-
     }
 
+//    Here receives data from Fragments class Adapter in the form of broadcast
+//    gettings counter for the items selected n items details in food/other list
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -416,6 +385,8 @@ public class Restaurant extends AppCompatActivity{
         }
     };
 
+//    method is to add items to cart with onClick
+//    Shows a pop-up asking view cart or not now
     public void addCart(View view){
         db.insertData(new CartData(broaditemName, totalCash, totalItems));
         new AlertDialog.Builder(Restaurant.this).setMessage(R.string.restaurant_foodadded_tocart)
@@ -435,6 +406,7 @@ public class Restaurant extends AppCompatActivity{
                 }).create().show();
     }
 
+// API call to get category (Tab data/different tabs to show) for the screen
     public void getCategory(){
         JSONObject obj = new JSONObject();
         try {
@@ -447,6 +419,7 @@ public class Restaurant extends AppCompatActivity{
         postJsonDataCategory(Config.innDemand+"category/details/", obj.toString());
     }
 
+//    API call to get Food list items for the Recyclerview
     public void getData(){
         JSONObject obj = new JSONObject();
         try {
@@ -460,6 +433,8 @@ public class Restaurant extends AppCompatActivity{
 
     }
 
+//    Volley Library Main method to get Category and other requirements as response by sending
+//    restaurant ID
     public void postJsonData(String url, String userData) {
 
         RequestQueue mRequestQueue;
@@ -651,7 +626,28 @@ public class Restaurant extends AppCompatActivity{
 //                        catStatus = object.getString("status");
                         Log.d("API", "API Category: " + catName);
 
-                        String valueCat = new getTraslatedString().execute("fr", catName).toString();
+                        String valueCat = null;
+                        try {
+                            if(prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")) {
+
+                                dataModel.setId(type_id);
+                                dataModel.setCategory(catName);
+//                        dataModel.setId(catType);
+                                resturantDataModelList.add(dataModel);
+                            }else {
+                                valueCat = new getTraslatedString().execute(prefs.getLocaleset(),
+                                        catName).get();
+
+                                dataModel.setId(type_id);
+                                dataModel.setCategory(valueCat);
+//                        dataModel.setId(catType);
+                                resturantDataModelList.add(dataModel);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
                         Log.d("LogValueCat: ", valueCat);
                         dataModel.setId(type_id);
                         dataModel.setCategory(valueCat);
@@ -711,6 +707,7 @@ public class Restaurant extends AppCompatActivity{
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
+//    Alert-dialog to show when data is loading
     private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -721,13 +718,14 @@ public class Restaurant extends AppCompatActivity{
         mProgressDialog.show();
     }
 
+//    hides the dialog pop-up after data gets loaded
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
         }
     }
 
-    //Custom pop-up for Network Click
+    //Custom pop-up for Internet Connection(opens if not connected)
     public void networkClick(){
         // custom dialog
         final Dialog dialog = new Dialog(Restaurant.this);
@@ -748,6 +746,8 @@ public class Restaurant extends AppCompatActivity{
     }
 
 
+//      API call to translate data
+    //    Translation coding to Translate all the data coming from server in target language
     public class getTraslatedString extends AsyncTask<String, String, String>{
 
         @Override

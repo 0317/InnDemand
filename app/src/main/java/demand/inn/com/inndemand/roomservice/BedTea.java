@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -51,42 +52,47 @@ public class BedTea extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
+    //   static int key to match current time/date code
     static final int TIME_DIALOG_ID = 1111;
 
     //UI call area
     TextView tea, coffee;
     ImageView teaPlus, teaMinus, coffeePlus, coffeeMinus;
     LinearLayout confirmDemand, backpress_bedTea;
-
-    //Linearlayout for (Tea/Coffee) options by Hotel
-    LinearLayout bed_tea, bed_coffee;
-
     EditText say_something_bell;
     Toolbar toolbar;
     TextView now, pickTime;
 
-    //Others
-    String getTime;
-    private int hour;
-    private int minute;
+    //Linearlayout for (Tea/Coffee) options by Hotel
+    LinearLayout bed_tea, bed_coffee;
+
+
+//    int and String count and value for Tea & coffee
     int tea_count = 0, coffee_count = 0;
     String teaText = null, coffeeText = null;
 
-    //Date & Time
+//    String and others to get current time and date
     Calendar c;
     SimpleDateFormat df, date;
     String formattedDate, getDate;
     String finalTime;
+    String getTime;
+    private int hour;
+    private int minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bedtea);
+//        Utility Class Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.bed_tea_call);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -99,10 +105,12 @@ public class BedTea extends AppCompatActivity {
             }
         });
 
+//        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         date = new SimpleDateFormat("yyyy-MM-dd");
         formattedDate = df.format(c.getTime());
         getDate = date.format(c.getTime());
@@ -139,6 +147,8 @@ public class BedTea extends AppCompatActivity {
         else
             bed_coffee.setVisibility(View.VISIBLE);
 
+//        Tea count ordered by a User
+//        Number of Tea ordered
         teaMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,6 +171,7 @@ public class BedTea extends AppCompatActivity {
             }
         });
 
+//        Now click to pick current time and send to server
         now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,6 +185,7 @@ public class BedTea extends AppCompatActivity {
             }
         });
 
+//        Open pop-ups by matching key and allows to set time
         pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +193,8 @@ public class BedTea extends AppCompatActivity {
             }
         });
 
+//        Button Click at the bottom of the screen
+//    Sending all requirements to server with this click
         confirmDemand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,6 +245,8 @@ public class BedTea extends AppCompatActivity {
         });
     }
 
+
+    //    Coding(different method to get current time/Date in required format)
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -296,6 +312,7 @@ public class BedTea extends AppCompatActivity {
         finalTime = getDate+" "+getTime;
     }
 
+//    Coffee count when user orders a coffee
     public void coffeeMinus(View view){
 
         int s2=(Integer.parseInt(coffee.getText().toString()));
@@ -315,7 +332,7 @@ public class BedTea extends AppCompatActivity {
         coffee.setText(String.valueOf(coffee_count));
     }
 
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;

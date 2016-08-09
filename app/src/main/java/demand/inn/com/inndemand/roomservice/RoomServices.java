@@ -36,25 +36,22 @@ public class RoomServices extends AppCompatActivity {
     AppPreferences prefs;
 
 
-    //UI Initialize
+    //UI Call Area for the screen
     Button beverages_click, laundry_click, cab_click, bed_tea_click, bath_essentials_click, bell_boy_click,
             room_clean_click, wake_up_click;
     Toolbar toolbar;
     TextView services_text;
 
-    //Class call
-    AppController appController;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.roomservices);
+//        Utility Class Initialisation
         nu = new NetworkUtility(RoomServices.this);
         prefs = new AppPreferences(RoomServices.this);
 
-//        getSupportActionBar().hide();
-//
-        //UI elements call
+
+        //UI elements call Toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.room_services);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -68,13 +65,14 @@ public class RoomServices extends AppCompatActivity {
             }
         });
 
+//        Testing a service for the App
 //        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 //        Intent m_intent = new Intent(this, Serve.class);
 //        PendingIntent pi = PendingIntent.getService(RoomServices.this, 2, m_intent, 0);
 //        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 60 * 30 , pi);
 
 
-        //Linearlayout click call for different services
+//      UI Class call for different services (Initialisation)
         beverages_click = (Button) findViewById(R.id.beverages_click);
         laundry_click = (Button) findViewById(R.id.laundry_click);
         cab_click = (Button) findViewById(R.id.cab_click);
@@ -85,6 +83,8 @@ public class RoomServices extends AppCompatActivity {
         wake_up_click = (Button) findViewById(R.id.wake_up_click);
         services_text = (TextView) findViewById(R.id.services_text);
 
+//      Conditions to check If Room services matches the timings  of the Hotel to provide room services
+//        to user or not
         if(prefs.getFm_service() == true){
             services_text.setText(R.string.roomservicesnotavailable);
             beverages_click.setClickable(false);
@@ -144,30 +144,30 @@ public class RoomServices extends AppCompatActivity {
 
     }
 
-        //onClick Method Call for different services (Linearlayout)
+//    onClick Method Call for different services
 
-        //Beverages Click Method
+//        To launch Beverages Class
     public void beverages_click(View view){
         Intent in = new Intent(RoomServices.this, Beverages.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    //Laundry Click method
+//    To launch Laundry Class
     public void laundryClick(View view){
         Intent in = new Intent(RoomServices.this, Laundry.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    //Cab Click method
-    public void cabClick(View view){
+//    To launch Ca Class
+    public void cabClbick(View view){
         Intent in = new Intent(RoomServices.this, Cab.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    //Bed Tea Click method
+//    To launch Bed tea/Coffe Class
     public void bedteaClick(View view){
         Intent in = new Intent(RoomServices.this, BedTea.class);
         startActivity(in);
@@ -175,7 +175,7 @@ public class RoomServices extends AppCompatActivity {
 
     }
 
-    //Bath Essentials Click method
+//    To launch Bathroom Essentials Class
     public void bathessentialsClick(View view){
         Intent in = new Intent(RoomServices.this, Bathroom.class);
         startActivity(in);
@@ -183,7 +183,7 @@ public class RoomServices extends AppCompatActivity {
 
     }
 
-    //Bell-Boy Click method
+//    To launch Bell-boy Class
     public void bellboyClick(View view){
         Intent in = new Intent(RoomServices.this, BellBoy.class);
         startActivity(in);
@@ -191,7 +191,7 @@ public class RoomServices extends AppCompatActivity {
 
     }
 
-    //Room Clean Click method
+//    To launch Room Clean Class
     public void roomcleanClick(View view){
         Intent in = new Intent(RoomServices.this, RoomCleaning.class);
         startActivity(in);
@@ -199,7 +199,7 @@ public class RoomServices extends AppCompatActivity {
 
     }
 
-    //Wake-up Click method
+//    To launch Wake-up Class
     public void wakeupClick(View view){
         Intent in = new Intent(RoomServices.this, WakeUp.class);
         startActivity(in);

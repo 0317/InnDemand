@@ -76,18 +76,19 @@ public class CheckDetails extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //UI
-    EditText detail_name, detail_email, detail_phone;
+    //UI Class area used in this screen
+    EditText detail_name, detail_email;
     ImageView fb_dp;
 
-    //Preference Area
+    //Preferences Class Area
     SharedPreferences settings;
     Bundle getBundle = null;
 
-    // Progress dialog
+    // Progress dialog (to show dialog if required)
     private ProgressDialog pDialog;
 
-    //Others
+//    Others
+//    String values to get/set details either from FB/google
     String name, email, dp, l_name, gender, bDay, gGender, fb_location, gToken = "none";
     String gName, gEmail, gDP, gbBday = "none", gLoc = "none";
     String mName, mEmail, phoneNo = "none";
@@ -100,6 +101,7 @@ public class CheckDetails extends AppCompatActivity {
     private String jsonResponse;
     private static String TAG = CheckDetails.class.getSimpleName();
 
+//    Google Client to know the status (If need)
     GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -107,11 +109,13 @@ public class CheckDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.checkdetails);
-
+//        Initialisation of the Utility Classes and Preferences Classes
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
         prefs  =new AppPreferences(CheckDetails.this);
+
+//        Google Class call code to check/get status of the User (If Sign-In then User can Sign-Out)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -124,32 +128,21 @@ public class CheckDetails extends AppCompatActivity {
                     }
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
+//        pop-up dialog
         pDialog = new ProgressDialog(CheckDetails.this);
 
-        //UI Initialized here
+        //UI shown on the screen Initialized here
         detail_name = (EditText) findViewById(R.id.fb_name);
         detail_email = (EditText) findViewById(R.id.fb_email);
-
-        //if the device is registered
-       /* if(isRegistered()){
-            startService(new Intent(this, NotificationListener.class));
-        }
-
-//        if the device is not already registered
-        if (!isRegistered()) {
-//            registering the device
-            registerDevice();
-        } else {
-//            if the device is already registered
-//            displaying a toast
-            Toast.makeText(CheckDetails.this, "Already registered...", Toast.LENGTH_SHORT).show();
-        }*/
-
         fb_dp = (ImageView) findViewById(R.id.fb_dp);
 
-        //Email validation
-        detail_email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        //Email validation (to check email contains requirements or not)
+        detail_email.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
+
+//      Bundle Class area
+//        Here we are getting all details fetched from Google and managing them to send to Server
         getBundle = this.getIntent().getExtras();
         if(getBundle == null) {
             gName = prefs.getUser_gname();
@@ -183,6 +176,9 @@ public class CheckDetails extends AppCompatActivity {
             Log.d("Check", "Check bday "+prefs.getGoogle_bday());
             Log.d("Check", "Check Loc "+prefs.getGoogle_location());
         }
+
+//        Bundle area for facebook
+//        Here we are getting all details fetched from Facebook and managing them to send to Server
         else {
             name = getBundle.getString("first_name");
             email = getBundle.getString("email");
@@ -246,6 +242,8 @@ public class CheckDetails extends AppCompatActivity {
         }
     }
 
+//    Method to check if the Name & Email is filled in EditText or not
+//    If not then show a Toast else fire Intent to next screen
     public void verifyDetails(View view){
 
         //String initialized to get above mentioned edittext values
@@ -268,7 +266,7 @@ public class CheckDetails extends AppCompatActivity {
     }
 
     /**
-     * Method to make json object post call
+     * Method to make json object post call to send details to server
      * */
 
     private void makeJsonObjectRequest() {
@@ -317,6 +315,8 @@ public class CheckDetails extends AppCompatActivity {
 
     }
 
+//    main method to hit server with all the details either from FB/Google.
+//    Getting Customer ID as a Response in below method
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;
@@ -376,113 +376,8 @@ public class CheckDetails extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-
-    //Notification Area
-
-    private boolean isRegistered() {
-        //Getting shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF, MODE_PRIVATE);
-
-        //Getting the value from shared preferences
-        //The second parameter is the default value
-        //if there is no value in sharedprference then it will return false
-        //that means the device is not registered
-        return sharedPreferences.getBoolean(Config.REGISTERED, false);
-    }
-
-   /* private void registerDevice() {
-        //Creating a firebase object
-
-        tokenss =  FirebaseInstanceId.getInstance().getToken();
-        prefs.setRefreshToken(tokenss);
-//        Firebase firebase = new Firebase(Config.FIREBASE_APP);
-
-        //Pushing a new element to firebase it will automatically create a unique id
-//        Firebase newFirebase = firebase.push();
-
-        //Creating a map to store name value pair
-        Map<String, String> val = new HashMap<>();
-
-        //pushing msg = none in the map
-        val.put("msg", "none");
-
-        //saving the map to firebase
-//        newFirebase.setValue(val);
-
-        //Getting the unique id generated at firebase
-//        String uniqueId = newFirebase.getKey();
-
-        Log.d("FCM Unique ID", tokenss);
-
-        //Finally we need to implement a method to store this unique id to our server
-//        sendIdToServer(uniqueId);
-    }
-
-    private void sendIdToServer(final String uniqueId) {
-        //Creating a progress dialog to show while it is storing the data on server
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Registering device...");
-        progressDialog.show();
-
-        //getting the email entered
-        final String email = detail_email.getText().toString().trim();
-
-        //Creating a string request
-        StringRequest req = new StringRequest(Request.Method.POST, Config.REGISTER_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        //dismissing the progress dialog
-                        progressDialog.dismiss();
-
-                        //if the server returned the string success
-                        if (response.trim().equalsIgnoreCase("success")) {
-                            //Displaying a success toast
-                            Toast.makeText(CheckDetails.this, "Registered successfully", Toast.LENGTH_SHORT).show();
-
-                            //Opening shared preference
-                            SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF, MODE_PRIVATE);
-
-                            //Opening the shared preferences editor to save values
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                            //Storing the unique id
-                            editor.putString(Config.UNIQUE_ID, uniqueId);
-
-                            //Saving the boolean as true i.e. the device is registered
-                            editor.putBoolean(Config.REGISTERED, true);
-
-                            //Applying the changes on sharedpreferences
-                            editor.apply();
-
-                            //Starting our listener service once the device is registered
-                            startService(new Intent(getBaseContext(), NotificationListener.class));
-                        } else {
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                //adding parameters to post request as we need to send firebase id and email
-                params.put("firebaseid", uniqueId);
-                params.put("email", email);
-                return params;
-            }
-        };
-
-        //Adding the request to the queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(req);
-    }*/
-
+//    Method to back press from the device
+//    Either to go to last screen or If the last screen working finished then close the app
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -491,24 +386,18 @@ public class CheckDetails extends AppCompatActivity {
                 prefs.clearPref();
             LoginManager.getInstance().logOut();
             prefs.setFacebook_logged_In(false);
-//            Intent in = new Intent(CheckDetails.this, SplashScreen.class);
-//            startActivity(in);
             finish();
 
         }else if(prefs.getGoogle_logged_In() == true){
             prefs.setGoogle_logged_In(false);
-//                if(mGoogleApiClient.isConnected())
             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
                         public void onResult(Status status) {
                             prefs.clearPref();
-//                            Intent in = new Intent(CheckDetails.this, SplashScreen.class);
-//                            startActivity(in);
                             finish();
                         }
                     });
-//                mGoogleApiClient.disconnect();
         }
     }
 }

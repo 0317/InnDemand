@@ -36,6 +36,7 @@ import org.w3c.dom.Text;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -53,35 +54,39 @@ public class WakeUp extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
+//   static int key to match current time/date code
     static final int TIME_DIALOG_ID = 1111;
 
-    //UI call
+    //UI Class call for the screen
     LinearLayout back_press, confirm_demand,cancel_wakeUp;
     RadioButton today, tomorrow;
     TextView pickTime, setTime, changeTime;
     Toolbar toolbar;
     EditText say_something_bell;
 
-    //Others
-    String getTime;
-    private int hour;
-    private int minute;
-
-    //Date & Time
+//   String and others to get current time and date
     Calendar c;
     SimpleDateFormat df, date;
     String formattedDate, getDate, getFinal;
     String finalTime;
+    String getTime;
+    private int hour;
+    private int minute;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wakemeup);
+//        Utility Class Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.wakeup_call);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -94,17 +99,19 @@ public class WakeUp extends AppCompatActivity {
             }
         });
 
+//        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         date = new SimpleDateFormat("yyyy-MM-dd");
         formattedDate = df.format(c.getTime());
         getDate = date.format(c.getTime());
-        // formattedDate have current date/time
+//        formattedDate have current date/time
 
+//        UI Class Initialisation for the screen
         confirm_demand = (LinearLayout) findViewById(R.id.confirm_demand_click_wakeup);
-
         pickTime = (TextView) findViewById(R.id.currentTime_wakeup);
         setTime = (TextView) findViewById(R.id.set_time);
         changeTime = (TextView) findViewById(R.id.changeTime_wakeup);
@@ -112,6 +119,7 @@ public class WakeUp extends AppCompatActivity {
         say_something_bell = (EditText) findViewById(R.id.say_something_bell);
         changeTime.setVisibility(View.GONE);
 
+//        Open pop-ups by matching key and allows to set time
         pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +127,7 @@ public class WakeUp extends AppCompatActivity {
             }
         });
 
+//        Open pop-ups by matching key and allows to change time
         changeTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +135,8 @@ public class WakeUp extends AppCompatActivity {
             }
         });
 
+//        Button Click at the bottom of the screen
+//        Sending all requirements to server with this click
         confirm_demand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,6 +178,7 @@ public class WakeUp extends AppCompatActivity {
 
     }
 
+//    Coding(different method to get current time/Date in required format)
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -239,7 +251,7 @@ public class WakeUp extends AppCompatActivity {
     }
 
 
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;

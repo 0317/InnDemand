@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -48,7 +49,7 @@ public class Bathroom extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //UI call area
+    //UI call area foir the screen
     CheckBox towels, soap, maintainance;
     LinearLayout backPress, confirm;
     Snackbar snackbar;
@@ -58,26 +59,29 @@ public class Bathroom extends AppCompatActivity {
     //Linearlayout to show/hide options provided by hotel (Towel/Soap/Maintenance)
     LinearLayout bath_towel, bath_soap, bath_maintenance;
 
-    //Class call
-    AppController appController;
-
-    //Date & Time
+//    String and others to get current time and date
     Calendar c;
     SimpleDateFormat df;
     String formattedDate;
 
-    //Others
+//    String vaues assigned 0 initally
+//    0 show no request for anything from User (if 1 that means User requested for any of these
+//      equals value 1)
     String towel_value = "0", soap_value= "0", main_value = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bathroom);
+//        Utility Class Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.bath_essentials);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -103,10 +107,12 @@ public class Bathroom extends AppCompatActivity {
 
         say_something_bell = (EditText) findViewById(R.id.say_something_bell);
 
+//        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         formattedDate = df.format(c.getTime());
         // formattedDate have current date/time
 
@@ -127,6 +133,8 @@ public class Bathroom extends AppCompatActivity {
 
 
         //Selection of items(Towels/Soap/maintainance) for the room
+//        Boolean value check = true and int value = 1 means User demamds for towel
+//        Boolean value check = false and int value = 0 means no demand
         towels.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -174,7 +182,8 @@ public class Bathroom extends AppCompatActivity {
         });
     }
 
-    //OnClick to confirm demands for the room
+//    Button Click at the bottom of the screen
+//    Sending all requirements to server with this click
     public void confirmDemand(View view){
 
         String comment = say_something_bell.getText().toString().trim();
@@ -206,7 +215,7 @@ public class Bathroom extends AppCompatActivity {
         }
     }
 
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;

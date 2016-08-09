@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -45,44 +46,44 @@ import demand.inn.com.inndemand.volleycall.AppController;
 
 public class RoomCleaning extends AppCompatActivity {
 
-    //Utility call area
+    //Utility class call
     NetworkUtility nu;
     AppPreferences prefs;
 
+    //   static int key to match current time/date code
     static final int TIME_DIALOG_ID = 1111;
 
-    //UI call area
+//    UI Class call for the screen
     LinearLayout backpress, confirm_demand_click_roomClean;
     EditText say_something;
     TextView now, pickTime;
     Toolbar toolbar;
 
-    //Others
+//    String and others to get current time and date
+    Calendar c;
+    SimpleDateFormat df, date;
+    String formattedDate, getDate;
+    String finalTime;
+    String comment;
     String saySomething;
     private String format = "";
     String getTime;
     private int hour;
     private int minute;
 
-    //Class call
-    AppController appController;
-
-    //Date & Time
-    Calendar c;
-    SimpleDateFormat df, date;
-    String formattedDate, getDate;
-    String finalTime;
-    String comment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.roomcleaning);
+//        Utility Class Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.room_cleaning);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -103,15 +104,18 @@ public class RoomCleaning extends AppCompatActivity {
         now = (TextView) findViewById(R.id.now_roomClean);
         pickTime = (TextView) findViewById(R.id.pickTime_roomClean);
 
+//         Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         date = new SimpleDateFormat("yyyy-MM-dd");
         formattedDate = df.format(c.getTime());
         getDate = date.format(c.getTime());
         // formattedDate have current date/time
 
+//        Now click to pick current time and send to server
         now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,12 +123,14 @@ public class RoomCleaning extends AppCompatActivity {
                 System.out.println("Current time => "+c.getTime());
 
                 df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
                 formattedDate = df.format(c.getTime());
                 // formattedDate have current date/time
                 finalTime =formattedDate;
             }
         });
 
+//        Open pop-ups by matching key and allows to set time
         pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +138,8 @@ public class RoomCleaning extends AppCompatActivity {
             }
         });
 
+//        Button Click at the bottom of the screen
+//        Sending all requirements to server with this click
         confirm_demand_click_roomClean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +172,7 @@ public class RoomCleaning extends AppCompatActivity {
 
     }
 
+//    Coding(different method to get current time/Date in required format)
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -229,7 +238,7 @@ public class RoomCleaning extends AppCompatActivity {
         finalTime = getDate+" "+getTime;
     }
 
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;

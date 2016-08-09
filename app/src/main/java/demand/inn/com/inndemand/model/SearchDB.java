@@ -97,11 +97,6 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
         mDbHelper.createDemand("Soap", "", "", "", "", "", "");
         mDbHelper.createDemand("Tea", "", "", "", "", "", "");
         mDbHelper.createDemand("Coffee", "", "", "", "", "", "");
-//        mDbHelper.createDemand("gobbi chilly", "", "", "", "", "", "");
-//        mDbHelper.createDemand("Butter Nan", "", "", "", "", "", "");
-//        mDbHelper.createDemand("Death by Choclate", "", "", "", "", "", "");
-//        mDbHelper.createDemand("Hyderbadi Kalmi", "", "", "", "", "", "");
-//        mDbHelper.createDemand("panner butter masala", "", "", "", "", "", "");
         mDbHelper.createDemand("Soda", "", "", "", "", "", "");
         mDbHelper.createDemand("Glass", "", "", "", "", "", "");
         mDbHelper.createDemand("Ice", "", "", "", "", "", "");

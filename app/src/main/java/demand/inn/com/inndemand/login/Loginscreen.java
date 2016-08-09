@@ -71,26 +71,30 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //Socail Integration UI call area
-    //Facebook
+    //Social Integration UI call area
+    //Facebook UI area
     LoginButton loginButton;
     CallbackManager callbackManager;
 
-    //Google
+    //Google Sign-In call area
     GoogleApiClient mGoogleApiClient;
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
-    //Cache Data Call
+    //Cache Data Class Call
     SharedPreferences settings;
+
+//    Others required for different functions in the app
     Bundle bundle;
     String accessToken;
 
-    //UI call
-    ProgressDialog progressDialog;
+    //UI call area
     private TextView mStatusTextView;
+    TextView terms_conditions; //Terms n Conditions click at the bottom of screen
+
+    //Loader call area to show loading of details (Verfiying credentials dialog)
     private ProgressDialog mProgressDialog;
-    TextView terms_conditions;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,7 +108,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
-        //UI initialized
+        //Shared preferences initialisation
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         //Socail Integration Facebook/Google is Implemented Below
@@ -190,8 +194,9 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(Loginscreen.this);
 
-
-        //Conditons/Terms of use Text at bottom Call Programatically
+//      Terms and Conditions Click at the bottom
+//      Programatically using SpannableStringBuilder changing the color of a single text into
+//      multiple colors (Yellow color for terms and conditions & privacy policy)
         terms_conditions = (TextView) findViewById(R.id.terms_conditions);
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
@@ -239,6 +244,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         facebookPost();
     }
 
+// FB post to check Sign-In or Sing-out from the app and FB too
     private void facebookPost() {
         //check login
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -251,6 +257,10 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         }
     }
 
+//    Bundle method to get all the required details from FB and saving it in Preferences class
+//    Details like: Name, Pic, Email, BDay, Age etc
+//    In this method we are checking whether or not we fetched all the required details and then
+//    passing Intent to move onto next screen
     private Bundle getFacebookData(JSONObject object) {
 
         bundle = new Bundle();
@@ -333,7 +343,8 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
     }
 
 
-    //Google Override Methods
+//    Google Override Methods
+//    Google Sign-In area to start the Sing-In process when user clicks Sign-In button in the App
     @Override
     public void onStart() {
         super.onStart();
@@ -359,7 +370,9 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
 
     // [END onActivityResult]
 
-    // [START handleSignInResult]
+//     [START handleSignInResult]
+//    Here in this method we are fetching all the required details from Google for the app
+//    Details like: name, Pic, Email, Age etc
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -409,28 +422,28 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
     }
     // [END handleSignInResult]
 
-    // [START signIn]
+//     [START signIn]
+//    Firing Intent to start Sign-In process sending hit to Google platform
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    // [END signIn]
+//     [END signIn]
 
-    // [START signOut]
+//     [START signOut]
+//    We hit this method whenever we required to sign-out of the app
     private void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-// [START_EXCLUDE]
                         updateUI(false);
-// [END_EXCLUDE]
                     }
                 });
     }
 // [END signOut]
 
-    // [START revokeAccess]
+//     [START revokeAccess]
     private void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
@@ -452,6 +465,8 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         }
     }
 
+//    Here is the Click call when we click on Google Sign-In button
+//    Fetch ID of the button and call Google platform
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -461,6 +476,8 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         }
     }
 
+//    If in any case Google connection fails this method get a hit by showing us the failure result
+//    in the Log.
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
@@ -468,6 +485,9 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
+//    Here in this method we finally get the result of the details required from google
+//    Details like: Name, Pic, Email, etc
+//    This is the final Result method to provide final details fetched
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -480,6 +500,8 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         }
     }
 
+//    Dialog arises when app fetched details from google/fb and going to fire Intent in both cases.
+//    Verifying credentials is the message on the dialog
     private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -490,6 +512,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         mProgressDialog.show();
     }
 
+//    Dialog (when the above dialog shown) to hide the shown (verifying credentials) dialog.
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();

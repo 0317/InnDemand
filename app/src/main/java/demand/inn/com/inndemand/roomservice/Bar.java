@@ -53,19 +53,18 @@ import demand.inn.com.inndemand.volleycall.AppController;
 
 public class Bar extends AppCompatActivity{
 
-    //Utility
+    //Utility Clas Area
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //UI Call area
+    //UI Call area for the screen
     private TabLayout tabLayout;
     private ViewPager viewPager;
     ViewPagerAdapter adapter;
     TextView restaurant_text;
-
-    //UI call
     Toolbar toolbar;
 
+//    Others
     View view;
     private Menu menu;
 
@@ -74,7 +73,8 @@ public class Bar extends AppCompatActivity{
     MainBar mMain;
     DessertBar mDessert;
 
-    //Others
+//    String to define to value
+    //    Values fetching from APIs in the form of String
     String id;
     String itemName;
     String itemDesc;
@@ -82,18 +82,17 @@ public class Bar extends AppCompatActivity{
     String food;
     String subCategory;
     String amount;
-    String catName;
-    String catType;
-    String catStatus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bar);
+//        Utility Class Initialize
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
-        //Toolbar call
+        //Toolbar call for the screen
+//        Includes menu on the top right through restaurant_menu.xml file and back press icon
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
         toolbar.inflateMenu(R.menu.restaurant_menu);
@@ -153,7 +152,8 @@ public class Bar extends AppCompatActivity{
             }
         });
 
-        //Title set for Collapsing Toolbar
+//        Happens when We scroll up the screen and the Image turned into toolbar
+//        It is basically that effect toggling Image into toolbar n vice-versa
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -247,6 +247,7 @@ public class Bar extends AppCompatActivity{
         }
     }
 
+//    API call to send bar ID to server to get list of Bar items
     public void getData(){
         JSONObject obj = new JSONObject();
         try {
@@ -260,6 +261,7 @@ public class Bar extends AppCompatActivity{
 
     }
 
+//    Volley Library Main method to get Details of Bar items list as response
     public void postJsonData(String url, String userData) {
 
         RequestQueue mRequestQueue;

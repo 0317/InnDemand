@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -50,34 +51,41 @@ public class Beverages extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //UI call area
+    //UI Class call for the screen
     CheckBox water_check, soda_check, ice_check, glass_check;
     LinearLayout confirmDemand;
+    Toolbar toolbar;
 
     //Linearlayout for Options provided for beverages side services (water, soda, ice, glass)
     LinearLayout water_bottle, soda_bottle, ice_bottle, glass_bottle;
 
+    //Others
     EditText say_Something;
 
-    //Others
+//        String vaues assigned 0 initally
+//    0 show no request for anything from User (if 1 that means User requested for any of these
+//      equals value 1)
     String water_value = "0", soda_value= "0", ice_value = "0", glass_value = "0";
 
-    //Date & Time
+//    String and others to get current time and date
     Calendar c;
     SimpleDateFormat df;
     String formattedDate;
 
-    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.beverages);
+//        Utility Class Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.beverages);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -95,24 +103,24 @@ public class Beverages extends AppCompatActivity {
         soda_bottle = (LinearLayout) findViewById(R.id.soda_bottle);
         ice_bottle = (LinearLayout) findViewById(R.id.ice_bottle);
         glass_bottle = (LinearLayout) findViewById(R.id.glass_bottle);
-
         confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_beverages);
         water_check = (CheckBox) findViewById(R.id.water_bottles_beverages);
         soda_check = (CheckBox) findViewById(R.id.soda_bottles_beverages);
         ice_check = (CheckBox) findViewById(R.id.ice_buckets_beverages);
         glass_check = (CheckBox) findViewById(R.id.glasses_beverages);
-
         say_Something = (EditText) findViewById(R.id.say_something_bell);
 
-
+//        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         formattedDate = df.format(c.getTime());
         // formattedDate have current date/time
 
-        //Condition to show which options hotel provides
+        //Condition to show which options hotel is providing
+//        availability of the items shown accordingly out of these
         if(prefs.getWater() == false)
             water_bottle.setVisibility(View.GONE);
         else
@@ -135,6 +143,8 @@ public class Beverages extends AppCompatActivity {
 
         //Click call area (ImageView)
         //Selection of items(Glass/ Water/ Soda/ Ice) for the room
+//        Boolean value check = true and int value = 1 means User demamds for Item
+//        Boolean value check = false and int value = 0 means no demand
         water_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -196,6 +206,8 @@ public class Beverages extends AppCompatActivity {
         });
 
 
+//        Button Click at the bottom of the screen
+//        Sending all requirements to server with this click
         confirmDemand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,7 +238,7 @@ public class Beverages extends AppCompatActivity {
 
     }
 
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;

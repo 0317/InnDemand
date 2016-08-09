@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -70,12 +71,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import demand.inn.com.inndemand.adapter.BarlistAdapter;
 import demand.inn.com.inndemand.adapter.CircleTransform;
@@ -100,22 +108,25 @@ import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.SplashScreen;
 
 
-public class DashBoard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class DashBoard extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener {
 
-    //Utility Class Area
+    //Utility Class Area (Internet Connection and Preference Class)
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //UI Call
+    //UI Call area for the screen
     Button checkout;
     TextView hotel_Name, hotel_Address, hotel_desc, call_hotel;
     ImageLoader imageLoader;
     NetworkImageView imageView;
     ImageView main_backdrop;
     Toolbar toolbar;
+
+
     public static Activity dash;
 
-    //Navigation Details
+    //Navigation Details (shows Name, Email and DP on Navigation Drawer)
     ImageView dp;
     TextView dp_name, dp_email;
     Bundle getBundle = null;
@@ -123,13 +134,14 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
     //Area to Show Details of Hotel(Includes Restaurant/ Services/ Spa/ Bar or not)
     LinearLayout restaurant_area, service_area, spa_area, bar_area;
 
-    //Others
+//    Others
+//    String to call hotel, Hotel name, Hotel Pic
     String callHotel;
     String URL, TAG;
     String about_hotel;
     String hotelName;
 
-    //List Items Bottom
+    //List Items with Recyclerviews (showing list) and Adapter classes (showing data in the list)
     private RecyclerView recyclerView, restaurantList, barList;
     private HotelAdapter adapter;
     private ListAdapter restaurantAdapter;
@@ -138,7 +150,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
     private List<ListData> restaurantData;
     private List<BarlistData> barData;
 
-    //Timings Call
+    //String for Timings Call API (to check and match the timings)
     String fm_bar;
     String fm_spa;
     String fm_service;
@@ -153,52 +165,48 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
     String latitude;
     String longitude;
 
-    //Details
-    String fbName;
-    String fbLastname;
-    String fbemail;
-    String pic;
-
-    //Date & Time
+    //Current Date & Time
     Calendar c;
     SimpleDateFormat df, timeFormat;
     String formattedDate, getTime;
 
+//    Call to press back button twice to exit from app
     boolean doubleBackToExitPressedOnce = false;
+
+//   Alert-Dialog
     private ProgressDialog mProgressDialog;
-
-    boolean bar, spa, restaurant, service;
-
-    Context context;
-    private SharedPreferences appSharedpref;
-    private SharedPreferences.Editor prefEditor;
-    public static final String SKILL_PREFS = "inn_demand_prefs";
 
     //Preferences Call
     SharedPreferences settings;
 
-    //Google
+//     Google Client to know the status (If need)
     GoogleApiClient mGoogleApiClient;
+
+//    Translate API String to get/fetch the final result
+    public String destinationString = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_dash_board);
+//        Utility Class and Preferences ClassInitialisation
         nu = new NetworkUtility(DashBoard.this);
         prefs = new AppPreferences(DashBoard.this);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         dash = this;
 
-        prefs.setHotel_check(true);
-
+//        Blank String URl call and Volley Imageloader library call to load images from server
         URL = "";
         imageLoader = AppController.getInstance().getImageLoader();
 
+//        To hide default toolbar within the screen
         getSupportActionBar().hide();
 
+//        Calling toolbar from layout
+//        Sets menu in the toolbar calling main_menu.xml
+//        Assigning different functionality to different icons in the menu by getting there IDs
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -221,11 +229,18 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
+//        Preferences to check different requirements
+//        To check if user Checked into hotel
+//        To check if the task to Checked into Hotel is completed
+//        To check If the User is in the Hotel
+        prefs.setHotel_check(true);
         prefs.setCheckout("2");
         prefs.setIs_task_completed(true);
         prefs.setIs_In_Hotel(true);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//        Google Class call code to check/get status of the User (If Sign-In then User can Sign-Out)
+        GoogleSignInOptions gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
@@ -237,21 +252,15 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                     }
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "You want to Email?", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
+//        Navigation Drawer layout Code to toggle either slides to open or to close
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+//        Navigation Drawer area to set profile details
+//        Details like DP, Name, Email on Navigation area
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.removeHeaderView(navigationView.getHeaderView(0));
@@ -263,11 +272,13 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         dp_email = (TextView) profile.findViewById(R.id.drawer_email);
 
 
-        //Setting values in view
+//        Setting values for DP, Name, Email in Navigation Drawer view
         if(prefs.getUser_fbpic() == null || prefs.getUser_fbpic().equalsIgnoreCase("")) {
-            Picasso.with(DashBoard.this).load(prefs.getUser_gpicture()).transform(new CircleTransform()).into(dp);
+            Picasso.with(DashBoard.this).load(prefs.getUser_gpicture())
+                    .transform(new CircleTransform()).into(dp);
         }else {
-            Picasso.with(DashBoard.this).load(prefs.getUser_fbpic()).transform(new CircleTransform()).into(dp);
+            Picasso.with(DashBoard.this).load(prefs.getUser_fbpic())
+                    .transform(new CircleTransform()).into(dp);
         }
 
         if(prefs.getUser_fbname() == null || prefs.getUser_fbname().equalsIgnoreCase("")) {
@@ -282,8 +293,11 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             dp_email.setText(prefs.getUser_fbemail());
         }
 
-        //Title set for Collapsing Toolbar
-        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
+//        Happens when We scroll up the screen and the Image turned into toolbar
+//        It is basically that effect toggling Image into toolbar n vice-versa
+//        Setting title for Collapsing Toolbar as Hotel Name also
+        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout)
+                findViewById(R.id.collapsing);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = false;
@@ -304,15 +318,18 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
+//        Current date and time coding with UTC timezone
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
-
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         timeFormat = new SimpleDateFormat("HH:mm:ss");
         formattedDate = df.format(c.getTime());
         getTime = timeFormat.format(c.getTime());
         // formattedDate have current date/time
 
+//        Here we are calling all the APIs to show data in the screen
+//        Data like: Hotel Details, Restaurant, Bar list etc
         if(nu.isConnectingToInternet()) {
             //Getting All Restaurant List of hotel
             showProgressDialog();
@@ -335,18 +352,24 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             networkClick();
         }
 
-        //UI Initialize
+        //UI Class call Initialize
         restaurant_area = (LinearLayout) findViewById(R.id.hotel_restaurant);
         service_area = (LinearLayout) findViewById(R.id.hotel_roomservice);
         spa_area = (LinearLayout) findViewById(R.id.hotel_spa);
         bar_area = (LinearLayout) findViewById(R.id.hotel_bar);
 
+//      Here we are initially hiding the Services by hotel either it is restaurant/bar/spa
+//        We will show these details if get a response to show these in the API else Hide.
+//        Its like If the hotel is having only Restaurant and Bar but not spa
+//        then we will show only restaurant and Bar and Spa will be hide (Response based on APIs)
         restaurant_area.setVisibility(View.GONE);
         service_area.setVisibility(View.GONE);
         bar_area.setVisibility(View.GONE);
         spa_area.setVisibility(View.GONE);
 
 
+//        This Imageview shows the Hotel Image at the Top inside Collapsing toolbar
+//        Volley method for the Image (can cacha if needed)
         main_backdrop = (ImageView) findViewById(R.id.main_backdrop);
         // If you are using normal ImageView
         imageLoader.get(URL, new ImageLoader.ImageListener() {
@@ -365,7 +388,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
-        //UI initialize
+        //UI Class initialize for Hotel Name, Address, and call
         hotel_Name = (TextView) findViewById(R.id.hotel_Name);
         hotel_Address = (TextView) findViewById(R.id.hotel_Address);
         call_hotel = (TextView) findViewById(R.id.call_hotel);
@@ -373,7 +396,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         //variable to get Hotel contact number
         callHotel = "";
 
-        //ListItems in RecyclerView
+//        Initialisation of ListItems in RecyclerView with all adapter classes required
+//        The whole setup manages the Recyclerview (List) and Data inside the List.
         recyclerView = (RecyclerView) findViewById(R.id.hotel_recycler_view);
         restaurantList = (RecyclerView) findViewById(R.id.hotel_recycler_list);
         barList = (RecyclerView) findViewById(R.id.hotel_barlist);
@@ -405,7 +429,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         restaurantList.setAdapter(restaurantAdapter);
         barList.setAdapter(barAdapter);
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
+                recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 ListData data = restaurantData.get(position);
@@ -419,6 +444,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         }));
     }
 
+//    BackPress method to double press the back button to exit from app
     @Override
     public void onBackPressed() {
       /*  DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -445,6 +471,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         }, 2000);
     }
 
+//    Default Menu Method to call menu on the Top right of the screen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -452,6 +479,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         return true;
     }
 
+//    Default Menu call area by getting items ID (not in use)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -467,6 +495,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         return super.onOptionsItemSelected(item);
     }
 
+//    Method to call different menu in Navigation list
+//    Actions performed based on the IDs of the menu items in the list
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -487,7 +517,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Inndemand App - https://play.google.com/store?hl=en");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                    "Inndemand App - https://play.google.com/store?hl=en");
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
         } else if (id == R.id.nav_settings) {
@@ -508,7 +539,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                                 if(LoginManager.getInstance()!=null)
                                     prefs.clearPref();
                                 LoginManager.getInstance().logOut();
-                                Toast.makeText(DashBoard.this, R.string.successful_logout , Toast.LENGTH_LONG).show();
+                                Toast.makeText(DashBoard.this, R.string.successful_logout ,
+                                        Toast.LENGTH_LONG).show();
                                 prefs.setFacebook_logged_In(false);
                                 Intent in = new Intent(DashBoard.this, SplashScreen.class);
                                 startActivity(in);
@@ -522,8 +554,11 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                                             @Override
                                             public void onResult(Status status) {
                                                 prefs.clearPref();
-                                                Toast.makeText(DashBoard.this, R.string.successful_logout , Toast.LENGTH_LONG).show();
-                                                Intent in = new Intent(DashBoard.this, SplashScreen.class);
+                                                Toast.makeText(DashBoard.this,
+                                                        R.string.successful_logout ,
+                                                        Toast.LENGTH_LONG).show();
+                                                Intent in = new Intent(DashBoard.this,
+                                                        SplashScreen.class);
                                                 startActivity(in);
                                                 finish();
                                             }
@@ -549,8 +584,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
-    //Details Coding
-
+//    RecyclerView Decoration area
+//    Defining gap between every item in the list by calling xml file list_divider.xml
     public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
         private Drawable mDivider;
 
@@ -567,7 +602,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             for (int i = 0; i < childCount; i++) {
                 View child = parent.getChildAt(i);
 
-                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
+                        child.getLayoutParams();
 
                 int top = child.getBottom() + params.bottomMargin;
                 int bottom = top + mDivider.getIntrinsicHeight();
@@ -578,6 +614,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
+//    API call for Different Restaurants list when User click on the Restaurant on the screen
     public void restaurantList(){
         JSONObject obj = new JSONObject();
 //
@@ -592,6 +629,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
     }
 
+//    API call for Different Bars list when User click on the Restaurant on the screen
     public void barList(){
         JSONObject obj = new JSONObject();
 //
@@ -606,6 +644,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         postJsonDataBar(Config.innDemand+"bars/details/", obj.toString());
     }
 
+//    API call for Inclusion for Room Services n Restaurant or overall Hotel
     public void inclusion(){
         JSONObject obj = new JSONObject();
         try {
@@ -619,6 +658,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         postJsonDataInclusion(Config.innDemand+"inclusion/details/", obj.toString());
     }
 
+//    API call to set timings for opening the Restaurant/Bar or Room Services.
     public void timings(){
         JSONObject obj = new JSONObject();
         try {
@@ -632,45 +672,15 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         postJsonDataTimings(Config.innDemand+"timing/details/", obj.toString());
     }
 
-    //Button onClicklistener to Checkout from the hotel & redirect to Splash Screen
+//    Button onClicklistener to Checkout from the hotel & redirect to Splash Screen
+//    Pop-up opens to show either to check-out from hotel or not now options.
     public void checkOut(View view) {
 
         checkoutClick();
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(HotelDetails.this);
-//        builder.setMessage("It seems like you want to checkout?")
-//                .setPositiveButton("Checkout", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        //Json Parsing to send hotel details to checkout.
-//                        JSONObject obj = new JSONObject();
-//                        try {
-//                            obj.put("checkin_id", prefs.getCheckin_Id());
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
-//                        prefs.setCheckout("1");
-//                        prefs.setIs_In_Hotel(false);
-//                        Toast.makeText(HotelDetails.this, "Successfully Checked Out", Toast.LENGTH_LONG).show();
-//                        Intent in = new Intent(HotelDetails.this, SplashScreen.class);
-//                        startActivity(in);
-//                        finish();
-//                    }
-//                })
-//                .setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//        AlertDialog dialog = builder.create();
-//        dialog.setTitle("Are you Sure?");
-//        dialog.show();
     }
 
+//    Getting details for Hotel Location through latitude n longitude
+//    Intent fire to get/set details on Map.
     public void direction(View view) {
         Intent in = new Intent(DashBoard.this, MapArea.class);
         in.putExtra("latitude", "28.4089");
@@ -678,7 +688,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         startActivity(in);
     }
 
-    //OnClick to show Restaurant List of the Hotel
+//    OnClick the restaurant options to load Restaurants List of the Hotel
+//    Click once will show the list and Click again hides according to preference check
     public void restaurantClick(View view) {
         if(prefs.getCheck_list() == false) {
             restaurantList.setVisibility(View.VISIBLE);
@@ -689,14 +700,15 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
-    //OnClick to go to Room Services Screen
+//    OnClick the Room Services option to go to Room Services Screen
     public void roomServiceClick(View view) {
         Intent in = new Intent(DashBoard.this, RoomServices.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
     }
 
-    //OnClick to go to Bar Screen
+//    OnClick the Bar options to load Bars List of the Hotel
+//    Click once will show the list and Click again hides according to preference check
     public void barClick(View view) {
         if(prefs.getBarList() == false) {
             barList.setVisibility(View.VISIBLE);
@@ -707,14 +719,16 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
-    //OnClick to go to Spa Screen
+//    OnClick the Spa options to load Spas List of the Hotel
+//    Click once will show the list and Click again hides according to preference check
     public void spaClick(View view) {
-//        Intent in = new Intent(HotelDetails.this, Restaurant.class);
-//        startActivity(in);
+    // working is still left
     }
 
     /**
-     * Method to make json object get call
+     * Method to make json object get call and fetch details from Server by sending Hotel ID to
+     * server
+     * Loads details of the hotel to show at the bottom of the screen
      * */
 
     private void makeJsonObjectRequest() {
@@ -732,6 +746,12 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         postJsonData(Config.innDemand+"hotels/details/", obj.toString());
     }
 
+    /**
+     * Method to make json object get call and fetch details from Server by sending Hotel ID to
+     * server
+     *
+     * */
+
     private void makeJsonRequestBottom(){
         JSONObject objt = new JSONObject();
 
@@ -746,9 +766,9 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         postJsonDataBottom(Config.innDemand+"info_centre/details/", objt.toString());
     }
 
-    //    Network Response getting all details of Hotel
+//    Network Response getting all details of Hotel
 //    Details: Picture, name, address, location, contact number etc
-//    Values set to show on the Screen
+//    Values set to show options like: If Restaurant/Bar/Spa is there or not
     public void postJsonData(String url, String userData) {
 
         RequestQueue mRequestQueue;
@@ -767,7 +787,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
         System.out.println("inside post json data=====" + requestBody);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("yohaha=success===" + response);
@@ -790,8 +811,24 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                     String spa_img = object.getString("spa_image");
                     about_hotel = object.getString("about_hotel");
 
-                    hotel_Name.setText(hotelName);
-                    hotel_Address.setText(address);
+                    try {
+                        if(prefs.getLocaleset() == "en" || prefs.equals("en")){
+                            hotel_Name.setText(hotelName);
+                            hotel_Address.setText(address);
+                        }else {
+                            String htName = new getTraslatedString().execute(prefs.getLocaleset(),
+                                    hotelName).get();
+                            String htAddress = new getTraslatedString().execute(prefs.getLocaleset(),
+                                    address).get();
+                            hotel_Name.setText(htName);
+                            hotel_Address.setText(htAddress);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
 
                     Glide.with(DashBoard.this).load(restaurant_image).into(main_backdrop);
 
@@ -806,34 +843,44 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                     call_hotel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (ActivityCompat.checkSelfPermission(DashBoard.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            if (ActivityCompat.checkSelfPermission(DashBoard.this,
+                                    android.Manifest.permission.CALL_PHONE) !=
+                                    PackageManager.PERMISSION_GRANTED) {
                                 // TODO: Consider calling
                                 //    ActivityCompat#requestPermissions
-                                // here to request the missing permissions, and then overriding
-                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                // here to request the missing permissions,
+                                // and then overriding
+                                //   public void onRequestPermissionsResult
+                                // (int requestCode, String[] permissions,
                                 //                                          int[] grantResults)
-                                // to handle the case where the user grants the permission. See the documentation
+                                // to handle the case where the user grants the
+                                // permission. See the documentation
                                 // for ActivityCompat#requestPermissions for more details.
 
                                 // Should we show an explanation?
-                                if (ActivityCompat.shouldShowRequestPermissionRationale(DashBoard.this,
-                                        android.Manifest.permission.CALL_PHONE)) {
+                                if (ActivityCompat.shouldShowRequestPermissionRationale
+                                        (DashBoard.this, android.Manifest.permission.CALL_PHONE)) {
 
                                     // Show an expanation to the user *asynchronously* -- don't block
                                     // this thread waiting for the user's response! After the user
                                     // sees the explanation, try again to request the permission.
 
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(DashBoard.this);
+                                    AlertDialog.Builder builder =
+                                            new AlertDialog.Builder(DashBoard.this);
                                     builder.setMessage("Need to Call")
-                                            .setPositiveButton("Call", new DialogInterface.OnClickListener() {
+                                            .setPositiveButton("Call",
+                                                    new DialogInterface.OnClickListener() {
                                                 @Override
-                                                public void onClick(DialogInterface dialog, int which) {
+                                                public void onClick(DialogInterface dialog,
+                                                                    int which) {
 
                                                 }
                                             })
-                                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            .setNegativeButton("Cancel",
+                                                    new DialogInterface.OnClickListener() {
                                                 @Override
-                                                public void onClick(DialogInterface dialog, int which) {
+                                                public void onClick(DialogInterface dialog,
+                                                                    int which) {
                                                     dialog.cancel();
                                                 }
                                             });
@@ -894,8 +941,9 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-    //    Method to get response for Miscellaneous values in the hotel
-//    Saving name of title & details to show in the list set at the bottom of page
+//    Method to get response for Miscellaneous values in the hotel to show at the bottom of screen
+//    Saving name of title provides in the API & details to show in the list set
+//      at the bottom of page
     public void postJsonDataBottom(String url, String userData){
         RequestQueue mRequestQueue;
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
@@ -913,7 +961,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
         System.out.println("inside post json data=====" + requestBody);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("yohaha=bottom=success===" + response);
@@ -990,7 +1039,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
         System.out.println("inside post json data=====" + requestBody);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("yohaha=restautant=success===" + response);
@@ -1011,8 +1061,22 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                         String hotel = object.getString("hotel");
                         String status = object.getString("status");
 
-                        ListData data = new ListData(restaurantId, rest_name, status);
-                        restaurantData.add(data);
+                        try {
+                            if(prefs.getLocaleset() == "en" || prefs.equals("en")){
+                                ListData data = new ListData(restaurantId, rest_name, status);
+                                restaurantData.add(data);
+                            }else {
+                                String htName = new getTraslatedString().execute
+                                        (prefs.getLocaleset(), rest_name).get();
+
+                                ListData data = new ListData(restaurantId, htName, status);
+                                restaurantData.add(data);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -1046,45 +1110,32 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
+//    Not in Use
+//    Marshmallow permissions override method
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case MY_PERMISSIONS_REQUEST_CALL: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    // permission was granted, yay! Do the
-//                    // contacts-related task you need to do.
-//
-//                } else {
-//
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                }
-//                return;
-//            }
-//
-//            // other 'case' lines to check for other
-//            // permissions this app might request
-//        }
+
     }
 
+//    OnClick Listener for Recyclerview List OnItemClick
     public interface ClickListener {
         void onClick(View view, int position);
 
         void onLongClick(View view, int position);
     }
 
+//    Custom method to get OnItemClick method of Recyclerview working
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
         private DashBoard.ClickListener clickListener;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final DashBoard.ClickListener clickListener) {
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView,
+                                     final DashBoard.ClickListener clickListener) {
             this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            gestureDetector = new GestureDetector(context,
+                    new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onSingleTapUp(MotionEvent e) {
                     return true;
@@ -1121,8 +1172,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
-    //    OnResume method to set Restaurant/Bars list
-//    Activating OnCLick function, saving value & firing Intent
+//    OnResume method to set Restaurant/Bars list
+//    Set values and also Includes OnItemClick of the list fires Intent to another Screen
     @Override
     protected void onResume() {
         super.onResume();
@@ -1155,7 +1206,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         });
     }
 
-//    Network Call to set Inclusion whether the hotel is having the facilities (Restaurant, Bar, Services, Spa)
+//    Network Call to set Inclusion whether the hotel is having the facilities
+// (Restaurant, Bar, Services, Spa)
 //    Bollean value to set/get whether to show/not
 //    Boolean value to show which room service is available in the hotel
 //    Room services value are also mentioned(Beverages/Bath Essentials/Bed tea/coffee)
@@ -1177,7 +1229,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
         System.out.println("inside post inclusion json data=====" + requestBody);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("yohaha=inclusion=success===" + response);
@@ -1195,9 +1248,12 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                     Boolean laundry = object.getBoolean("laundry");
                     Boolean cab = object.getBoolean("cab");
                     Boolean bath_ess = object.getBoolean("bathroom_essentials");
-                    Boolean bathroom_essentials_towels = object.getBoolean("bathroom_essentials_towels");
-                    Boolean bathroom_essentials_toiletries = object.getBoolean("bathroom_essentials_toiletries");
-                    Boolean bathroom_essentials_maintenance = object.getBoolean("bathroom_essentials_maintenance");
+                    Boolean bathroom_essentials_towels =
+                            object.getBoolean("bathroom_essentials_towels");
+                    Boolean bathroom_essentials_toiletries =
+                            object.getBoolean("bathroom_essentials_toiletries");
+                    Boolean bathroom_essentials_maintenance =
+                            object.getBoolean("bathroom_essentials_maintenance");
                     Boolean water = object.getBoolean("water");
                     Boolean mineral_water = object.getBoolean("mineral_water");
                     Boolean ice_bucket = object.getBoolean("ice_bucket");
@@ -1282,8 +1338,11 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-    //    Method to get timings of all hotel services(Restaurant timings/Spa timings(if there) & others like same)
-//    Compare timings to Open/Close the Restaurant/Room services/Bar/Spa
+// Here in this method we check timings for Restaurant/Bar/Spa
+//    Timings like: If timings match then only loads data of restaurant/bar/Spa
+//    For eg: If timings for restaurant are 11:00am-11:00pm then Only in between this timings
+//    API will load data else no data will get loaded
+//    For Room Services If it is out of time then set disable on Roomservices buttons.
     public void postJsonDataTimings(String url, String userData){
         RequestQueue mRequestQueue;
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
@@ -1301,7 +1360,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
         System.out.println("inside post timings json data=====" + requestBody);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 hideProgressDialog();
@@ -1360,8 +1420,10 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-    public boolean isTimeBetweenTwoTime(String argStartTime,
-                                        String argEndTime, String argCurrentTime) throws ParseException {
+//    Coding to generate current timings and match this timings with the API timings
+//    Timings code to load Restaurant/Bar/Spa/Room Services
+    public boolean isTimeBetweenTwoTime(String argStartTime, String argEndTime,
+                                        String argCurrentTime) throws ParseException {
         String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
 //        AppPreferences pref = new AppPreferences(HotelDetails.this);
         //
@@ -1435,8 +1497,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
-    public boolean isTimeBetweenRestaurant(String argStartTime,
-                                           String argEndTime, String argCurrentTime) throws ParseException {
+    public boolean isTimeBetweenRestaurant(String argStartTime, String argEndTime,
+                                           String argCurrentTime) throws ParseException {
         String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
 //        AppPreferences pref = new AppPreferences(HotelDetails.this);
         //
@@ -1510,8 +1572,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
-    public boolean isTimeBetweenBar(String argStartTime,
-                                    String argEndTime, String argCurrentTime) throws ParseException {
+    public boolean isTimeBetweenBar(String argStartTime, String argEndTime,
+                                    String argCurrentTime) throws ParseException {
         String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
 
         if (argStartTime.matches(reg) && argEndTime.matches(reg) && argCurrentTime.matches(reg)) {
@@ -1605,7 +1667,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
         System.out.println("inside post barList json data=====" + requestBody);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("yohaha=barList=success===" + response);
@@ -1626,8 +1689,22 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                         String hotel = object.getString("hotel");
                         String status = object.getString("status");
 
-                        BarlistData data = new BarlistData(restaurantId, bar_name, status);
-                        barData.add(data);
+                        try {
+                            if(prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")) {
+                                BarlistData data = new BarlistData(restaurantId, bar_name, status);
+                                barData.add(data);
+                            }else {
+                                String barName = new getTraslatedString().execute
+                                        (prefs.getLocaleset(), bar_name).get();
+
+                                BarlistData data = new BarlistData(restaurantId, barName, status);
+                                barData.add(data);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -1686,7 +1763,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                 postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
                 prefs.setCheckout("1");
                 prefs.setIs_In_Hotel(false);
-                Toast.makeText(DashBoard.this, "Successfully Checked Out", Toast.LENGTH_LONG).show();
+                Toast.makeText(DashBoard.this, "Successfully Checked Out",
+                        Toast.LENGTH_LONG).show();
                 Intent in = new Intent(DashBoard.this, SplashScreen.class);
                 startActivity(in);
                 finish();
@@ -1704,7 +1782,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         dialog.show();
     }
 
-    //Custom pop-up for Network Click
+    //Custom pop-up for Internet Check (If connected or not)
     public void networkClick(){
         // custom dialog
         final Dialog dialog = new Dialog(DashBoard.this);
@@ -1724,6 +1802,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         dialog.show();
     }
 
+// alert Dialog for loading details on the screen initially
     private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -1734,9 +1813,163 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         mProgressDialog.show();
     }
 
+//    Hide the current running alert dialog after data gets loaded
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
         }
+    }
+
+
+//    API call to translate data
+//    Translation coding to Translate all the data coming from server in target language
+    public class getTraslatedString extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String[] target) {
+
+            String trasRequest = "https://www.googleapis.com/language/translate/v2?" +
+                    "key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source=en" +
+                    "&target="+target[0]+"&q="+target[1];
+
+            try {
+                String responseString = executeHttpGet(trasRequest);
+
+                JSONObject dataObj = getJsonObject(new JSONObject(responseString),"data");
+
+                JSONArray translationArray = getJsonArray(dataObj,"translations");
+                if(translationArray!=null && translationArray.length()>0){
+
+                    for (int i = 0; i <translationArray.length() ; i++) {
+                        JSONObject jsonObject = translationArray.getJSONObject(i);
+                        destinationString = getString(jsonObject,"translatedText");
+                        Log.d("Check Responce", "Here: "+destinationString);
+                        System.out.print("Pls give "+destinationString);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.print("ExceptionGen: "+e);
+            }
+            return destinationString;
+        }
+
+        @Override
+        protected void onPostExecute(String valuee) {
+            Log.d("Check Responce", "Here: "+destinationString);
+
+            Log.d("Check Responce", "There: "+valuee);
+        }
+    }
+
+    public String executeHttpGet(String url) throws Exception {
+
+        java.net.URL obj = new URL(url.replace(" ", "%20"));
+        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+        // optional default is GET
+        con.setRequestMethod("GET");
+
+        //add request header
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        System.out.println(response.toString());
+
+        return  response.toString();
+
+    }
+
+    /**
+     * get String from {@link JSONObject}.
+     *
+     * @param jsonObject
+     * @param key
+     * @return value
+     */
+    public String getString(JSONObject jsonObject, String key) {
+        try {
+            if (jsonObject != null) {
+                if (!jsonObject.isNull(key)) {
+                    return jsonObject.getString(key);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * get {@link JSONObject}.
+     *
+     * @param jsonObject
+     * @param key
+     * @return
+     */
+    public JSONObject getJsonObject(JSONObject jsonObject, String key) {
+
+        try {
+            if (jsonObject != null) {
+                if (!jsonObject.isNull(key)) {
+                    return jsonObject.getJSONObject(key);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * get {@link JSONObject}.
+     *
+     * @param resString
+     * @return
+     */
+    public JSONObject getJsonObjectFromResponse(String resString) {
+
+        try {
+            if (resString != null) {
+                if (resString.length()>0) {
+                    return new JSONObject(resString);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * get {@link JSONArray}.
+     *
+     * @param jsonObject
+     * @param key
+     * @return
+     */
+    public JSONArray getJsonArray(JSONObject jsonObject, String key) {
+
+        try {
+            if (jsonObject != null) {
+                if (!jsonObject.isNull(key)) {
+                    return jsonObject.getJSONArray(key);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

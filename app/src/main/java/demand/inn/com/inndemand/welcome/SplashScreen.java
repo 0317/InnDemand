@@ -41,7 +41,7 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
 
 public class SplashScreen extends AppCompatActivity {
 
-    //Utility Class Area
+    //Utility Class Area to call Internet n Shared preferences
     NetworkUtility nu;
     AppPreferences prefs;
 
@@ -56,7 +56,7 @@ public class SplashScreen extends AppCompatActivity {
     //Others
     Context context;
 
-    //Notification
+    //Notification area for Google notifications
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     GoogleCloudMessaging gcm;
@@ -76,46 +76,19 @@ public class SplashScreen extends AppCompatActivity {
         prefs = new AppPreferences(SplashScreen.this);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
-//        getSupportActionBar().hide();
-
+//      Preference to check If the User Checked-into hotel or not after QR scan
         prefs.setCheckout("1");
 
 //        ((LocaleApp)getApplicationContext()).changeLang(prefs.getLocaleset());
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
-        //GCM Area (Notifications)
-//        if (checkPlayServices()) {
-//            gcm = GoogleCloudMessaging.getInstance(this);
-//            regid = getRegistrationId(context);//GCM Token ID
-//            prefs.setReg_ID(regid);
-//            Log.i(TAG, "REG ID "+regid);
-//
-//            if (regid.isEmpty()) {
-//
-//                registerInBackground();
-//            }else{
-//                if(nu.isConnectingToInternet()){
-//                    DeviceUpdate update = new DeviceUpdate();
-//                    update.execute(regid);
-//                    prefs.setReg_ID(regid);
-//                    Log.i(TAG, "REG ID "+regid);
-//                }
-//            }
-//        } else {
-//            Log.i(TAG, "No valid Google Play Services APK found.");
-//        }
-
-      /*  if(prefs.getHotel_check() == true){
-            Intent in = new Intent(SplashScreen.this, DashBoard.class);
-            startActivity(in);
-        }*/
-
         //To add shortcut App icon on the desktop of mobile
         addShortcut();
 
     }
 
+//    Method to call another method to initiate tha APP when app opens
     @Override
     protected void onResume() {
         super.onResume();
@@ -127,6 +100,9 @@ public class SplashScreen extends AppCompatActivity {
         super.onPause();
     }
 
+//    Method to Initiate the App and to check whether the User opens the app
+//    Multiple conditions to check whether User is a new user and needs to sign-up
+//    Or If already sign-up, send to QR scan page or if Qr-scan is done send to Dashboard screen
     public void call(){
 //        if (nu.isConnectingToInternet()) {
             new Handler().postDelayed(new Runnable() {
@@ -159,6 +135,7 @@ public class SplashScreen extends AppCompatActivity {
             }, 3000 /* 3sec delay*/);
     }
 
+//    Method to add shortcut icon of the app on the home page of device.
     private void addShortcut() {
         // TODO Auto-generated method stub
         Intent shortcutIntent = new Intent(getApplicationContext(), SplashScreen.class);
@@ -173,7 +150,7 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
-    //GCM call
+    //GCM notification call to register device to get notifications
     private void registerInBackground() {
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -234,6 +211,7 @@ public class SplashScreen extends AppCompatActivity {
      *            registration ID
      */
 
+//    Method to store registration ID in Shared preferences provided by GCM
     private void storeRegistrationId(Context context, String regId) {
 
         int appVersion = getAppVersion(context);
@@ -286,7 +264,7 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-    //Updation of device
+    //method for Updation of device to get notifications
     public class DeviceUpdate extends AsyncTask<String, Void, String> {
         ProgressDialog pd = new ProgressDialog(SplashScreen.this);
 
@@ -315,12 +293,13 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
-    //Check Play Services in Device
+    //Check whether Play Services are there in Device
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 //   finish();
             }
@@ -329,7 +308,7 @@ public class SplashScreen extends AppCompatActivity {
         return true;
     }
 
-    //Custom pop-up for Network Click
+    //Custom pop-up to show Internet Connection (Pop-up opens If app is not connected to Internet)
     public void networkClick(){
         // custom dialog
         final Dialog dialog = new Dialog(SplashScreen.this);
