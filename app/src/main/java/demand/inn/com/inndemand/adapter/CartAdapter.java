@@ -17,13 +17,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Header;
-import demand.inn.com.inndemand.constants.MaincourseData;
-import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.utility.AppPreferences;
-import demand.inn.com.inndemand.welcome.DBHelper;
 
 /**
  * Created by akash
@@ -47,11 +43,6 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.MyViewHolder>
 
     // Start with first item selected
     private int selectedItem = 0;
-
-    Header header;
-
-    //DATABASE
-    DBHelper db;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, subtitle, rupees, count;
@@ -79,7 +70,6 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.MyViewHolder>
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.mycartitems, parent, false);
         prefs = new AppPreferences(mContext);
-        db = new DBHelper(mContext);
 
         return new MyViewHolder(itemView);
     }

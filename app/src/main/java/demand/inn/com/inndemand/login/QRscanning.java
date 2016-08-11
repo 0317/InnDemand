@@ -2,6 +2,7 @@ package demand.inn.com.inndemand.login;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +38,7 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -54,16 +57,20 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
 
 import demand.inn.com.inndemand.DashBoard;
+import demand.inn.com.inndemand.Helper.Loader;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.MarshMallowPermission;
 //import demand.inn.com.inndemand.fcm.NotificationListener;
+import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.BaseActivity;
+import demand.inn.com.inndemand.welcome.DBList;
 import demand.inn.com.inndemand.welcome.SplashScreen;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -101,6 +108,9 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
 //    Firebase Notification Class call
     String getting = "";
 
+    ProgressDialog mProgressDialog;
+
+    DBList dbs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +121,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
         PreferenceManager.getDefaultSharedPreferences(QRscanning.this);
+        dbs = new DBList(this);
 
 //        Firebase notification initialisation in the app
         getting =  FirebaseInstanceId.getInstance().getToken();
@@ -209,7 +220,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     makeJsonObjectRequest();
-                    Intent in = new Intent(QRscanning.this, DashBoard.class);
+                    Intent in = new Intent(QRscanning.this, Loader.class);
                     startActivity(in);
                     finish();
                 }
@@ -227,9 +238,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 //                    makeJsonObjectRequest();
-//                    Intent in = new Intent(QRscanning.this, HotelDetails.class);
-//                    startActivity(in);
-//                    finish();
+//
                 }
             });
 
@@ -363,7 +372,6 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
             @Override
             public void onResponse(String response) {
                 System.out.println("yohaha=success==="+response);
-
                 try {
                     JSONObject object = new JSONObject(response);
 
@@ -468,6 +476,24 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         };
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    // alert Dialog for loading details on the screen initially
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("loading details....");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    //    Hide the current running alert dialog after data gets loaded
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
     }
 }
 

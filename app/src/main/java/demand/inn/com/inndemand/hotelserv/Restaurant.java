@@ -1,4 +1,4 @@
-package demand.inn.com.inndemand.roomservice;
+package demand.inn.com.inndemand.hotelserv;
 
 
 import android.app.Dialog;
@@ -52,7 +52,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -65,16 +64,12 @@ import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.FragmentData;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
-import demand.inn.com.inndemand.fragmentarea.DefaultFragment;
-import demand.inn.com.inndemand.fragmentarea.Dessert;
-import demand.inn.com.inndemand.fragmentarea.MainCourse;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SearchDB;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
-import demand.inn.com.inndemand.welcome.DBHelper;
 
 /**
  * Created by akash
@@ -102,7 +97,7 @@ public class Restaurant extends AppCompatActivity{
 //    Alert-dialog
     private ProgressDialog mProgressDialog;
 
-//    TabClass Class call for
+//    TabClass Class call for dynamic approach of tabs (create multiple tabs automatically)
     Appetizer mAppetizer;
 
 //    String to define to value
@@ -122,6 +117,9 @@ public class Restaurant extends AppCompatActivity{
     String totalItems;
     String broaditemName;
 
+//    Getting Restaurant name via Intent in a String
+    String restName;
+
 //    Adding values in the cart in the form of String
     String cart_value;
     String cart_val;
@@ -137,9 +135,6 @@ public class Restaurant extends AppCompatActivity{
     List<ResturantDataModel> resturantDataModelList;
     ResturantDataModel dataModel, model;
 
-    //DATABASE Class
-    DBHelper db;
-
 //    String which provides final result after Translation
     public String destinationString = "";
 
@@ -153,7 +148,8 @@ public class Restaurant extends AppCompatActivity{
 
 //        Constant Class n Database calss initialize
         model = new ResturantDataModel();
-        db = new DBHelper(Restaurant.this);
+
+        restName = getIntent().getStringExtra("rest_name");
 
         //Toolbar call for the screen
 //        Includes menu on the top right through restaurant_menu.xml file and back press icon
@@ -170,9 +166,9 @@ public class Restaurant extends AppCompatActivity{
                     startActivity(in);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }else if(id == R.id.action_cart){
-//                    Intent in = new Intent(Restaurant.this, MyCart.class);
-//                    startActivity(in);
-//                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    Intent in = new Intent(Restaurant.this, MyCart.class);
+                    startActivity(in);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
                 }else if(id == R.id.action_notification){
                     Intent in = new Intent(Restaurant.this, GCMNotifications.class);
@@ -257,7 +253,7 @@ public class Restaurant extends AppCompatActivity{
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle("Restaurant");
+                    collapsingToolbarLayout.setTitle(restName);
                     isShow = true;
                 } else if(isShow) {
                     collapsingToolbarLayout.setTitle("");
@@ -334,7 +330,7 @@ public class Restaurant extends AppCompatActivity{
     }
 
 //    Here receives data from Fragments class Adapter in the form of broadcast
-//    gettings counter for the items selected n items details in food/other list
+//    getting counter for the items selected n items detail in food list
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -388,7 +384,7 @@ public class Restaurant extends AppCompatActivity{
 //    method is to add items to cart with onClick
 //    Shows a pop-up asking view cart or not now
     public void addCart(View view){
-        db.insertData(new CartData(broaditemName, totalCash, totalItems));
+//        db.insertData(new CartData(broaditemName, totalCash, totalItems));
         new AlertDialog.Builder(Restaurant.this).setMessage(R.string.restaurant_foodadded_tocart)
                 .setPositiveButton(R.string.viewcart, new DialogInterface.OnClickListener() {
                     @Override
@@ -484,73 +480,10 @@ public class Restaurant extends AppCompatActivity{
 
                         subCategory = object.getString("subcategory");
                         amount = object.getString("price");
-//                        dataModel.setId(ids);
-//                        dataModel.setName(itemName);
-//                        dataModel.setCategory(category);
-//                        dataModel.setDescription(itemDesc);
-//                        dataModel.setFood(food);
-//                        dataModel.setPrice(amount);
-//                        dataModel.setSubcategory(subCategory);
-//
-//                        resturantDataModelList.add(dataModel);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-//                resturantDataModelList = new ArrayList<>();
-//
-//
-//                for (int i = 0 ; i < category.length() ; i++){
-//                    ResturantDataModel dataModel = new ResturantDataModel();
-//                    dataModel.setCategory(category);
-//                    resturantDataModelList.add(dataModel);
-//                }
-
-                /*for (int i =0 ;i<=10;i++){
-                    ResturantDataModel dataModel = new ResturantDataModel();
-                    dataModel.setCategory("");
-                }
-*/
-
-               /* adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-                for (ResturantDataModel dataModel:resturantDataModelList){
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString("category_id", dataModel.getId());
-                    bundle.putString("subCategory",dataModel.getSubcategory());
-                    bundle.putString("name", dataModel.getName());
-                    bundle.putString("desc", dataModel.getDescription());
-                    bundle.putString("price", dataModel.getPrice());
-                    bundle.putString("food", dataModel.getFood());
-
-                    Fragment appFrf = new Appetizer();
-                    appFrf.setArguments(bundle);
-
-                    adapter.addFragment(appFrf, dataModel.getCategory());
-
-                }*/
-/*
-                adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-                for (ResturantDataModel dataModel:resturantDataModelList){
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString("","");
-
-                    Fragment appFrf = new Appetizer();
-                    appFrf.setArguments(bundle);
-
-                    adapter.addFragment(appFrf, dataModel.getCategory());
-
-                }*/
-
-               /* adapter.notifyDataSetChanged();
-                viewPager.setAdapter(adapter);
-
-                tabLayout.setupWithViewPager(viewPager);*/
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -628,31 +561,30 @@ public class Restaurant extends AppCompatActivity{
 
                         String valueCat = null;
                         try {
-                            if(prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")) {
+                           /* if(prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")) {
 
                                 dataModel.setId(type_id);
                                 dataModel.setCategory(catName);
 //                        dataModel.setId(catType);
                                 resturantDataModelList.add(dataModel);
-                            }else {
+                            }else {*/
                                 valueCat = new getTraslatedString().execute(prefs.getLocaleset(),
                                         catName).get();
 
                                 dataModel.setId(type_id);
                                 dataModel.setCategory(valueCat);
 //                        dataModel.setId(catType);
-                                resturantDataModelList.add(dataModel);
-                            }
+                            resturantDataModelList.add(dataModel);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
                         Log.d("LogValueCat: ", valueCat);
-                        dataModel.setId(type_id);
+                        /*dataModel.setId(type_id);
                         dataModel.setCategory(valueCat);
 //                        dataModel.setId(catType);
-                        resturantDataModelList.add(dataModel);
+                        resturantDataModelList.add(dataModel);*/
 //                        data = new FragmentData(catName);
 //                        tabList.add(data);
 

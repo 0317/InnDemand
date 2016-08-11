@@ -84,6 +84,10 @@
 
         </activity>
 
+        <activity android:name=".Helper.Loader"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity
             android:name=".DashBoard"
             android:label="@string/app_name"
@@ -92,14 +96,6 @@
 
         </activity>
 
-        <activity android:name=".login.HotelDetails"
-            android:label="Hotel"
-            android:configChanges="locale"
-            android:hardwareAccelerated="false"
-            android:screenOrientation="portrait"
-            android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
         <activity android:name=".cartarea.MyCart"
             android:configChanges="locale"
             android:screenOrientation="portrait">

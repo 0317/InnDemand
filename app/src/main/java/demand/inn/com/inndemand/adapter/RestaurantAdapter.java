@@ -24,13 +24,10 @@ import java.util.List;
 
 import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Header;
 import demand.inn.com.inndemand.model.ResturantDataModel;
-import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
-import demand.inn.com.inndemand.welcome.DBHelper;
 import demand.inn.com.inndemand.welcome.DBList;
 
 /**
@@ -64,7 +61,6 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     Header header;
 
     //DATABASE
-    DBHelper db;
     DBList dbs;
     SharedPreferences preferences;
     private static MyClickListener myClickListener;
@@ -141,7 +137,6 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurantadapt, parent, false);
         prefs = new AppPreferences(mContext);
-        db = new DBHelper(mContext);
         dbs = new DBList(mContext);
         preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 

@@ -221,7 +221,7 @@ public class CheckDetails extends AppCompatActivity {
         }
 
 
-        //details set from facebook/google data
+        //these details get set from facebook/google data
         if(name == null)
             detail_name.setText(gName);
         else
@@ -235,7 +235,8 @@ public class CheckDetails extends AppCompatActivity {
         detail_email.setText(email);
 
         if(dp == null) {
-            Picasso.with(this).load(prefs.getUser_gpicture()).transform(new CircleTransform()).into(fb_dp);
+            Picasso.with(this).load(prefs.getUser_gpicture()).transform(new CircleTransform())
+                    .into(fb_dp);
         }
         else {
             Picasso.with(this).load(dp).transform(new CircleTransform()).into(fb_dp);

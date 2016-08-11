@@ -13,9 +13,8 @@ import java.util.List;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.NotificationData;
-import demand.inn.com.inndemand.login.HotelDetails;
-import demand.inn.com.inndemand.roomservice.Bar;
-import demand.inn.com.inndemand.roomservice.Restaurant;
+import demand.inn.com.inndemand.hotelserv.Bar;
+import demand.inn.com.inndemand.hotelserv.Restaurant;
 import demand.inn.com.inndemand.utility.AppPreferences;
 
 /**

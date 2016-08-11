@@ -3,7 +3,7 @@ package demand.inn.com.inndemand.model;
 import android.util.Log;
 
 /**
- * Created by akash on 26/6/16.
+ * Created by akash
  */
 public class ResturantDataModel {
 

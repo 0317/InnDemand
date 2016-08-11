@@ -1,44 +1,31 @@
 package demand.inn.com.inndemand.cartarea;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -71,17 +58,13 @@ import javax.net.ssl.HttpsURLConnection;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.CartAdapter;
-import demand.inn.com.inndemand.adapter.MainCourseAdapter;
-import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
-import demand.inn.com.inndemand.constants.MaincourseData;
 import demand.inn.com.inndemand.model.SimpleDividerItemDecoration;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.CommentArea;
-import demand.inn.com.inndemand.welcome.DBHelper;
 import demand.inn.com.inndemand.welcome.Thankyou;
 
 /**
@@ -122,11 +105,6 @@ public class MyCart extends AppCompatActivity {
     private int hour;
     private int minute;
 
-    //Database
-    DBHelper db;
-    int m_here=  0;
-
-
     public String destinationString = "";
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -137,8 +115,7 @@ public class MyCart extends AppCompatActivity {
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
-        db = new DBHelper(this);
-        ArrayList arrayList = (ArrayList) db.getAllData();
+//        ArrayList arrayList = (ArrayList) db.getAllData();
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -230,7 +207,7 @@ public class MyCart extends AppCompatActivity {
             }
         }*/
 
-          List<CartData> datas = db.getAllData();
+        /*  List<CartData> datas = db.getAllData();
 
             Log.d("DbFetchDesc", "DB"+datas);
 
@@ -247,10 +224,10 @@ public class MyCart extends AppCompatActivity {
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
-
-                    cart_totalamount.setText("Total Price"+": "+card.getDesc()+"/-");
+*/
+                    cart_totalamount.setText("Total Price"+": "+"/-");
                     cart_totalitems.setText("Total Items: ");
-                }
+//                }
 
         now.setOnClickListener(new View.OnClickListener() {
             @Override

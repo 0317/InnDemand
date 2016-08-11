@@ -1,4 +1,4 @@
-package demand.inn.com.inndemand.utility;
+package demand.inn.com.inndemand.service;
 
 import android.app.IntentService;
 import android.app.Service;
@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.volleycall.AppController;
 
 /**

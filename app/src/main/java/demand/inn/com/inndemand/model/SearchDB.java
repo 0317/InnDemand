@@ -1,6 +1,5 @@
 package demand.inn.com.inndemand.model;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,16 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.SearchConstant;
-import demand.inn.com.inndemand.roomservice.Beverages;
-import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
-import demand.inn.com.inndemand.welcome.DBAdapter;
-import demand.inn.com.inndemand.welcome.DBHelper;
 
 /**
  * Created by akash
@@ -57,12 +51,12 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
 
     private ListView mListView;
     private SearchView searchView;
-    private DBAdapter mDbHelper;
+//    private DBAdapter mDbHelper;
 
     private TextView customerText;
     private TextView nameText;
 
-    DBHelper db;
+//    DBHelper db;
 
     private List<SearchConstant> cardList = new ArrayList<>();
 
@@ -72,7 +66,7 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
         setContentView(R.layout.searchlist);
         nu = new NetworkUtility(this);
         prefs  =new AppPreferences(this);
-        db = new DBHelper(this);
+//        db = new DBHelper(this);
 
         searchView = (SearchView) findViewById(R.id.search);
         searchView.setIconifiedByDefault(false);
@@ -83,35 +77,35 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
 
         getCategory();
 
-        mDbHelper = new DBAdapter(this);
-        mDbHelper.open();
-
-        //Clean all Demand
-        mDbHelper.deleteAllDemand();
-        //Add some data as a sample
-        mDbHelper.createDemand("Taj", "", "", "", "", "", "");
-        mDbHelper.createDemand("Taj Serve", "", "", "", "", "", "");
-        mDbHelper.createDemand("Taj Vivanta", "", "", "", "", "", "");
-        mDbHelper.createDemand("taj Bar", "", "", "", "", "", "");
-        mDbHelper.createDemand("Towel", "", "", "", "", "", "");
-        mDbHelper.createDemand("Soap", "", "", "", "", "", "");
-        mDbHelper.createDemand("Tea", "", "", "", "", "", "");
-        mDbHelper.createDemand("Coffee", "", "", "", "", "", "");
-        mDbHelper.createDemand("Soda", "", "", "", "", "", "");
-        mDbHelper.createDemand("Glass", "", "", "", "", "", "");
-        mDbHelper.createDemand("Ice", "", "", "", "", "", "");
-        mDbHelper.createDemand("Water", "", "", "", "", "", "");
-        mDbHelper.createDemand("Laundry", "", "", "", "", "", "");
-        mDbHelper.createDemand("cab", "", "", "", "", "", "");
-        mDbHelper.createDemand("bell-boy", "", "", "", "", "", "");
+//        mDbHelper = new DBAdapter(this);
+//        mDbHelper.open();
+//
+//        //Clean all Demand
+//        mDbHelper.deleteAllDemand();
+//        //Add some data as a sample
+//        mDbHelper.createDemand("Taj", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Taj Serve", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Taj Vivanta", "", "", "", "", "", "");
+//        mDbHelper.createDemand("taj Bar", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Towel", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Soap", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Tea", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Coffee", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Soda", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Glass", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Ice", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Water", "", "", "", "", "", "");
+//        mDbHelper.createDemand("Laundry", "", "", "", "", "", "");
+//        mDbHelper.createDemand("cab", "", "", "", "", "", "");
+//        mDbHelper.createDemand("bell-boy", "", "", "", "", "", "");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mDbHelper  != null) {
-            mDbHelper.close();
-        }
+       /* if (mDbHelper  != null) {
+//            mDbHelper.close();
+        }*/
     }
 
     @Override
@@ -134,20 +128,20 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
 
     private void showResults(String query) {
 
-        Cursor cursor = mDbHelper.searchDemand((query != null ? query.toString() : "@@@@"));
+//        Cursor cursor = mDbHelper.searchDemand((query != null ? query.toString() : "@@@@"));
 
-        if (cursor == null) {
+//        if (cursor == null) {
             //
-        } else {
+//        } else {
               // Specify the columns we want to display in the result
             String[] from = new String[]{
-                DBAdapter.KEY_CUSTOMER,
-                    DBAdapter.KEY_NAME,
-                    DBAdapter.KEY_ADDRESS,
-                    DBAdapter.KEY_SODA,
-                    DBAdapter.KEY_WATER,
-                    DBAdapter.KEY_TOWEL,
-                    DBAdapter.KEY_SOAP
+//                DBAdapter.KEY_CUSTOMER,
+//                    DBAdapter.KEY_NAME,
+//                    DBAdapter.KEY_ADDRESS,
+//                    DBAdapter.KEY_SODA,
+//                    DBAdapter.KEY_WATER,
+//                    DBAdapter.KEY_TOWEL,
+//                    DBAdapter.KEY_SOAP
             };
 
             // Specify the Corresponding layout elements where we want the columns to go
@@ -161,8 +155,8 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
             };
 
             // Create a simple cursor adapter for the definitions and apply them to the ListView
-            SimpleCursorAdapter customers = new SimpleCursorAdapter(this,R.layout.searchresult, cursor, from, to);
-            mListView.setAdapter(customers);
+//            SimpleCursorAdapter customers = new SimpleCursorAdapter(this,R.layout.searchresult, cursor, from, to);
+//            mListView.setAdapter(customers);
 
             // Define the on-click listener for the list items
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -182,7 +176,7 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
                 }
             });
         }
-    }
+//    }
 
     public void getCategory(){
         JSONObject obj = new JSONObject();
@@ -239,7 +233,7 @@ public class SearchDB extends AppCompatActivity implements SearchView.OnQueryTex
 
                         Log.d("API", "API Category: " + catName);
 
-                        mDbHelper.createDemand(catName, "", "", "", "", "", "");
+//                        mDbHelper.createDemand(catName, "", "", "", "", "", "");
 
 
                     } catch (JSONException e) {

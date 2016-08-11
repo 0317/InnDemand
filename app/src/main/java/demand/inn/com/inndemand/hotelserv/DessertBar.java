@@ -1,4 +1,4 @@
-package demand.inn.com.inndemand.roomservice;
+package demand.inn.com.inndemand.hotelserv;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,25 +40,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.adapter.MainCourseAdapter;
+import demand.inn.com.inndemand.adapter.DessertAdapter;
 import demand.inn.com.inndemand.constants.Config;
-import demand.inn.com.inndemand.constants.MaincourseData;
+import demand.inn.com.inndemand.constants.DessertData;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by akash
  */
-public class MainBar extends Fragment {
+public class DessertBar extends Fragment {
 
     //Utility
     AppPreferences prefs;
 
     View view;
 
-    //UI Calls
-    RelativeLayout maincourse_options;
-    Context context;
+    //UI call area
     TextView cart_item, cart_total;
     LinearLayout menu_options;
 
@@ -74,27 +71,26 @@ public class MainBar extends Fragment {
     String amount;
 
     private RecyclerView recyclerView;
-    private MainCourseAdapter adapter;
-    private List<MaincourseData> cardList;
-
+    private DessertAdapter adapter;
+    private List<DessertData> cardList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.mainbar, container, false);
-
+        view = inflater.inflate(R.layout.desertbar, container, false);
         prefs = new AppPreferences(getActivity());
 
         //UI initialize
-        cart_item = (TextView) view.findViewById(R.id.maincourse_items);
-        cart_total = (TextView) view.findViewById(R.id.maincourse_total);
+        cart_item = (TextView) view.findViewById(R.id.dessert_items);
+        cart_total = (TextView) view.findViewById(R.id.dessert_total);
         cart_total.setText("Total: Rs 2000");
         cart_item.setText("(10 items)");
+
 
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         cardList = new ArrayList<>();
-        adapter = new MainCourseAdapter(getActivity(), cardList);
+        adapter = new DessertAdapter(getActivity(), cardList, cardList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -102,7 +98,9 @@ public class MainBar extends Fragment {
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        return view;
+        callMethod();
+
+        return  view;
     }
 
     public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
@@ -132,7 +130,6 @@ public class MainBar extends Fragment {
         }
     }
 
-
     public void callMethod(){
         JSONObject obj = new JSONObject();
         try {
@@ -148,7 +145,7 @@ public class MainBar extends Fragment {
     public void postJsonData(String url, String userData) {
 
         RequestQueue mRequestQueue;
-        Cache cache = new DiskBasedCache(getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
+        final Cache cache = new DiskBasedCache(getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
 
         // Set up the network to use HttpURLConnection as the HTTP client.
         Network network = new BasicNetwork(new HurlStack());
@@ -192,12 +189,14 @@ public class MainBar extends Fragment {
                         subCategory = object.getString("subcategory");
                         amount = object.getString("price");
 
-                        if(category.contains("Main") || category.equalsIgnoreCase("Main")) {
-                            MaincourseData a = new MaincourseData(subCategory, itemName, itemDesc, "Rs: "+ amount, food);
+                        if(category.contains("Desert") || category.equalsIgnoreCase("Desert")) {
+
+                            DessertData a = new DessertData(subCategory, itemName, itemDesc, "Rs: "+amount, food);
                             cardList.add(a);
 
                             adapter.notifyDataSetChanged();
                         }
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();

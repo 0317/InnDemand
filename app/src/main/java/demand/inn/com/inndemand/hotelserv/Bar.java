@@ -1,4 +1,4 @@
-package demand.inn.com.inndemand.roomservice;
+package demand.inn.com.inndemand.hotelserv;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -83,6 +83,9 @@ public class Bar extends AppCompatActivity{
     String subCategory;
     String amount;
 
+//    Getting Bar name via Intent in a String
+    String barName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +93,8 @@ public class Bar extends AppCompatActivity{
 //        Utility Class Initialize
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
+
+        barName = getIntent().getStringExtra("bar_name");
 
         //Toolbar call for the screen
 //        Includes menu on the top right through restaurant_menu.xml file and back press icon
@@ -166,7 +171,7 @@ public class Bar extends AppCompatActivity{
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle("Bar");
+                    collapsingToolbarLayout.setTitle(barName);
                     isShow = true;
                 } else if(isShow) {
                     collapsingToolbarLayout.setTitle("");

@@ -19,6 +19,10 @@ public class AppPreferences {
     private String localeset = "localeset",
                 selectedLanguage = "selectedLanguage";
 
+    private String hotel_name = "hotel_name",
+            hotel_address = "hotel_address",
+            hotel_dp = "hotel_dp";
+
     private String customer_Id = "customer_Id",
             checkin_Id = "checkin_Id",
             restaurant_Id = "restaurant_Id",
@@ -133,6 +137,34 @@ public class AppPreferences {
 
     public void setSelectedLanguage(String _selectedLanguage) {
         prefEditor.putString(selectedLanguage, _selectedLanguage).commit();
+    }
+
+
+//   Hotel Details for Dashboard Screen
+
+
+    public String getHotel_name() {
+        return appSharedpref.getString(hotel_name, "");
+    }
+
+    public void setHotel_name(String _hotel_name) {
+        prefEditor.putString(hotel_name, _hotel_name).commit();
+    }
+
+    public String getHotel_address() {
+        return appSharedpref.getString(hotel_address, "");
+    }
+
+    public void setHotel_address(String _hotel_address) {
+        prefEditor.putString(hotel_address, _hotel_address).commit();
+    }
+
+    public String getHotel_dp() {
+        return appSharedpref.getString(hotel_dp, "");
+    }
+
+    public void setHotel_dp(String _hotel_dp) {
+        prefEditor.putString(hotel_dp, _hotel_dp).commit();
     }
 
     public Boolean getHotel_check() {

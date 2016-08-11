@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -17,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -50,26 +47,20 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
-import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
-import demand.inn.com.inndemand.constants.SearchConstant;
-import demand.inn.com.inndemand.model.RecyclerItemClickListener;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SimpleDividerItemDecoration;
-import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
-import demand.inn.com.inndemand.welcome.DBAdapter;
-import demand.inn.com.inndemand.welcome.DBHelper;
 import demand.inn.com.inndemand.welcome.DBList;
+import demand.inn.com.inndemand.welcome.DBStorage;
 
 /**
  * Created by akash
@@ -119,9 +110,8 @@ public class Appetizer extends Fragment {
     ResturantDataModel resturantDataModel;
 
 //    DATABASE CLASSES
-    DBHelper db;
-    DBAdapter mDbHelper;
     DBList dbs;
+    DBStorage storage;
 
 //  String to get dynamic Translated data
     public String destinationString = "";
@@ -136,13 +126,9 @@ public class Appetizer extends Fragment {
         prefs = new AppPreferences(getActivity());
 
 //        Database Class Initialisation
-        db = new DBHelper(getActivity());
-        mDbHelper = new DBAdapter(getActivity());
         dbs = new DBList(getActivity());
-        mDbHelper.open();
+        storage = new DBStorage(getActivity());
 
-        //Clean all Database data for the screen/App
-        mDbHelper.deleteAllDemand();
 
 //        Custom toolbar class call
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
@@ -195,6 +181,18 @@ public class Appetizer extends Fragment {
 
         }
 
+        List<ResturantDataModel> datas = dbs.getAllData();
+                        for(ResturantDataModel card : datas) {
+                            cardList.clear();
+                                a = new ResturantDataModel(card.getSubcategory(), card.getName(),
+                                        card.getDescription(), card.getPrice(), card.getFood(),
+                                        card.getRating());
+                                cardList.add(a);
+
+
+                        }
+                            adapter.notifyDataSetChanged();
+
         return view;
     }
 
@@ -208,8 +206,10 @@ public class Appetizer extends Fragment {
             String dataPositions = intent.getStringExtra("positionsof");
             JSONObject obj = new JSONObject();
             try {
-                obj.put("category_id", idCat);
-                obj.put("restaurant_id", prefs.getRestaurant_Id());
+               /* obj.put("category_id", idCat);
+                obj.put("restaurant_id", prefs.getRestaurant_Id());*/
+                obj.put("category_id", "");
+                obj.put("restaurant_id", "");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -220,7 +220,7 @@ public class Appetizer extends Fragment {
     };
 
 //    Volley Library Main method to get Category and other requirements as response by sending
-    //    restaurant ID
+//    restaurant ID
     public void postJsonData(String url, String userData) {
 
         RequestQueue mRequestQueue;
@@ -270,32 +270,46 @@ public class Appetizer extends Fragment {
                         JSONObject ob = object.getJSONObject("average");
                         String average = ob.getString("feedback_points__avg");
 
-                        dbs.insertData(new ResturantDataModel(subCategory, itemName, itemDesc,
-                                amount, food, average));
+                      /*  try {
+                            String subCate = new getTraslatedString().execute(
+                                    prefs.getLocaleset(), subCategory).get();
+                            String subNamez = new getTraslatedString().execute(
+                                    prefs.getLocaleset(), itemName).get();
+                            String subDescs = new getTraslatedString().execute(
+                                    prefs.getLocaleset(), itemDesc).get();
+                            String subAmount = new getTraslatedString().execute(
+                                    prefs.getLocaleset(), amount).get();
+                            String subFood = new getTraslatedString().execute(
+                                    prefs.getLocaleset(), food).get();
+                            String subRating = new getTraslatedString().execute(
+                                    prefs.getLocaleset(), average).get();
 
-                        List<ResturantDataModel> datas = dbs.getAllData();
+                            dbs.insertData(new ResturantDataModel(subCate, subNamez, subDescs,
+                                    subAmount, subFood, subRating));*/
+
+                          /*  dbs.insertData(new ResturantDataModel(subCategory, itemName, itemDesc,
+                                amount, food, average));
+*/
+//                        storage.insertData(new ResturantDataModel(subCategory, itemName, itemDesc,
+//                                amount, food, average));
+
+                           /* } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }*/
+
+                        /*List<ResturantDataModel> datas = dbs.getAllData();
                         for(ResturantDataModel card : datas) {
                             cardList.clear();
-                            try {
-                                String subCate = new getTraslatedString().execute(
-                                        prefs.getLocaleset(), card.getSubcategory()).get();
-                                String subNamez = new getTraslatedString().execute(
-                                        prefs.getLocaleset(), card.getName()).get();
-                                String subDescs = new getTraslatedString().execute(
-                                        prefs.getLocaleset(), card.getDescription()).get();
-
                                 a = new ResturantDataModel(card.getSubcategory(), card.getName(),
                                         card.getDescription(), card.getPrice(), card.getFood(),
                                         card.getRating());
                                 cardList.add(a);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            } catch (ExecutionException e) {
-                                e.printStackTrace();
-                            }
+
 
                         }
-                            adapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();*/
 
                     } catch (JSONException e) {
                         e.printStackTrace();

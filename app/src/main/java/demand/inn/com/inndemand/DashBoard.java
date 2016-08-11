@@ -89,15 +89,18 @@ import demand.inn.com.inndemand.adapter.BarlistAdapter;
 import demand.inn.com.inndemand.adapter.CircleTransform;
 import demand.inn.com.inndemand.adapter.HotelAdapter;
 import demand.inn.com.inndemand.adapter.ListAdapter;
+import demand.inn.com.inndemand.alertclass.Alert;
 import demand.inn.com.inndemand.cartarea.MyCart;
 import demand.inn.com.inndemand.constants.BarlistData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
+import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
+import demand.inn.com.inndemand.hotelserv.Bar;
+import demand.inn.com.inndemand.hotelserv.Restaurant;
 import demand.inn.com.inndemand.mapdirection.MapArea;
-import demand.inn.com.inndemand.roomservice.Bar;
-import demand.inn.com.inndemand.roomservice.Restaurant;
+import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.setting.FeedbackList;
 import demand.inn.com.inndemand.setting.OrderHistory;
@@ -105,6 +108,7 @@ import demand.inn.com.inndemand.setting.Settings;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
+import demand.inn.com.inndemand.welcome.DBList;
 import demand.inn.com.inndemand.welcome.SplashScreen;
 
 
@@ -134,8 +138,8 @@ public class DashBoard extends AppCompatActivity implements
     //Area to Show Details of Hotel(Includes Restaurant/ Services/ Spa/ Bar or not)
     LinearLayout restaurant_area, service_area, spa_area, bar_area;
 
-//    Others
-//    String to call hotel, Hotel name, Hotel Pic
+    //Others
+    //String to call hotel, Hotel name, Hotel Pic
     String callHotel;
     String URL, TAG;
     String about_hotel;
@@ -170,42 +174,50 @@ public class DashBoard extends AppCompatActivity implements
     SimpleDateFormat df, timeFormat;
     String formattedDate, getTime;
 
-//    Call to press back button twice to exit from app
+    //Call to press back button twice to exit from app
     boolean doubleBackToExitPressedOnce = false;
 
-//   Alert-Dialog
+    //Alert-Dialog
     private ProgressDialog mProgressDialog;
 
     //Preferences Call
     SharedPreferences settings;
 
-//     Google Client to know the status (If need)
+    //Google Client to know the status (If need)
     GoogleApiClient mGoogleApiClient;
 
-//    Translate API String to get/fetch the final result
+    //Translate API String to get/fetch the final result
     public String destinationString = "";
+
+    DBList dbs;
+    DBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_dash_board);
-//        Utility Class and Preferences ClassInitialisation
+        //Utility Class and Preferences ClassInitialisation
         nu = new NetworkUtility(DashBoard.this);
         prefs = new AppPreferences(DashBoard.this);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         dash = this;
+        dbs = new DBList(this);
+        db = new DBHelper(this);
 
-//        Blank String URl call and Volley Imageloader library call to load images from server
+        //Blank String URl call and Volley Imageloader library call to load images from server
         URL = "";
         imageLoader = AppController.getInstance().getImageLoader();
 
-//        To hide default toolbar within the screen
+        //To hide default toolbar within the screen
         getSupportActionBar().hide();
 
-//        Calling toolbar from layout
-//        Sets menu in the toolbar calling main_menu.xml
-//        Assigning different functionality to different icons in the menu by getting there IDs
+
+        /*
+         *Calling toolbar from layout
+         *Sets menu in the toolbar calling main_menu.xml
+         *Assigning different functionality to different icons in the menu by getting there IDs
+         */
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -229,16 +241,18 @@ public class DashBoard extends AppCompatActivity implements
             }
         });
 
-//        Preferences to check different requirements
-//        To check if user Checked into hotel
-//        To check if the task to Checked into Hotel is completed
-//        To check If the User is in the Hotel
+        /*
+         *Preferences to check different requirements
+         *To check if user Checked into hotel
+         *To check if the task to Checked into Hotel is completed
+         *To check If the User is in the Hotel
+         */
         prefs.setHotel_check(true);
         prefs.setCheckout("2");
         prefs.setIs_task_completed(true);
         prefs.setIs_In_Hotel(true);
 
-//        Google Class call code to check/get status of the User (If Sign-In then User can Sign-Out)
+        //Google Class call code to check/get status of the User (If Sign-In then User can Sign-Out)
         GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -252,15 +266,17 @@ public class DashBoard extends AppCompatActivity implements
                     }
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
-//        Navigation Drawer layout Code to toggle either slides to open or to close
+        //Navigation Drawer layout Code to toggle either slides to open or to close
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-//        Navigation Drawer area to set profile details
-//        Details like DP, Name, Email on Navigation area
+         /*
+          *Navigation Drawer area to set profile details
+          *Details like DP, Name, Email on Navigation area
+          */
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.removeHeaderView(navigationView.getHeaderView(0));
@@ -272,7 +288,7 @@ public class DashBoard extends AppCompatActivity implements
         dp_email = (TextView) profile.findViewById(R.id.drawer_email);
 
 
-//        Setting values for DP, Name, Email in Navigation Drawer view
+        //Setting values for DP, Name, Email in Navigation Drawer view
         if(prefs.getUser_fbpic() == null || prefs.getUser_fbpic().equalsIgnoreCase("")) {
             Picasso.with(DashBoard.this).load(prefs.getUser_gpicture())
                     .transform(new CircleTransform()).into(dp);
@@ -332,25 +348,27 @@ public class DashBoard extends AppCompatActivity implements
 //        Data like: Hotel Details, Restaurant, Bar list etc
         if(nu.isConnectingToInternet()) {
             //Getting All Restaurant List of hotel
-            showProgressDialog();
-            restaurantList();
+//            showProgressDialog();
+//            restaurantList();
 
             //Getting all Bar list of hotel
             barList();
 
             //Method to get Inclusion data for Hotel (Boolean values)
-            inclusion();
+//            inclusion();
 
             //Mehod to get Timings for Hotel Services
             timings();
 
             //Loading Data
-            makeJsonObjectRequest();
             makeJsonRequestBottom();
 
         }else{
             networkClick();
         }
+
+          /*dbs.insertData(new ResturantDataModel("Hello", "Cheese cofta", "sweet sausy",
+                                "400", "1", "3"));*/
 
         //UI Class call Initialize
         restaurant_area = (LinearLayout) findViewById(R.id.hotel_restaurant);
@@ -393,8 +411,50 @@ public class DashBoard extends AppCompatActivity implements
         hotel_Address = (TextView) findViewById(R.id.hotel_Address);
         call_hotel = (TextView) findViewById(R.id.call_hotel);
 
+            try {
+                String htName = new getTraslatedString().execute(prefs.getLocaleset(),
+                        prefs.getHotel_name()).get();
+                String htAddress = new getTraslatedString().execute(prefs.getLocaleset(),
+                        prefs.getHotel_address()).get();
+
+                hotel_Name.setText(prefs.getHotel_name());
+                hotel_Address.setText(prefs.getHotel_address());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            Picasso.with(DashBoard.this).load(prefs.getHotel_dp()).into(main_backdrop);
+       /* List<ResturantDataModel> datas = dbs.getAllData();
+        for(ResturantDataModel card : datas) {*/
+
+//        }
+
+
         //variable to get Hotel contact number
         callHotel = "";
+
+        //Condition area for Hotel Details
+        if(prefs.getRestaurant() == false)
+            restaurant_area.setVisibility(View.GONE);
+        else
+            restaurant_area.setVisibility(View.VISIBLE);
+
+        if(prefs.getRoom_service() == false)
+            service_area.setVisibility(View.GONE);
+        else
+            service_area.setVisibility(View.VISIBLE);
+
+        if(prefs.getBar()== false)
+            bar_area.setVisibility(View.GONE);
+        else
+            bar_area.setVisibility(View.VISIBLE);
+
+        if(prefs.getSpa()== false)
+            spa_area.setVisibility(View.GONE);
+        else
+            spa_area.setVisibility(View.VISIBLE);
 
 //        Initialisation of ListItems in RecyclerView with all adapter classes required
 //        The whole setup manages the Recyclerview (List) and Data inside the List.
@@ -428,6 +488,24 @@ public class DashBoard extends AppCompatActivity implements
         recyclerView.setAdapter(adapter);
         restaurantList.setAdapter(restaurantAdapter);
         barList.setAdapter(barAdapter);
+
+          List<ListData> datas = db.getAllData();
+
+            Log.d("DbFetchDesc", "DB: "+datas);
+
+                for(ListData card : datas){
+                    try {
+                        String dataName = new getTraslatedString().execute(prefs.getLocaleset(),
+                                card.getTitle()).get();
+
+                        ListData data = new ListData(restaurantId, dataName, "");
+                                        restaurantData.add(data);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 recyclerView, new ClickListener() {
@@ -614,20 +692,6 @@ public class DashBoard extends AppCompatActivity implements
         }
     }
 
-//    API call for Different Restaurants list when User click on the Restaurant on the screen
-    public void restaurantList(){
-        JSONObject obj = new JSONObject();
-//
-        try {
-            obj.put("hotel_id", prefs.getHotel_id());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Log.d("Api Hotel Data", obj.toString());
-
-        postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
-    }
 
 //    API call for Different Bars list when User click on the Restaurant on the screen
     public void barList(){
@@ -642,20 +706,6 @@ public class DashBoard extends AppCompatActivity implements
         Log.d("Api Bar Data", obj.toString());
 
         postJsonDataBar(Config.innDemand+"bars/details/", obj.toString());
-    }
-
-//    API call for Inclusion for Room Services n Restaurant or overall Hotel
-    public void inclusion(){
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("hotel_id", prefs.getHotel_id());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Log.d("Api Hotel Data", obj.toString());
-
-        postJsonDataInclusion(Config.innDemand+"inclusion/details/", obj.toString());
     }
 
 //    API call to set timings for opening the Restaurant/Bar or Room Services.
@@ -725,26 +775,6 @@ public class DashBoard extends AppCompatActivity implements
     // working is still left
     }
 
-    /**
-     * Method to make json object get call and fetch details from Server by sending Hotel ID to
-     * server
-     * Loads details of the hotel to show at the bottom of the screen
-     * */
-
-    private void makeJsonObjectRequest() {
-
-        JSONObject obj = new JSONObject();
-
-        try {
-            obj.put("hotel_id", prefs.getHotel_id());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Log.d("Api Data", obj.toString());
-
-        postJsonData(Config.innDemand+"hotels/details/", obj.toString());
-    }
 
     /**
      * Method to make json object get call and fetch details from Server by sending Hotel ID to
@@ -766,7 +796,7 @@ public class DashBoard extends AppCompatActivity implements
         postJsonDataBottom(Config.innDemand+"info_centre/details/", objt.toString());
     }
 
-//    Network Response getting all details of Hotel
+/*//    Network Response getting all details of Hotel
 //    Details: Picture, name, address, location, contact number etc
 //    Values set to show options like: If Restaurant/Bar/Spa is there or not
     public void postJsonData(String url, String userData) {
@@ -939,7 +969,7 @@ public class DashBoard extends AppCompatActivity implements
         };
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
-    }
+    }*/
 
 //    Method to get response for Miscellaneous values in the hotel to show at the bottom of screen
 //    Saving name of title provides in the API & details to show in the list set
@@ -985,98 +1015,6 @@ public class DashBoard extends AppCompatActivity implements
 
 
                         adapter.notifyDataSetChanged();
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            requestBody, "utf-8");
-                    return null;
-                }
-            }
-        };
-//        mRequestQueue.add(stringRequest);
-        AppController.getInstance().addToRequestQueue(stringRequest);
-    }
-
-    //    Method to get response of list of Restaurant in the hotel
-//    Saving name of restaurant & show in the list
-//    Saving ID of restaurant for further usage
-//    Setting status (getting in response) to check which restaurant to Hide/Show through Adapter Class
-    public void postJsonRestaurant(String url, String userData){
-        RequestQueue mRequestQueue;
-        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
-
-        // Set up the network to use HttpURLConnection as the HTTP client.
-        Network network = new BasicNetwork(new HurlStack());
-
-        // Instantiate the RequestQueue with the cache and network.
-        mRequestQueue = new RequestQueue(cache, network);
-
-        // Start the queue
-        mRequestQueue.start();
-
-        final String requestBody = userData;
-
-        System.out.println("inside post json data=====" + requestBody);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("yohaha=restautant=success===" + response);
-
-
-                JSONArray array = null;
-                try {
-                    array = new JSONArray(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                for (int i = 0; i < array.length(); i++) {
-                    try {
-                        JSONObject object = array.getJSONObject(i);
-
-                        restaurantId = object.getString("id");
-                        String rest_name = object.getString("name");
-                        String hotel = object.getString("hotel");
-                        String status = object.getString("status");
-
-                        try {
-                            if(prefs.getLocaleset() == "en" || prefs.equals("en")){
-                                ListData data = new ListData(restaurantId, rest_name, status);
-                                restaurantData.add(data);
-                            }else {
-                                String htName = new getTraslatedString().execute
-                                        (prefs.getLocaleset(), rest_name).get();
-
-                                ListData data = new ListData(restaurantId, htName, status);
-                                restaurantData.add(data);
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -1185,6 +1123,7 @@ public class DashBoard extends AppCompatActivity implements
                 prefs.setRestaurant_Id(restaurantData.get(position).getId());
                 Log.d("Restaurant_id: ", prefs.getRestaurant_Id());
                 Intent in = new Intent(DashBoard.this, Restaurant.class);
+                in.putExtra("rest_name", restaurantData.get(position).getTitle());
                 startActivity(in);
                 prefs.setCheck_list(false);
                 restaurantList.setVisibility(View.GONE);
@@ -1199,6 +1138,7 @@ public class DashBoard extends AppCompatActivity implements
                 prefs.setBar_Id(barData.get(position).getId());
                 Log.d("Restaurant_id: ", prefs.getBar_Id());
                 Intent in = new Intent(DashBoard.this, Bar.class);
+                in.putExtra("bar_name", barData.get(position).getTitle());
                 startActivity(in);
                 prefs.setBarList(false);
                 barList.setVisibility(View.GONE);
@@ -1206,143 +1146,13 @@ public class DashBoard extends AppCompatActivity implements
         });
     }
 
-//    Network Call to set Inclusion whether the hotel is having the facilities
-// (Restaurant, Bar, Services, Spa)
-//    Bollean value to set/get whether to show/not
-//    Boolean value to show which room service is available in the hotel
-//    Room services value are also mentioned(Beverages/Bath Essentials/Bed tea/coffee)
-
-    public void postJsonDataInclusion(String url, String userData){
-        RequestQueue mRequestQueue;
-        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
-
-        // Set up the network to use HttpURLConnection as the HTTP client.
-        Network network = new BasicNetwork(new HurlStack());
-
-        // Instantiate the RequestQueue with the cache and network.
-        mRequestQueue = new RequestQueue(cache, network);
-
-        // Start the queue
-        mRequestQueue.start();
-
-        final String requestBody = userData;
-
-        System.out.println("inside post inclusion json data=====" + requestBody);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("yohaha=inclusion=success===" + response);
-
-
-                JSONObject object = null;
-                try {
-                    object = new JSONObject(response);
-
-                    Boolean bar = object.getBoolean("bar");
-                    Boolean spa = object.getBoolean("spa");
-                    Boolean restaurant = object.getBoolean("restaurant");
-                    Boolean room_service = object.getBoolean("room_service");
-                    Boolean room_clean = object.getBoolean("room_clean");
-                    Boolean laundry = object.getBoolean("laundry");
-                    Boolean cab = object.getBoolean("cab");
-                    Boolean bath_ess = object.getBoolean("bathroom_essentials");
-                    Boolean bathroom_essentials_towels =
-                            object.getBoolean("bathroom_essentials_towels");
-                    Boolean bathroom_essentials_toiletries =
-                            object.getBoolean("bathroom_essentials_toiletries");
-                    Boolean bathroom_essentials_maintenance =
-                            object.getBoolean("bathroom_essentials_maintenance");
-                    Boolean water = object.getBoolean("water");
-                    Boolean mineral_water = object.getBoolean("mineral_water");
-                    Boolean ice_bucket = object.getBoolean("ice_bucket");
-                    Boolean soda = object.getBoolean("soda");
-                    Boolean glass = object.getBoolean("glass");
-                    Boolean wake_me_up = object.getBoolean("wake_me_up");
-                    Boolean tea_coffee = object.getBoolean("tea_coffee");
-                    Boolean tea = object.getBoolean("tea");
-                    Boolean coffee = object.getBoolean("coffee");
-                    Boolean bell_boy = object.getBoolean("bell_boy");
-
-                    prefs.setBell_boy(bell_boy);
-                    prefs.setCoffee(coffee);
-                    prefs.setTea(tea);
-                    prefs.setBed_tea(tea_coffee);
-                    prefs.setWake_up(wake_me_up);
-                    prefs.setBar(bar);
-                    prefs.setSpa(spa);
-                    prefs.setRestaurant(restaurant);
-                    prefs.setRoom_service(room_service);
-                    prefs.setRoom_clean(room_clean);
-                    prefs.setLaundry(laundry);
-                    prefs.setCab(cab);
-                    prefs.setBathroom(bath_ess);
-                    prefs.setBath_towel(bathroom_essentials_towels);
-                    prefs.setBath_toiletries(bathroom_essentials_toiletries);
-                    prefs.setBath_maintenance(bathroom_essentials_maintenance);
-                    prefs.setBeverage(water);
-                    prefs.setWater(mineral_water);
-                    prefs.setIce_bucket(ice_bucket);
-                    prefs.setSoda(soda);
-                    prefs.setGlass(glass);
-
-                    //Condition area for Hotel Details
-                    if(prefs.getRestaurant() == false)
-                        restaurant_area.setVisibility(View.GONE);
-                    else
-                        restaurant_area.setVisibility(View.VISIBLE);
-
-                    if(prefs.getRoom_service() == false)
-                        service_area.setVisibility(View.GONE);
-                    else
-                        service_area.setVisibility(View.VISIBLE);
-
-                    if(prefs.getBar()== false)
-                        bar_area.setVisibility(View.GONE);
-                    else
-                        bar_area.setVisibility(View.VISIBLE);
-
-                    if(prefs.getSpa()== false)
-                        spa_area.setVisibility(View.GONE);
-                    else
-                        spa_area.setVisibility(View.VISIBLE);
-
-                } catch (JSONException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            requestBody, "utf-8");
-                    return null;
-                }
-            }
-        };
-//        mRequestQueue.add(stringRequest);
-        AppController.getInstance().addToRequestQueue(stringRequest);
-    }
-
-// Here in this method we check timings for Restaurant/Bar/Spa
-//    Timings like: If timings match then only loads data of restaurant/bar/Spa
-//    For eg: If timings for restaurant are 11:00am-11:00pm then Only in between this timings
-//    API will load data else no data will get loaded
-//    For Room Services If it is out of time then set disable on Roomservices buttons.
+    /*
+     * Here in this method we check timings for Restaurant/Bar/Spa
+     * Timings like: If timings match then only loads data of restaurant/bar/Spa
+     * For eg: If timings for restaurant are 11:00am-11:00pm then Only in between this timings
+     * API will load data else no data will get loaded
+     * For Room Services If it is out of time then set disable on Roomservices buttons.
+     */
     public void postJsonDataTimings(String url, String userData){
         RequestQueue mRequestQueue;
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
@@ -1364,7 +1174,6 @@ public class DashBoard extends AppCompatActivity implements
                 new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                hideProgressDialog();
                 System.out.println("yohaha=timings=success===" + response);
 
 
@@ -1760,7 +1569,7 @@ public class DashBoard extends AppCompatActivity implements
                     e.printStackTrace();
                 }
 
-                postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
+//                postJsonData(Config.innDemand + "checkins/checkout/", obj.toString());
                 prefs.setCheckout("1");
                 prefs.setIs_In_Hotel(false);
                 Toast.makeText(DashBoard.this, "Successfully Checked Out",
@@ -1801,25 +1610,6 @@ public class DashBoard extends AppCompatActivity implements
 
         dialog.show();
     }
-
-// alert Dialog for loading details on the screen initially
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("loading details....");
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-//    Hide the current running alert dialog after data gets loaded
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
-        }
-    }
-
 
 //    API call to translate data
 //    Translation coding to Translate all the data coming from server in target language

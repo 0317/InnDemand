@@ -48,7 +48,6 @@ import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.NotificationData;
 import demand.inn.com.inndemand.model.ResturantDataModel;
-import demand.inn.com.inndemand.roomservice.Restaurant;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;

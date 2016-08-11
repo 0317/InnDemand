@@ -9,21 +9,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /*import com.google.android.gms.games.multiplayer.realtime.Room;*/
 
-import org.w3c.dom.Text;
-
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.login.HotelDetails;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
-import demand.inn.com.inndemand.utility.Serve;
-import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by akash
@@ -37,8 +30,15 @@ public class RoomServices extends AppCompatActivity {
 
 
     //UI Call Area for the screen
-    Button beverages_click, laundry_click, cab_click, bed_tea_click, bath_essentials_click, bell_boy_click,
-            room_clean_click, wake_up_click;
+    Button beverages_click,
+            laundry_click,
+            cab_click,
+            bed_tea_click,
+            bath_essentials_click,
+            bell_boy_click,
+            room_clean_click,
+            wake_up_click;
+
     Toolbar toolbar;
     TextView services_text;
 
