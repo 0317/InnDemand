@@ -10,7 +10,7 @@ public class BarlistData {
     public BarlistData() {
     }
 
-    public BarlistData(String id, String title,String status) {
+    public BarlistData(String title,String status, String id) {
         this.title = title;
         this.status = status;
         this.id = id;

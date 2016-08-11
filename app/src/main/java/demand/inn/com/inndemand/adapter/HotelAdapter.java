@@ -80,11 +80,9 @@ public class HotelAdapter extends  RecyclerView.Adapter<HotelAdapter.MyViewHolde
                 holder.desc.setText(data.getDesc());
             }
        /* }else if(data.getScreen_key() == "laundry" || data.getScreen_key().equalsIgnoreCase("laundry")){
-
+                prefs.setLaundrynote(data.getTitle()+": "+data.getDesc());
         }else if(data.getScreen_key() == "cab" || data.getScreen_key().equalsIgnoreCase("cab")){
-        }else{
-//            holder.title.setVisibility(View.GONE);
-//            holder.desc.setVisibility(View.GONE);
+                prefs.setCabnote(data.getTitle()+": "+data.getDesc());
         }*/
 
     }

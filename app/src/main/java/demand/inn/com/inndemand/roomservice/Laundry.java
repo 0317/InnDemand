@@ -109,6 +109,9 @@ public class Laundry extends AppCompatActivity {
         now = (TextView) findViewById(R.id.now_laundry);
         pickTime = (TextView) findViewById(R.id.pickTime_laundry);
 
+        //Settings static values for the activity (fetched from server before)
+        note.setText(prefs.getLaundrynote());
+
 //        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());

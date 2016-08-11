@@ -35,6 +35,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -42,13 +43,16 @@ import javax.net.ssl.HttpsURLConnection;
 
 import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.constants.BarlistData;
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
-import demand.inn.com.inndemand.database.DBHelper;
-import demand.inn.com.inndemand.model.ResturantDataModel;
+import demand.inn.com.inndemand.database.DBClass;
+import demand.inn.com.inndemand.database.DBRest;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
+import demand.inn.com.inndemand.welcome.DBList;
 
 /**
  * Created by akash
@@ -69,9 +73,12 @@ public class Loader extends AppCompatActivity {
 
     //List Class to Add Resturants in the list
     private List<ListData> restaurantData;
+    //List Class to Add Misc Info At the Bottom of Dashboard Screen
+    private List<HotelData> hotelData;
 
     //DATABASE CLASS AREA
-    DBHelper db;
+    DBRest dbrest;
+    DBClass dbclass;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,23 +86,30 @@ public class Loader extends AppCompatActivity {
         setContentView(R.layout.loader_layout);
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
-        db = new DBHelper(this);
+        dbrest = new DBRest(this);
+        dbclass = new DBClass(this);
+
+        restaurantData  = new ArrayList<>();
+        hotelData = new ArrayList<>();
 
         /**
-         * Loader Area to load APIs (Hotel Details)
+         * Loader Area to load APIs (eg: Hotel Details, RestaurantList, BarList, Inclusion)
          * */
         if(nu.isConnectingToInternet()) {
             makeJsonObjectRequestHotel();
             restaurantList();
+            barList();
             inclusion();
         }else{
             networkClick();
         }
 
+        makeJsonRequestBottom();
+
         /**
          * Handler Class handling Loader screen without any invention of APIs call
-         * Handler Class to handle the Splash Loader for 3 seconds
-         * After 3 seconds it fires the Intent to next mentioned screen
+         * Handler Class to handle the Splash Loader for 2 seconds
+         * After 2 seconds it fires the Intent to next mentioned screen
          */
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -104,7 +118,7 @@ public class Loader extends AppCompatActivity {
                 startActivity(in);
                 finish();
             }
-        },3000 /* 3sec delay*/);
+        },2000 /* 2sec delay*/);
     }
 
 
@@ -147,7 +161,27 @@ public class Loader extends AppCompatActivity {
         postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
     }
 
-    //API call for Inclusion for Room Services n Restaurant or overall Hotel
+    /*
+     * API call for Different Bars list shown under when User click on the Bar option on the screen
+     */
+    public void barList(){
+        JSONObject obj = new JSONObject();
+
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Api Bar Data", obj.toString());
+
+        postJsonDataBar(Config.innDemand+"bars/details/", obj.toString());
+    }
+
+    /*
+     * API call for Inclusion for Room Services/Restaurant/Bar/SPA & other options
+     * provided for the Hotel
+     */
     public void inclusion(){
         JSONObject obj = new JSONObject();
         try {
@@ -160,6 +194,27 @@ public class Loader extends AppCompatActivity {
 
         postJsonDataInclusion(Config.innDemand+"inclusion/details/", obj.toString());
     }
+
+    /**
+     * Method to make json object get call and fetch details from Server by sending Hotel ID to
+     * server
+     *
+     * */
+
+    private void makeJsonRequestBottom(){
+        JSONObject obj = new JSONObject();
+
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Api Bottom Data", obj.toString());
+
+        postJsonDataBottom(Config.innDemand+"info_centre/details/", obj.toString());
+    }
+
 
     /*
     * Network Response getting all details of Hotel
@@ -209,10 +264,10 @@ public class Loader extends AppCompatActivity {
                             String about_hotel = object.getString("about_hotel");
 
 
-                            String htName = new getTraslatedString().execute(prefs.getLocaleset(),
+                            String htName = new getTraslatedString().execute("hi",prefs.getLocaleset(),
                                     hotelName).get();
-                            String htAddress = new getTraslatedString().execute(prefs.getLocaleset(),
-                                    hotelName).get();
+                            String htAddress = new getTraslatedString().execute("hi",
+                                    prefs.getLocaleset(), address).get();
 
                             prefs.setHotel_name(htName);
                             prefs.setHotel_address(htAddress);
@@ -306,19 +361,92 @@ public class Loader extends AppCompatActivity {
                                 String hotel = object.getString("hotel");
                                 String status = object.getString("status");
 
-                                String htName = new getTraslatedString().execute
-                                            (prefs.getLocaleset(), rest_name).get();
-
-                                db.insertData(new ListData(restaurantId, htName, status));
-
-//                                ListData data = new ListData(restaurantId, htName, status);
-//                                        restaurantData.add(data);
+                            dbrest.insertData(new ListData(rest_name, status, restaurantId));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                            } catch (InterruptedException e) {
+                            } /*catch (InterruptedException e) {
                                 e.printStackTrace();
                             } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }*/
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    /*
+    * Method to get response of list of Bars in the hotel
+    * Saving name of bar & showing in the list
+    * Saving ID of bar for further usage
+    * Setting status (getting in response) to check which Bar to Hide/Show through Adapter Class
+    */
+    public void postJsonDataBar(String url, String userData){
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post barList json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("yohaha=barList=success===" + response);
+
+
+                        JSONArray array = null;
+                        try {
+                            array = new JSONArray(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        for (int i = 0; i < array.length(); i++) {
+                            try {
+                                JSONObject object = array.getJSONObject(i);
+
+                                String barId = object.getString("id");
+                                String bar_name = object.getString("name");
+                                String hotel = object.getString("hotel");
+                                String status = object.getString("status");
+
+//                                dbrest.insertBar(new BarlistData(bar_name, status, barId));
+
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
@@ -464,6 +592,89 @@ public class Loader extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
+    /*
+     * Method to get response for Miscellaneous values in the hotel to show at the bottom of screen
+     * Saving name of title provides in the API & details to show in the list set
+     * at the bottom of page
+     */
+    public void postJsonDataBottom(String url, String userData){
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("yohaha=bottom=success===" + response);
+
+                        JSONArray array = null;
+                        try {
+                            array = new JSONArray(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        for (int i = 0; i < array.length(); i++) {
+                            try {
+                                JSONObject object = array.getJSONObject(i);
+
+                                String hotelid = object.getString("hotel");
+                                String screen_key = object.getString("screen_key");
+                                String info_title = object.getString("info_title");
+                                String info_value = object.getString("info_value");
+
+                                Log.d("Info Title", "Check: "+info_title);
+                                Log.d("Info Value", "Check: "+info_value);
+
+                                dbclass.insertData(new HotelData(info_title, info_value,
+                                        screen_key));
+
+                                prefs.setSave_data(info_value);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
 
     /*
      * API call to translate data
@@ -475,8 +686,8 @@ public class Loader extends AppCompatActivity {
         protected String doInBackground(String[] target) {
 
             String trasRequest = "https://www.googleapis.com/language/translate/v2?" +
-                    "key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source=en" +
-                    "&target="+target[0]+"&q="+target[1];
+                    "key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source="+target[0] +
+                    "&target="+target[1]+"&q="+target[2];
 
             try {
                 String responseString = executeHttpGet(trasRequest);

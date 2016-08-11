@@ -10,7 +10,7 @@ public class ListData {
     public ListData() {
     }
 
-    public ListData(String id, String title,String status) {
+    public ListData(String title,String status, String id) {
         this.title = title;
         this.status = status;
         this.id = id;

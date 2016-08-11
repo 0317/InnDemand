@@ -154,7 +154,7 @@
 
         <!-- ................Restaurant Activity Area.......... -->
 
-        <activity android:name=".roomservice.Restaurant"
+        <activity android:name=".hotelserv.Restaurant"
             android:screenOrientation="portrait"
             android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar">
@@ -172,7 +172,7 @@
 
         <!-- ...................Bar Activity Area...................... -->
 
-        <activity android:name=".roomservice.Bar"
+        <activity android:name=".hotelserv.Bar"
             android:screenOrientation="portrait"
             android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar">
@@ -195,31 +195,7 @@
             android:screenOrientation="portrait">
         </activity>
 
-      <!--  <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="demand.inn.com.inndemand.gcm" />
-            </intent-filter>
-        </receiver>-->
-
-        <!-- ...................Services call Area........................ -->
-
-       <!-- <service
-            android:name="demand.inn.com.inndemand.gcm.GcmIntentService"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
-
-        <service android:name=".fcm.NotificationListener"></service>
--->
-
-        <service android:name=".utility.Serve"
+        <service android:name=".service.Serve"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.RESPOND_VIA_MESSAGE"></action>
@@ -278,6 +254,8 @@
             android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <!-- ..................Crashlytics Call Area..................... -->
 
         <meta-data
             android:name="io.fabric.ApiKey"

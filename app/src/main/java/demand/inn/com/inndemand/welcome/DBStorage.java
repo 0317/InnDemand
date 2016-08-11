@@ -3,6 +3,7 @@ package demand.inn.com.inndemand.welcome;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -108,6 +109,36 @@ public class DBStorage extends SQLiteOpenHelper{
         db.close(); // Closing database connection
     }
 
+    public Cursor getData(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor =  db.rawQuery( "select * from restaurant where id="+id+"", null );
+        return cursor;
+    }
+
+    public int numberOfRows(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        int numRows = (int) DatabaseUtils.queryNumEntries(db, TABLE_RESTAURANT);
+        return numRows;
+    }
+
+    public boolean updateData(Integer id, String name, String desc, String price, String type)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NAME, name);
+        contentValues.put(COLUMN_DESC, desc);
+        contentValues.put(COLUMN_RUPEES, price);
+        contentValues.put(COLUMN_TYPE, type);
+        db.update(TABLE_RESTAURANT, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        return true;
+    }
+
+    public Integer deleteData (Integer id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_RESTAURANT, "id = ? ", new String[] { Integer.toString(id) });
+    }
+
     public List<ResturantDataModel> getAllData(){
         List<ResturantDataModel> list = new ArrayList<>();
 
@@ -130,7 +161,6 @@ public class DBStorage extends SQLiteOpenHelper{
 
                 // Adding data to list
                 list.add(data);
-
             }while (cursor.moveToNext());
         }
         return list;

@@ -135,6 +135,9 @@ public class Cab extends AppCompatActivity {
 
         confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_cab);
 
+        //Settings static values for the activity (fetched from server)
+        note.setText(prefs.getCabnote());
+
 //        Click to open Google Place picker API screen to select location
         choose_destination.setOnClickListener(new View.OnClickListener() {
             @Override

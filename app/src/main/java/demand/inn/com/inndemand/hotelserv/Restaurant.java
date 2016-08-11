@@ -89,19 +89,19 @@ public class Restaurant extends AppCompatActivity{
     TextView cart_item, cart_total;
     Toolbar toolbar;
 
-//    Others requirements (if need)
+    //Others requirements (if need)
     View view;
     private Menu menu;
     int positions;
 
-//    Alert-dialog
+    //Alert-dialog
     private ProgressDialog mProgressDialog;
 
-//    TabClass Class call for dynamic approach of tabs (create multiple tabs automatically)
+    //TabClass Class call for dynamic approach of tabs (create multiple tabs automatically)
     Appetizer mAppetizer;
 
-//    String to define to value
-//    Values fetching from APIs in the form of String
+    //String to define to value
+    //Values fetching from APIs in the form of String
     String ids;
     String itemName;
     String itemDesc;
@@ -111,20 +111,19 @@ public class Restaurant extends AppCompatActivity{
     String amount;
     String catName;
     String catType;
-    String catStatus;
     String type_id;
     String totalCash;
     String totalItems;
     String broaditemName;
 
-//    Getting Restaurant name via Intent in a String
+    //Getting Restaurant name via Intent in a String
     String restName;
 
-//    Adding values in the cart in the form of String
+    //Adding values in the cart in the form of String
     String cart_value;
     String cart_val;
 
-//  Fragments data in the screen and List of tabs in tab layout shown
+    //Fragments data in the screen and List of tabs in tab layout shown
     List<FragmentData> tabList;
     FragmentData data;
 
@@ -135,24 +134,26 @@ public class Restaurant extends AppCompatActivity{
     List<ResturantDataModel> resturantDataModelList;
     ResturantDataModel dataModel, model;
 
-//    String which provides final result after Translation
+    //String which provides final result after Translation
     public String destinationString = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurant);
-//        Utility Class Initialize
+        //Utility Class Initialize
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
-//        Constant Class n Database calss initialize
+        //Constant Class n Database calss initialize
         model = new ResturantDataModel();
 
         restName = getIntent().getStringExtra("rest_name");
 
-        //Toolbar call for the screen
-//        Includes menu on the top right through restaurant_menu.xml file and back press icon
+        /*
+         * Toolbar call for the screen
+         * Includes menu on the top right through restaurant_menu.xml file and back press icon
+         */
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
         toolbar.inflateMenu(R.menu.restaurant_menu);
@@ -184,7 +185,7 @@ public class Restaurant extends AppCompatActivity{
                     //registering popup with OnMenuItemClickListener
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
-//
+
                             switch (item.getItemId()) {
                                 case R.id.action_all:
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter);
@@ -238,9 +239,11 @@ public class Restaurant extends AppCompatActivity{
         });
 
 
-//        Happens when We scroll up the screen and the Image turned into toolbar
-//        It is basically that effect toggling Image into toolbar n vice-versa
-//        Setting title for Collapsing Toolbar as Restaurant Name also
+        /*
+         * Happens when We scroll up the screen and the Image turned into toolbar
+         * It is basically that effect toggling Image into toolbar n vice-versa
+         * Setting title for Collapsing Toolbar as Restaurant Name also
+         */
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -272,7 +275,7 @@ public class Restaurant extends AppCompatActivity{
 
 
         //Tab call area
-//        setupViewPager(viewPager);
+        //setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
@@ -304,13 +307,6 @@ public class Restaurant extends AppCompatActivity{
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message"));
 
-//        if(mAppetizer.isResumed())
-//            Toast.makeText(getApplicationContext(), "Appetiser", Toast.LENGTH_LONG).show();
-//        else if(mMaincourse.isVisible())
-//            Toast.makeText(getApplicationContext(), "Main Course", Toast.LENGTH_LONG).show();
-
-
-
         if(nu.isConnectingToInternet()) {
             showProgressDialog();
             if(prefs.getFm_restaurant() == true) {
@@ -329,8 +325,10 @@ public class Restaurant extends AppCompatActivity{
         tabList = new ArrayList<>();
     }
 
-//    Here receives data from Fragments class Adapter in the form of broadcast
-//    getting counter for the items selected n items detail in food list
+    /*
+     * Here receives data from Fragments class Adapter in the form of broadcast
+     * getting counter for the items selected n items detail in food list
+     */
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -381,8 +379,10 @@ public class Restaurant extends AppCompatActivity{
         }
     };
 
-//    method is to add items to cart with onClick
-//    Shows a pop-up asking view cart or not now
+    /*
+     * Method is to add items to cart with onClick
+     * Shows a pop-up asking view cart or not now
+     */
     public void addCart(View view){
 //        db.insertData(new CartData(broaditemName, totalCash, totalItems));
         new AlertDialog.Builder(Restaurant.this).setMessage(R.string.restaurant_foodadded_tocart)
@@ -402,7 +402,7 @@ public class Restaurant extends AppCompatActivity{
                 }).create().show();
     }
 
-// API call to get category (Tab data/different tabs to show) for the screen
+    //API call to get category (Tab data/different tabs to show) for the screen
     public void getCategory(){
         JSONObject obj = new JSONObject();
         try {
@@ -415,7 +415,7 @@ public class Restaurant extends AppCompatActivity{
         postJsonDataCategory(Config.innDemand+"category/details/", obj.toString());
     }
 
-//    API call to get Food list items for the Recyclerview
+    //API call to get Food list items for the Recyclerview
     public void getData(){
         JSONObject obj = new JSONObject();
         try {
@@ -429,8 +429,10 @@ public class Restaurant extends AppCompatActivity{
 
     }
 
-//    Volley Library Main method to get Category and other requirements as response by sending
-//    restaurant ID
+    /*
+     * Volley Library Main method to get Category and other requirements as response by sending
+     * restaurant ID
+     */
     public void postJsonData(String url, String userData) {
 
         RequestQueue mRequestQueue;
@@ -488,7 +490,7 @@ public class Restaurant extends AppCompatActivity{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -556,24 +558,15 @@ public class Restaurant extends AppCompatActivity{
                         catType = object.getString("category_type");
 
                         //catStatus = Response 0/1 (check if 0, remove the tab attribute)
-//                        catStatus = object.getString("status");
                         Log.d("API", "API Category: " + catName);
 
                         String valueCat = null;
                         try {
-                           /* if(prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")) {
-
-                                dataModel.setId(type_id);
-                                dataModel.setCategory(catName);
-//                        dataModel.setId(catType);
-                                resturantDataModelList.add(dataModel);
-                            }else {*/
                                 valueCat = new getTraslatedString().execute(prefs.getLocaleset(),
                                         catName).get();
 
-                                dataModel.setId(type_id);
-                                dataModel.setCategory(valueCat);
-//                        dataModel.setId(catType);
+                            dataModel.setId(type_id);
+                            dataModel.setCategory(valueCat);
                             resturantDataModelList.add(dataModel);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -581,12 +574,6 @@ public class Restaurant extends AppCompatActivity{
                             e.printStackTrace();
                         }
                         Log.d("LogValueCat: ", valueCat);
-                        /*dataModel.setId(type_id);
-                        dataModel.setCategory(valueCat);
-//                        dataModel.setId(catType);
-                        resturantDataModelList.add(dataModel);*/
-//                        data = new FragmentData(catName);
-//                        tabList.add(data);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -616,7 +603,7 @@ public class Restaurant extends AppCompatActivity{
 
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -635,11 +622,11 @@ public class Restaurant extends AppCompatActivity{
                 }
             }
         };
-//        mRequestQueue.add(stringRequest);
+        //mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-//    Alert-dialog to show when data is loading
+    //Alert-dialog to show when data is loading
     private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -650,7 +637,7 @@ public class Restaurant extends AppCompatActivity{
         mProgressDialog.show();
     }
 
-//    hides the dialog pop-up after data gets loaded
+    //hides the dialog pop-up after data gets loaded
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
@@ -678,14 +665,18 @@ public class Restaurant extends AppCompatActivity{
     }
 
 
-//      API call to translate data
-    //    Translation coding to Translate all the data coming from server in target language
+    /*
+     * API call to translate data
+     * Translation coding to Translate all the data coming from server in target language
+     */
     public class getTraslatedString extends AsyncTask<String, String, String>{
 
         @Override
         protected String doInBackground(String[] target) {
 
-            String trasRequest = "https://www.googleapis.com/language/translate/v2?key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source=en&target="+target[0]+"&q="+target[1];
+            String trasRequest = "https://www.googleapis.com/language/translate/v2?" +
+                    "key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source=en" +
+                    "&target="+target[0]+"&q="+target[1];
 
             try {
                 String responseString = executeHttpGet(trasRequest);
