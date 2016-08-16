@@ -8,6 +8,7 @@
     <string name="loginText">Bitte melden Sie sich mit Ihrem Google-Konto</string>
 
     <string name="action_settings">Einstellungen</string>
+    <string name="notification">Benachrichtigung</string>
 
     <!-- ......Hardcoded string values are under...... -->
 

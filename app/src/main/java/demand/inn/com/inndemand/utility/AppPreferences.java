@@ -64,6 +64,10 @@ public class AppPreferences {
                     restaurant = "restaurant",
                     barList = "barList";
 
+    //Category Check
+    private String category_check = "category_check",
+                    data_check = "data_check";
+
     //Check timings for the services mentioned
     private String fm_bar = "fm_bar",
                     fm_spa = "fm_spa",
@@ -137,6 +141,27 @@ public class AppPreferences {
 
     public void setSelectedLanguage(String _selectedLanguage) {
         prefEditor.putString(selectedLanguage, _selectedLanguage).commit();
+    }
+
+
+    //Category Check Area
+
+    public boolean getCategory_check() {
+        return appSharedpref.getBoolean(category_check, false);
+    }
+
+    public void setCategory_check(Boolean _category_check) {
+        prefEditor.putBoolean(category_check, _category_check).commit();
+    }
+
+    //Data Check
+
+    public boolean getData_check() {
+        return appSharedpref.getBoolean(data_check, false);
+    }
+
+    public void setData_check(Boolean _data_check) {
+        prefEditor.putBoolean(data_check, _data_check).commit();
     }
 
 

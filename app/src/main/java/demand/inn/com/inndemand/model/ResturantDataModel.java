@@ -5,6 +5,7 @@ import android.util.Log;
 /**
  * Created by akash
  */
+
 public class ResturantDataModel {
 
 //    itemName = object.getString("name");
@@ -33,20 +34,23 @@ public class ResturantDataModel {
 
     }
 
-    public ResturantDataModel(String title, String name){
+    public ResturantDataModel(String title, String description, String category, String price){
         this.title = title;
-        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.price = price;
     }
 
     public ResturantDataModel(int i){
 
     }
 
-    public ResturantDataModel(String title, String name, String details, String rupees, String food, String rating) {
+    public ResturantDataModel(String title, String description, String rupees, String subcategory,
+                              String food, String rating) {
         this.title = title;
-        this.name = name;
-        this.description = details;
+        this.description = description;
         this.price = rupees;
+        this.subcategory = subcategory;
         this.food = food;
         this.rating = rating;
     }

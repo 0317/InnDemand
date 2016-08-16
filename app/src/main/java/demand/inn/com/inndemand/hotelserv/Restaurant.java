@@ -29,30 +29,15 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
-import com.android.volley.Network;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.StringRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -60,16 +45,15 @@ import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.adapter.ViewPagerAdapter;
 import demand.inn.com.inndemand.cartarea.MyCart;
-import demand.inn.com.inndemand.constants.CartData;
-import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.FragmentData;
+import demand.inn.com.inndemand.constants.TabData;
+import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SearchDB;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
-import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by akash
@@ -102,15 +86,6 @@ public class Restaurant extends AppCompatActivity{
 
     //String to define to value
     //Values fetching from APIs in the form of String
-    String ids;
-    String itemName;
-    String itemDesc;
-    String category;
-    String food;
-    String subCategory;
-    String amount;
-    String catName;
-    String catType;
     String type_id;
     String totalCash;
     String totalItems;
@@ -125,18 +100,16 @@ public class Restaurant extends AppCompatActivity{
 
     //Fragments data in the screen and List of tabs in tab layout shown
     List<FragmentData> tabList;
-    FragmentData data;
 
     //Adapter Class with String requirements
-    RestaurantAdapter adapt;
-    String cash, items;
-    Bundle getBundle;
     List<ResturantDataModel> resturantDataModelList;
     ResturantDataModel dataModel, model;
 
     //String which provides final result after Translation
     public String destinationString = "";
 
+    //DATABASE CLASS CALL AREA
+    DBHelper db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +117,9 @@ public class Restaurant extends AppCompatActivity{
         //Utility Class Initialize
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
+        db = new DBHelper(this);
+        resturantDataModelList = new ArrayList<>();
+        dataModel = new ResturantDataModel();
 
         //Constant Class n Database calss initialize
         model = new ResturantDataModel();
@@ -308,21 +284,60 @@ public class Restaurant extends AppCompatActivity{
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message"));
 
         if(nu.isConnectingToInternet()) {
-            showProgressDialog();
+//            showProgressDialog();
             if(prefs.getFm_restaurant() == true) {
                 restaurant_text.setText(R.string.restaurant_servenotavailable);
                 hideProgressDialog();
             } else {
                 restaurant_text.setText(R.string.restaurant_serveavailable);
                 hideProgressDialog();
-                getData();
-                getCategory();
+//                getData();
             }
         }else{
             networkClick();
         }
 
         tabList = new ArrayList<>();
+
+
+        /*
+         * Here trying to get Category for the Fragments (Tabs)
+         * Data saving in DB from Server in last work out
+         * Fetching category from Database (SQLite)
+         */
+       adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        List<TabData> tabDataModelList = db.getAllCategory();
+
+                 for (TabData dataModel:tabDataModelList) {
+                     if (prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")) {
+                         Bundle bundle = new Bundle();
+                         bundle.putString("category_id", dataModel.getName());
+                         bundle.putString("id_type", dataModel.getType());
+
+                         Fragment appFrf = new Appetizer();
+                         appFrf.setArguments(bundle);
+
+                         adapter.addFragment(appFrf, dataModel.getName());
+                     } else {
+                         Bundle bundle = new Bundle();
+                         bundle.putString("category_id", dataModel.getName());
+                         bundle.putString("id_type", dataModel.getType());
+
+                         TabData tab = new TabData(dataModel.getName(), dataModel.getType());
+                         tabDataModelList.add(tab);
+
+                         Fragment appFrf = new Appetizer();
+                         appFrf.setArguments(bundle);
+
+                         adapter.addFragment(appFrf, dataModel.getName());
+
+                         adapter.notifyDataSetChanged();
+                         viewPager.setAdapter(adapter);
+
+                         tabLayout.setupWithViewPager(viewPager);
+                     }
+                 }
     }
 
     /*
@@ -402,229 +417,6 @@ public class Restaurant extends AppCompatActivity{
                 }).create().show();
     }
 
-    //API call to get category (Tab data/different tabs to show) for the screen
-    public void getCategory(){
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("hotel_id", prefs.getHotel_id());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("Check API Data", obj.toString());
-
-        postJsonDataCategory(Config.innDemand+"category/details/", obj.toString());
-    }
-
-    //API call to get Food list items for the Recyclerview
-    public void getData(){
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("restaurant_id", prefs.getRestaurant_Id());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("Check API Data", obj.toString());
-
-        postJsonData(Config.innDemand+"restaurant_items/details/", obj.toString());
-
-    }
-
-    /*
-     * Volley Library Main method to get Category and other requirements as response by sending
-     * restaurant ID
-     */
-    public void postJsonData(String url, String userData) {
-
-        RequestQueue mRequestQueue;
-        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
-
-        // Set up the network to use HttpURLConnection as the HTTP client.
-        Network network = new BasicNetwork(new HurlStack());
-
-        // Instantiate the RequestQueue with the cache and network.
-        mRequestQueue = new RequestQueue(cache, network);
-
-        // Start the queue
-        mRequestQueue.start();
-
-        final String requestBody = userData;
-
-        System.out.println("inside post json data=====" + requestBody);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                hideProgressDialog();
-                System.out.println("yohaha==restaurantss==success==" + response);
-                resturantDataModelList = new ArrayList<>();
-                JSONArray array = null;
-                try {
-                    array = new JSONArray(response);
-
-                    Log.d("API", "API D"+array);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                for (int i = 0; i < array.length(); i++)
-                    try {
-                        JSONObject object = array.getJSONObject(i);
-                        dataModel = new ResturantDataModel(i);
-                        Log.d("API", "API Daa" + array);
-                        Log.d("API", "API ID" + ids);
-                        ids = object.getString("id");
-                        itemName = object.getString("name");
-
-                        Log.d("API", "API na" + itemName);
-                        itemDesc = object.getString("description");
-                        category = object.getString("category");
-                        Log.d("API", "API Cat" + category);
-                        food = object.getString("food");
-
-                        subCategory = object.getString("subcategory");
-                        amount = object.getString("price");
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            requestBody, "utf-8");
-                    return null;
-                }
-            }
-        };
-//        mRequestQueue.add(stringRequest);
-        AppController.getInstance().addToRequestQueue(stringRequest);
-    }
-
-    public void postJsonDataCategory(String url, String userData) {
-
-        RequestQueue mRequestQueue;
-        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
-
-        // Set up the network to use HttpURLConnection as the HTTP client.
-        Network network = new BasicNetwork(new HurlStack());
-
-        // Instantiate the RequestQueue with the cache and network.
-        mRequestQueue = new RequestQueue(cache, network);
-
-        // Start the queue
-        mRequestQueue.start();
-
-        final String requestBody = userData;
-
-        System.out.println("inside post json data=====" + requestBody);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                hideProgressDialog();
-                resturantDataModelList = new ArrayList<>();
-                System.out.println("yohaha==category==success===" + response);
-
-                JSONArray array = null;
-                try {
-                    array = new JSONArray(response);
-
-                    Log.d("API", "API D"+array);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                for (int i = 0; i < array.length(); i++)
-                    try {
-                        JSONObject object = array.getJSONObject(i);
-                        dataModel = new ResturantDataModel(i);
-                        //catName = Response (category names to show in tablayout)
-                        type_id = object.getString("id");
-                        catName = object.getString("name");
-
-                        //catType = Response 1/2/3 (1 = Bar, 2 = Restaurant, 3 = Spa)
-                        catType = object.getString("category_type");
-
-                        //catStatus = Response 0/1 (check if 0, remove the tab attribute)
-                        Log.d("API", "API Category: " + catName);
-
-                        String valueCat = null;
-                        try {
-                                valueCat = new getTraslatedString().execute(prefs.getLocaleset(),
-                                        catName).get();
-
-                            dataModel.setId(type_id);
-                            dataModel.setCategory(valueCat);
-                            resturantDataModelList.add(dataModel);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("LogValueCat: ", valueCat);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-                for (ResturantDataModel dataModel:resturantDataModelList){
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString("category_id", dataModel.getCategory());
-                    bundle.putString("id_type",dataModel.getId());
-
-                    Fragment appFrf = new Appetizer();
-                    appFrf.setArguments(bundle);
-
-                    adapter.addFragment(appFrf, dataModel.getCategory());
-
-                }
-
-                 adapter.notifyDataSetChanged();
-                viewPager.setAdapter(adapter);
-
-                tabLayout.setupWithViewPager(viewPager);
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            requestBody, "utf-8");
-                    return null;
-                }
-            }
-        };
-        //mRequestQueue.add(stringRequest);
-        AppController.getInstance().addToRequestQueue(stringRequest);
-    }
 
     //Alert-dialog to show when data is loading
     private void showProgressDialog() {

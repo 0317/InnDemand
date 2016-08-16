@@ -42,9 +42,10 @@ import java.util.List;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.AppBarAdapter;
-import demand.inn.com.inndemand.adapter.RestaurantAdapter;
-import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.database.DBHelper;
+import demand.inn.com.inndemand.model.AppetiserData;
+import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -77,12 +78,13 @@ public class AppetiserBar extends Fragment {
 
     private RecyclerView recyclerView;
     private AppBarAdapter adapter;
-    private List<AppetiserData> cardList;
+    private List<ResturantDataModel> cardList;
 
     //Loading call area
     ProgressDialog dialog;
 
-    AppetiserData a;
+    //DATABASE CLASS AREA
+    DBHelper db;
 
     @Nullable
     @Override
@@ -90,6 +92,7 @@ public class AppetiserBar extends Fragment {
         view = inflater.inflate(R.layout.appetiserbar, container, false);
         nu = new NetworkUtility(getActivity());
         prefs = new AppPreferences(getActivity());
+        db = new DBHelper(getActivity());
 
         //UI initialize
         cart_item = (TextView) view.findViewById(R.id.appetiser_items);
@@ -108,6 +111,17 @@ public class AppetiserBar extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
+
+          List<ResturantDataModel> rest_list = db.getAllItems();
+
+        Log.d("RestaurantModel: ", "Check: "+rest_list);
+
+        cardList.clear();
+        for(ResturantDataModel data : rest_list){
+                ResturantDataModel model = new ResturantDataModel(data.getName(),
+                        data.getDescription(), data.getCategory(), data.getPrice());
+                cardList.add(model);
+        }
 
         return  view;
     }
@@ -202,8 +216,6 @@ public class AppetiserBar extends Fragment {
 
                         if(category.contains("starter") || category.equalsIgnoreCase("Starter")) {
 
-                            a = new AppetiserData(subCategory, itemName, itemDesc, "Rs: " + amount, food);
-                            cardList.add(a);
 ////                            }
                             adapter.notifyDataSetChanged();
                         }

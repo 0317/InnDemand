@@ -86,17 +86,20 @@ import demand.inn.com.inndemand.adapter.BarlistAdapter;
 import demand.inn.com.inndemand.adapter.CircleTransform;
 import demand.inn.com.inndemand.adapter.HotelAdapter;
 import demand.inn.com.inndemand.adapter.ListAdapter;
+import demand.inn.com.inndemand.adapter.ViewPagerAdapter;
 import demand.inn.com.inndemand.cartarea.MyCart;
 import demand.inn.com.inndemand.constants.BarlistData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
-import demand.inn.com.inndemand.database.DBClass;
-import demand.inn.com.inndemand.database.DBRest;
+import demand.inn.com.inndemand.constants.TabData;
+import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.hotelserv.Bar;
 import demand.inn.com.inndemand.hotelserv.Restaurant;
 import demand.inn.com.inndemand.mapdirection.MapArea;
+import demand.inn.com.inndemand.model.AppetiserData;
+import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.setting.FeedbackList;
 import demand.inn.com.inndemand.setting.OrderHistory;
@@ -104,7 +107,6 @@ import demand.inn.com.inndemand.setting.Settings;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
-import demand.inn.com.inndemand.welcome.DBList;
 import demand.inn.com.inndemand.welcome.SplashScreen;
 
 
@@ -186,10 +188,11 @@ public class DashBoard extends AppCompatActivity implements
     //Translate API String to get/fetch the final result
     public String destinationString = "";
 
+    //Restaurant Tabs category List
+    List<ResturantDataModel> resturantDataModelList;
+
     //DATABASE CLASS CALL AREA
-    DBList dbs;
-    DBClass dbclass;
-    DBRest dbrest;
+    DBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,9 +204,7 @@ public class DashBoard extends AppCompatActivity implements
         prefs = new AppPreferences(DashBoard.this);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         dash = this;
-        dbs = new DBList(this);
-        dbclass = new DBClass(this);
-        dbrest = new DBRest(this);
+        db = new DBHelper(this);
         datas = new HotelData();
 
         //Blank String URl call and Volley Imageloader library call to load images from server
@@ -367,6 +368,12 @@ public class DashBoard extends AppCompatActivity implements
         if(nu.isConnectingToInternet()) {
             //Mehod to get Timings for Hotel Services(eg: Restaurant/Bar/Room Services)
             timings();
+            if(prefs.getCategory_check() == false) {
+                getCategory();
+            }
+            if(prefs.getData_check() == false){
+                getData();
+            }
         }else{
             networkClick();
         }
@@ -392,7 +399,7 @@ public class DashBoard extends AppCompatActivity implements
         /*
          * This Imageview shows the Hotel Image at the Top inside Collapsing toolbar
          * Volley method for the Image (can cacha if needed)
-        */
+         */
         main_backdrop = (ImageView) findViewById(R.id.main_backdrop);
         //If you are using normal ImageView
         imageLoader.get(URL, new ImageLoader.ImageListener() {
@@ -503,7 +510,7 @@ public class DashBoard extends AppCompatActivity implements
          * Here in below code getting all the data from Database
          * Also satisfying conditions for Translation(If any time happens)
          */
-        List<HotelData> htdata = dbclass.getAllData();
+        List<HotelData> htdata = db.getAllData();
 
         for(HotelData ddt : htdata){
             if(prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")){
@@ -531,7 +538,7 @@ public class DashBoard extends AppCompatActivity implements
          * Here in below code getting all the data from Database
          * Also satisfying conditions for Translation(If any time happens)
          */
-        List<ListData> ltdata = dbrest.getAllData();
+        List<ListData> ltdata = db.getAllDatas();
 
         for(ListData lsdata : ltdata){
             if(prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")) {
@@ -554,19 +561,39 @@ public class DashBoard extends AppCompatActivity implements
             }
         }
 
-          /*
+        /*
          * Adding Bars List Data fetching from server in last work out(done b4 this class)
          * Here in below code getting all the data from Database
          * Also satisfying conditions for Translation(If any time happens)
          */
-
-        /*List<BarlistData> lttdata = dbrest.getAllData();
+        List<BarlistData> lttdata = db.getAllDatab();
 
         for(BarlistData lsdata : lttdata){
-            ListData ldata = new ListData(lsdata.getTitle(), lsdata.getStatus(), lsdata.getId());
-            restaurantData.add(ldata);
+            if(prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")) {
+                BarlistData ldata = new BarlistData(lsdata.getTitle(), lsdata.getStatus(),
+                        lsdata.getId());
+                barData.add(ldata);
+            }else {
+                try {
+                    String infoName = new getTraslatedString().execute(prefs.getLocaleset(),
+                            lsdata.getTitle()).get();
+                    String infoDesc = new getTraslatedString().execute(prefs.getLocaleset(),
+                            lsdata.getStatus()).get();
+
+                    BarlistData ldata = new BarlistData(infoName, infoDesc, lsdata.getId());
+                    barData.add(ldata);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-*/
+
+
+        /*
+         * This area is for Recyclerview Click for Restaurants in the list
+         */
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 recyclerView, new ClickListener() {
             @Override
@@ -752,8 +779,36 @@ public class DashBoard extends AppCompatActivity implements
         }
     }
 
+    //API call to get category (Tab data/different tabs to show) for the screen
+    public void getCategory(){
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+            obj.put("category_type", "2");
+            obj.put("place_id", "1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("Check API Category Data", obj.toString());
 
-//    API call to set timings for opening the Restaurant/Bar or Room Services.
+        postJsonDataCategory(Config.innDemand+"category/details/", obj.toString());
+    }
+
+    //API call to get Food list items for the Recyclerview
+    public void getData(){
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("restaurant_id", "1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("Check API Data", obj.toString());
+
+        postJsonData(Config.innDemand+"restaurant_items/details/", obj.toString());
+
+    }
+
+    //API call to set timings for opening the Restaurant/Bar/Spa or Room Services.
     public void timings(){
         JSONObject obj = new JSONObject();
         try {
@@ -767,15 +822,19 @@ public class DashBoard extends AppCompatActivity implements
         postJsonDataTimings(Config.innDemand+"timing/details/", obj.toString());
     }
 
-//    Button onClicklistener to Checkout from the hotel & redirect to Splash Screen
-//    Pop-up opens to show either to check-out from hotel or not now options.
+    /*
+     * Button onClicklistener to Checkout from the hotel & redirect to Splash Screen
+     * Pop-up opens to show either to check-out from hotel or not now options.
+     */
     public void checkOut(View view) {
 
         checkoutClick();
     }
 
-//    Getting details for Hotel Location through latitude n longitude
-//    Intent fire to get/set details on Map.
+    /*
+     * Getting details for Hotel Location through latitude n longitude
+     * Intent fire to get/set details on Map.
+     */
     public void direction(View view) {
         Intent in = new Intent(DashBoard.this, MapArea.class);
         in.putExtra("latitude", "28.4089");
@@ -783,8 +842,10 @@ public class DashBoard extends AppCompatActivity implements
         startActivity(in);
     }
 
-//    OnClick the restaurant options to load Restaurants List of the Hotel
-//    Click once will show the list and Click again hides according to preference check
+    /*
+     * OnClick the restaurant options to load Restaurants List of the Hotel
+     * Click once will show the list and Click again hides according to preference check
+     */
     public void restaurantClick(View view) {
         if(prefs.getCheck_list() == false) {
             restaurantList.setVisibility(View.VISIBLE);
@@ -795,15 +856,17 @@ public class DashBoard extends AppCompatActivity implements
         }
     }
 
-//    OnClick the Room Services option to go to Room Services Screen
+    //OnClick the Room Services option to go to Room Services Screen
     public void roomServiceClick(View view) {
         Intent in = new Intent(DashBoard.this, RoomServices.class);
         startActivity(in);
         overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
     }
 
-//    OnClick the Bar options to load Bars List of the Hotel
-//    Click once will show the list and Click again hides according to preference check
+    /*
+     * OnClick the Bar options to load Bars List of the Hotel
+     * Click once will show the list and Click again hides according to preference check
+     */
     public void barClick(View view) {
         if(prefs.getBarList() == false) {
             barList.setVisibility(View.VISIBLE);
@@ -814,105 +877,32 @@ public class DashBoard extends AppCompatActivity implements
         }
     }
 
-//    OnClick the Spa options to load Spas List of the Hotel
-//    Click once will show the list and Click again hides according to preference check
+    /*
+     * OnClick the Spa options to load Spas List of the Hotel
+     * Click once will show the list and Click again hides according to preference check
+     */
     public void spaClick(View view) {
     // working is still left
     }
 
-/*
-                call_hotel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (ActivityCompat.checkSelfPermission(DashBoard.this,
-                                    android.Manifest.permission.CALL_PHONE) !=
-                                    PackageManager.PERMISSION_GRANTED) {
-                                // TODO: Consider calling
-                                //    ActivityCompat#requestPermissions
-                                // here to request the missing permissions,
-                                // and then overriding
-                                //   public void onRequestPermissionsResult
-                                // (int requestCode, String[] permissions,
-                                //                                          int[] grantResults)
-                                // to handle the case where the user grants the
-                                // permission. See the documentation
-                                // for ActivityCompat#requestPermissions for more details.
 
-                                // Should we show an explanation?
-                                if (ActivityCompat.shouldShowRequestPermissionRationale
-                                        (DashBoard.this, android.Manifest.permission.CALL_PHONE)) {
-
-                                    // Show an expanation to the user *asynchronously* -- don't block
-                                    // this thread waiting for the user's response! After the user
-                                    // sees the explanation, try again to request the permission.
-
-                                    AlertDialog.Builder builder =
-                                            new AlertDialog.Builder(DashBoard.this);
-                                    builder.setMessage("Need to Call")
-                                            .setPositiveButton("Call",
-                                                    new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog,
-                                                                    int which) {
-
-                                                }
-                                            })
-                                            .setNegativeButton("Cancel",
-                                                    new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog,
-                                                                    int which) {
-                                                    dialog.cancel();
-                                                }
-                                            });
-
-                                    AlertDialog dialog = builder.create();
-                                    dialog.setTitle("Permissions");
-                                    dialog.show();
-
-                                } else {
-
-                                    // No explanation needed, we can request the permission.
-
-//                                    ActivityCompat.requestPermissions(HotelDetails.this,
-//                                            new String[]{Manifest.permission.CALL_PHONE},
-//                                            MY_PERMISSIONS_REQUEST_CALL);
-
-                                    // MY_PERMISSIONS_REQUEST_CALL is an
-                                    // app-defined int constant. The callback method gets the
-                                    // result of the request.
-                                }
-
-
-
-                                return;
-                            }
-
-                        }
-                    });
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }*/
-
-//    Not in Use
-//    Marshmallow permissions override method
+    /*
+     * Not in Use
+     * Marshmallow permissions override method
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-
     }
 
-//    OnClick Listener for Recyclerview List OnItemClick
+    //OnClick Listener for Recyclerview List OnItemClick
     public interface ClickListener {
         void onClick(View view, int position);
 
         void onLongClick(View view, int position);
     }
 
-//    Custom method to get OnItemClick method of Recyclerview working
+    //Custom method to get OnItemClick method of Recyclerview working
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
@@ -993,6 +983,176 @@ public class DashBoard extends AppCompatActivity implements
                 barList.setVisibility(View.GONE);
             }
         });
+    }
+
+    /*
+       * Here in this method we are trying to fetch Restaurant Items List
+       * Items List includes: Category (Tab data)
+       */
+    public void postJsonDataCategory(String url, String userData) {
+
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha==category==success===" + response);
+
+                JSONArray array = null;
+                try {
+                    array = new JSONArray(response);
+
+                    Log.d("API", "API D"+array);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < array.length(); i++)
+                    try {
+                        JSONObject object = array.getJSONObject(i);
+
+                        String type_id = object.getString("id");
+
+                        //catName = Response (category names to show in tablayout)
+                        String catName = object.getString("name");
+
+                        //catType = Response 1/2/3 (1 = Bar, 2 = Restaurant, 3 = Spa)
+                        String catType = object.getString("category_type");
+
+                        //catStatus = Response 0/1 (check if 0, remove the tab attribute)
+                        Log.d("API", "API Category: " + catName);
+
+                        db.insertCategory(new TabData(catName, catType));
+                        prefs.setCategory_check(true);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+        //mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    /*
+    * Volley Library Main method to get Category and other requirements as response by sending
+    * restaurant ID
+    */
+    public void postJsonData(String url, String userData) {
+
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha==restaurantss==success==" + response);
+                resturantDataModelList = new ArrayList<>();
+                JSONArray array = null;
+                try {
+                    array = new JSONArray(response);
+
+                    Log.d("API", "API D"+array);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < array.length(); i++)
+                    try {
+                        JSONObject object = array.getJSONObject(i);
+                        ResturantDataModel dataModel = new ResturantDataModel(i);
+                        Log.d("API", "API Daa" + array);
+                        String iids = object.getString("id");
+                        String itemName = object.getString("name");
+
+                        String iitemDescription = object.getString("description");
+                        String category = object.getString("category");
+                        Log.d("API", "API Cat" + category);
+                        String food = object.getString("food");
+
+                        String subCategory = object.getString("subcategory");
+                        String amount = object.getString("price");
+
+                        db.insertRestaurant(new ResturantDataModel(itemName, iitemDescription,
+                                category, amount));
+                        prefs.setData_check(true);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
     /*

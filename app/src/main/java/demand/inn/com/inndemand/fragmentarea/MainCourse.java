@@ -46,9 +46,6 @@ import java.util.List;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.MainCourseAdapter;
-import demand.inn.com.inndemand.adapter.RestaurantAdapter;
-import demand.inn.com.inndemand.constants.AppetiserData;
-import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.MaincourseData;
 import demand.inn.com.inndemand.utility.AppPreferences;

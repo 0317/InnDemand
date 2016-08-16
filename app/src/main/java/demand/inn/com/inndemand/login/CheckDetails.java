@@ -87,8 +87,8 @@ public class CheckDetails extends AppCompatActivity {
     // Progress dialog (to show dialog if required)
     private ProgressDialog pDialog;
 
-//    Others
-//    String values to get/set details either from FB/google
+    //Others
+    //String values to get/set details either from FB/google
     String name, email, dp, l_name, gender, bDay, gGender, fb_location, gToken = "none";
     String gName, gEmail, gDP, gbBday = "none", gLoc = "none";
     String mName, mEmail, phoneNo = "none";
@@ -97,11 +97,11 @@ public class CheckDetails extends AppCompatActivity {
     int yourAge;
     StringBuilder strBuild;
 
-    // temporary string to show the parsed response
+    //temporary string to show the parsed response
     private String jsonResponse;
     private static String TAG = CheckDetails.class.getSimpleName();
 
-//    Google Client to know the status (If need)
+    //Google Client to know the status (If need)
     GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -109,13 +109,13 @@ public class CheckDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.checkdetails);
-//        Initialisation of the Utility Classes and Preferences Classes
+        //Initialisation of the Utility Classes and Preferences Classes
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
         prefs  =new AppPreferences(CheckDetails.this);
 
-//        Google Class call code to check/get status of the User (If Sign-In then User can Sign-Out)
+        //Google Class call code to check/get status of the User (If Sign-In then User can Sign-Out)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -128,7 +128,7 @@ public class CheckDetails extends AppCompatActivity {
                     }
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
-//        pop-up dialog
+        //pop-up dialog
         pDialog = new ProgressDialog(CheckDetails.this);
 
         //UI shown on the screen Initialized here
@@ -141,8 +141,10 @@ public class CheckDetails extends AppCompatActivity {
                 InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
 
-//      Bundle Class area
-//        Here we are getting all details fetched from Google and managing them to send to Server
+      /*
+       * Bundle Class area
+       * Here we are getting all details fetched from Google and managing them to send to Server
+       */
         getBundle = this.getIntent().getExtras();
         if(getBundle == null) {
             gName = prefs.getUser_gname();
@@ -177,8 +179,10 @@ public class CheckDetails extends AppCompatActivity {
             Log.d("Check", "Check Loc "+prefs.getGoogle_location());
         }
 
-//        Bundle area for facebook
-//        Here we are getting all details fetched from Facebook and managing them to send to Server
+        /*
+         * Bundle area for facebook
+         * Here we are getting all details fetched from Facebook and managing them to send to Server
+         */
         else {
             name = getBundle.getString("first_name");
             email = getBundle.getString("email");
@@ -243,8 +247,10 @@ public class CheckDetails extends AppCompatActivity {
         }
     }
 
-//    Method to check if the Name & Email is filled in EditText or not
-//    If not then show a Toast else fire Intent to next screen
+    /*
+     * Method to check if the Name & Email is filled in EditText or not
+     * If not then show a Toast else fire Intent to next screen
+     */
     public void verifyDetails(View view){
 
         //String initialized to get above mentioned edittext values
@@ -316,8 +322,10 @@ public class CheckDetails extends AppCompatActivity {
 
     }
 
-//    main method to hit server with all the details either from FB/Google.
-//    Getting Customer ID as a Response in below method
+    /*
+     * main method to hit server with all the details either from FB/Google.
+     * Getting Customer ID as a Response in below method
+     */
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;
@@ -346,7 +354,7 @@ public class CheckDetails extends AppCompatActivity {
 
                     customer_id = object.getString("customer_id");
                     prefs.setCustomer_Id(customer_id);
-//                    Toast.makeText(CheckDetails.this, customer, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(CheckDetails.this, customer, Toast.LENGTH_LONG).show();
 
                 }catch(JSONException e){
                     e.printStackTrace();
@@ -373,12 +381,14 @@ public class CheckDetails extends AppCompatActivity {
                 }
             }
         };
-//        mRequestQueue.add(stringRequest);
+        //mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-//    Method to back press from the device
-//    Either to go to last screen or If the last screen working finished then close the app
+    /*
+     * Method to back press from the device
+     * Either to go to last screen or If the last screen working finished then close the app
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -7,6 +7,7 @@
     <string name="loginText">Inicia sesión con tu cuenta de Google</string>
 
     <string name="action_settings">ajustes</string>
+    <string name="notification">Notificación</string>
 
     <!-- ......Hardcoded string values are under...... -->
 

@@ -106,21 +106,20 @@ public class Feedback extends AppCompatActivity {
                     itemName).get();
 
             toolbar.setTitle(finalName);
+            toolbar.setTitleTextColor(Color.WHITE);
+            toolbar.setNavigationIcon(R.mipmap.ic_back);
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setNavigationIcon(R.mipmap.ic_back);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
 
         //UI Initialize
         name = (TextView) findViewById(R.id.product_title);

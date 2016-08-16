@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by akash
  */
 
-public class AppetiserData {
+public class BarDataModel {
 
 //    itemName = object.getString("name");
 //    Log.d("API", "API na" + itemName);
@@ -30,21 +30,21 @@ public class AppetiserData {
 
     int userqty, productsaleprice;
 
-    public AppetiserData(){
+    public BarDataModel(){
 
     }
 
-    public AppetiserData(String name, String description, String category){
-        this.name = name;
+    public BarDataModel(String title, String description, String price){
+        this.title = title;
         this.description = description;
-        this.category = category;
+        this.price = price;
     }
 
-    public AppetiserData(int i){
+    public BarDataModel(int i){
 
     }
 
-    public AppetiserData(String title, String description, String rupees, String subcategory,
+    public BarDataModel(String title, String description, String rupees, String subcategory,
                               String food, String rating) {
         this.title = title;
         this.description = description;

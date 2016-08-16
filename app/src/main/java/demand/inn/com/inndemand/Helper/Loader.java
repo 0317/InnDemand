@@ -47,12 +47,10 @@ import demand.inn.com.inndemand.constants.BarlistData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
-import demand.inn.com.inndemand.database.DBClass;
-import demand.inn.com.inndemand.database.DBRest;
+import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
-import demand.inn.com.inndemand.welcome.DBList;
 
 /**
  * Created by akash
@@ -77,8 +75,7 @@ public class Loader extends AppCompatActivity {
     private List<HotelData> hotelData;
 
     //DATABASE CLASS AREA
-    DBRest dbrest;
-    DBClass dbclass;
+    DBHelper db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,8 +83,7 @@ public class Loader extends AppCompatActivity {
         setContentView(R.layout.loader_layout);
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
-        dbrest = new DBRest(this);
-        dbclass = new DBClass(this);
+        db = new DBHelper(this);
 
         restaurantData  = new ArrayList<>();
         hotelData = new ArrayList<>();
@@ -100,11 +96,10 @@ public class Loader extends AppCompatActivity {
             restaurantList();
             barList();
             inclusion();
+            makeJsonRequestBottom();
         }else{
             networkClick();
         }
-
-        makeJsonRequestBottom();
 
         /**
          * Handler Class handling Loader screen without any invention of APIs call
@@ -200,7 +195,6 @@ public class Loader extends AppCompatActivity {
      * server
      *
      * */
-
     private void makeJsonRequestBottom(){
         JSONObject obj = new JSONObject();
 
@@ -361,7 +355,7 @@ public class Loader extends AppCompatActivity {
                                 String hotel = object.getString("hotel");
                                 String status = object.getString("status");
 
-                            dbrest.insertData(new ListData(rest_name, status, restaurantId));
+                            db.insertRestData(new ListData(rest_name, status, restaurantId));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -444,7 +438,7 @@ public class Loader extends AppCompatActivity {
                                 String hotel = object.getString("hotel");
                                 String status = object.getString("status");
 
-//                                dbrest.insertBar(new BarlistData(bar_name, status, barId));
+                                db.insertBarData(new BarlistData(bar_name, status, barId));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -638,7 +632,7 @@ public class Loader extends AppCompatActivity {
                                 Log.d("Info Title", "Check: "+info_title);
                                 Log.d("Info Value", "Check: "+info_value);
 
-                                dbclass.insertData(new HotelData(info_title, info_value,
+                                db.insertMiscData(new HotelData(info_title, info_value,
                                         screen_key));
 
                                 prefs.setSave_data(info_value);
@@ -652,7 +646,7 @@ public class Loader extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -671,7 +665,7 @@ public class Loader extends AppCompatActivity {
                 }
             }
         };
-//        mRequestQueue.add(stringRequest);
+        //mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 

@@ -56,7 +56,11 @@ public class QrEntry extends AppCompatActivity{
         finish();
     }
 
-
+    /*
+     * Spinner option method to select language for the app before QRScan.
+     * Method sets the language in Locale as well as in preferences according to the position
+     * of the language in the spinner
+     */
     public void addListenerOnSpinnerItemSelection() {
         languages = (Spinner) findViewById(R.id.languages);
         languages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -163,9 +167,5 @@ public class QrEntry extends AppCompatActivity{
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
-        /*Intent refresh = new Intent(QrEntry.this, QRscanning.class);
-                        startActivity(refresh);
-                        finish();*/
-//                        DashBoard.dash.finish();
     }
 }

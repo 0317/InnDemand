@@ -25,10 +25,10 @@ import java.util.List;
 import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Header;
+import demand.inn.com.inndemand.model.AppetiserData;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
-import demand.inn.com.inndemand.welcome.DBList;
 
 /**
  * Created by akash
@@ -38,8 +38,8 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
     private SparseBooleanArray selectedItems;
 
-    private List<ResturantDataModel> cartData;
-    private List<ResturantDataModel> itemprice;
+    private List<AppetiserData> cartData;
+    private List<AppetiserData> itemprice;
     private Context mContext;
     int counter = 0;
     int count = 0;
@@ -61,7 +61,6 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     Header header;
 
     //DATABASE
-    DBList dbs;
     SharedPreferences preferences;
     private static MyClickListener myClickListener;
 
@@ -126,7 +125,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         }
     }
 
-    public RestaurantAdapter(Context mContext, List<ResturantDataModel> cartData, List<ResturantDataModel> itemprice) {
+    public RestaurantAdapter(Context mContext, List<AppetiserData> cartData, List<AppetiserData> itemprice) {
         this.mContext = mContext;
         this.cartData = cartData;
         this.itemprice = itemprice;
@@ -137,7 +136,6 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurantadapt, parent, false);
         prefs = new AppPreferences(mContext);
-        dbs = new DBList(mContext);
         preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         return new MyViewHolder(itemView);
@@ -145,7 +143,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
     @Override
     public void onBindViewHolder(final RestaurantAdapter.MyViewHolder holder, final int position) {
-        ResturantDataModel data = cartData.get(position);
+        AppetiserData data = cartData.get(position);
 
             holder.title.setText(data.getSubcategory());
             holder.subtitle.setText(data.getName() + " ");
@@ -225,10 +223,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
         class PlusButtonListener implements View.OnClickListener {
             private int position;
-            ResturantDataModel data = cartData.get(position);
+            AppetiserData data = cartData.get(position);
             TextView totalTextView, title;
 
-            PlusButtonListener(int position, ResturantDataModel data, TextView totalTextView, TextView title) {
+            PlusButtonListener(int position, AppetiserData data, TextView totalTextView, TextView title) {
                 this.position = position;
                 this.totalTextView=totalTextView;
                 this.title = title;
@@ -274,10 +272,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
         class MinusButtonListener implements View.OnClickListener {
             private int position;
-            ResturantDataModel data;
+            AppetiserData data;
             TextView totalTextView, title;
 
-            MinusButtonListener(int position, ResturantDataModel data, TextView totalTextView, TextView title) {
+            MinusButtonListener(int position, AppetiserData data, TextView totalTextView, TextView title) {
                 this.position = position;
                 this.totalTextView = totalTextView;
                 this.title = title;

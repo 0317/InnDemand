@@ -115,7 +115,6 @@ public class MyCart extends AppCompatActivity {
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
-//        ArrayList arrayList = (ArrayList) db.getAllData();
         getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

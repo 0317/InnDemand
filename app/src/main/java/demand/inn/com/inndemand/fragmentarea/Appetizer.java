@@ -1,5 +1,6 @@
 package demand.inn.com.inndemand.fragmentarea;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,7 +23,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -53,14 +57,13 @@ import javax.net.ssl.HttpsURLConnection;
 import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
-import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.database.DBHelper;
+import demand.inn.com.inndemand.model.AppetiserData;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SimpleDividerItemDecoration;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
-import demand.inn.com.inndemand.welcome.DBList;
-import demand.inn.com.inndemand.welcome.DBStorage;
 
 /**
  * Created by akash
@@ -88,32 +91,31 @@ public class Appetizer extends Fragment {
     //Cart entry Click
     String result_price;
 
-//    Recyclerview(List) and Adapter classes(Data) to show list and data in that list
+    //Recyclerview(List) and Adapter classes(Data) to show list and data in that list
     private RecyclerView recyclerView;
     private RestaurantAdapter adapter;
-    private List<ResturantDataModel> cardList;
+    private List<AppetiserData> cardList;
     OnItemCLick onCLick;
 
-//    Constant Class (get/set) required to set and get data for the screen
+    //Constant Class (get/set) required to set and get data for the screen
     ResturantDataModel dataModel;
 
     //Loading call area
     ProgressDialog dialog;
 
-//    Constant Class (get/set) required to set and get data for the screen
+    //Constant Class (get/set) required to set and get data for the screen
     ResturantDataModel a;
 
-//    String for different values for data coming from API
+    //String for different values for data coming from API
     public String idCat, subCat, names, desc, price, foods;
 
-//    Constant Class (get/set) required to set and get data for the screen
+    //Constant Class (get/set) required to set and get data for the screen
     ResturantDataModel resturantDataModel;
 
-//    DATABASE CLASSES
-    DBList dbs;
-    DBStorage storage;
+    //DATABASE CLASSES
+    DBHelper db;
 
-//  String to get dynamic Translated data
+    //String to get dynamic Translated data
     public String destinationString = "";
 
     @Nullable
@@ -121,32 +123,24 @@ public class Appetizer extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.appetizer, container, false);
-//        Utility Class Initialize
+        //Utility Class Initialize
         nu = new NetworkUtility(getActivity());
         prefs = new AppPreferences(getActivity());
 
-//        Database Class Initialisation
-        dbs = new DBList(getActivity());
-        storage = new DBStorage(getActivity());
+        //Database Class Initialisation
+        db = new DBHelper(getActivity());
 
-
-//        Custom toolbar class call
+        //Custom toolbar class call
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
 
-        //for crate home button
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
 //        Code to call Broadcast Receiver to get or send data In or to different activity
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
-                new IntentFilter("position-message"));
+//        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+//                new IntentFilter("position-message"));
 
         idCat = getArguments().getString("id_type");
-//        subCat = getArguments().getString("subCategory");
-//        names  = getArguments().getString("name");
-//        desc = getArguments().getString("desc");
-//        price = getArguments().getString("price");
-//        foods = getArguments().getString("food");
 
         Log.d("names", "name"+subCat);
         Log.d("names", "cat"+names);
@@ -155,6 +149,7 @@ public class Appetizer extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         cardList = new ArrayList<>();
         adapter = new RestaurantAdapter(getActivity(), cardList, cardList);
+
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -176,38 +171,37 @@ public class Appetizer extends Fragment {
             } else {
                 //mehtod to send Restaurant ID to server & to get response.
 //                callMethod();
+                List<AppetiserData> rest_list = db.getAllDatarl();
+
+                Log.d("RestaurantModel: ", "Check: "+rest_list);
+
+                for(AppetiserData data : rest_list){
+                    AppetiserData model = new AppetiserData(data.getTitle(),
+                            data.getDescription(), data.getCategory());
+                    cardList.add(model);
+                }
             }
         } else {
-
+                networkClick();
         }
-
-        List<ResturantDataModel> datas = dbs.getAllData();
-                        for(ResturantDataModel card : datas) {
-                            cardList.clear();
-                                a = new ResturantDataModel(card.getSubcategory(), card.getName(),
-                                        card.getDescription(), card.getPrice(), card.getFood(),
-                                        card.getRating());
-                                cardList.add(a);
-
-
-                        }
-                            adapter.notifyDataSetChanged();
 
         return view;
     }
 
-//    Here receives data from Fragments class Adapter in the form of broadcast
-//    Here we are hiting the server to get details of Restaurant food stuff by sending category ID
-//    and Restaurant ID
-    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+    /*
+     * Here receives data from Fragments class Adapter in the form of broadcast
+     * Here we are hiting the server to get details of Restaurant food stuff by sending
+     * category ID and Restaurant ID
+     */
+   /* public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
             String dataPositions = intent.getStringExtra("positionsof");
             JSONObject obj = new JSONObject();
             try {
-               /* obj.put("category_id", idCat);
-                obj.put("restaurant_id", prefs.getRestaurant_Id());*/
+               *//* obj.put("category_id", idCat);
+                obj.put("restaurant_id", prefs.getRestaurant_Id());*//*
                 obj.put("category_id", "");
                 obj.put("restaurant_id", "");
             } catch (JSONException e) {
@@ -217,10 +211,13 @@ public class Appetizer extends Fragment {
 
             postJsonData(Config.innDemand+"restaurant_items/details/", obj.toString());
         }
-    };
+    };*/
 
-//    Volley Library Main method to get Category and other requirements as response by sending
-//    restaurant ID
+
+    /*
+     * Volley Library Main method to get Category and other requirements as response by sending
+     * restaurant ID
+     */
     public void postJsonData(String url, String userData) {
 
         RequestQueue mRequestQueue;
@@ -256,7 +253,7 @@ public class Appetizer extends Fragment {
                 for (int i = 0; i < array.length(); i++) {
                     try {
                         JSONObject object = array.getJSONObject(i);
-                        dataModel = new ResturantDataModel(i);
+//                        dataModel = new ResturantDataModel(i);
                         Log.d("API", "API Daa"+array);
                         Log.d("API", "API ID"+id);
                         itemName = object.getString("name");
@@ -512,5 +509,25 @@ public class Appetizer extends Fragment {
             e.printStackTrace();
         }
         return null;
+    }
+
+    //Custom pop-up for Internet Check (If connected or not)
+    public void networkClick(){
+        // custom dialog
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.network);
+
+        // set the custom dialog components - text, image and button
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        Button checkout = (Button) dialog.findViewById(R.id.ok_click);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
+        dialog.show();
     }
 }

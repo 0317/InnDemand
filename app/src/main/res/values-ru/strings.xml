@@ -8,6 +8,7 @@
     <string name="loginText">Пожалуйста, войдите с помощью аккаунта Google</string>
 
     <string name="action_settings">настройки</string>
+    <string name="notification">уведомление</string>
 
     <!-- ......Hardcoded string values are under...... -->
 

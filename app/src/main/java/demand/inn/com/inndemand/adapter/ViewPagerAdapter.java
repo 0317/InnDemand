@@ -9,8 +9,6 @@ import android.widget.TabHost;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.FragmentData;
 import demand.inn.com.inndemand.fragmentarea.DefaultFragment;
 

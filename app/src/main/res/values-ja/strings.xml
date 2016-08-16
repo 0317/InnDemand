@@ -7,6 +7,7 @@
     <string name="loginText">Googleアカウントでログインしてください</string>
 
     <string name="action_settings">[設定]</string>
+    <string name="notification">お知らせ</string>
 
     <!-- ......Hardcoded string values are under...... -->
 

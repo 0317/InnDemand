@@ -64,13 +64,9 @@ import demand.inn.com.inndemand.Helper.Loader;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.MarshMallowPermission;
-//import demand.inn.com.inndemand.fcm.NotificationListener;
-import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
-import demand.inn.com.inndemand.welcome.BaseActivity;
-import demand.inn.com.inndemand.welcome.DBList;
 import demand.inn.com.inndemand.welcome.SplashScreen;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -82,64 +78,65 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
     AppPreferences prefs;
     SharedPreferences settings;
 
-//    Static call to match int value when camera permission required for Marshmallow
+    //Static call to match int value when camera permission required for Marshmallow
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 3;
 
-    //    Google Client to know the status (If need)
+    //Google Client to know the status (If need)
     GoogleApiClient mGoogleApiClient;
 
-//   Its a Marshmallow permission Class (here to get permission for Camera)
+    //Its a Marshmallow permission Class (here to get permission for Camera)
     MarshMallowPermission marshMallowPermission;
 
-//    Others
-//    String for different usage
-//    For splitting Qr code mentioned on Image
-//    Fetching hotel ID and Room ID from it
+    //Others
+    //String for different usage
+    //For splitting Qr code mentioned on Image
+    //Fetching hotel ID and Room ID from it
     String splitData;
     String hotelID, roomID;
 
-//    Date & Time
-//    Different aspects to get Current date and time to send it to Server as per required.
+    //Date & Time
+    //Different aspects to get Current date and time to send it to Server as per required.
     Calendar c;
     SimpleDateFormat df;
     String formattedDate;
     String checkinId = "";
 
-//    Firebase Notification Class call
+    //Firebase Notification Class call
     String getting = "";
 
     ProgressDialog mProgressDialog;
 
-    DBList dbs;
+    //DATABASE CLASS CALL (RESTAURANT MODEL)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.qrscanning);
-//        Utility Class and Preferences Initialisation
+        //Utility Class and Preferences Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
         PreferenceManager.getDefaultSharedPreferences(QRscanning.this);
-        dbs = new DBList(this);
 
-//        Firebase notification initialisation in the app
+        //Firebase notification initialisation in the app
         getting =  FirebaseInstanceId.getInstance().getToken();
         Log.d("Reftoken","check: "+getting);
 
-//        Marshmallow Permission class Intialasation
+        //Marshmallow Permission class Intialasation
         marshMallowPermission = new MarshMallowPermission(this);
 
-//        Preferences Check to check what to save and according to that Call() method at
-//          Splashscreen works
+        /*
+         * Preferences Check to check what to save and according to that Call() method at
+         * Splashscreen works
+         */
         prefs.setIs_task_completed(true);
         prefs.setIs_In_Hotel(false);
 
-//        Toolbar Class call area, setting title on the top.
+        //Toolbar Class call area, setting title on the top.
         getSupportActionBar().setTitle("InnDemand");
         getSupportActionBar().invalidateOptionsMenu();
 
-//        Google Class call code to check/get status of the User (If Sign-In then User can Sign-Out)
+        //Google Class call code to check/get status of the User (If Sign-In then User can Sign-Out)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -152,7 +149,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                     }
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
-//        Library Class to scan QR code in the app
+        //Library Class to scan QR code in the app
         try {
             mScannerView = new ZXingScannerView(QRscanning.this);   // Programmatically initialize the scanner view
             setContentView(mScannerView);
@@ -160,10 +157,10 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
             e.printStackTrace();
         }
 
-//        Method call to open Camera(Required permission if marshmallow else not required)
+        //Method call to open Camera(Required permission if marshmallow else not required)
         getPhotoFromCamera();
 
-//        Code to get current time and date in UTC format
+        //Code to get current time and date in UTC format
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
@@ -173,12 +170,12 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         // formattedDate have current date/time
     }
 
-//  Method to open camera and also checking if device is marshmallow then required permission else not
+    //Method to open camera and also checking if device is marshmallow then required permission else not
     public void getPhotoFromCamera() {
         if (!marshMallowPermission.checkPermissionForCamera()) {
             marshMallowPermission.requestPermissionForCamera();
         } else {
-//                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             try {
                 mScannerView.setResultHandler(QRscanning.this); // Register ourselves as a handler for scan results.
                 mScannerView.startCamera();
@@ -188,15 +185,17 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         }
     }
 
-//    To simply stop the camera
+    //To simply stop the camera
     @Override
     public void onPause() {
         super.onPause();
         mScannerView.stopCamera();           // Stop camera on pause
     }
 
-//    Method to finally provide results of QR scan
-//    Result like: Hotel Name, Room Number and other details on QR code Image
+    /*
+     * Method to finally provide results of QR scan
+     * Result like: Hotel Name, Room Number and other details on QR code Image
+     */
     @Override
     public void handleResult(final Result rawResult) {
         // Do something with the result here
@@ -237,8 +236,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-//                    makeJsonObjectRequest();
-//
+
                 }
             });
 
@@ -246,11 +244,13 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
             alert1.show();
         }
 
-        // If you would like to resume scanning, call this method below:
-        // mScannerView.resumeCameraPreview(this);
+        /*
+         * If you would like to resume scanning, call this method below:
+         * mScannerView.resumeCameraPreview(this);
+         */
     }
 
-//    Method to check permissions for Marshmallow (either to grant or not)
+    //Method to check permissions for Marshmallow (either to grant or not)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
             switch (requestCode){
@@ -265,8 +265,10 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
             }
     }
 
-//    Menu method (in use on the top right of the screen)
-//    Calling Menu with name/icons.
+    /*
+     * Menu method (in use on the top right of the screen)
+     * Calling Menu with name/icons.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
 
@@ -274,7 +276,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         return true;
     }
 
-//    Menu Options with different calls methods in the menu (sign-out options and Re-scan option)
+    //Menu Options with different calls methods in the menu (sign-out options and Re-scan option)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -334,10 +336,6 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
             obj.put("qr", roomID);
 //            obj.put("checkin_time", formattedDate);
 
-//            SharedPreferences.Editor editor = settings.edit();
-//            editor.putString("hotelID", hotelID);
-//            editor.commit();
-
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -349,7 +347,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         dataRegistration();
     }
 
-//    Volley Library Main method to send details to Server and getting Checkin ID as a Response
+    //Volley Library Main method to send details to Server and getting Checkin ID as a Response
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;
@@ -406,12 +404,14 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                 }
             }
         };
-//        mRequestQueue.add(stringRequest);
+        //mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-//    Registration Call to send details to Server so as to register Device and User to
-//      send notifications through Firebase
+    /*
+     * Registration Call to send details to Server so as to register Device and User to
+     * send notifications through Firebase
+     */
     public void dataRegistration(){
         JSONObject obj = new JSONObject();
 
@@ -428,8 +428,10 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         postJsonDataToken(Config.innDemand +"not_registration_key/details/", obj.toString());
     }
 
-//    Volley Library Main Method to send details to server for Firebase notifications and getting
-//    default response from Server
+    /*
+     * Volley Library Main Method to send details to server for Firebase notifications and getting
+     * default response from Server
+     */
     public void postJsonDataToken(String url, String userData){
 
         RequestQueue mRequestQueue;
@@ -474,11 +476,11 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
                 }
             }
         };
-//        mRequestQueue.add(stringRequest);
+        //mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-    // alert Dialog for loading details on the screen initially
+    //alert Dialog for loading details on the screen initially
     private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -489,7 +491,7 @@ public class QRscanning extends AppCompatActivity implements ZXingScannerView.Re
         mProgressDialog.show();
     }
 
-    //    Hide the current running alert dialog after data gets loaded
+    //Hide the current running alert dialog after data gets loaded
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();

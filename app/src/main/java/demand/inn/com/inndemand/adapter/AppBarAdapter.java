@@ -1,18 +1,25 @@
 package demand.inn.com.inndemand.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.constants.AppetiserData;
+import demand.inn.com.inndemand.database.DBHelper;
+import demand.inn.com.inndemand.model.AppetiserData;
+import demand.inn.com.inndemand.model.ResturantDataModel;
+import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
 
 /**
@@ -20,7 +27,7 @@ import demand.inn.com.inndemand.utility.AppPreferences;
  */
 public class AppBarAdapter extends  RecyclerView.Adapter<AppBarAdapter.MyViewHolder>  {
 
-    private List<AppetiserData> cartData;
+    private List<ResturantDataModel> cartData;
     private Context mContext;
     int counter = 0;
     int count = 0;
@@ -28,10 +35,13 @@ public class AppBarAdapter extends  RecyclerView.Adapter<AppBarAdapter.MyViewHol
     RecyclerView.Adapter adapter;
     AppPreferences prefs;
 
+    //DATABASE CLASS CALL AREA
+    DBHelper db;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, subtitle, rupees, count, details;
         public ImageView plus, minus;
-
+        private LinearLayout item_click;
 
         public MyViewHolder(View view) {
             super(view);
@@ -42,10 +52,11 @@ public class AppBarAdapter extends  RecyclerView.Adapter<AppBarAdapter.MyViewHol
             count = (TextView) view.findViewById(R.id.restaurant_counts);
             plus = (ImageView) view.findViewById(R.id.restaurant_plus);
             minus = (ImageView) view.findViewById(R.id.restaurant_minus);
+            item_click = (LinearLayout) view.findViewById(R.id.item_click);
         }
     }
 
-    public AppBarAdapter(Context mContext, List<AppetiserData> cartData) {
+    public AppBarAdapter(Context mContext, List<ResturantDataModel> cartData) {
         this.mContext = mContext;
         this.cartData = cartData;
     }
@@ -55,26 +66,43 @@ public class AppBarAdapter extends  RecyclerView.Adapter<AppBarAdapter.MyViewHol
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurantadapt, parent, false);
         prefs = new AppPreferences(mContext);
+        db = new DBHelper(mContext);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final AppBarAdapter.MyViewHolder holder, final int position) {
-        final AppetiserData data = cartData.get(position);
-        holder.title.setText(data.getTitle());
-        holder.subtitle.setText(data.getName()+" ");
-        holder.rupees.setText(data.getRupees());
-        holder.details.setText(data.getDetails());
+        final ResturantDataModel data = cartData.get(position);
+        Log.d("Check Tablet", "Check: "+data.getCategory());
+        Log.d("Check Tablet", "Check: "+data.getName());
+//        if(data.getName() == "Downeaster Combo" || data.getName().equalsIgnoreCase("Downeaster Combo")) {
+
+            holder.title.setText(data.getTitle());
+            holder.subtitle.setText(data.getName() + " ");
+            holder.rupees.setText(data.getPrice());
+            holder.details.setText(data.getDescription());
+            holder.item_click.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent in = new Intent(mContext, Feedback.class);
+                    in.putExtra("itemname", cartData.get(position).getName());
+                    in.putExtra("itemdesc", cartData.get(position).getDescription());
+                    in.putExtra("itemprice", cartData.get(position).getPrice());
+                    in.putExtra("itemrating", cartData.get(position).getRating());
+                    mContext.startActivity(in);
+                }
+            });
+//        }
 
         if(holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null){
             holder.title.setVisibility(View.GONE);
         }
 
-        if(data.getFood() == "2" || data.getFood().equalsIgnoreCase("2"))
-            holder.subtitle.setTextColor(Color.RED);
-        else
-            holder.subtitle.setTextColor(Color.GREEN);
+//        if(data.getFood() == "2" || data.getFood().equalsIgnoreCase("2"))
+//            holder.subtitle.setTextColor(Color.RED);
+//        else
+//            holder.subtitle.setTextColor(Color.GREEN);
 
         holder.plus.setTag(position);
         holder.minus.setTag(position);
@@ -83,7 +111,7 @@ public class AppBarAdapter extends  RecyclerView.Adapter<AppBarAdapter.MyViewHol
         holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                counter = data.getCount();// update new value
+                counter = data.getProductsaleprice();// update new value
                 holder.count.setText(String.valueOf(counter));
             }
         });

@@ -1,5 +1,7 @@
 package demand.inn.com.inndemand.hotelserv;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -9,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -41,8 +44,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
+import demand.inn.com.inndemand.adapter.ViewPagerAdapter;
+import demand.inn.com.inndemand.cartarea.MyCart;
 import demand.inn.com.inndemand.constants.Config;
+import demand.inn.com.inndemand.constants.FragmentData;
+import demand.inn.com.inndemand.constants.TabData;
+import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.fragmentarea.AppetiserBar;
+import demand.inn.com.inndemand.fragmentarea.Appetizer;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
@@ -64,17 +73,21 @@ public class Bar extends AppCompatActivity{
     TextView restaurant_text;
     Toolbar toolbar;
 
-//    Others
+    //Others
     View view;
     private Menu menu;
 
     //Fragment Class
     AppetiserBar mAppetiser;
-    MainBar mMain;
-    DessertBar mDessert;
 
-//    String to define to value
-    //    Values fetching from APIs in the form of String
+    //Fragments data in the screen and List of tabs in tab layout shown
+    List<FragmentData> tabList;
+
+    //List to add category(tabs)
+    List<TabData> tabData;
+
+    //String to define to value
+    //Values fetching from APIs in the form of String
     String id;
     String itemName;
     String itemDesc;
@@ -83,16 +96,21 @@ public class Bar extends AppCompatActivity{
     String subCategory;
     String amount;
 
-//    Getting Bar name via Intent in a String
+    //Getting Bar name via Intent in a String
     String barName;
+
+    //DATABASE CLASS CALL AREA
+    DBHelper db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bar);
-//        Utility Class Initialize
+        //Utility Class Initialize
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
+        db = new DBHelper(this);
+        tabData = new ArrayList<>();
 
         barName = getIntent().getStringExtra("bar_name");
 
@@ -181,13 +199,11 @@ public class Bar extends AppCompatActivity{
         });
 
         mAppetiser = new AppetiserBar();
-        mMain = new MainBar();
-        mDessert = new DessertBar();
+        tabList = new ArrayList<>();
 
         viewPager = (ViewPager) findViewById(R.id.container);
 
         //Tab call area
-        setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -201,16 +217,36 @@ public class Bar extends AppCompatActivity{
         else
             restaurant_text.setText("NOTE: It will take a minimum of 60 mins to get the order");
 
-    }
 
-    private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFragment(mAppetiser, "Appetizer");
-            adapter.addFragment(mMain, "Main Course");
-            adapter.addFragment(mDessert, "Dessert");
-        viewPager.setAdapter(adapter);
-    }
+         /*
+         * Here trying to get Category for the Fragments (Tabs)
+         * Data saving in DB from Server in last work out
+         * Fetching category from Database (SQLite)
+         */
+        List<TabData> tabdata = db.getAllCategory();
 
+        Log.d("TabData", "check: "+tabdata);
+        for(TabData tab : tabdata) {
+//            Bundle bundle = new Bundle();
+//            bundle.putString("category_id", tab.getName());
+
+            TabData data = new TabData(tab.getName(), tab.getType());
+            tabData.add(data);
+
+            Fragment appFrf = new AppetiserBar();
+//            appFrf.setArguments(bundle);
+
+            adapter.addFragment(appFrf, tab.getName());
+
+            adapter.notifyDataSetChanged();
+            viewPager.setAdapter(adapter);
+
+            tabLayout.setupWithViewPager(viewPager);
+
+            adapter.notifyDataSetChanged();
+        }
+    }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -250,6 +286,29 @@ public class Bar extends AppCompatActivity{
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    /*
+    * Method is to add items to cart with onClick
+    * Shows a pop-up asking view cart or not now
+    */
+    public void addCart(View view){
+//        db.insertData(new CartData(broaditemName, totalCash, totalItems));
+        new AlertDialog.Builder(Bar.this).setMessage(R.string.restaurant_foodadded_tocart)
+                .setPositiveButton(R.string.viewcart, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent in = new Intent(Bar.this, MyCart.class);
+                        startActivity(in);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).create().show();
     }
 
 //    API call to send bar ID to server to get list of Bar items
@@ -327,7 +386,7 @@ public class Bar extends AppCompatActivity{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Bar.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Bar.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

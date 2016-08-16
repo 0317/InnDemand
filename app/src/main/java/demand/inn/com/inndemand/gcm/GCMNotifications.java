@@ -1,15 +1,21 @@
 package demand.inn.com.inndemand.gcm;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +27,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,9 +50,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.GCMAdapter;
-import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.NotificationData;
 import demand.inn.com.inndemand.model.ResturantDataModel;
@@ -81,6 +90,8 @@ public class GCMNotifications extends AppCompatActivity {
 	//Class Area
 	NotificationData a;
 
+	//Translated String varibale
+	public String destinationString = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +105,7 @@ public class GCMNotifications extends AppCompatActivity {
 		getSupportActionBar().hide();
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
-		toolbar.setTitle("Notification");
+		toolbar.setTitle(R.string.notification);
 		toolbar.setTitleTextColor(Color.WHITE);
 		toolbar.setNavigationIcon(R.mipmap.ic_back);
 
@@ -214,10 +225,26 @@ public class GCMNotifications extends AppCompatActivity {
 						service_type = object.getString("service_type");
 						place_id = object.getString("place_id");
 
-						a = new NotificationData(title, message, type, service_type, place_id);
-						cardList.add(a);
+						if(prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")){
+							a = new NotificationData(title, message, type, service_type, place_id);
+							cardList.add(a);
+						}else {
+							String noti_title = new getTraslatedString().execute(prefs.getLocaleset(),
+									title).get();
+							String noti_msg = new getTraslatedString().execute(prefs.getLocaleset(),
+									title).get();
+							String noti_type = new getTraslatedString().execute(prefs.getLocaleset(),
+									title).get();
+							a = new NotificationData(noti_title, noti_msg, noti_type, service_type,
+									place_id);
+							cardList.add(a);
+						}
 
 					}catch (JSONException e){
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
 						e.printStackTrace();
 					}
 
@@ -245,6 +272,184 @@ public class GCMNotifications extends AppCompatActivity {
 		};
 //        mRequestQueue.add(stringRequest);
 		AppController.getInstance().addToRequestQueue(stringRequest);
+	}
+
+
+	/*
+    * API call to translate data
+    * Translation coding to Translate all the data coming from server in target language
+    */
+	public class getTraslatedString extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String[] target) {
+
+			String trasRequest = "https://www.googleapis.com/language/translate/v2?" +
+					"key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source="+target[0] +
+					"&target="+target[1]+"&q="+target[2];
+
+			try {
+				String responseString = executeHttpGet(trasRequest);
+
+				JSONObject dataObj = getJsonObject(new JSONObject(responseString),"data");
+
+				JSONArray translationArray = getJsonArray(dataObj,"translations");
+				if(translationArray!=null && translationArray.length()>0){
+
+					for (int i = 0; i <translationArray.length() ; i++) {
+						JSONObject jsonObject = translationArray.getJSONObject(i);
+						destinationString = getString(jsonObject,"translatedText");
+						Log.d("Check Responce", "Here: "+destinationString);
+						System.out.print("Pls give "+destinationString);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.print("ExceptionGen: "+e);
+			}
+			return destinationString;
+		}
+
+		@Override
+		protected void onPostExecute(String valuee) {
+			Log.d("Check Responce", "Here: "+destinationString);
+
+			Log.d("Check Responce", "There: "+valuee);
+		}
+	}
+
+	public String executeHttpGet(String url) throws Exception {
+
+		java.net.URL obj = new URL(url.replace(" ", "%20"));
+		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+		// optional default is GET
+		con.setRequestMethod("GET");
+
+		//add request header
+
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " + responseCode);
+
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+
+		//print result
+		System.out.println(response.toString());
+
+		return  response.toString();
+
+	}
+
+	/**
+	 * get String from {@link JSONObject}.
+	 *
+	 * @param jsonObject
+	 * @param key
+	 * @return value
+	 */
+	public String getString(JSONObject jsonObject, String key) {
+		try {
+			if (jsonObject != null) {
+				if (!jsonObject.isNull(key)) {
+					return jsonObject.getString(key);
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * get {@link JSONObject}.
+	 *
+	 * @param jsonObject
+	 * @param key
+	 * @return
+	 */
+	public JSONObject getJsonObject(JSONObject jsonObject, String key) {
+
+		try {
+			if (jsonObject != null) {
+				if (!jsonObject.isNull(key)) {
+					return jsonObject.getJSONObject(key);
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * get {@link JSONObject}.
+	 *
+	 * @param resString
+	 * @return
+	 */
+	public JSONObject getJsonObjectFromResponse(String resString) {
+
+		try {
+			if (resString != null) {
+				if (resString.length()>0) {
+					return new JSONObject(resString);
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * get {@link JSONArray}.
+	 *
+	 * @param jsonObject
+	 * @param key
+	 * @return
+	 */
+	public JSONArray getJsonArray(JSONObject jsonObject, String key) {
+
+		try {
+			if (jsonObject != null) {
+				if (!jsonObject.isNull(key)) {
+					return jsonObject.getJSONArray(key);
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/*
+     *Custom pop-up for Internet Check (If connected or not)
+     * When No internet connectivity a pop-up will arise by below method
+     */
+	public void networkClick(){
+		// custom dialog
+		final Dialog dialog = new Dialog(GCMNotifications.this);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.network);
+
+		// set the custom dialog components - text, image and button
+		ImageView image = (ImageView) dialog.findViewById(R.id.image);
+		Button checkout = (Button) dialog.findViewById(R.id.ok_click);
+		checkout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+
+		dialog.show();
 	}
 
 }

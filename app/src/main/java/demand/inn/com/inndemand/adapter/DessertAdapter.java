@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.constants.AppetiserData;
 import demand.inn.com.inndemand.constants.DessertData;
 import demand.inn.com.inndemand.constants.MaincourseData;
 import demand.inn.com.inndemand.fragmentarea.Dessert;

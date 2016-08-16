@@ -76,10 +76,10 @@ public class SplashScreen extends AppCompatActivity {
         prefs = new AppPreferences(SplashScreen.this);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
-//      Preference to check If the User Checked-into hotel or not after QR scan
+        //Preference to check If the User Checked-into hotel or not after QR scan
         prefs.setCheckout("1");
 
-//        ((LocaleApp)getApplicationContext()).changeLang(prefs.getLocaleset());
+        //((LocaleApp)getApplicationContext()).changeLang(prefs.getLocaleset());
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
@@ -88,7 +88,7 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
-//    Method to call another method to initiate tha APP when app opens
+    //Method to call another method to initiate tha APP when app opens
     @Override
     protected void onResume() {
         super.onResume();
@@ -100,42 +100,45 @@ public class SplashScreen extends AppCompatActivity {
         super.onPause();
     }
 
-//    Method to Initiate the App and to check whether the User opens the app
-//    Multiple conditions to check whether User is a new user and needs to sign-up
-//    Or If already sign-up, send to QR scan page or if Qr-scan is done send to Dashboard screen
-    public void call(){
-//        if (nu.isConnectingToInternet()) {
+    /*
+     * Method to Initiate the App and to check whether the User opens the app
+     * Multiple conditions to check whether User is a new user and needs to sign-up
+     * Or If already sign-up, send to QR scan page or if Qr-scan is done send to Dashboard screen
+     */
+    public void call() {
+        if (nu.isConnectingToInternet()) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-//                    if (nu.isConnectingToInternet()) {
+                    if (nu.isConnectingToInternet()) {
                         if (prefs.getIs_task_completed() == false) {
                             Intent in = new Intent(SplashScreen.this, Loginscreen.class);
                             startActivity(in);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                         } else if (prefs.getIs_task_completed() == true) {
-                            if(prefs.getIs_In_Hotel() == false) {
+                            if (prefs.getIs_In_Hotel() == false) {
                                 Intent in = new Intent(SplashScreen.this, QRscanning.class);
                                 startActivity(in);
                                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 finish();
-                            }else if(prefs.getIs_In_Hotel() == true){
-                            Intent in = new Intent(SplashScreen.this, DashBoard.class);
-                            startActivity(in);
-//                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                            finish();
+                            } else if (prefs.getIs_In_Hotel() == true) {
+                                Intent in = new Intent(SplashScreen.this, DashBoard.class);
+                                startActivity(in);
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                finish();
                             }
                         }
-//                    }else{
-//                        networkClick();
-//
-//                    }
+                    } else {
+                        networkClick();
+
+                    }
                 }
             }, 3000 /* 3sec delay*/);
+        }
     }
 
-//    Method to add shortcut icon of the app on the home page of device.
+    //Method to add shortcut icon of the app on the home page of device.
     private void addShortcut() {
         // TODO Auto-generated method stub
         Intent shortcutIntent = new Intent(getApplicationContext(), SplashScreen.class);
@@ -211,7 +214,7 @@ public class SplashScreen extends AppCompatActivity {
      *            registration ID
      */
 
-//    Method to store registration ID in Shared preferences provided by GCM
+    //Method to store registration ID in Shared preferences provided by GCM
     private void storeRegistrationId(Context context, String regId) {
 
         int appVersion = getAppVersion(context);
