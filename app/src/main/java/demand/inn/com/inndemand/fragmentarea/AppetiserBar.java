@@ -45,6 +45,7 @@ import demand.inn.com.inndemand.adapter.AppBarAdapter;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.model.AppetiserData;
+import demand.inn.com.inndemand.model.BarDataModel;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
@@ -78,7 +79,7 @@ public class AppetiserBar extends Fragment {
 
     private RecyclerView recyclerView;
     private AppBarAdapter adapter;
-    private List<ResturantDataModel> cardList;
+    private List<AppetiserData> cardList;
 
     //Loading call area
     ProgressDialog dialog;
@@ -112,15 +113,27 @@ public class AppetiserBar extends Fragment {
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
 
-          List<ResturantDataModel> rest_list = db.getAllItems();
+         /* List<BarDataModel> rest_list = db.getAllBarItems();
 
         Log.d("RestaurantModel: ", "Check: "+rest_list);
 
         cardList.clear();
-        for(ResturantDataModel data : rest_list){
-                ResturantDataModel model = new ResturantDataModel(data.getName(),
-                        data.getDescription(), data.getCategory(), data.getPrice());
+        for(BarDataModel data : rest_list){
+            BarDataModel model = new BarDataModel(data.getName(),
+                        data.getDescription(), data.getCategory(), data.getPrice(), data.getFood(),
+                    data.getSubcategory());
                 cardList.add(model);
+        }*/
+
+        List<AppetiserData> rest_list = db.getAllDatarl();
+
+        Log.d("RestaurantModel: ", "Check: "+rest_list);
+
+        cardList.clear();
+        for(AppetiserData data : rest_list){
+            AppetiserData models = new AppetiserData(data.getName(),
+                    data.getDescription(), data.getCategory(), data.getPrice(), data.getCategory());
+            cardList.add(models);
         }
 
         return  view;

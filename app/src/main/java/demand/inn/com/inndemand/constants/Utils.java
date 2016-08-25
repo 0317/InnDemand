@@ -75,9 +75,24 @@ import demand.inn.com.inndemand.utils.PicassoEx;
 
 public class Utils  {
 
-    public static final String COLUMN_AID = "id";
-    public static final String COLUMN_ANAME = "name";
-    public static final String COLUMN_ADESC = "desc";
-    public static final String COLUMN_ACATEGORY = "category";
+    //COLUMNS for Restaurant Items
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_DESC = "desc";
+    public static final String COLUMN_CATEGORY = "categoryname";
+    public static final String COLUMN_AMOUNT = "amount";
+    public static final String COLUMN_FOOD = "food";
+    public static final String COLUMN_SUBCATEGORY = "subcategory";
+
+    //COLUMNS for Bar Items
+    public static final String COLUMN_BLID = "id";
+    public static final String COLUMN_BLNAME = "name";
+    public static final String COLUMN_BLDESC = "desc";
+    public static final String COLUMN_BLCATEGORY = "categorybar";
+    public static final String COLUMN_BLAMOUNT = "amount";
+    public static final String COLUMN_BLFOOD = "food";
+    public static final String COLUMN_BLSUBCATEGORY = "subcategory";
+    public static final String COLUMN_BRID= "rid";
+    public static final String COLUMN_BCtID= "cid";
 
    }

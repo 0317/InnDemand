@@ -93,12 +93,14 @@ import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
 import demand.inn.com.inndemand.constants.TabData;
+import demand.inn.com.inndemand.constants.Translate;
 import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.hotelserv.Bar;
 import demand.inn.com.inndemand.hotelserv.Restaurant;
 import demand.inn.com.inndemand.mapdirection.MapArea;
 import demand.inn.com.inndemand.model.AppetiserData;
+import demand.inn.com.inndemand.model.BarDataModel;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.roomservice.RoomServices;
 import demand.inn.com.inndemand.setting.FeedbackList;
@@ -369,10 +371,13 @@ public class DashBoard extends AppCompatActivity implements
             //Mehod to get Timings for Hotel Services(eg: Restaurant/Bar/Room Services)
             timings();
             if(prefs.getCategory_check() == false) {
-                getCategory();
+                getRestaurantCategory();
+                getBarCategory();
+                restaurantList();
             }
             if(prefs.getData_check() == false){
                 getData();
+                getBarData();
             }
         }else{
             networkClick();
@@ -441,6 +446,7 @@ public class DashBoard extends AppCompatActivity implements
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
+
         Picasso.with(DashBoard.this).load(prefs.getHotel_dp()).into(main_backdrop);
 
         //variable to get Hotel contact number
@@ -779,8 +785,8 @@ public class DashBoard extends AppCompatActivity implements
         }
     }
 
-    //API call to get category (Tab data/different tabs to show) for the screen
-    public void getCategory(){
+    //API call to get category (Tab names/different tabs to show) for the screen
+    public void getRestaurantCategory(){
         JSONObject obj = new JSONObject();
         try {
             obj.put("hotel_id", prefs.getHotel_id());
@@ -794,6 +800,21 @@ public class DashBoard extends AppCompatActivity implements
         postJsonDataCategory(Config.innDemand+"category/details/", obj.toString());
     }
 
+    //API call to get category (Tab names/different tabs to show) for the screen
+    public void getBarCategory(){
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+            obj.put("category_type", "1");
+            obj.put("place_id", "1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("Check API BarCategory", "Check: "+obj.toString());
+
+        postJsonDataBarCategory(Config.innDemand+"category/details/", obj.toString());
+    }
+
     //API call to get Food list items for the Recyclerview
     public void getData(){
         JSONObject obj = new JSONObject();
@@ -805,6 +826,20 @@ public class DashBoard extends AppCompatActivity implements
         Log.d("Check API Data", obj.toString());
 
         postJsonData(Config.innDemand+"restaurant_items/details/", obj.toString());
+
+    }
+
+    //    API call to send bar ID to server to get list of Bar items
+    public void getBarData(){
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("bar_id", prefs.getBar_Id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("Check API Data", obj.toString());
+
+        postJsonDataBar(Config.innDemand+"bar_items/details/", obj.toString());
 
     }
 
@@ -985,7 +1020,7 @@ public class DashBoard extends AppCompatActivity implements
         });
     }
 
-    /*
+      /*
        * Here in this method we are trying to fetch Restaurant Items List
        * Items List includes: Category (Tab data)
        */
@@ -1070,6 +1105,189 @@ public class DashBoard extends AppCompatActivity implements
     }
 
     /*
+      * Here in this method we are trying to fetch Restaurant Items List
+      * Items List includes: Category (Tab data)
+      */
+    public void postJsonDataBarCategory(String url, String userData) {
+
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha==barcategory==success===" + response);
+
+                JSONArray array = null;
+                try {
+                    array = new JSONArray(response);
+
+                    Log.d("API", "API D"+array);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < array.length(); i++)
+                    try {
+                        JSONObject object = array.getJSONObject(i);
+
+                        String type_id = object.getString("id");
+
+                        //catName = Response (category names to show in tablayout)
+                        String catName = object.getString("name");
+
+                        //catType = Response 1/2/3 (1 = Bar, 2 = Restaurant, 3 = Spa)
+                        String catType = object.getString("category_type");
+
+                        //catStatus = Response 0/1 (check if 0, remove the tab attribute)
+                        Log.d("API", "API Category: " + catName);
+
+                        db.insertBarCategory(new Translate(catName, catType));
+                        prefs.setCategory_check(true);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+        //mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    public void restaurantList(){
+        JSONObject obj = new JSONObject();
+
+        try {
+            obj.put("hotel_id", prefs.getHotel_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Api Hotel Data", obj.toString());
+
+        postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
+    }
+
+
+    /*
+       * Method to get response of list of Restaurant in the hotel
+       * Saving name of restaurant & show in the list
+       * Saving ID of restaurant for further usage
+       * Setting status (getting in response) to check which restaurant to Hide/Show
+       * through Adapter Class
+   */
+    public void postJsonRestaurant(String url, String userData){
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("yohaha=restautant=success===" + response);
+
+
+                        JSONArray array = null;
+                        try {
+                            array = new JSONArray(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        for (int i = 0; i < array.length(); i++) {
+                            try {
+                                JSONObject object = array.getJSONObject(i);
+
+                                String restaurantId = object.getString("id");
+                                String rest_name = object.getString("name");
+                                String hotel = object.getString("hotel");
+                                String status = object.getString("status");
+
+                                db.insertRestData(new ListData(rest_name, status, restaurantId));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } /*catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }*/
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    /*
     * Volley Library Main method to get Category and other requirements as response by sending
     * restaurant ID
     */
@@ -1120,8 +1338,8 @@ public class DashBoard extends AppCompatActivity implements
                         String subCategory = object.getString("subcategory");
                         String amount = object.getString("price");
 
-                        db.insertRestaurant(new ResturantDataModel(itemName, iitemDescription,
-                                category, amount));
+                        db.insertRestaurantItsms(new AppetiserData(itemName, iitemDescription,
+                                category, amount, category));
                         prefs.setData_check(true);
 
 
@@ -1133,6 +1351,94 @@ public class DashBoard extends AppCompatActivity implements
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(Restaurant.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+//        mRequestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    /*
+    * Volley Library Main method to get Category and other requirements for Bar as response
+    * by sending restaurant ID
+    */
+    public void postJsonDataBar(String url, String userData) {
+
+        RequestQueue mRequestQueue;
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        final String requestBody = userData;
+
+        System.out.println("inside post json data=====" + requestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("yohaha==data==success===" + response);
+
+                JSONArray array = null;
+                try {
+                    array = new JSONArray(response);
+
+                    Log.d("API", "API D"+array);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < array.length(); i++)
+                    try {
+                        JSONObject object = array.getJSONObject(i);
+                        Log.d("API", "API Daa" + array);
+                        String itemNames = object.getString("name");
+                        String itemDescs = object.getString("description");
+                        String category = object.getString("category");
+                        Log.d("API", "API Ca" + category);
+                        String foods = object.getString("food");
+
+                        String ssubCategory = object.getString("subcategory");
+                        String amount = object.getString("price");
+
+                        prefs.setItemName(itemNames);
+                        prefs.setItemDesc(itemDescs);
+                        prefs.setPrice(amount);
+//                        prefs.setCategory(category);
+                        prefs.setRestaurant_food(foods);
+
+                        db.insertBarItems(new BarDataModel(itemNames, itemDescs, category, amount,
+                                ssubCategory, foods));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(Bar.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

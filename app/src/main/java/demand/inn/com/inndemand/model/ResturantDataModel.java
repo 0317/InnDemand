@@ -34,7 +34,7 @@ public class ResturantDataModel {
 
     }
 
-    public ResturantDataModel(String title, String description, String category, String price){
+    public ResturantDataModel(String title, String description, String category){
         this.title = title;
         this.description = description;
         this.category = category;
@@ -45,14 +45,14 @@ public class ResturantDataModel {
 
     }
 
-    public ResturantDataModel(String title, String description, String rupees, String subcategory,
-                              String food, String rating) {
+    public ResturantDataModel(String title, String description, String category, String rupees,
+                              String food, String subcategory) {
         this.title = title;
         this.description = description;
+        this.category = category;
         this.price = rupees;
         this.subcategory = subcategory;
         this.food = food;
-        this.rating = rating;
     }
 
     public String getId() {

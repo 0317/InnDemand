@@ -181,30 +181,6 @@ public class MyCart extends AppCompatActivity {
         getDate = date.format(c.getTime());
         // formattedDate have current date/time
 
-       /* Bundle extras = getIntent().getExtras();
-        if(extras != null) {
-            int Value = extras.getInt("id");
-
-            if(Value>0) {
-                Cursor cursor = db.getData(Value);
-//                m_here = Value;
-                cursor.moveToFirst();
-
-                String itemHead = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_NAME));
-                String itemDesc = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_DESC));
-                String itemPrice = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RUPEES));
-
-                Log.d("DbFetchHead", "DB"+itemHead);
-                Log.d("DbFetchDesc", "DB"+itemDesc);
-
-                if(!cursor.isClosed()){
-                    cursor.close();
-                }
-
-                CartData a = new CartData("Gobbi Chilly","", "");
-                cardList.add(a);
-            }
-        }*/
 
         /*  List<CartData> datas = db.getAllData();
 
@@ -331,7 +307,7 @@ public class MyCart extends AppCompatActivity {
         super.onBackPressed();
     }
 
-//  Custom pop-up designed for Apply COUPON Click
+//  Custom pop-up designed for Apply COUPON CODE
     public void checkoutClick(){
         // custom dialog
         final Dialog dialog = new Dialog(MyCart.this);
@@ -372,61 +348,6 @@ public class MyCart extends AppCompatActivity {
         dialog.show();
     }
 
-    public void getData(){
-        JSONObject obj = new JSONObject();
-
-        postJsonData(Config.innDemand+"", "");
-    }
-
-    //API call method to POST data to the server
-    public void postJsonData(String url, String userData){
-
-        RequestQueue mRequestQueue;
-        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
-
-        // Set up the network to use HttpURLConnection as the HTTP client.
-        Network network = new BasicNetwork(new HurlStack());
-
-        // Instantiate the RequestQueue with the cache and network.
-        mRequestQueue = new RequestQueue(cache, network);
-
-        // Start the queue
-        mRequestQueue.start();
-
-        final String requestBody = userData;
-
-        System.out.println("inside post json data====="+requestBody);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("yohaha=cart==success==="+response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            requestBody, "utf-8");
-                    return null;
-                }
-            }
-        };
-//        mRequestQueue.add(stringRequest);
-        AppController.getInstance().addToRequestQueue(stringRequest);
-    }
-
     public void proceed(View view){
         new AlertDialog.Builder(this).setMessage(R.string.cartselectpayment_option)
                 .setPositiveButton(R.string.cartselectpayment_pay, new DialogInterface.OnClickListener() {
@@ -463,7 +384,11 @@ public class MyCart extends AppCompatActivity {
         }
     }
 
-    //Custom pop-up for Network Click
+
+    /*
+     * Custom pop-up for Internet Connection in the app
+     * If no internet then this method shows a custom pop-up
+     */
     public void networkClick(){
         // custom dialog
         final Dialog dialog = new Dialog(MyCart.this);

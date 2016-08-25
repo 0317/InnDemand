@@ -34,10 +34,13 @@ public class AppetiserData {
 
     }
 
-    public AppetiserData(String name, String description, String category){
+    public AppetiserData(String name, String description, String category, String price,
+                         String categorys){
         this.name = name;
         this.description = description;
         this.category = category;
+        this.price = price;
+        this.subcategory = categorys;
     }
 
     public AppetiserData(int i){

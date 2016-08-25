@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,6 +26,7 @@ import java.util.List;
 import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Header;
+import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.model.AppetiserData;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.setting.Feedback;
@@ -44,16 +46,11 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     int counter = 0;
     int count = 0;
     int finalamount;
-    String total_price;
     String dataItem;
     String dataCash;
 
-    private OnItemCLick mCallback;
     RecyclerView.Adapter adapter;
     AppPreferences prefs;
-
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
 
     // Start with first item selected
     private int selectedItem = 0;
@@ -61,6 +58,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     Header header;
 
     //DATABASE
+    DBHelper db;
     SharedPreferences preferences;
     private static MyClickListener myClickListener;
 
@@ -136,6 +134,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurantadapt, parent, false);
         prefs = new AppPreferences(mContext);
+        db = new DBHelper(mContext);
         preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         return new MyViewHolder(itemView);
@@ -144,35 +143,34 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     @Override
     public void onBindViewHolder(final RestaurantAdapter.MyViewHolder holder, final int position) {
         AppetiserData data = cartData.get(position);
-
+        Log.d("Category Details", "Check: "+data.getCategory());
             holder.title.setText(data.getSubcategory());
             holder.subtitle.setText(data.getName() + " ");
             holder.rupees.setText(data.getPrice());
             holder.details.setText(data.getDescription());
-            holder.item_click.setOnClickListener(new View.OnClickListener() {
+        final AppetiserData finalData = data;
+        holder.item_click.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent in = new Intent(mContext, Feedback.class);
-                    in.putExtra("itemname", cartData.get(position).getName());
-                    in.putExtra("itemdesc", cartData.get(position).getDescription());
-                    in.putExtra("itemprice", cartData.get(position).getPrice());
-                    in.putExtra("itemrating", cartData.get(position).getRating());
+                    in.putExtra("itemname", finalData.getName());
+                    in.putExtra("itemdesc", finalData.getDescription());
+                    in.putExtra("itemprice", finalData.getPrice());
+                    in.putExtra("itemrating", finalData.getRating());
                     mContext.startActivity(in);
                 }
             });
 
         LocalBroadcastManager.getInstance(mContext).registerReceiver(mMessageReceiver, new IntentFilter("data-message"));
 
-        if (holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null) {
-            holder.title.setVisibility(View.GONE);
-        }
+//        if (holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null) {
+//            holder.title.setVisibility(View.GONE);
+//        }
 
 //        if (data.getFood() == "2" || data.getFood().equalsIgnoreCase("2"))
 //            holder.subtitle.setTextColor(Color.RED);
-        else
-            holder.subtitle.setTextColor(Color.parseColor("#006600"));
-
-//        db.insertData(data.getName(), data.getDescription(), data.getPrice());
+//        else
+//            holder.subtitle.setTextColor(Color.parseColor("#006600"));
 
        /* holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override

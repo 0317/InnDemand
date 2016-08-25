@@ -17,6 +17,7 @@ import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
 import demand.inn.com.inndemand.constants.TabData;
+import demand.inn.com.inndemand.constants.Translate;
 import demand.inn.com.inndemand.constants.Utils;
 import demand.inn.com.inndemand.model.AppetiserData;
 import demand.inn.com.inndemand.model.BarDataModel;
@@ -29,7 +30,7 @@ import demand.inn.com.inndemand.model.ResturantDataModel;
 public class DBHelper extends SQLiteOpenHelper {
 
     // If change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "Inndemand";
 
     //Table created for Misc Info Inndemand
@@ -50,23 +51,32 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_BNAME = "name";
     public static final String COLUMN_BDESC = "desc";
 
-    //TABLE created for Restaurant items for Inndemand
-    public static final String TABLE_RESTAURANTS = "restaurants";
-    public static final String COLUMN_LID = "id";
-    public static final String COLUMN_LNAME = "name";
-    public static final String COLUMN_LDESC = "desc";
-    public static final String COLUMN_LTYPE = "type";
+/*    //Table created for Restaurant items for Inndemand
+    public static final String TABLE_RESTLIST = "restaurantlists";
+    public static final String COLUMN_RRID = "id";
+    public static final String COLUMN_RRNAME = "name";
+    public static final String COLUMN_RRDESC = "descr";
+    public static final String COLUMN_RRCATEGORY = "categoryname";
+    public static final String COLUMN_RRAMOUNT = "amount";*/
 
-    //Table created for Restaurant List Items for Inndemand
-    public static final String TABLE_RESTAURANT_ITEMS = "restaurantitems";
-//    public static final String COLUMN_AMOUNT = "amount";
+    //Table created for Restaurant items for Inndemand
+    public static final String TABLE_RESTLISTS = "restaurantlistss";
+    public static final String COLUMN_RRID = "id";
+    public static final String COLUMN_RRNAME = "name";
+    public static final String COLUMN_RRDESC = "descr";
+    public static final String COLUMN_RRCATEGORY = "categoryname";
+    public static final String COLUMN_RRAMOUNT = "amount";
+    public static final String COLUMN_RRTABS = "tabdata";
 
     //Table created for Bar items for Inndemand
     public static final String TABLE_BAR = "bar";
     public static final String COLUMN_BLID = "id";
     public static final String COLUMN_BLNAME = "name";
     public static final String COLUMN_BLDESC = "desc";
+    public static final String COLUMN_BLCATEGORY = "category";
     public static final String COLUMN_BLAMOUNT = "amount";
+    public static final String COLUMN_BLFOOD = "food";
+    public static final String COLUMN_BLSUBCATEGORY = "subcategory";
 //    public static final String COLUMN_BRID= "rid";
 //    public static final String COLUMN_BCtID= "cid";
 
@@ -75,6 +85,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CTID = "id";
     public static final String COLUMN_CTNAME = "name";
     public static final String COLUMN_CTTYPE = "type";
+
+    //Table created for Category(Bar) items for Inndemand
+    public static final String TABLE_BRCATEGORY = "barcategory";
+    public static final String COLUMN_BRTID = "id";
+    public static final String COLUMN_BRNAME = "name";
+    public static final String COLUMN_BRTYPE = "type";
 
     //Table created for Cart for Inndemand
     public static final String TABLE_CART = "cart";
@@ -100,47 +116,49 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_BID + " INTEGER PRIMARY KEY," + COLUMN_BNAME + " TEXT,"
                 + COLUMN_BDESC + " TEXT"  + ")";
 
-        String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + TABLE_RESTAURANTS + "("
-                + COLUMN_LID + " INTEGER PRIMARY KEY," + COLUMN_LNAME + " TEXT,"
-                + COLUMN_LDESC + " TEXT," + COLUMN_LTYPE + "TEXT"  + ")";
+        String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + TABLE_RESTLISTS + "("
+                + COLUMN_RRID + " INTEGER PRIMARY KEY," + COLUMN_RRNAME + " TEXT,"
+                + COLUMN_RRDESC + " TEXT," + COLUMN_RRCATEGORY + " TEXT,"
+                + COLUMN_RRAMOUNT + " TEXT," + COLUMN_RRTABS + " TEXT" + ")";
 
         String CREATE_TABLE_BAR = "CREATE TABLE " + TABLE_BAR + "("
                 + COLUMN_BLID + " INTEGER PRIMARY KEY," + COLUMN_BLNAME + " TEXT,"
-                + COLUMN_BLDESC + " TEXT," + COLUMN_BLAMOUNT + "TEXT"  + ")";
+                + COLUMN_BLDESC + " TEXT," + COLUMN_BLCATEGORY + " TEXT,"
+                + COLUMN_BLAMOUNT + " TEXT," + COLUMN_BLFOOD + " TEXT,"
+                + COLUMN_BLSUBCATEGORY + " TEXT" + ")";
 
         String CREATE_TABLE_CATEGORY = "CREATE TABLE " + TABLE_CATEGORY + "("
                 + COLUMN_CTID + " INTEGER PRIMARY KEY," + COLUMN_CTNAME + " TEXT,"
                 + COLUMN_CTTYPE + " TEXT"  + ")";
 
-        String CREATE_TABLE_RESTAURANTITEMS = "CREATE TABLE " + TABLE_RESTAURANT_ITEMS + "("
-                + Utils.COLUMN_AID + " INTEGER PRIMARY KEY," + Utils.COLUMN_ANAME + " TEXT,"
-                + Utils.COLUMN_ADESC + "TEXT," + Utils.COLUMN_ACATEGORY + "TEXT"
-               /* + COLUMN_AMOUNT + "TEXT" */ + ")";
+        String CREATE_TABLE_CATEGORY_BAR = "CREATE TABLE " + TABLE_BRCATEGORY + "("
+                + COLUMN_BRTID + " INTEGER PRIMARY KEY," + COLUMN_BRNAME + " TEXT,"
+                + COLUMN_BRTYPE + " TEXT"  + ")";
 
         String CREATE_TABLE_CART= "CREATE TABLE " + TABLE_CART + "("
                 + COLUMN_CID + " INTEGER PRIMARY KEY," + COLUMN_CNAME + " TEXT,"
-                + COLUMN_CAMOUNT + "TEXT"  + ")";
+                + COLUMN_CAMOUNT + " TEXT"  + ")";
 
         db.execSQL(CREATE_TABLE);
         db.execSQL(CREATE_TABLE_RESTAURANTLIST);
         db.execSQL(CREATE_TABLE_BARLIST);
         db.execSQL(CREATE_TABLE_RESTAURANTS);
-        db.execSQL(CREATE_TABLE_RESTAURANTITEMS);
         db.execSQL(CREATE_TABLE_BAR);
         db.execSQL(CREATE_TABLE_CATEGORY);
+        db.execSQL(CREATE_TABLE_CATEGORY_BAR);
         db.execSQL(CREATE_TABLE_CART);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS"+ TABLE_MISC);
-        db.execSQL("DROP TABLE IF EXISTS"+ TABLE_RESTAURANTLIST);
-        db.execSQL("DROP TABLE IF EXISTS"+ TABLE_BARLIST);
-        db.execSQL("DROP TABLE IF EXISTS"+ TABLE_RESTAURANTS);
-        db.execSQL("DROP TABLE IF EXISTS"+ TABLE_BAR);
-        db.execSQL("DROP TABLE IF EXISTS"+ TABLE_RESTAURANT_ITEMS);
-        db.execSQL("DROP TABLE IF EXISTS"+ TABLE_CATEGORY);
-        db.execSQL("DROP TABLE IF EXISTS"+ TABLE_CART);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_MISC);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_RESTAURANTLIST);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_BARLIST);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_RESTLISTS);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_BAR);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_CATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_BRCATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_CART);
         //create table again
         onCreate(db);
     }
@@ -171,22 +189,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public void insertRestaurant(ResturantDataModel cartData)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Utils.COLUMN_ANAME, cartData.getTitle());
-        contentValues.put(Utils.COLUMN_ADESC, cartData.getDescription());
-        contentValues.put(Utils.COLUMN_ACATEGORY, cartData.getCategory());
-//        contentValues.put(COLUMN_AMOUNT, cartData.getPrice());
-
-        // Inserting Row
-        db.insert(TABLE_RESTAURANT_ITEMS, null, contentValues);
-
-        db.close(); // Closing database connection
-    }
-
-
     public void insertBarData(BarlistData cartData)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -204,12 +206,14 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_LNAME, cartData.getName());
-        contentValues.put(COLUMN_LDESC, cartData.getDescription());
-        contentValues.put(COLUMN_LTYPE, cartData.getCategory());
+        contentValues.put(COLUMN_RRNAME, cartData.getName());
+        contentValues.put(COLUMN_RRDESC, cartData.getDescription());
+        contentValues.put(COLUMN_RRCATEGORY, cartData.getCategory());
+        contentValues.put(COLUMN_RRAMOUNT, cartData.getPrice());
+        contentValues.put(COLUMN_RRTABS, cartData.getCategory());
 
         // Inserting Row
-        db.insert(TABLE_RESTAURANTS, null, contentValues);
+        db.insert(TABLE_RESTLISTS, null, contentValues);
 
         db.close(); // Closing database connection
     }
@@ -220,7 +224,10 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_BNAME, cartData.getTitle());
         contentValues.put(COLUMN_BDESC, cartData.getDescription());
+        contentValues.put(COLUMN_BLCATEGORY, cartData.getCategory());
         contentValues.put(COLUMN_BLAMOUNT, cartData.getPrice());
+        contentValues.put(COLUMN_BLFOOD, cartData.getFood());
+        contentValues.put(COLUMN_BLSUBCATEGORY, cartData.getSubcategory());
 
         // Inserting Row
         db.insert(TABLE_BAR, null, contentValues);
@@ -241,6 +248,19 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    public void insertBarCategory(Translate cartData)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_BRNAME, cartData.getName());
+        contentValues.put(COLUMN_BRTYPE, cartData.getType());
+
+        // Inserting Row
+        db.insert(TABLE_BRCATEGORY, null, contentValues);
+
+        db.close(); // Closing database connection
+    }
+
     public void insertCart(CartData cartData)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -254,9 +274,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public Cursor getData(String id){
+    public Cursor getData(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( "select * from inndemand where id="+id+"", null);
+        Cursor cursor =  db.rawQuery( "select * from restaurantlists where categoryname=tabdata",
+                null);
         return cursor;
     }
 
@@ -366,7 +387,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List<AppetiserData> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_RESTAURANTS;
+        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -379,7 +400,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 data.setName(cursor.getString(1));
                 data.setDescription(cursor.getString(2));
-                data.setCategory("starter");
+                data.setCategory(cursor.getString(3));
+                data.setPrice(cursor.getString(4));
+                data.setSubcategory(cursor.getString(5));
 
                 // Adding data to list
                 dataList.add(data);
@@ -389,7 +412,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return dataList;
     }
 
-    public List<BarDataModel> getAllDatabl(){
+    public List<BarDataModel> getAllBarItems(){
         List<BarDataModel> dataList = new ArrayList<>();
 
         // Select All Query
@@ -406,35 +429,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 data.setTitle(cursor.getString(1));
                 data.setDescription(cursor.getString(2));
-                data.setPrice(cursor.getString(3));
-
-                // Adding data to list
-                dataList.add(data);
-            } while (cursor.moveToNext());
-        }
-
-        return dataList;
-    }
-
-    public List<ResturantDataModel> getAllItems(){
-        List<ResturantDataModel> dataList = new ArrayList<>();
-
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_RESTAURANT_ITEMS;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        cursor.moveToFirst();
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                ResturantDataModel data = new ResturantDataModel();
-
-                data.setName(cursor.getString(1));
-                data.setDescription(cursor.getString(2));
                 data.setCategory(cursor.getString(3));
-//                data.setPrice(cursor.getString(4));
+                data.setPrice(cursor.getString(4));
+                data.setFood(cursor.getString(5));
+                data.setSubcategory(cursor.getString(6));
+
 
                 // Adding data to list
                 dataList.add(data);
@@ -458,6 +457,32 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 TabData data = new TabData();
+
+                data.setName(cursor.getString(1));
+                data.setType(cursor.getString(2));
+
+                // Adding data to list
+                dataList.add(data);
+            } while (cursor.moveToNext());
+        }
+
+        return dataList;
+    }
+
+    public List<Translate> getAllBarCategory(){
+        List<Translate> dataList = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_BRCATEGORY;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Translate data = new Translate();
 
                 data.setName(cursor.getString(1));
                 data.setType(cursor.getString(2));

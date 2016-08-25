@@ -44,14 +44,14 @@ public class BarDataModel {
 
     }
 
-    public BarDataModel(String title, String description, String rupees, String subcategory,
-                              String food, String rating) {
+    public BarDataModel(String title, String description, String category, String rupees,
+                        String subcategory, String food) {
         this.title = title;
         this.description = description;
+        this.category = category;
         this.price = rupees;
         this.subcategory = subcategory;
         this.food = food;
-        this.rating = rating;
     }
 
     public String getId() {

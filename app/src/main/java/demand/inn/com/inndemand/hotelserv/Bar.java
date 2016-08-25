@@ -49,6 +49,7 @@ import demand.inn.com.inndemand.cartarea.MyCart;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.FragmentData;
 import demand.inn.com.inndemand.constants.TabData;
+import demand.inn.com.inndemand.constants.Translate;
 import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.fragmentarea.AppetiserBar;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
@@ -84,17 +85,7 @@ public class Bar extends AppCompatActivity{
     List<FragmentData> tabList;
 
     //List to add category(tabs)
-    List<TabData> tabData;
-
-    //String to define to value
-    //Values fetching from APIs in the form of String
-    String id;
-    String itemName;
-    String itemDesc;
-    String category;
-    String food;
-    String subCategory;
-    String amount;
+    List<Translate> tabData;
 
     //Getting Bar name via Intent in a String
     String barName;
@@ -210,8 +201,6 @@ public class Bar extends AppCompatActivity{
         //UI TextView Initialize
         restaurant_text = (TextView) findViewById(R.id.restaurant_text);
 
-        getData();
-
         if(prefs.getFm_restaurant() == true)
             restaurant_text.setText("NOTE: Bar Services are not available");
         else
@@ -224,14 +213,14 @@ public class Bar extends AppCompatActivity{
          * Data saving in DB from Server in last work out
          * Fetching category from Database (SQLite)
          */
-        List<TabData> tabdata = db.getAllCategory();
+        List<Translate> tabdata = db.getAllBarCategory();
 
         Log.d("TabData", "check: "+tabdata);
-        for(TabData tab : tabdata) {
+        for(Translate tab : tabdata) {
 //            Bundle bundle = new Bundle();
 //            bundle.putString("category_id", tab.getName());
 
-            TabData data = new TabData(tab.getName(), tab.getType());
+            Translate data = new Translate(tab.getName(), tab.getType());
             tabData.add(data);
 
             Fragment appFrf = new AppetiserBar();
@@ -309,104 +298,6 @@ public class Bar extends AppCompatActivity{
                         dialog.cancel();
                     }
                 }).create().show();
-    }
-
-//    API call to send bar ID to server to get list of Bar items
-    public void getData(){
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("bar_id", prefs.getBar_Id());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("Check API Data", obj.toString());
-
-        postJsonData(Config.innDemand+"bar_items/details/", obj.toString());
-
-    }
-
-//    Volley Library Main method to get Details of Bar items list as response
-    public void postJsonData(String url, String userData) {
-
-        RequestQueue mRequestQueue;
-        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
-
-        // Set up the network to use HttpURLConnection as the HTTP client.
-        Network network = new BasicNetwork(new HurlStack());
-
-        // Instantiate the RequestQueue with the cache and network.
-        mRequestQueue = new RequestQueue(cache, network);
-
-        // Start the queue
-        mRequestQueue.start();
-
-        final String requestBody = userData;
-
-        System.out.println("inside post json data=====" + requestBody);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("yohaha==data==success===" + response);
-
-                JSONArray array = null;
-                try {
-                    array = new JSONArray(response);
-
-                    Log.d("API", "API D"+array);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                for (int i = 0; i < array.length(); i++)
-                    try {
-                        JSONObject object = array.getJSONObject(i);
-                        Log.d("API", "API Daa" + array);
-                        Log.d("API", "API ID" + id);
-                        itemName = object.getString("name");
-                        Log.d("API", "API na" + itemName);
-                        itemDesc = object.getString("description");
-                        category = object.getString("category");
-                        Log.d("API", "API Ca" + category);
-                        food = object.getString("food");
-
-                        subCategory = object.getString("subcategory");
-                        amount = object.getString("price");
-
-                        prefs.setItemName(itemName);
-                        prefs.setItemDesc(itemDesc);
-                        prefs.setPrice(amount);
-//                        prefs.setCategory(category);
-                        prefs.setRestaurant_food(food);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(Bar.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            requestBody, "utf-8");
-                    return null;
-                }
-            }
-        };
-//        mRequestQueue.add(stringRequest);
-        AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
 }

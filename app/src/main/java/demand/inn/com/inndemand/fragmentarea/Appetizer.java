@@ -1,12 +1,13 @@
 package demand.inn.com.inndemand.fragmentarea;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,26 +29,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
-import com.android.volley.Network;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.StringRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +50,6 @@ import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.model.SimpleDividerItemDecoration;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
-import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by akash
@@ -78,16 +64,6 @@ public class Appetizer extends Fragment {
     //Others
     View view;
 
-//    String to define to value
-//    Values fetching from APIs in the form of String
-    String id;
-    String itemName;
-    String itemDesc;
-    String category;
-    String food;
-    String subCategory;
-    String amount;
-
     //Cart entry Click
     String result_price;
 
@@ -97,26 +73,17 @@ public class Appetizer extends Fragment {
     private List<AppetiserData> cardList;
     OnItemCLick onCLick;
 
-    //Constant Class (get/set) required to set and get data for the screen
-    ResturantDataModel dataModel;
-
-    //Loading call area
-    ProgressDialog dialog;
-
-    //Constant Class (get/set) required to set and get data for the screen
-    ResturantDataModel a;
-
     //String for different values for data coming from API
     public String idCat, subCat, names, desc, price, foods;
 
-    //Constant Class (get/set) required to set and get data for the screen
-    ResturantDataModel resturantDataModel;
-
-    //DATABASE CLASSES
+    //DATABASE CLASSES CALL AREA
     DBHelper db;
 
     //String to get dynamic Translated data
     public String destinationString = "";
+
+    // create boolean for fetching data
+    private boolean isViewShown = false;
 
     @Nullable
     @Override
@@ -137,8 +104,8 @@ public class Appetizer extends Fragment {
         activity.setSupportActionBar(toolbar);
 
 //        Code to call Broadcast Receiver to get or send data In or to different activity
-//        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
-//                new IntentFilter("position-message"));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+                new IntentFilter("position-message"));
 
         idCat = getArguments().getString("id_type");
 
@@ -169,176 +136,60 @@ public class Appetizer extends Fragment {
                             }
                         }).create().show();
             } else {
-                //mehtod to send Restaurant ID to server & to get response.
-//                callMethod();
-                List<AppetiserData> rest_list = db.getAllDatarl();
-
-                Log.d("RestaurantModel: ", "Check: "+rest_list);
-
-                for(AppetiserData data : rest_list){
-                    AppetiserData model = new AppetiserData(data.getTitle(),
-                            data.getDescription(), data.getCategory());
-                    cardList.add(model);
-                }
+                //method to send Restaurant ID to server & to get response.
             }
         } else {
                 networkClick();
         }
 
+            List<AppetiserData> rest_list = db.getAllDatarl();
+
+
+            Log.d("RestaurantModel: ", "Check: "+rest_list);
+
+            for(AppetiserData data : rest_list){
+
+                Cursor cursor = db.getData();
+                cursor.moveToFirst();
+                String name = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRNAME));
+                String desc = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRDESC));
+                String price = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRAMOUNT));
+                String sub = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRTABS));
+
+                AppetiserData models = new AppetiserData(name,
+                        desc, "", price, sub);
+                cardList.add(models);
+            }
+
         return view;
     }
 
-    /*
-     * Here receives data from Fragments class Adapter in the form of broadcast
-     * Here we are hiting the server to get details of Restaurant food stuff by sending
-     * category ID and Restaurant ID
-     */
-   /* public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
-            String dataPositions = intent.getStringExtra("positionsof");
-            JSONObject obj = new JSONObject();
-            try {
-               *//* obj.put("category_id", idCat);
-                obj.put("restaurant_id", prefs.getRestaurant_Id());*//*
-                obj.put("category_id", "");
-                obj.put("restaurant_id", "");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Log.d("Check CategoryType", obj.toString());
 
-            postJsonData(Config.innDemand+"restaurant_items/details/", obj.toString());
         }
-    };*/
+    };
 
+   /* @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getView() != null) {
+            isViewShown = true;
+            // fetchdata() contains logic to show data when page is selected mostly asynctask to fill the data
+            List<AppetiserData> rest_list = db.getAllDatarl();
 
-    /*
-     * Volley Library Main method to get Category and other requirements as response by sending
-     * restaurant ID
-     */
-    public void postJsonData(String url, String userData) {
+            Log.d("RestaurantModel: ", "Check: "+rest_list);
 
-        RequestQueue mRequestQueue;
-        final Cache cache = new DiskBasedCache(getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
-
-        // Set up the network to use HttpURLConnection as the HTTP client.
-        Network network = new BasicNetwork(new HurlStack());
-
-        // Instantiate the RequestQueue with the cache and network.
-        mRequestQueue = new RequestQueue(cache, network);
-
-        // Start the queue
-        mRequestQueue.start();
-
-        final String requestBody = userData;
-
-        System.out.println("inside post json data=====" + requestBody);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("yohaha==data==success===" + response);
-
-                JSONArray array = null;
-                try {
-                    array = new JSONArray(response);
-
-                    Log.d("API", "API D"+array);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                for (int i = 0; i < array.length(); i++) {
-                    try {
-                        JSONObject object = array.getJSONObject(i);
-//                        dataModel = new ResturantDataModel(i);
-                        Log.d("API", "API Daa"+array);
-                        Log.d("API", "API ID"+id);
-                        itemName = object.getString("name");
-                        Log.d("API", "API na"+itemName);
-                        itemDesc = object.getString("description");
-                        category = object.getString("category");
-                        Log.d("API", "API Ca"+category);
-                        food = object.getString("food");
-                        subCategory = object.getString("subcategory");
-                        amount = object.getString("price");
-                        JSONObject ob = object.getJSONObject("average");
-                        String average = ob.getString("feedback_points__avg");
-
-                      /*  try {
-                            String subCate = new getTraslatedString().execute(
-                                    prefs.getLocaleset(), subCategory).get();
-                            String subNamez = new getTraslatedString().execute(
-                                    prefs.getLocaleset(), itemName).get();
-                            String subDescs = new getTraslatedString().execute(
-                                    prefs.getLocaleset(), itemDesc).get();
-                            String subAmount = new getTraslatedString().execute(
-                                    prefs.getLocaleset(), amount).get();
-                            String subFood = new getTraslatedString().execute(
-                                    prefs.getLocaleset(), food).get();
-                            String subRating = new getTraslatedString().execute(
-                                    prefs.getLocaleset(), average).get();
-
-                            dbs.insertData(new ResturantDataModel(subCate, subNamez, subDescs,
-                                    subAmount, subFood, subRating));*/
-
-                          /*  dbs.insertData(new ResturantDataModel(subCategory, itemName, itemDesc,
-                                amount, food, average));
-*/
-//                        storage.insertData(new ResturantDataModel(subCategory, itemName, itemDesc,
-//                                amount, food, average));
-
-                           /* } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            } catch (ExecutionException e) {
-                                e.printStackTrace();
-                            }*/
-
-                        /*List<ResturantDataModel> datas = dbs.getAllData();
-                        for(ResturantDataModel card : datas) {
-                            cardList.clear();
-                                a = new ResturantDataModel(card.getSubcategory(), card.getName(),
-                                        card.getDescription(), card.getPrice(), card.getFood(),
-                                        card.getRating());
-                                cardList.add(a);
-
-
-                        }
-                            adapter.notifyDataSetChanged();*/
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
+            for(AppetiserData data : rest_list){
+                AppetiserData models = new AppetiserData(data.getName(),
+                        data.getDescription(), data.getCategory(), data.getPrice());
+                cardList.add(models);
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s " +
-                            "using %s", requestBody, "utf-8");
-                    return null;
-                }
-            }
-        };
-//        mRequestQueue.add(stringRequest);
-        AppController.getInstance().addToRequestQueue(stringRequest);
-    }
+        } else {
+            isViewShown = false;
+        }
+    }*/
 
     public void notifyChange(){
         adapter.notifyDataSetChanged();
@@ -360,7 +211,6 @@ public class Appetizer extends Fragment {
 
     //Translation Area Coding .....
     //Google Translate API call to translate Dynamic data
-
     public class getTraslatedString extends AsyncTask<String, String, String> {
 
         @Override

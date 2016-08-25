@@ -113,7 +113,7 @@ public class Loader extends AppCompatActivity {
                 startActivity(in);
                 finish();
             }
-        },2000 /* 2sec delay*/);
+        },3000 /* 3sec delay*/);
     }
 
 

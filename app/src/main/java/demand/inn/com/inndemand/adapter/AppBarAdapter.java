@@ -18,6 +18,7 @@ import java.util.List;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.model.AppetiserData;
+import demand.inn.com.inndemand.model.BarDataModel;
 import demand.inn.com.inndemand.model.ResturantDataModel;
 import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
@@ -27,7 +28,7 @@ import demand.inn.com.inndemand.utility.AppPreferences;
  */
 public class AppBarAdapter extends  RecyclerView.Adapter<AppBarAdapter.MyViewHolder>  {
 
-    private List<ResturantDataModel> cartData;
+    private List<AppetiserData> cartData;
     private Context mContext;
     int counter = 0;
     int count = 0;
@@ -56,7 +57,7 @@ public class AppBarAdapter extends  RecyclerView.Adapter<AppBarAdapter.MyViewHol
         }
     }
 
-    public AppBarAdapter(Context mContext, List<ResturantDataModel> cartData) {
+    public AppBarAdapter(Context mContext, List<AppetiserData> cartData) {
         this.mContext = mContext;
         this.cartData = cartData;
     }
@@ -73,11 +74,10 @@ public class AppBarAdapter extends  RecyclerView.Adapter<AppBarAdapter.MyViewHol
 
     @Override
     public void onBindViewHolder(final AppBarAdapter.MyViewHolder holder, final int position) {
-        final ResturantDataModel data = cartData.get(position);
+        final AppetiserData data = cartData.get(position);
         Log.d("Check Tablet", "Check: "+data.getCategory());
         Log.d("Check Tablet", "Check: "+data.getName());
-//        if(data.getName() == "Downeaster Combo" || data.getName().equalsIgnoreCase("Downeaster Combo")) {
-
+        if(data.getCategory() == "Starter" || data.getCategory().equalsIgnoreCase("Starter")) {
             holder.title.setText(data.getTitle());
             holder.subtitle.setText(data.getName() + " ");
             holder.rupees.setText(data.getPrice());
@@ -93,7 +93,7 @@ public class AppBarAdapter extends  RecyclerView.Adapter<AppBarAdapter.MyViewHol
                     mContext.startActivity(in);
                 }
             });
-//        }
+        }
 
         if(holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null){
             holder.title.setVisibility(View.GONE);

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -48,6 +49,7 @@ import demand.inn.com.inndemand.cartarea.MyCart;
 import demand.inn.com.inndemand.constants.FragmentData;
 import demand.inn.com.inndemand.constants.TabData;
 import demand.inn.com.inndemand.database.DBHelper;
+import demand.inn.com.inndemand.fragmentarea.AppetiserBar;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.model.ResturantDataModel;
@@ -101,6 +103,9 @@ public class Restaurant extends AppCompatActivity{
     //Fragments data in the screen and List of tabs in tab layout shown
     List<FragmentData> tabList;
 
+    //List to add category(tabs)
+    List<TabData> tabData;
+
     //Adapter Class with String requirements
     List<ResturantDataModel> resturantDataModelList;
     ResturantDataModel dataModel, model;
@@ -120,6 +125,7 @@ public class Restaurant extends AppCompatActivity{
         db = new DBHelper(this);
         resturantDataModelList = new ArrayList<>();
         dataModel = new ResturantDataModel();
+        tabData = new ArrayList<>();
 
         //Constant Class n Database calss initialize
         model = new ResturantDataModel();
@@ -299,50 +305,64 @@ public class Restaurant extends AppCompatActivity{
 
         tabList = new ArrayList<>();
 
-
-        /*
+         /*
          * Here trying to get Category for the Fragments (Tabs)
          * Data saving in DB from Server in last work out
          * Fetching category from Database (SQLite)
          */
-       adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        List<TabData> tabDataModelList = db.getAllCategory();
+        List<TabData> tabdata = db.getAllCategory();
 
-                 for (TabData dataModel:tabDataModelList) {
-                     if (prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")) {
-                         Bundle bundle = new Bundle();
-                         bundle.putString("category_id", dataModel.getName());
-                         bundle.putString("id_type", dataModel.getType());
+        Log.d("TabData", "check: "+tabdata);
+        for(TabData tab : tabdata) {
+//            Bundle bundle = new Bundle();
+//            bundle.putString("category_id", tab.getName());
 
-                         Fragment appFrf = new Appetizer();
-                         appFrf.setArguments(bundle);
+            TabData data = new TabData(tab.getName(), tab.getType());
+            tabData.add(data);
 
-                         adapter.addFragment(appFrf, dataModel.getName());
-                     } else {
-                         Bundle bundle = new Bundle();
-                         bundle.putString("category_id", dataModel.getName());
-                         bundle.putString("id_type", dataModel.getType());
+            Fragment appFrf = new AppetiserBar();
+//            appFrf.setArguments(bundle);
 
-                         TabData tab = new TabData(dataModel.getName(), dataModel.getType());
-                         tabDataModelList.add(tab);
+            adapter.addFragment(appFrf, tab.getName());
 
-                         Fragment appFrf = new Appetizer();
-                         appFrf.setArguments(bundle);
+            adapter.notifyDataSetChanged();
+            viewPager.setAdapter(adapter);
 
-                         adapter.addFragment(appFrf, dataModel.getName());
+            tabLayout.setupWithViewPager(viewPager);
 
-                         adapter.notifyDataSetChanged();
-                         viewPager.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
 
-                         tabLayout.setupWithViewPager(viewPager);
-                     }
-                 }
+//        Cursor cursor = db.getData(data.getCategory());
+//        cursor.moveToFirst();
+//        String getValue = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRCATEGORY));
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("PageSelected", "Check: "+position);
+                Intent in = new Intent("position-message");
+                in.putExtra("positionsof", type_id);
+                LocalBroadcastManager.getInstance(Restaurant.this).sendBroadcast(in);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     /*
      * Here receives data from Fragments class Adapter in the form of broadcast
-     * getting counter for the items selected n items detail in food list
+     * getting counter for the items selected n items detail in Restaurant food list
      */
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
