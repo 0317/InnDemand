@@ -307,8 +307,8 @@ public class Restaurant extends AppCompatActivity{
 
          /*
          * Here trying to get Category for the Fragments (Tabs)
-         * Data saving in DB from Server in last work out
-         * Fetching category from Database (SQLite)
+         * Fetching category (Tab Names) from Database (SQLite) which was inserted in last page
+         * coding section.
          */
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
