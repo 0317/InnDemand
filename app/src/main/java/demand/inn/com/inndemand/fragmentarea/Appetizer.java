@@ -154,24 +154,24 @@ public class Appetizer extends Fragment {
 
             List<AppetiserData> rest_list = db.getAllDatarl();
 
-        AppetiserData models = db.getAllDatarl(title);
+        AppetiserData rest_lists = db.getAllDatarl(title);
 
 
             Log.d("RestaurantModel: ", "Check: "+rest_list);
 
-            for(AppetiserData data : rest_list){
+//            for(AppetiserData data : rest_list){
+//
+//                Cursor cursor = db.getData();
+//                cursor.moveToFirst();
+//                String name = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRNAME));
+//                String desc = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRDESC));
+//                String price = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRAMOUNT));
+//                String sub = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRTABS));
 
-                Cursor cursor = db.getData();
-                cursor.moveToFirst();
-                String name = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRNAME));
-                String desc = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRDESC));
-                String price = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRAMOUNT));
-                String sub = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRTABS));
-
-                AppetiserData models = new AppetiserData(name,
-                        desc, "", price, sub);
-                cardList.add(models);
-            }
+                AppetiserData modelss = new AppetiserData(rest_lists.getName(),
+                        rest_lists.getDescription(), "", rest_lists.getPrice(), "");
+                cardList.add(modelss);
+//            }
 
         return view;
     }

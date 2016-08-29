@@ -283,7 +283,7 @@ public class DashBoard extends AppCompatActivity implements
           */
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-//        navigationView.removeHeaderView(navigationView.getHeaderView(0));
+        navigationView.removeHeaderView(navigationView.getHeaderView(0));
 
         View profile = navigationView.inflateHeaderView(R.layout.nav_header_dash_board);
         profile.findViewById(R.id.head_view);

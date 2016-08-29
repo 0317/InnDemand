@@ -30,7 +30,7 @@ import demand.inn.com.inndemand.model.ResturantDataModel;
 public class DBHelper extends SQLiteOpenHelper {
 
     // If change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "Inndemand";
 
     //Table created for Misc Info Inndemand
@@ -274,9 +274,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public Cursor getData(){
+    public Cursor getData(String title){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( "select * from restaurantlists where categoryname=tabdata",
+        Cursor cursor =  db.rawQuery( "select * from restaurantlistss where categoryname="+title,
                 null);
         return cursor;
     }
@@ -386,8 +386,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public AppetiserData getAllDatarl(String title){
         AppetiserData data = new AppetiserData();
 
+        title = COLUMN_RRCATEGORY;
+
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS +"where"+COLUMN_RRCATEGORY+"="+title;
+        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS +" where "+COLUMN_RRCATEGORY+" = "
+                +title;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -410,11 +413,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return data;
     }
+
     public List<AppetiserData> getAllDatarl(){
         List<AppetiserData> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS;
+        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS +" where "+COLUMN_RRCATEGORY+" = ";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

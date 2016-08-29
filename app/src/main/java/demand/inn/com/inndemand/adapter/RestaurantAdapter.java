@@ -172,10 +172,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 //        else
 //            holder.subtitle.setTextColor(Color.parseColor("#006600"));
 
-       holder.plus.setOnClickListener(new View.OnClickListener() {
+      /* holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* int s1=(Integer.parseInt(holder.count.getText().toString()));
+               *//* int s1=(Integer.parseInt(holder.count.getText().toString()));
 
                     if(s1 < 0){
 //                        counter = data.getCount();// update new value
@@ -184,11 +184,11 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                     if(s1 > 0) {
                         counter = ++count;// update new value
                         holder.count.setText(String.valueOf(counter));
-                    }*/
+                    }*//*
                 Toast.makeText(mContext, "Hello java", Toast.LENGTH_LONG).show();
             }
         });
-
+*/
        /*  holder.minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
