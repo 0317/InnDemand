@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -148,16 +149,15 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
             holder.subtitle.setText(data.getName() + " ");
             holder.rupees.setText(data.getPrice());
             holder.details.setText(data.getDescription());
-        final AppetiserData finalData = data;
         holder.item_click.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent in = new Intent(mContext, Feedback.class);
+                   /* Intent in = new Intent(mContext, Feedback.class);
                     in.putExtra("itemname", finalData.getName());
                     in.putExtra("itemdesc", finalData.getDescription());
                     in.putExtra("itemprice", finalData.getPrice());
                     in.putExtra("itemrating", finalData.getRating());
-                    mContext.startActivity(in);
+                    mContext.startActivity(in);*/
                 }
             });
 
@@ -172,10 +172,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 //        else
 //            holder.subtitle.setTextColor(Color.parseColor("#006600"));
 
-       /* holder.plus.setOnClickListener(new View.OnClickListener() {
+       holder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int s1=(Integer.parseInt(holder.count.getText().toString()));
+               /* int s1=(Integer.parseInt(holder.count.getText().toString()));
 
                     if(s1 < 0){
 //                        counter = data.getCount();// update new value
@@ -184,11 +184,12 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
                     if(s1 > 0) {
                         counter = ++count;// update new value
                         holder.count.setText(String.valueOf(counter));
-                    }
+                    }*/
+                Toast.makeText(mContext, "Hello java", Toast.LENGTH_LONG).show();
             }
         });
 
-        holder.minus.setOnClickListener(new View.OnClickListener() {
+       /*  holder.minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int s2=(Integer.parseInt(holder.count.getText().toString()));
@@ -204,8 +205,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
         });*/
 
 
-        holder.plus.setOnClickListener(new PlusButtonListener(position, data, holder.count, holder.title));
-        holder.minus.setOnClickListener(new MinusButtonListener(position, data, holder.count, holder.title));
+        holder.plus.setOnClickListener(new PlusButtonListener(position, data,
+                holder.count, holder.title));
+        holder.minus.setOnClickListener(new MinusButtonListener(position, data,
+                holder.count, holder.title));
 
         finalamount =0;
         for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
@@ -233,6 +236,7 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
             @Override
             public void onClick(View v) {
+                Toast.makeText(mContext, "Hello Android", Toast.LENGTH_LONG).show();
                 if (cartData.get(position).getUserqty() < 10)
                 {
                     data.setUserqty(data.getUserqty() + 1); // incrementing item quantity by 1

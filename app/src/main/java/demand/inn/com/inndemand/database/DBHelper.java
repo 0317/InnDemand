@@ -383,6 +383,33 @@ public class DBHelper extends SQLiteOpenHelper {
         return dataList;
     }
 
+    public AppetiserData getAllDatarl(String title){
+        AppetiserData data = new AppetiserData();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS +"where"+COLUMN_RRCATEGORY+"="+title;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+
+                data.setName(cursor.getString(1));
+                data.setDescription(cursor.getString(2));
+                data.setCategory(cursor.getString(3));
+                data.setPrice(cursor.getString(4));
+                data.setSubcategory(cursor.getString(5));
+
+                // Adding data to list
+
+            } while (cursor.moveToNext());
+        }
+
+        return data;
+    }
     public List<AppetiserData> getAllDatarl(){
         List<AppetiserData> dataList = new ArrayList<>();
 

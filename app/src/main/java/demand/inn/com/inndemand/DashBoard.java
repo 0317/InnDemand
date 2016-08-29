@@ -283,7 +283,7 @@ public class DashBoard extends AppCompatActivity implements
           */
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.removeHeaderView(navigationView.getHeaderView(0));
+//        navigationView.removeHeaderView(navigationView.getHeaderView(0));
 
         View profile = navigationView.inflateHeaderView(R.layout.nav_header_dash_board);
         profile.findViewById(R.id.head_view);
@@ -373,7 +373,6 @@ public class DashBoard extends AppCompatActivity implements
             if(prefs.getCategory_check() == false) {
                 getRestaurantCategory();
                 getBarCategory();
-                restaurantList();
             }
             if(prefs.getData_check() == false){
                 getData();
@@ -1188,104 +1187,8 @@ public class DashBoard extends AppCompatActivity implements
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-    public void restaurantList(){
-        JSONObject obj = new JSONObject();
-
-        try {
-            obj.put("hotel_id", prefs.getHotel_id());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Log.d("Api Hotel Data", obj.toString());
-
-        postJsonRestaurant(Config.innDemand+"restaurant/details/", obj.toString());
-    }
 
 
-    /*
-       * Method to get response of list of Restaurant in the hotel
-       * Saving name of restaurant & show in the list
-       * Saving ID of restaurant for further usage
-       * Setting status (getting in response) to check which restaurant to Hide/Show
-       * through Adapter Class
-   */
-    public void postJsonRestaurant(String url, String userData){
-        RequestQueue mRequestQueue;
-        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
-
-        // Set up the network to use HttpURLConnection as the HTTP client.
-        Network network = new BasicNetwork(new HurlStack());
-
-        // Instantiate the RequestQueue with the cache and network.
-        mRequestQueue = new RequestQueue(cache, network);
-
-        // Start the queue
-        mRequestQueue.start();
-
-        final String requestBody = userData;
-
-        System.out.println("inside post json data=====" + requestBody);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        System.out.println("yohaha=restautant=success===" + response);
-
-
-                        JSONArray array = null;
-                        try {
-                            array = new JSONArray(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        for (int i = 0; i < array.length(); i++) {
-                            try {
-                                JSONObject object = array.getJSONObject(i);
-
-                                String restaurantId = object.getString("id");
-                                String rest_name = object.getString("name");
-                                String hotel = object.getString("hotel");
-                                String status = object.getString("status");
-
-                                db.insertRestData(new ListData(rest_name, status, restaurantId));
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            } /*catch (InterruptedException e) {
-                                e.printStackTrace();
-                            } catch (ExecutionException e) {
-                                e.printStackTrace();
-                            }*/
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(HotelDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            requestBody, "utf-8");
-                    return null;
-                }
-            }
-        };
-//        mRequestQueue.add(stringRequest);
-        AppController.getInstance().addToRequestQueue(stringRequest);
-    }
 
     /*
     * Volley Library Main method to get Category and other requirements as response by sending

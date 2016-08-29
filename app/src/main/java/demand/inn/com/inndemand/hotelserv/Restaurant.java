@@ -322,8 +322,11 @@ public class Restaurant extends AppCompatActivity{
             TabData data = new TabData(tab.getName(), tab.getType());
             tabData.add(data);
 
-            Fragment appFrf = new AppetiserBar();
-//            appFrf.setArguments(bundle);
+            Fragment appFrf = new Appetizer();
+            Bundle bundle = new Bundle();
+            bundle.putString("title",tab.getName());
+            appFrf.setArguments(bundle);
+
 
             adapter.addFragment(appFrf, tab.getName());
 

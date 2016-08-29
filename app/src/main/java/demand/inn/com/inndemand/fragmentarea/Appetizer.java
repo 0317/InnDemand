@@ -85,6 +85,16 @@ public class Appetizer extends Fragment {
     // create boolean for fetching data
     private boolean isViewShown = false;
 
+    String title = "";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if(getArguments().getString("title")!=null)
+            title = getArguments().getString("title");
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -143,6 +153,8 @@ public class Appetizer extends Fragment {
         }
 
             List<AppetiserData> rest_list = db.getAllDatarl();
+
+        AppetiserData models = db.getAllDatarl(title);
 
 
             Log.d("RestaurantModel: ", "Check: "+rest_list);
