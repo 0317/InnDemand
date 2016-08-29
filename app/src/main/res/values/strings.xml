@@ -42,8 +42,8 @@
     <string name="bath_essentials">Bathroom Essentials</string>
     <string name="bed_tea_call">Bed Tea/Coffee</string>
     <string name="beverages">Beverages</string>
-    <string name="itemscount">Items: </string>
-    <string name="totalcount">Total: </string>
+    <string name="itemscount">Items:</string>
+    <string name="totalcount">Total:</string>
     <string name="pick_time">PICK A TIME</string>
     <string name="pick_date">Pick Up Date</string>
     <string name="pick_up_time">Pick Up Time</string>
@@ -55,26 +55,28 @@
     <string name="cancel_cab">CANCEL CAB</string>
     <string name="anything_to_say">Do you have anything to say?</string>
     <string name="tap_to_start">Tap here to start typing</string>
-    <string name="when_to_clean">When do you want us to clean  your room?</string>
+    <string name="when_to_clean">When do you want us to clean your room?</string>
     <string name="when_to_deliver">When do you want us to deliver?</string>
     <string name="when_to_wake">When do you want us to wake you up?</string>
     <string name="when_to_pick">When do you want us to pick you?</string>
     <string name="pick_clothes">When do you want us to pick up clothes?</string>
-    <string name="no_of_water_bottles">Select No. of  Water Bottles</string>
-    <string name="no_of_soda_bottles">Select No. of  Soda Bottles</string>
-    <string name="no_of_ice_bottles">Select Noll. of  Ice Buckets</string>
-    <string name="no_of_glasses">Select No. of  Glasses</string>
+    <string name="no_of_water_bottles">Select No. of Water Bottles</string>
+    <string name="no_of_soda_bottles">Select No. of Soda Bottles</string>
+    <string name="no_of_ice_bottles">Select Noll. of Ice Buckets</string>
+    <string name="no_of_glasses">Select No. of Glasses</string>
     <string name="bed_tea_tea">Tea</string>
     <string name="bed_tea_coffee">Coffee</string>
-    <string name="note_bed_tea">NOTE: We cost Rs 25  per  Tea/Coffee. It will  take us 20 mins to
-        prepare your drink</string>
+    <string name="note_bed_tea">NOTE: We cost Rs 25 per Tea/Coffee. It will take us 20 mins to
+        prepare your drink
+    </string>
     <string name="note_beverage">NOTE: We will reach the service to you in 15 minutes</string>
     <string name="note_clothes">NOTE: We charge Rs 15 per cloth &amp; 7 hours to deliver it back
     </string>
     <string name="note_bath_essentials">NOTE: It will take us 10 minutes to reach you the towel(S)
     </string>
     <string name="note_cab">NOTE: Providing Cab services is based on the availability.
-        We will call you to confirm.</string>
+        We will call you to confirm.
+    </string>
     <string name="write_comment_here">Write your comment here</string>
     <string name="write_comment">Write Comment</string>
     <string name="comment_section">Comment Section</string>
@@ -85,7 +87,8 @@
     <string name="apply_coupon">Apply Discount Code</string>
     <string name="food_delivery_time">Food Delivery Time</string>
     <string name="appetizer_fragment_headline">Our Restaurant Serves both Vegetarian &amp;
-        Non-Vegeterian</string>
+        Non-Vegeterian
+    </string>
     <string name="restaurant_timing">Restaurant Timings - 7AM to 11PM</string>
     <string name="note_restaurant">NOTE: It will take a minimum of 60 mins to prepare the food
     </string>
@@ -96,7 +99,7 @@
     <string name="sodabottles">Soda Bottles</string>
     <string name="icebuckets">Ice Buckets</string>
     <string name="glasses">Glasses</string>
-    <string name="food_type">FOOD TYPE: </string>
+    <string name="food_type">FOOD TYPE:</string>
     <string name="restaurants">RESTAURANT</string>
     <string name="bar">BAR</string>
     <string name="spa">SPA</string>
@@ -125,7 +128,7 @@
     <string name="coupon">Coupon</string>
     <string name="now">Now</string>
     <string name="choose_location">Choose Location</string>
-    <string name="language_selected">Language: </string>
+    <string name="language_selected">Language:</string>
     <string name="roomservicesnotavailable">NOTE: Services are not available</string>
     <string name="successful_logout">Successfully logged-out</string>
     <string name="sign_out_hotel">You want to Sign out?</string>
@@ -134,7 +137,9 @@
 
     <string name="restaurant_foodadded_tocart">Your Food is added to cart</string>
     <string name="restaurant_servenotavailable">NOTE: Restaurant Services are not available</string>
-    <string name="restaurant_serveavailable">NOTE: It will take a minimum of 60 mins to prepare the food</string>
+    <string name="restaurant_serveavailable">NOTE: It will take a minimum of 60 mins to prepare the
+        food
+    </string>
 
     <!-- ............Room Services Class........... -->
 
@@ -178,7 +183,8 @@
 
     <!-- .............Pop-ups........... -->
 
-    <string name="restart_app">To Change language, You need to restart your App or Click restart</string>
+    <string name="restart_app">To Change language, You need to restart your App or Click restart
+    </string>
     <string name="restart">Restart</string>
 
     <string name="country_prompt">Choose a language</string>
@@ -195,5 +201,8 @@
         <item>Spanish</item>
         <item>Javanese</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

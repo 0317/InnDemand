@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -38,18 +37,17 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.adapter.RestaurantAdapter;
 import demand.inn.com.inndemand.adapter.ViewPagerAdapter;
 import demand.inn.com.inndemand.cartarea.MyCart;
 import demand.inn.com.inndemand.constants.FragmentData;
 import demand.inn.com.inndemand.constants.TabData;
 import demand.inn.com.inndemand.database.DBHelper;
-import demand.inn.com.inndemand.fragmentarea.AppetiserBar;
 import demand.inn.com.inndemand.fragmentarea.Appetizer;
 import demand.inn.com.inndemand.gcm.GCMNotifications;
 import demand.inn.com.inndemand.model.ResturantDataModel;
@@ -61,7 +59,7 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
  * Created by akash
  */
 
-public class Restaurant extends AppCompatActivity{
+public class Restaurant extends AppCompatActivity {
 
     //Utility Class area
     NetworkUtility nu;
@@ -115,6 +113,7 @@ public class Restaurant extends AppCompatActivity{
 
     //DATABASE CLASS CALL AREA
     DBHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,17 +147,17 @@ public class Restaurant extends AppCompatActivity{
                     Intent in = new Intent(Restaurant.this, SearchDB.class);
                     startActivity(in);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                }else if(id == R.id.action_cart){
+                } else if (id == R.id.action_cart) {
                     Intent in = new Intent(Restaurant.this, MyCart.class);
                     startActivity(in);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-                }else if(id == R.id.action_notification){
+                } else if (id == R.id.action_notification) {
                     Intent in = new Intent(Restaurant.this, GCMNotifications.class);
                     startActivity(in);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-                }else if(id == R.id.action_food){
+                } else if (id == R.id.action_food) {
                     final View menuItemView = findViewById(R.id.action_food);
                     final PopupMenu popup = new PopupMenu(Restaurant.this, menuItemView);
                     //Inflating the Popup using xml file
@@ -172,14 +171,14 @@ public class Restaurant extends AppCompatActivity{
                                 case R.id.action_all:
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter);
 
-                                    return  true;
+                                    return true;
 
                                 case R.id.action_veg:
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter_green);
 
-                                    Log.d("Food value", "value"+dataModel.getFood());
-                                    if(dataModel.getFood().contains("1")){
-                                        for(int i = 0; i < 10 ; i++){
+                                    Log.d("Food value", "value" + dataModel.getFood());
+                                    if (dataModel.getFood().contains("1")) {
+                                        for (int i = 0; i < 10; i++) {
                                             dataModel.setName(dataModel.getName());
                                             dataModel.setDescription(dataModel.getDescription());
                                             dataModel.setPrice(dataModel.getPrice());
@@ -193,8 +192,8 @@ public class Restaurant extends AppCompatActivity{
                                 case R.id.action_nonveg:
                                     toolbar.getMenu().getItem(0).setIcon(R.mipmap.ic_menu_filter_red);
 
-                                    if(model.getFood() == "2"){
-                                        for(int i = 0; i < 10 ; i++){
+                                    if (model.getFood() == "2") {
+                                        for (int i = 0; i < 10; i++) {
                                             dataModel.setName(dataModel.getName());
                                             dataModel.setDescription(dataModel.getDescription());
                                             dataModel.setPrice(dataModel.getPrice());
@@ -240,7 +239,7 @@ public class Restaurant extends AppCompatActivity{
                 if (scrollRange + verticalOffset == 0) {
                     collapsingToolbarLayout.setTitle(restName);
                     isShow = true;
-                } else if(isShow) {
+                } else if (isShow) {
                     collapsingToolbarLayout.setTitle("");
                     isShow = false;
                 }
@@ -259,9 +258,9 @@ public class Restaurant extends AppCompatActivity{
         //Tab call area
         //setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab){
+            public void onTabSelected(TabLayout.Tab tab) {
                 positions = tab.getPosition();
                 viewPager.setCurrentItem(tab.getPosition());
                 cart_value = cart_total.getText().toString();
@@ -289,9 +288,9 @@ public class Restaurant extends AppCompatActivity{
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message"));
 
-        if(nu.isConnectingToInternet()) {
+        if (nu.isConnectingToInternet()) {
 //            showProgressDialog();
-            if(prefs.getFm_restaurant() == true) {
+            if (prefs.getFm_restaurant() == true) {
                 restaurant_text.setText(R.string.restaurant_servenotavailable);
                 hideProgressDialog();
             } else {
@@ -299,7 +298,7 @@ public class Restaurant extends AppCompatActivity{
                 hideProgressDialog();
 //                getData();
             }
-        }else{
+        } else {
             networkClick();
         }
 
@@ -314,30 +313,54 @@ public class Restaurant extends AppCompatActivity{
 
         List<TabData> tabdata = db.getAllCategory();
 
-        Log.d("TabData", "check: "+tabdata);
-        for(TabData tab : tabdata) {
-//            Bundle bundle = new Bundle();
-//            bundle.putString("category_id", tab.getName());
-
-            TabData data = new TabData(tab.getName(), tab.getType());
+        Log.d("TabData", "check: " + tabdata);
+        final HashMap<Integer, String> tabMap = new HashMap<>();
+        for (int i = 0; i < tabdata.size(); i++) {
+            TabData data = new TabData(tabdata.get(i).getName(), tabdata.get(i).getType());
             tabData.add(data);
 
             Fragment appFrf = new Appetizer();
             Bundle bundle = new Bundle();
-            bundle.putString("title",tab.getName());
+            bundle.putString("title", tabdata.get(i).getName());
             appFrf.setArguments(bundle);
-
-
-            adapter.addFragment(appFrf, tab.getName());
-
-            adapter.notifyDataSetChanged();
-            viewPager.setAdapter(adapter);
-
-            tabLayout.setupWithViewPager(viewPager);
-
-            adapter.notifyDataSetChanged();
+            adapter.addFragment(appFrf, tabdata.get(i).getName());
+            tabMap.put(i, tabdata.get(i).getName());
         }
 
+//        for (TabData tab : tabdata) {
+////            Bundle bundle = new Bundle();
+////            bundle.putString("category_id", tab.getName());
+//
+//            TabData data = new TabData(tab.getName(), tab.getType());
+//            tabData.add(data);
+//
+//            Fragment appFrf = new Appetizer();
+//            Bundle bundle = new Bundle();
+//            bundle.putString("title", tab.getName());
+//            appFrf.setArguments(bundle);
+//            adapter.addFragment(appFrf, tab.getName());
+//        }
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                String tabName = tabMap.get(position);
+                //Get the data on basis of tab name from table
+                adapter.getItem(position);
+                //Set data for the particullar fragment
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 //        Cursor cursor = db.getData(data.getCategory());
 //        cursor.moveToFirst();
 //        String getValue = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRCATEGORY));
@@ -350,7 +373,7 @@ public class Restaurant extends AppCompatActivity{
 
             @Override
             public void onPageSelected(int position) {
-                Log.d("PageSelected", "Check: "+position);
+                Log.d("PageSelected", "Check: " + position);
                 Intent in = new Intent("position-message");
                 in.putExtra("positionsof", type_id);
                 LocalBroadcastManager.getInstance(Restaurant.this).sendBroadcast(in);
@@ -390,23 +413,22 @@ public class Restaurant extends AppCompatActivity{
                 int cart_cash = Integer.parseInt(cart_value);
                 int cart_itemss = Integer.parseInt(cart_val);
 
-                int totValue = cart_cash+cash;
-                int totItem = cart_itemss+item;
+                int totValue = cart_cash + cash;
+                int totItem = cart_itemss + item;
 
                 double val = Double.parseDouble(totalCash); //+Double.parseDouble(cart_value);
                 double va = Double.parseDouble(totalItems); //+Double.parseDouble(cart_val);
 
-                Log.d("totalValue", "dataValue: "+cart_cash);
-                Log.d("totalItem", "dataValue: "+cart_itemss);
+                Log.d("totalValue", "dataValue: " + cart_cash);
+                Log.d("totalItem", "dataValue: " + cart_itemss);
 
-                Log.d("SelectedItem", "dataValue: "+broaditemName);
+                Log.d("SelectedItem", "dataValue: " + broaditemName);
 
 
                 cart_total.setText(String.valueOf(totValue));
                 cart_item.setText(String.valueOf(totItem));
 
-            }catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
 
@@ -421,7 +443,7 @@ public class Restaurant extends AppCompatActivity{
      * Method is to add items to cart with onClick
      * Shows a pop-up asking view cart or not now
      */
-    public void addCart(View view){
+    public void addCart(View view) {
 //        db.insertData(new CartData(broaditemName, totalCash, totalItems));
         new AlertDialog.Builder(Restaurant.this).setMessage(R.string.restaurant_foodadded_tocart)
                 .setPositiveButton(R.string.viewcart, new DialogInterface.OnClickListener() {
@@ -460,7 +482,7 @@ public class Restaurant extends AppCompatActivity{
     }
 
     //Custom pop-up for Internet Connection(opens if not connected)
-    public void networkClick(){
+    public void networkClick() {
         // custom dialog
         final Dialog dialog = new Dialog(Restaurant.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -484,42 +506,42 @@ public class Restaurant extends AppCompatActivity{
      * API call to translate data
      * Translation coding to Translate all the data coming from server in target language
      */
-    public class getTraslatedString extends AsyncTask<String, String, String>{
+    public class getTraslatedString extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String[] target) {
 
             String trasRequest = "https://www.googleapis.com/language/translate/v2?" +
                     "key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source=en" +
-                    "&target="+target[0]+"&q="+target[1];
+                    "&target=" + target[0] + "&q=" + target[1];
 
             try {
                 String responseString = executeHttpGet(trasRequest);
 
-                JSONObject dataObj = getJsonObject(new JSONObject(responseString),"data");
+                JSONObject dataObj = getJsonObject(new JSONObject(responseString), "data");
 
-                JSONArray translationArray = getJsonArray(dataObj,"translations");
-                if(translationArray!=null && translationArray.length()>0){
+                JSONArray translationArray = getJsonArray(dataObj, "translations");
+                if (translationArray != null && translationArray.length() > 0) {
 
-                    for (int i = 0; i <translationArray.length() ; i++) {
+                    for (int i = 0; i < translationArray.length(); i++) {
                         JSONObject jsonObject = translationArray.getJSONObject(i);
-                        destinationString = getString(jsonObject,"translatedText");
-                        Log.d("Check Responce", "Here: "+destinationString);
-                        System.out.print("Pls give "+destinationString);
+                        destinationString = getString(jsonObject, "translatedText");
+                        Log.d("Check Responce", "Here: " + destinationString);
+                        System.out.print("Pls give " + destinationString);
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.print("ExceptionGen: "+e);
+                System.out.print("ExceptionGen: " + e);
             }
             return destinationString;
         }
 
         @Override
         protected void onPostExecute(String valuee) {
-            Log.d("Check Responce", "Here: "+destinationString);
+            Log.d("Check Responce", "Here: " + destinationString);
 
-            Log.d("Check Responce", "There: "+valuee);
+            Log.d("Check Responce", "There: " + valuee);
         }
     }
 
@@ -550,7 +572,7 @@ public class Restaurant extends AppCompatActivity{
         //print result
         System.out.println(response.toString());
 
-        return  response.toString();
+        return response.toString();
 
     }
 
@@ -573,6 +595,7 @@ public class Restaurant extends AppCompatActivity{
         }
         return null;
     }
+
     /**
      * get {@link JSONObject}.
      *
@@ -604,7 +627,7 @@ public class Restaurant extends AppCompatActivity{
 
         try {
             if (resString != null) {
-                if (resString.length()>0) {
+                if (resString.length() > 0) {
                     return new JSONObject(resString);
                 }
             }
@@ -613,6 +636,7 @@ public class Restaurant extends AppCompatActivity{
         }
         return null;
     }
+
     /**
      * get {@link JSONArray}.
      *

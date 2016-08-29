@@ -4,12 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -18,7 +16,6 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +30,6 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-//import com.firebase.client.Firebase;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -60,6 +56,10 @@ import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.welcome.BaseActivity;
+
+//import com.firebase.client.Firebase;
+
+//import com.firebase.client.Firebase;
 
 /**
  * Created by akash
@@ -233,12 +233,12 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         };
 
         String gray = "By signing-up you agree to our ";
-        SpannableString graySpannable= new SpannableString(gray);
+        SpannableString graySpannable = new SpannableString(gray);
         graySpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, gray.length(), 0);
         builder.append(graySpannable);
 
         String yellow = "terms of service ";
-        SpannableString yellowSpannable= new SpannableString(yellow);
+        SpannableString yellowSpannable = new SpannableString(yellow);
         yellowSpannable.setSpan(new ForegroundColorSpan(Color.YELLOW), 0, yellow.length(), 0);
         builder.append(yellowSpannable);
 
@@ -248,7 +248,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         builder.append(graysSpannable);
 
         String yellows = "privacy policy";
-        SpannableString yellowsSpannables= new SpannableString(yellows);
+        SpannableString yellowsSpannables = new SpannableString(yellows);
         yellowsSpannables.setSpan(new ForegroundColorSpan(Color.YELLOW), 0, yellows.length(), 0);
         builder.append(yellowsSpannables);
 
@@ -272,6 +272,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
             LoginManager.getInstance().logOut();
         }
     }
+
     /*
      * Bundle method to get all the required details from FB and saving it in Preferences class
      * Details like: Name, Pic, Email, BDay, Age etc
@@ -369,8 +370,8 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         super.onStart();
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
-    // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-    // and the GoogleSignInResult will be available instantly.
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
@@ -400,35 +401,38 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             showProgressDialog();
-     //Signed in successfully, show authenticated UI.
+            //Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            System.out.print("Google Details========"+result.getSignInAccount().getDisplayName());
+            System.out.print("Google Details========" + result.getSignInAccount().getDisplayName());
             prefs.setUser_gname(result.getSignInAccount().getDisplayName());
             prefs.setUser_gemail(result.getSignInAccount().getEmail());
-            Log.d("G_Token", "check Pic"+ acct.getPhotoUrl());
-            Log.d("G_Token", "ID"+ acct.getId());
-            Log.d("G_Token", "check"+ acct.getServerAuthCode());
-            Person person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            prefs.setGoogle_bday(person.getBirthday());
-            prefs.setGoogle_gender(person.getGender());
+            Log.d("G_Token", "check Pic" + acct.getPhotoUrl());
+            Log.d("G_Token", "ID" + acct.getId());
+            Log.d("G_Token", "check" + acct.getServerAuthCode());
+            Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            if (person != null) {
+                Log.e("Birthday", "" + person.getBirthday());
+                prefs.setGoogle_bday(person.getBirthday());
+                prefs.setGoogle_gender(person.getGender());
+            }
             JSONObject obj = null;
             try {
                 obj = new JSONObject(String.valueOf(person.getImage()));
                 String img = obj.getString("url");
                 String image[] = img.split("sz=");
                 String first = image[0];
-                String pic = first+"sz=200";
-                Log.d("Details Google", "Check"+pic);
+                String pic = first + "sz=200";
+                Log.d("Details Google", "Check" + pic);
                 prefs.setUser_gpicture(pic);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d("Details Google", "Check"+person);
-            Log.d("G_Token", "check Pic Plus"+ person.getImage());
+            Log.d("Details Google", "Check" + person);
+            Log.d("G_Token", "check Pic Plus" + person.getImage());
             prefs.setGoogle_location(person.getCurrentLocation());
-            Log.d("Age range:", "Check "+person.getBirthday());
-            Log.d("Bday range:", "Check "+person.getGender());
-            Log.d("Loc range:", "Check "+person.getCurrentLocation());
+            Log.d("Age range:", "Check " + person.getBirthday());
+            Log.d("Bday range:", "Check " + person.getGender());
+            Log.d("Loc range:", "Check " + person.getCurrentLocation());
             Intent in = new Intent(Loginscreen.this, CheckDetails.class);
             prefs.setGoogle_logged_In(true);
             startActivity(in);
@@ -436,7 +440,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
             updateUI(true);
         } else {
 
-    //Signed out, show unauthenticated UI.
+            //Signed out, show unauthenticated UI.
             updateUI(false);
         }
     }
@@ -465,17 +469,17 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
                     }
                 });
     }
-   // [END signOut]
+    // [END signOut]
 
-   // [START revokeAccess]
+    // [START revokeAccess]
     private void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-   // [START_EXCLUDE]
+                        // [START_EXCLUDE]
                         updateUI(false);
-   // [END_EXCLUDE]
+                        // [END_EXCLUDE]
                     }
                 });
     }

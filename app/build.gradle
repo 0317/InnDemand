@@ -11,7 +11,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
     defaultConfig {
@@ -58,7 +58,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.google.android.gms:play-services-maps:9.0.2'
+    compile 'com.google.android.gms:play-services-maps:9.4.0'
     compile 'me.dm7.barcodescanner:zxing:1.8.4'
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.google.android.gms:play-services-auth:9.0.2'
