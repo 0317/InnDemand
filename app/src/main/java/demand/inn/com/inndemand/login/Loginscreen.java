@@ -73,7 +73,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
 
     //Social Integration UI call area
     //Facebook UI area
-    LoginButton loginButton;
+    LoginButton bt_loginButton;
     CallbackManager callbackManager;
 
     //Google Sign-In call area
@@ -90,7 +90,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
 
     //UI call area
     private TextView mStatusTextView;
-    TextView terms_conditions; //Terms n Conditions click at the bottom of screen
+    TextView txt_terms_conditions; //Terms n Conditions click at the bottom of screen
 
     //Loader call area to show loading of details (Verfiying credentials dialog)
     private ProgressDialog mProgressDialog;
@@ -125,9 +125,9 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
          * Please go through the Facebook code if required & FB code end point is mentioned below.
          */
         callbackManager = CallbackManager.Factory.create();
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends, user_photos, user_location"));
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        bt_loginButton = (LoginButton) findViewById(R.id.login_button);
+        bt_loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends, user_photos, user_location"));
+        bt_loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 System.out.println("onSuccess");
@@ -213,7 +213,7 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
         * Programatically using SpannableStringBuilder changing the color of a single text into
         * multiple colors (Yellow color for terms and conditions & privacy policy)
         */
-        terms_conditions = (TextView) findViewById(R.id.terms_conditions);
+        txt_terms_conditions = (TextView) findViewById(R.id.terms_conditions);
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         ClickableSpan terms = new ClickableSpan() {
@@ -254,8 +254,8 @@ public class Loginscreen extends BaseActivity implements GoogleApiClient.OnConne
 
         builder.setSpan(terms, 31, 47, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.setSpan(privacy, 50, 64, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        terms_conditions.setText(builder, TextView.BufferType.SPANNABLE);
-        terms_conditions.setMovementMethod(LinkMovementMethod.getInstance());
+        txt_terms_conditions.setText(builder, TextView.BufferType.SPANNABLE);
+        txt_terms_conditions.setMovementMethod(LinkMovementMethod.getInstance());
 
         facebookPost();
     }

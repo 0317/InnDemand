@@ -50,14 +50,13 @@ public class Bathroom extends AppCompatActivity {
     AppPreferences prefs;
 
     //UI call area foir the screen
-    CheckBox towels, soap, maintainance;
-    LinearLayout backPress, confirm;
-    Snackbar snackbar;
-    EditText say_something_bell;
+    CheckBox cb_towels, cb_soap, cb_maintainance;
+    LinearLayout ll_confirm;
+    EditText et_say_something_bell;
     Toolbar toolbar;
 
     //Linearlayout to show/hide options provided by hotel (Towel/Soap/Maintenance)
-    LinearLayout bath_towel, bath_soap, bath_maintenance;
+    LinearLayout ll_bath_towel, ll_bath_soap, ll_bath_maintenance;
 
 //    String and others to get current time and date
     Calendar c;
@@ -95,17 +94,17 @@ public class Bathroom extends AppCompatActivity {
         });
 
         //UI Initialize area
-        confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_bath);
-        bath_towel = (LinearLayout) findViewById(R.id.bath_towel);
-        bath_soap = (LinearLayout) findViewById(R.id.bath_soap);
-        bath_maintenance = (LinearLayout) findViewById(R.id.bath_maintenance);
+        ll_confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_bath);
+        ll_bath_towel = (LinearLayout) findViewById(R.id.bath_towel);
+        ll_bath_soap = (LinearLayout) findViewById(R.id.bath_soap);
+        ll_bath_maintenance = (LinearLayout) findViewById(R.id.bath_maintenance);
 
         //UI CheckBox Initialize area
-        towels = (CheckBox) findViewById(R.id.towels_bath);
-        soap = (CheckBox) findViewById(R.id.soap_bath);
-        maintainance = (CheckBox) findViewById(R.id.maintainance_bath);
+        cb_towels = (CheckBox) findViewById(R.id.towels_bath);
+        cb_soap = (CheckBox) findViewById(R.id.soap_bath);
+        cb_maintainance = (CheckBox) findViewById(R.id.maintainance_bath);
 
-        say_something_bell = (EditText) findViewById(R.id.say_something_bell);
+        et_say_something_bell = (EditText) findViewById(R.id.say_something_bell);
 
 //        Coding to get current time/date
         c = Calendar.getInstance();
@@ -117,65 +116,65 @@ public class Bathroom extends AppCompatActivity {
         // formattedDate have current date/time
 
         if(prefs.getBath_towel() == false)
-            bath_towel.setVisibility(View.GONE);
+            ll_bath_towel.setVisibility(View.GONE);
         else
-            bath_towel.setVisibility(View.VISIBLE);
+            ll_bath_towel.setVisibility(View.VISIBLE);
 
         if(prefs.getBath_toiletries() == false)
-            bath_soap.setVisibility(View.GONE);
+            ll_bath_soap.setVisibility(View.GONE);
         else
-            bath_soap.setVisibility(View.VISIBLE);
+            ll_bath_soap.setVisibility(View.VISIBLE);
 
         if(prefs.getBath_maintenance()== false)
-            bath_maintenance.setVisibility(View.GONE);
+            ll_bath_maintenance.setVisibility(View.GONE);
         else
-            bath_maintenance.setVisibility(View.VISIBLE);
+            ll_bath_maintenance.setVisibility(View.VISIBLE);
 
 
         //Selection of items(Towels/Soap/maintainance) for the room
 //        Boolean value check = true and int value = 1 means User demamds for towel
 //        Boolean value check = false and int value = 0 means no demand
-        towels.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_towels.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
-                if(towels.isChecked()){
-                    towels.setChecked(true);
+                if(cb_towels.isChecked()){
+                    cb_towels.setChecked(true);
                     towel_value = "1";
                 }else{
-                    towels.setChecked(false);
+                    cb_towels.setChecked(false);
                     towel_value = "0";
                 }
             }
         });
 
-        soap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_soap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
 
-                if(soap.isChecked()){
-                    soap.setChecked(true);
+                if(cb_soap.isChecked()){
+                    cb_soap.setChecked(true);
                     soap_value = "1";
 
                 }else{
-                    soap.setChecked(false);
+                    cb_soap.setChecked(false);
                     soap_value = "0";
                 }
             }
         });
 
-        maintainance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_maintainance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(maintainance.isChecked()){
-                    maintainance.setChecked(true);
+                if(cb_maintainance.isChecked()){
+                    cb_maintainance.setChecked(true);
                     main_value = "1";
 
                 }else{
-                    maintainance.setChecked(false);
+                    cb_maintainance.setChecked(false);
                     main_value = "0";
                 }
             }
@@ -186,9 +185,9 @@ public class Bathroom extends AppCompatActivity {
 //    Sending all requirements to server with this click
     public void confirmDemand(View view){
 
-        String comment = say_something_bell.getText().toString().trim();
+        String comment = et_say_something_bell.getText().toString().trim();
 
-        if(towels.isChecked() || soap.isChecked() || maintainance.isChecked()){
+        if(cb_towels.isChecked() || cb_soap.isChecked() || cb_maintainance.isChecked()){
 
             JSONObject obj  =new JSONObject();
             try {
@@ -200,17 +199,21 @@ public class Bathroom extends AppCompatActivity {
                 obj.put("maintenance", main_value);
 
                 postJsonData(Config.innDemand+"bathessentials/save/", obj.toString());
-                say_something_bell.getText().clear();
+                et_say_something_bell.getText().clear();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }else if(towels.isChecked() == false && soap.isChecked() == false && maintainance.isChecked() == false){
-//            snackbar = Snackbar.make(coordinatorLayout, "Please fill to confirm", Snackbar.LENGTH_LONG)
+        }else if(cb_towels.isChecked() == false && cb_soap.isChecked() == false
+                && cb_maintainance.isChecked() == false){
+//            snackbar = Snackbar.make(coordinatorLayout, "Please fill to confirm",
+// Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null);
 ////                        View snackbarView = snackbar.getView();
 ////                        snackbarView.setBackgroundColor(Color.YELLOW);
-////                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-////                        textView.setTextColor(getResources().getColor(R.color.confirm_demand_click));
+////                        TextView textView = (TextView) snackbarView.findViewById(android.s
+// upport.design.R.id.snackbar_text);
+////                        textView.setTextColor(getResources().getColor(R.color.
+// confirm_demand_click));
 //            snackbar.show();
         }
     }

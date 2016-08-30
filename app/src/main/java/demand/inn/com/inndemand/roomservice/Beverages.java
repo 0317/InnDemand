@@ -52,12 +52,12 @@ public class Beverages extends AppCompatActivity {
     AppPreferences prefs;
 
     //UI Class call for the screen
-    CheckBox water_check, soda_check, ice_check, glass_check;
-    LinearLayout confirmDemand;
+    CheckBox cb_water_check, cb_soda_check, cb_ice_check, cb_glass_check;
+    LinearLayout ll_confirmDemand;
     Toolbar toolbar;
 
     //Linearlayout for Options provided for beverages side services (water, soda, ice, glass)
-    LinearLayout water_bottle, soda_bottle, ice_bottle, glass_bottle;
+    LinearLayout ll_water_bottle, ll_soda_bottle, ll_ice_bottle, ll_glass_bottle;
 
     //Others
     EditText say_Something;
@@ -99,15 +99,15 @@ public class Beverages extends AppCompatActivity {
         });
 
         //UI Initialize area
-        water_bottle = (LinearLayout) findViewById(R.id.water_bottle);
-        soda_bottle = (LinearLayout) findViewById(R.id.soda_bottle);
-        ice_bottle = (LinearLayout) findViewById(R.id.ice_bottle);
-        glass_bottle = (LinearLayout) findViewById(R.id.glass_bottle);
-        confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_beverages);
-        water_check = (CheckBox) findViewById(R.id.water_bottles_beverages);
-        soda_check = (CheckBox) findViewById(R.id.soda_bottles_beverages);
-        ice_check = (CheckBox) findViewById(R.id.ice_buckets_beverages);
-        glass_check = (CheckBox) findViewById(R.id.glasses_beverages);
+        ll_water_bottle = (LinearLayout) findViewById(R.id.water_bottle);
+        ll_soda_bottle = (LinearLayout) findViewById(R.id.soda_bottle);
+        ll_ice_bottle = (LinearLayout) findViewById(R.id.ice_bottle);
+        ll_glass_bottle = (LinearLayout) findViewById(R.id.glass_bottle);
+        ll_confirmDemand = (LinearLayout) findViewById(R.id.confirm_demand_click_beverages);
+        cb_water_check = (CheckBox) findViewById(R.id.water_bottles_beverages);
+        cb_soda_check = (CheckBox) findViewById(R.id.soda_bottles_beverages);
+        cb_ice_check = (CheckBox) findViewById(R.id.ice_buckets_beverages);
+        cb_glass_check = (CheckBox) findViewById(R.id.glasses_beverages);
         say_Something = (EditText) findViewById(R.id.say_something_bell);
 
 //        Coding to get current time/date
@@ -122,84 +122,84 @@ public class Beverages extends AppCompatActivity {
         //Condition to show which options hotel is providing
 //        availability of the items shown accordingly out of these
         if(prefs.getWater() == false)
-            water_bottle.setVisibility(View.GONE);
+            ll_water_bottle.setVisibility(View.GONE);
         else
-            water_bottle.setVisibility(View.VISIBLE);
+            ll_water_bottle.setVisibility(View.VISIBLE);
 
         if(prefs.getSoda() == false)
-            soda_bottle.setVisibility(View.GONE);
+            ll_soda_bottle.setVisibility(View.GONE);
         else
-            soda_bottle.setVisibility(View.VISIBLE);
+            ll_soda_bottle.setVisibility(View.VISIBLE);
 
         if(prefs.getIce_bucket() == false)
-            ice_bottle.setVisibility(View.GONE);
+            ll_ice_bottle.setVisibility(View.GONE);
         else
-            ice_bottle.setVisibility(View.VISIBLE);
+            ll_ice_bottle.setVisibility(View.VISIBLE);
 
         if(prefs.getGlass() == false)
-            glass_bottle.setVisibility(View.GONE);
+            ll_glass_bottle.setVisibility(View.GONE);
         else
-            glass_bottle.setVisibility(View.VISIBLE);
+            ll_glass_bottle.setVisibility(View.VISIBLE);
 
         //Click call area (ImageView)
         //Selection of items(Glass/ Water/ Soda/ Ice) for the room
 //        Boolean value check = true and int value = 1 means User demamds for Item
 //        Boolean value check = false and int value = 0 means no demand
-        water_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_water_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
-                if(water_check.isChecked()){
-                    water_check.setChecked(true);
+                if(cb_water_check.isChecked()){
+                    cb_water_check.setChecked(true);
                     water_value = "1";
                 }else{
-                    water_check.setChecked(false);
+                    cb_water_check.setChecked(false);
                     water_value = "0";
                 }
             }
         });
 
-        soda_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_soda_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
-                if(soda_check.isChecked()){
-                    soda_check.setChecked(true);
+                if(cb_soda_check.isChecked()){
+                    cb_soda_check.setChecked(true);
                     soda_value = "1";
                 }else{
-                    soda_check.setChecked(false);
+                    cb_soda_check.setChecked(false);
                     soda_value = "0";
                 }
             }
         });
 
-        ice_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_ice_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
-                if(ice_check.isChecked()){
-                    ice_check.setChecked(true);
+                if(cb_ice_check.isChecked()){
+                    cb_ice_check.setChecked(true);
                     ice_value = "1";
                 }else{
-                    ice_check.setChecked(false);
+                    cb_ice_check.setChecked(false);
                     ice_value = "0";
                 }
             }
         });
 
-        glass_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_glass_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
-                if(glass_check.isChecked()){
-                    glass_check.setChecked(true);
+                if(cb_glass_check.isChecked()){
+                    cb_glass_check.setChecked(true);
                     glass_value = "1";
                 }else{
-                    glass_check.setChecked(false);
+                    cb_glass_check.setChecked(false);
                     glass_value = "0";
                 }
             }
@@ -208,12 +208,13 @@ public class Beverages extends AppCompatActivity {
 
 //        Button Click at the bottom of the screen
 //        Sending all requirements to server with this click
-        confirmDemand.setOnClickListener(new View.OnClickListener() {
+        ll_confirmDemand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String saySomething = say_Something.getText().toString().trim();
 
-                if(water_check.isChecked() == false && soda_check.isChecked() == false && ice_check.isChecked() == false && glass_check.isChecked() == false){
+                if(cb_water_check.isChecked() == false && cb_soda_check.isChecked() == false &&
+                        cb_ice_check.isChecked() == false && cb_glass_check.isChecked() == false){
 
                 }else{
                     JSONObject obj  =new JSONObject();

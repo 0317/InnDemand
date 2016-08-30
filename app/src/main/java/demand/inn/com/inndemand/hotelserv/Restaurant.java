@@ -38,6 +38,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -290,15 +291,11 @@ public class Restaurant extends AppCompatActivity{
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message"));
 
         if(nu.isConnectingToInternet()) {
-//            showProgressDialog();
-            if(prefs.getFm_restaurant() == true) {
+            if(prefs.getFm_restaurant() == true)
                 restaurant_text.setText(R.string.restaurant_servenotavailable);
-                hideProgressDialog();
-            } else {
+            else
                 restaurant_text.setText(R.string.restaurant_serveavailable);
-                hideProgressDialog();
-//                getData();
-            }
+
         }else{
             networkClick();
         }
@@ -307,17 +304,15 @@ public class Restaurant extends AppCompatActivity{
 
          /*
          * Here trying to get Category for the Fragments (Tabs)
-         * Fetching category (Tab Names) from Database (SQLite) which was inserted in last page
-         * coding section.
+         * Fetching category (Tab Names) from Database (SQLite) which was inserted in Dashboard
+         * page coding section.
          */
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        List<TabData> tabdata = db.getAllCategory();
+       /* List<TabData> tabdata = db.getAllCategory();
 
         Log.d("TabData", "check: "+tabdata);
         for(TabData tab : tabdata) {
-//            Bundle bundle = new Bundle();
-//            bundle.putString("category_id", tab.getName());
 
             TabData data = new TabData(tab.getName(), tab.getType());
             tabData.add(data);
@@ -330,17 +325,31 @@ public class Restaurant extends AppCompatActivity{
 
             adapter.addFragment(appFrf, tab.getName());
 
-            adapter.notifyDataSetChanged();
+        }
+*/
+
+        List<TabData> tabdata = db.getAllCategory();
+
+        Log.d("TabData", "check: " + tabdata);
+        final HashMap<Integer, String> tabMap = new HashMap<>();
+        for (int i = 0; i < tabdata.size(); i++) {
+            TabData data = new TabData(tabdata.get(i).getName(), tabdata.get(i).getType());
+            tabData.add(data);
+
+            Fragment appFrf = new Appetizer();
+            Bundle bundle = new Bundle();
+            bundle.putString("title", tabdata.get(i).getName());
+            appFrf.setArguments(bundle);
+            adapter.addFragment(appFrf, tabdata.get(i).getName());
+            tabMap.put(i, tabdata.get(i).getName());
+        }
+
+
             viewPager.setAdapter(adapter);
 
             tabLayout.setupWithViewPager(viewPager);
 
-            adapter.notifyDataSetChanged();
-        }
-
-//        Cursor cursor = db.getData(data.getCategory());
-//        cursor.moveToFirst();
-//        String getValue = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRCATEGORY));
+//            adapter.notifyDataSetChanged();
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -350,10 +359,15 @@ public class Restaurant extends AppCompatActivity{
 
             @Override
             public void onPageSelected(int position) {
-                Log.d("PageSelected", "Check: "+position);
+                /*Log.d("PageSelected", "Check: "+position);
                 Intent in = new Intent("position-message");
                 in.putExtra("positionsof", type_id);
-                LocalBroadcastManager.getInstance(Restaurant.this).sendBroadcast(in);
+                LocalBroadcastManager.getInstance(Restaurant.this).sendBroadcast(in);*/
+
+                String tabName = tabMap.get(position);
+                //Get the data on basis of tab name from table
+                adapter.getItem(position);
+                //Set data for the particullar fragment
             }
 
             @Override

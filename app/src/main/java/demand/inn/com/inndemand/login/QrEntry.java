@@ -34,7 +34,7 @@ public class QrEntry extends AppCompatActivity{
 
     //UI Class Area
     //Button to start QRScan
-    Button click_OK;
+    Button bt_click_OK;
 
     //Spinner to select language option
     Spinner languages;
@@ -45,7 +45,7 @@ public class QrEntry extends AppCompatActivity{
         setContentView(R.layout.qrentry);
         prefs = new AppPreferences(this);
 
-        click_OK = (Button) findViewById(R.id.click_ok);
+        bt_click_OK = (Button) findViewById(R.id.click_ok);
         addListenerOnSpinnerItemSelection();
 
     }

@@ -48,25 +48,25 @@ import demand.inn.com.inndemand.volleycall.AppController;
 
 public class Laundry extends AppCompatActivity {
 
-//    Utility call area
+    //Utility call area
     NetworkUtility nu;
     AppPreferences prefs;
 
     static final int TIME_DIALOG_ID = 1111;
 
-//    UI Class call for the screen
-    EditText say_something;
-    TextView now, pickTime;
-    TextView note;
+    //UI Class call for the screen
+    EditText et_say_something;
+    TextView txt_now, txt_pickTime;
+    TextView txt_note;
     Toolbar toolbar;
 
-//    Others
+    //Others
     String saySomething;
 
     //Class call Area
     AppController appController;
 
-//    String and others to get current time and date
+    //String and others to get current time and date
     Calendar c;
     SimpleDateFormat df, date;
     String formattedDate, getDate;
@@ -101,16 +101,16 @@ public class Laundry extends AppCompatActivity {
         });
 
         //UI initialize area
-        say_something = (EditText) findViewById(R.id.say_something_laundry);
+        et_say_something = (EditText) findViewById(R.id.say_something_laundry);
 
         //TextView UI Initialize area
-        note = (TextView) findViewById(R.id.note_laundry);
-        note.setText(prefs.getLaundrynote());
-        now = (TextView) findViewById(R.id.now_laundry);
-        pickTime = (TextView) findViewById(R.id.pickTime_laundry);
+        txt_note = (TextView) findViewById(R.id.note_laundry);
+        txt_note.setText(prefs.getLaundrynote());
+        txt_now = (TextView) findViewById(R.id.now_laundry);
+        txt_pickTime = (TextView) findViewById(R.id.pickTime_laundry);
 
         //Settings static values for the activity (fetched from server before)
-        note.setText(prefs.getLaundrynote());
+        txt_note.setText(prefs.getLaundrynote());
 
 //        Coding to get current time/date
         c = Calendar.getInstance();
@@ -124,7 +124,7 @@ public class Laundry extends AppCompatActivity {
         // formattedDate have current date/time
 
 //        Now click to pick current time and send to server
-        now.setOnClickListener(new View.OnClickListener() {
+        txt_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 c = Calendar.getInstance();
@@ -139,7 +139,7 @@ public class Laundry extends AppCompatActivity {
         });
 
 //        Open pop-ups by matching key and allows to set time
-        pickTime.setOnClickListener(new View.OnClickListener() {
+        txt_pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Add Click Listener
@@ -218,7 +218,7 @@ public class Laundry extends AppCompatActivity {
 //      Sending all requirements to server with this click
     public void confirmDemand(View view){
         //string call to get value of edittext
-        saySomething = say_something.getText().toString().trim();
+        saySomething = et_say_something.getText().toString().trim();
 
         if(saySomething == null){
 
@@ -234,7 +234,7 @@ public class Laundry extends AppCompatActivity {
 
                 postJsonData(Config.innDemand + "laundry/save/", obj.toString());
 
-                say_something.getText().clear();
+                et_say_something.getText().clear();
 
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -6,8 +6,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.bumptech.glide.util.Util;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +17,8 @@ import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
 import demand.inn.com.inndemand.constants.TabData;
 import demand.inn.com.inndemand.constants.Translate;
-import demand.inn.com.inndemand.constants.Utils;
 import demand.inn.com.inndemand.model.AppetiserData;
 import demand.inn.com.inndemand.model.BarDataModel;
-import demand.inn.com.inndemand.model.ResturantDataModel;
 
 /**
  * Created by akash
@@ -30,7 +27,7 @@ import demand.inn.com.inndemand.model.ResturantDataModel;
 public class DBHelper extends SQLiteOpenHelper {
 
     // If change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 10;
     public static final String DATABASE_NAME = "Inndemand";
 
     //Table created for Misc Info Inndemand
@@ -121,6 +118,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_RRDESC + " TEXT," + COLUMN_RRCATEGORY + " TEXT,"
                 + COLUMN_RRAMOUNT + " TEXT," + COLUMN_RRTABS + " TEXT" + ")";
 
+        Log.d("RestaurantDetailsList", "Checks: "+CREATE_TABLE_RESTAURANTS);
+
         String CREATE_TABLE_BAR = "CREATE TABLE " + TABLE_BAR + "("
                 + COLUMN_BLID + " INTEGER PRIMARY KEY," + COLUMN_BLNAME + " TEXT,"
                 + COLUMN_BLDESC + " TEXT," + COLUMN_BLCATEGORY + " TEXT,"
@@ -206,6 +205,7 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_RRID, cartData.getId());
         contentValues.put(COLUMN_RRNAME, cartData.getName());
         contentValues.put(COLUMN_RRDESC, cartData.getDescription());
         contentValues.put(COLUMN_RRCATEGORY, cartData.getCategory());
@@ -274,7 +274,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public Cursor getData(String title){
+    public Cursor getData(int title){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor =  db.rawQuery( "select * from restaurantlistss where categoryname="+title,
                 null);
@@ -383,17 +383,46 @@ public class DBHelper extends SQLiteOpenHelper {
         return dataList;
     }
 
-    public AppetiserData getAllDatarl(String title){
+    public AppetiserData getAllDatarls(String title){
         AppetiserData data = new AppetiserData();
 
-        title = COLUMN_RRCATEGORY;
-
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS +" where "+COLUMN_RRCATEGORY+" = "
-                +title;
+        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS + " where categoryname = '"
+                + title + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                data.setId(cursor.getString(1));
+                data.setName(cursor.getString(2));
+                data.setDescription(cursor.getString(3));
+                data.setCategory(cursor.getString(4));
+                data.setPrice(cursor.getString(5));
+
+                // Adding data to list
+
+            } while (cursor.moveToNext());
+        }
+
+        return data;
+    }
+
+   /* public AppetiserData getAllDatarls(String title) {
+        AppetiserData data = new AppetiserData();
+
+
+
+        *//*SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_RESTLISTS, null, COLUMN_RRCATEGORY + " = ?",
+                new String[]{title}, null, null, null);
+        cursor.moveToFirst();
+*//*
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_RESTLISTS, null, "categoryname=?",
+                new String[]{title}, null, null, null);
         cursor.moveToFirst();
 
         // looping through all rows and adding to list
@@ -413,12 +442,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return data;
     }
-
+*/
     public List<AppetiserData> getAllDatarl(){
         List<AppetiserData> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS +" where "+COLUMN_RRCATEGORY+" = ";
+        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -429,11 +458,11 @@ public class DBHelper extends SQLiteOpenHelper {
             do {
                 AppetiserData data = new AppetiserData();
 
-                data.setName(cursor.getString(1));
-                data.setDescription(cursor.getString(2));
-                data.setCategory(cursor.getString(3));
-                data.setPrice(cursor.getString(4));
-                data.setSubcategory(cursor.getString(5));
+                data.setId(cursor.getString(1));
+                data.setName(cursor.getString(2));
+                data.setDescription(cursor.getString(3));
+                data.setCategory(cursor.getString(4));
+                data.setPrice(cursor.getString(5));
 
                 // Adding data to list
                 dataList.add(data);

@@ -50,9 +50,8 @@ public class BellBoy extends AppCompatActivity {
     AppPreferences prefs;
 
     //UI Class call for the screen
-    LinearLayout backPress, confirm_demand_click;
-    EditText say_something;
-    Snackbar snackbar;
+    LinearLayout ll_confirm_demand_click;
+    EditText et_say_something;
     CoordinatorLayout coordinatorLayout;
     Toolbar toolbar;
 
@@ -99,16 +98,16 @@ public class BellBoy extends AppCompatActivity {
 
 //        UI Class Initialisation for the screen
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        say_something = (EditText) findViewById(R.id.say_something_bell);
+        et_say_something = (EditText) findViewById(R.id.say_something_bell);
 
 //        Button Click at the bottom of the screen
 //        Sending all requirements to server with this click
-        confirm_demand_click = (LinearLayout) findViewById(R.id.confirm_demand_click);
-        confirm_demand_click.setOnClickListener(new View.OnClickListener() {
+        ll_confirm_demand_click = (LinearLayout) findViewById(R.id.confirm_demand_click);
+        ll_confirm_demand_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //string call to get value of edittext
-                saySomething = say_something.getText().toString().trim();
+                saySomething = et_say_something.getText().toString().trim();
 
                 if(saySomething == null || saySomething.equalsIgnoreCase("")){
 //            snackbar = Snackbar.make(coordinatorLayout, "Please fill to confirm", Snackbar.LENGTH_LONG)
@@ -129,7 +128,7 @@ public class BellBoy extends AppCompatActivity {
 
                         postJsonData(Config.innDemand + "bellboy/save/", obj.toString());
 
-                        say_something.getText().clear();
+                        et_say_something.getText().clear();
 
                     } catch (JSONException e) {
                         e.printStackTrace();

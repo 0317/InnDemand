@@ -58,11 +58,10 @@ public class WakeUp extends AppCompatActivity {
     static final int TIME_DIALOG_ID = 1111;
 
     //UI Class call for the screen
-    LinearLayout back_press, confirm_demand,cancel_wakeUp;
-    RadioButton today, tomorrow;
-    TextView pickTime, setTime, changeTime;
+    LinearLayout ll_confirm_demand, ll_cancel_wakeUp;
+    TextView txt_pickTime, txt_setTime, txt_changeTime;
     Toolbar toolbar;
-    EditText say_something_bell;
+    EditText et_say_something_bell;
 
 //   String and others to get current time and date
     Calendar c;
@@ -111,16 +110,16 @@ public class WakeUp extends AppCompatActivity {
 //        formattedDate have current date/time
 
 //        UI Class Initialisation for the screen
-        confirm_demand = (LinearLayout) findViewById(R.id.confirm_demand_click_wakeup);
-        pickTime = (TextView) findViewById(R.id.currentTime_wakeup);
-        setTime = (TextView) findViewById(R.id.set_time);
-        changeTime = (TextView) findViewById(R.id.changeTime_wakeup);
-        cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
-        say_something_bell = (EditText) findViewById(R.id.say_something_bell);
-        changeTime.setVisibility(View.GONE);
+        ll_confirm_demand = (LinearLayout) findViewById(R.id.confirm_demand_click_wakeup);
+        txt_pickTime = (TextView) findViewById(R.id.currentTime_wakeup);
+        txt_setTime = (TextView) findViewById(R.id.set_time);
+        txt_changeTime = (TextView) findViewById(R.id.changeTime_wakeup);
+        ll_cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
+        et_say_something_bell = (EditText) findViewById(R.id.say_something_bell);
+        txt_changeTime.setVisibility(View.GONE);
 
 //        Open pop-ups by matching key and allows to set time
-        pickTime.setOnClickListener(new View.OnClickListener() {
+        txt_pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(TIME_DIALOG_ID);
@@ -128,7 +127,7 @@ public class WakeUp extends AppCompatActivity {
         });
 
 //        Open pop-ups by matching key and allows to change time
-        changeTime.setOnClickListener(new View.OnClickListener() {
+        txt_changeTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(TIME_DIALOG_ID);
@@ -137,11 +136,11 @@ public class WakeUp extends AppCompatActivity {
 
 //        Button Click at the bottom of the screen
 //        Sending all requirements to server with this click
-        confirm_demand.setOnClickListener(new View.OnClickListener() {
+        ll_confirm_demand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //string call to get value of edittext
-                String saySomething = say_something_bell.getText().toString().trim();
+                String saySomething = et_say_something_bell.getText().toString().trim();
 
                 if (saySomething == null) {
 
@@ -157,7 +156,7 @@ public class WakeUp extends AppCompatActivity {
 
                         postJsonData(Config.innDemand + "wakeup/save/", obj.toString());
 
-                        say_something_bell.getText().clear();
+                        et_say_something_bell.getText().clear();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -166,13 +165,13 @@ public class WakeUp extends AppCompatActivity {
             }
         });
 
-        cancel_wakeUp.setOnClickListener(new View.OnClickListener() {
+        ll_cancel_wakeUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTime.setText("");
-                changeTime.setVisibility(View.GONE);
-                pickTime.setText("PICK A TIME");
-                pickTime.setEnabled(true);
+                txt_setTime.setText("");
+                txt_changeTime.setVisibility(View.GONE);
+                txt_pickTime.setText("PICK A TIME");
+                txt_pickTime.setEnabled(true);
             }
         });
 
@@ -241,10 +240,10 @@ public class WakeUp extends AppCompatActivity {
         getTime = new StringBuilder().append(hours).append(':')
                 .append(minutes).append(":").append("00").toString(); /*append(timeSet).toString()*/
 
-        setTime.setText(getTime);
-        changeTime.setVisibility(View.VISIBLE);
-        pickTime.setText("WAKE UP TIME");
-        pickTime.setEnabled(false);
+        txt_setTime.setText(getTime);
+        txt_changeTime.setVisibility(View.VISIBLE);
+        txt_pickTime.setText("WAKE UP TIME");
+        txt_pickTime.setEnabled(false);
 
         finalTime = getDate+" "+getTime;
 

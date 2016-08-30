@@ -86,12 +86,13 @@ public class Appetizer extends Fragment {
     private boolean isViewShown = false;
 
     String title = "";
+    int is_set = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(getArguments().getString("title")!=null)
+        if(getArguments().getString("title") != null)
             title = getArguments().getString("title");
     }
 
@@ -154,24 +155,34 @@ public class Appetizer extends Fragment {
 
             List<AppetiserData> rest_list = db.getAllDatarl();
 
-        AppetiserData rest_lists = db.getAllDatarl(title);
-
+            AppetiserData rest_lists = db.getAllDatarls(title);
 
             Log.d("RestaurantModel: ", "Check: "+rest_list);
 
-//            for(AppetiserData data : rest_list){
-//
-//                Cursor cursor = db.getData();
-//                cursor.moveToFirst();
-//                String name = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRNAME));
-//                String desc = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRDESC));
-//                String price = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRAMOUNT));
-//                String sub = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_RRTABS));
+        AppetiserData modelss = new AppetiserData(rest_lists.getName(), rest_lists.getDescription(),
+                rest_lists.getCategory(), rest_lists.getPrice(), "");
+        cardList.add(modelss);
 
-                AppetiserData modelss = new AppetiserData(rest_lists.getName(),
-                        rest_lists.getDescription(), "", rest_lists.getPrice(), "");
-                cardList.add(modelss);
-//            }
+           /* for(AppetiserData data : rest_list) {
+              *//*  is_set = Integer.parseInt(data.getId());
+                Cursor cursor;
+                cursor = db.getData(is_set);
+                if (cursor.getCount() != 0) {
+                    if (cursor.moveToFirst()) {
+                        do {
+                            String name = cursor.getString
+                                    (cursor.getColumnIndex(DBHelper.COLUMN_RRNAME));
+                            String desc = cursor.getString
+                                    (cursor.getColumnIndex(DBHelper.COLUMN_RRDESC));
+                            String price = cursor.getString
+                                    (cursor.getColumnIndex(DBHelper.COLUMN_RRAMOUNT));
+                            String sub = cursor.getString
+                                    (cursor.getColumnIndex(DBHelper.COLUMN_RRTABS));*//*
+
+                            AppetiserData modelss = new AppetiserData(name, desc, "", price, sub);
+                            cardList.add(modelss);
+
+                        }*/
 
         return view;
     }
@@ -203,10 +214,6 @@ public class Appetizer extends Fragment {
         }
     }*/
 
-    public void notifyChange(){
-        adapter.notifyDataSetChanged();
-    }
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)
@@ -218,7 +225,6 @@ public class Appetizer extends Fragment {
 
         return  true;
     }
-
 
 
     //Translation Area Coding .....

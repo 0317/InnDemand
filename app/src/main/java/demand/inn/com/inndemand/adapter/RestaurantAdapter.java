@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -24,13 +22,9 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.constants.Header;
 import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.model.AppetiserData;
-import demand.inn.com.inndemand.model.ResturantDataModel;
-import demand.inn.com.inndemand.setting.Feedback;
 import demand.inn.com.inndemand.utility.AppPreferences;
 
 /**
@@ -44,8 +38,6 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     private List<AppetiserData> cartData;
     private List<AppetiserData> itemprice;
     private Context mContext;
-    int counter = 0;
-    int count = 0;
     int finalamount;
     String dataItem;
     String dataCash;
@@ -56,11 +48,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     // Start with first item selected
     private int selectedItem = 0;
 
-    Header header;
-
     //DATABASE
     DBHelper db;
     SharedPreferences preferences;
+
     private static MyClickListener myClickListener;
 
     @Override

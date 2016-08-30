@@ -120,10 +120,8 @@ public class DashBoard extends AppCompatActivity implements
     AppPreferences prefs;
 
     //UI Call area for the screen
-    Button checkout;
-    TextView hotel_Name, hotel_Address, hotel_desc, call_hotel;
+    TextView txt_hotel_Name, txt_hotel_Address, txt_call_hotel;
     ImageLoader imageLoader;
-    NetworkImageView imageView;
     ImageView main_backdrop;
     Toolbar toolbar;
 
@@ -131,8 +129,8 @@ public class DashBoard extends AppCompatActivity implements
     public static Activity dash;
 
     //Navigation Details (shows Name, Email and DP on Navigation Drawer)
-    ImageView dp;
-    TextView dp_name, dp_email;
+    ImageView img_dp;
+    TextView txt_dp_name, txt_dp_email;
     Bundle getBundle = null;
 
     //Area to Show Details of Hotel(Includes Restaurant/ Services/ Spa/ Bar or not)
@@ -142,8 +140,6 @@ public class DashBoard extends AppCompatActivity implements
     //String to call hotel, Hotel name, Hotel Pic
     String callHotel;
     String URL, TAG;
-    String about_hotel;
-    String hotelName;
 
     //List Items with Recyclerviews (showing list) and Adapter classes (showing data in the list)
     private RecyclerView recyclerView, restaurantList, barList;
@@ -164,11 +160,6 @@ public class DashBoard extends AppCompatActivity implements
     String to_spa;
     String to_service;
     String to_restaurant;
-    String restaurantId;
-    String barId;
-    String location;
-    String latitude;
-    String longitude;
 
     //Current Date & Time
     Calendar c;
@@ -287,30 +278,30 @@ public class DashBoard extends AppCompatActivity implements
 
         View profile = navigationView.inflateHeaderView(R.layout.nav_header_dash_board);
         profile.findViewById(R.id.head_view);
-        dp = (ImageView) profile.findViewById(R.id.imageView);
-        dp_name = (TextView) profile.findViewById(R.id.drawer_name);
-        dp_email = (TextView) profile.findViewById(R.id.drawer_email);
+        img_dp = (ImageView) profile.findViewById(R.id.imageView);
+        txt_dp_name = (TextView) profile.findViewById(R.id.drawer_name);
+        txt_dp_email = (TextView) profile.findViewById(R.id.drawer_email);
 
 
         //Setting values for DP, Name, Email in Navigation Drawer view
         if(prefs.getUser_fbpic() == null || prefs.getUser_fbpic().equalsIgnoreCase("")) {
             Picasso.with(DashBoard.this).load(prefs.getUser_gpicture())
-                    .transform(new CircleTransform()).into(dp);
+                    .transform(new CircleTransform()).into(img_dp);
         }else {
             Picasso.with(DashBoard.this).load(prefs.getUser_fbpic())
-                    .transform(new CircleTransform()).into(dp);
+                    .transform(new CircleTransform()).into(img_dp);
         }
 
         if(prefs.getUser_fbname() == null || prefs.getUser_fbname().equalsIgnoreCase("")) {
-            dp_name.setText(prefs.getUser_gname());
+            txt_dp_name.setText(prefs.getUser_gname());
         } else {
-            dp_name.setText(prefs.getUser_fbname());
+            txt_dp_name.setText(prefs.getUser_fbname());
         }
 
         if(prefs.getUser_fbemail() == null || prefs.getUser_fbemail().equalsIgnoreCase("")) {
-            dp_email.setText(prefs.getUser_gemail());
+            txt_dp_email.setText(prefs.getUser_gemail());
         } else {
-            dp_email.setText(prefs.getUser_fbemail());
+            txt_dp_email.setText(prefs.getUser_fbemail());
         }
 
         /**
@@ -423,22 +414,22 @@ public class DashBoard extends AppCompatActivity implements
         });
 
         //UI Class initialize for Hotel Name, Address, and call
-        hotel_Name = (TextView) findViewById(R.id.hotel_Name);
-        hotel_Address = (TextView) findViewById(R.id.hotel_Address);
-        call_hotel = (TextView) findViewById(R.id.call_hotel);
+        txt_hotel_Name = (TextView) findViewById(R.id.hotel_Name);
+        txt_hotel_Address = (TextView) findViewById(R.id.hotel_Address);
+        txt_call_hotel = (TextView) findViewById(R.id.call_hotel);
 
             try {
                 if(prefs.getLocaleset() == "en" || prefs.getLocaleset().equals("en")){
-                    hotel_Name.setText(prefs.getHotel_name());
-                    hotel_Address.setText(prefs.getHotel_address());
+                    txt_hotel_Name.setText(prefs.getHotel_name());
+                    txt_hotel_Address.setText(prefs.getHotel_address());
                 }else {
                     String htName = new getTraslatedString().execute(prefs.getLocaleset(),
                             prefs.getHotel_name()).get();
                     String htAddress = new getTraslatedString().execute(prefs.getLocaleset(),
                             prefs.getHotel_address()).get();
 
-                    hotel_Name.setText(htName);
-                    hotel_Address.setText(htAddress);
+                    txt_hotel_Name.setText(htName);
+                    txt_hotel_Address.setText(htAddress);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -1241,8 +1232,8 @@ public class DashBoard extends AppCompatActivity implements
                         String subCategory = object.getString("subcategory");
                         String amount = object.getString("price");
 
-                        db.insertRestaurantItsms(new AppetiserData(itemName, iitemDescription,
-                                category, amount, category));
+                        db.insertRestaurantItsms(new AppetiserData(iids, itemName, iitemDescription,
+                                category, amount));
                         prefs.setData_check(true);
 
 

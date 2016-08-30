@@ -30,14 +30,14 @@ public class RoomServices extends AppCompatActivity {
 
 
     //UI Call Area for the screen
-    Button beverages_click,
-            laundry_click,
-            cab_click,
-            bed_tea_click,
-            bath_essentials_click,
-            bell_boy_click,
-            room_clean_click,
-            wake_up_click;
+    Button bt_beverages_click,
+            bt_laundry_click,
+            bt_cab_click,
+            bt_bed_tea_click,
+            bt_bath_essentials_click,
+            bt_bell_boy_click,
+            bt_room_clean_click,
+            bt_wake_up_click;
 
     Toolbar toolbar;
     TextView services_text;
@@ -73,14 +73,14 @@ public class RoomServices extends AppCompatActivity {
 
 
         //UI Class call for different services (Initialisation)
-        beverages_click = (Button) findViewById(R.id.beverages_click);
-        laundry_click = (Button) findViewById(R.id.laundry_click);
-        cab_click = (Button) findViewById(R.id.cab_click);
-        bed_tea_click = (Button) findViewById(R.id.bed_tea_click);
-        bath_essentials_click = (Button) findViewById(R.id.bath_essentials_click);
-        bell_boy_click = (Button) findViewById(R.id.bell_boy_click);
-        room_clean_click = (Button) findViewById(R.id.roomclean_click);
-        wake_up_click = (Button) findViewById(R.id.wake_up_click);
+        bt_beverages_click = (Button) findViewById(R.id.beverages_click);
+        bt_laundry_click = (Button) findViewById(R.id.laundry_click);
+        bt_cab_click = (Button) findViewById(R.id.cab_click);
+        bt_bed_tea_click = (Button) findViewById(R.id.bed_tea_click);
+        bt_bath_essentials_click = (Button) findViewById(R.id.bath_essentials_click);
+        bt_bell_boy_click = (Button) findViewById(R.id.bell_boy_click);
+        bt_room_clean_click = (Button) findViewById(R.id.roomclean_click);
+        bt_wake_up_click = (Button) findViewById(R.id.wake_up_click);
         services_text = (TextView) findViewById(R.id.services_text);
 
         /*
@@ -89,15 +89,15 @@ public class RoomServices extends AppCompatActivity {
          */
         if(prefs.getFm_service() == true){
             services_text.setText(R.string.roomservicesnotavailable);
-            beverages_click.setClickable(false);
-            beverages_click.setClickable(false);
-            laundry_click.setClickable(false);
-            cab_click.setClickable(false);
-            bed_tea_click.setClickable(false);
-            bath_essentials_click.setClickable(false);
-            bell_boy_click.setClickable(false);
-            room_clean_click.setClickable(false);
-            wake_up_click.setClickable(false);
+            bt_beverages_click.setClickable(false);
+            bt_beverages_click.setClickable(false);
+            bt_laundry_click.setClickable(false);
+            bt_cab_click.setClickable(false);
+            bt_bed_tea_click.setClickable(false);
+            bt_bath_essentials_click.setClickable(false);
+            bt_bell_boy_click.setClickable(false);
+            bt_room_clean_click.setClickable(false);
+            bt_wake_up_click.setClickable(false);
         }else{
             services_text.setText("");
             services_text.setVisibility(View.GONE);
@@ -105,45 +105,44 @@ public class RoomServices extends AppCompatActivity {
 
 
         if(prefs.getBeverage() == false)
-            beverages_click.setVisibility(View.GONE);
+            bt_beverages_click.setVisibility(View.GONE);
         else
-            beverages_click.setVisibility(View.VISIBLE);
+            bt_beverages_click.setVisibility(View.VISIBLE);
 
         if(prefs.getLaundry() == false)
-            laundry_click.setVisibility(View.GONE);
+            bt_laundry_click.setVisibility(View.GONE);
         else
-            laundry_click.setVisibility(View.VISIBLE);
+            bt_laundry_click.setVisibility(View.VISIBLE);
 
         if(prefs.getCab()== false)
-            cab_click.setVisibility(View.GONE);
+            bt_cab_click.setVisibility(View.GONE);
         else
-            cab_click.setVisibility(View.VISIBLE);
+            bt_cab_click.setVisibility(View.VISIBLE);
 
         if(prefs.getBed_tea() == false)
-            bed_tea_click.setVisibility(View.GONE);
+            bt_bed_tea_click.setVisibility(View.GONE);
         else
-            bed_tea_click.setVisibility(View.VISIBLE);
+            bt_bed_tea_click.setVisibility(View.VISIBLE);
 
         if(prefs.getBathroom()== false)
-            bath_essentials_click.setVisibility(View.GONE);
+            bt_bath_essentials_click.setVisibility(View.GONE);
         else
-            bath_essentials_click.setVisibility(View.VISIBLE);
+            bt_bath_essentials_click.setVisibility(View.VISIBLE);
 
         if(prefs.getBell_boy()== false)
-            bell_boy_click.setVisibility(View.GONE);
+            bt_bell_boy_click.setVisibility(View.GONE);
         else
-            bell_boy_click.setVisibility(View.VISIBLE);
+            bt_bell_boy_click.setVisibility(View.VISIBLE);
 
         if(prefs.getRoom_clean()== false)
-            room_clean_click.setVisibility(View.GONE);
+            bt_room_clean_click.setVisibility(View.GONE);
         else
-            room_clean_click.setVisibility(View.VISIBLE);
+            bt_room_clean_click.setVisibility(View.VISIBLE);
 
         if(prefs.getWake_up() == false)
-            wake_up_click.setVisibility(View.GONE);
+            bt_wake_up_click.setVisibility(View.GONE);
         else
-            wake_up_click.setVisibility(View.VISIBLE);
-
+            bt_wake_up_click.setVisibility(View.VISIBLE);
     }
 
     //onClick Method Call for different services

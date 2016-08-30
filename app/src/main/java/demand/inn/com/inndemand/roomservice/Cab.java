@@ -64,13 +64,13 @@ public class Cab extends AppCompatActivity {
     static final int TIME_DIALOG_ID = 1111;
 
     //UI call area
-    LinearLayout confirm;
+    LinearLayout ll_confirm;
     Toolbar toolbar;
-    TextView now, pickTime, changeTime, setTime, set_loc;
-    TextView note;
+    TextView txt_now, txt_pickTime, txt_changeTime, txt_setTime, txt_set_loc;
+    TextView txt_note;
     CoordinatorLayout coordinatorLayout;
-    LinearLayout choose_destination, cancel_wakeUp;
-    EditText say_something;
+    LinearLayout ll_choose_destination, ll_cancel_wakeUp;
+    EditText et_say_something;
 
     //Others
     String saySomething;
@@ -121,25 +121,25 @@ public class Cab extends AppCompatActivity {
 
         //UI Initialize area
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        note = (TextView) findViewById(R.id.note_cab);
-        note.setText(prefs.getCabnote());
-        now = (TextView) findViewById(R.id.now_cab);
-        pickTime = (TextView) findViewById(R.id.currentTime_cab);
-        setTime = (TextView) findViewById(R.id.set_time);
-        set_loc = (TextView) findViewById(R.id.set_location);
-        changeTime = (TextView) findViewById(R.id.changeTime_cab);
-        choose_destination = (LinearLayout) findViewById(R.id.choose_destination);
-        cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
-        say_something = (EditText) findViewById(R.id.say_something);
-        changeTime.setVisibility(View.GONE);
+        txt_note = (TextView) findViewById(R.id.note_cab);
+        txt_note.setText(prefs.getCabnote());
+        txt_now = (TextView) findViewById(R.id.now_cab);
+        txt_pickTime = (TextView) findViewById(R.id.currentTime_cab);
+        txt_setTime = (TextView) findViewById(R.id.set_time);
+        txt_set_loc = (TextView) findViewById(R.id.set_location);
+        txt_changeTime = (TextView) findViewById(R.id.changeTime_cab);
+        ll_choose_destination = (LinearLayout) findViewById(R.id.choose_destination);
+        ll_cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
+        et_say_something = (EditText) findViewById(R.id.say_something);
+        txt_changeTime.setVisibility(View.GONE);
 
-        confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_cab);
+        ll_confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_cab);
 
         //Settings static values for the activity (fetched from server)
-        note.setText(prefs.getCabnote());
+        txt_note.setText(prefs.getCabnote());
 
 //        Click to open Google Place picker API screen to select location
-        choose_destination.setOnClickListener(new View.OnClickListener() {
+        ll_choose_destination.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -164,7 +164,7 @@ public class Cab extends AppCompatActivity {
         getDate = date.format(c.getTime());
         // formattedDate have current date/time
 
-        now.setOnClickListener(new View.OnClickListener() {
+        txt_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 c = Calendar.getInstance();
@@ -178,7 +178,7 @@ public class Cab extends AppCompatActivity {
         });
 
 //        Open pop-ups by matching key and allows to set time
-        pickTime.setOnClickListener(new View.OnClickListener() {
+        txt_pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(TIME_DIALOG_ID);
@@ -187,11 +187,11 @@ public class Cab extends AppCompatActivity {
 
 //        Button Click at the bottom of the screen
 //        Sending all requirements to server with this click
-        confirm.setOnClickListener(new View.OnClickListener() {
+        ll_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //string call to get value of edittext
-                saySomething = say_something.getText().toString().trim();
+                saySomething = et_say_something.getText().toString().trim();
 
                 if (saySomething == null) {
 
@@ -208,7 +208,7 @@ public class Cab extends AppCompatActivity {
 
                         postJsonData(Config.innDemand + "cab/save/", obj.toString());
 
-                        say_something.getText().clear();
+                        et_say_something.getText().clear();
 
 
                     } catch (JSONException e) {
@@ -219,13 +219,13 @@ public class Cab extends AppCompatActivity {
         });
 
 //        If wake-up call is set it is to cancel that call
-        cancel_wakeUp.setOnClickListener(new View.OnClickListener() {
+        ll_cancel_wakeUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTime.setText("");
-                changeTime.setVisibility(View.GONE);
-                pickTime.setText("PICK A TIME:");
-                pickTime.setEnabled(true);
+                txt_setTime.setText("");
+                txt_changeTime.setVisibility(View.GONE);
+                txt_pickTime.setText("PICK A TIME:");
+                txt_pickTime.setEnabled(true);
             }
         });
 
@@ -249,7 +249,7 @@ public class Cab extends AppCompatActivity {
             }
             choosenAddress = address.toString();
             System.out.println("Place Data===="+address+"====="+latLng.longitude+"===="+latLng.latitude);
-            set_loc.setText(address);
+            txt_set_loc.setText(address);
 
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -319,10 +319,10 @@ public class Cab extends AppCompatActivity {
         getTime = new StringBuilder().append(hours).append(':')
                 .append(minutes).append(":").append("00").toString();
 
-        setTime.setText(getTime);
-        changeTime.setVisibility(View.VISIBLE);
-        pickTime.setText("CAB TIME:");
-        pickTime.setEnabled(false);
+        txt_setTime.setText(getTime);
+        txt_changeTime.setVisibility(View.VISIBLE);
+        txt_pickTime.setText("CAB TIME:");
+        txt_pickTime.setEnabled(false);
 
         finalTime = getDate+" "+getTime;
     }

@@ -77,8 +77,8 @@ public class CheckDetails extends AppCompatActivity {
     AppPreferences prefs;
 
     //UI Class area used in this screen
-    EditText detail_name, detail_email;
-    ImageView fb_dp;
+    EditText et_detail_name, et_detail_email;
+    ImageView img_fb_dp;
 
     //Preferences Class Area
     SharedPreferences settings;
@@ -132,12 +132,12 @@ public class CheckDetails extends AppCompatActivity {
         pDialog = new ProgressDialog(CheckDetails.this);
 
         //UI shown on the screen Initialized here
-        detail_name = (EditText) findViewById(R.id.fb_name);
-        detail_email = (EditText) findViewById(R.id.fb_email);
-        fb_dp = (ImageView) findViewById(R.id.fb_dp);
+        et_detail_name = (EditText) findViewById(R.id.fb_name);
+        et_detail_email = (EditText) findViewById(R.id.fb_email);
+        img_fb_dp = (ImageView) findViewById(R.id.fb_dp);
 
         //Email validation (to check email contains requirements or not)
-        detail_email.setInputType(InputType.TYPE_CLASS_TEXT |
+        et_detail_email.setInputType(InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
 
@@ -227,23 +227,23 @@ public class CheckDetails extends AppCompatActivity {
 
         //these details get set from facebook/google data
         if(name == null)
-            detail_name.setText(gName);
+            et_detail_name.setText(gName);
         else
-        detail_name.setText(name+" "+l_name);
+            et_detail_name.setText(name+" "+l_name);
 
-        detail_name.setEnabled(false);
+        et_detail_name.setEnabled(false);
 
         if(email == null)
-        detail_email.setText(gEmail);
+            et_detail_email.setText(gEmail);
         else
-        detail_email.setText(email);
+            et_detail_email.setText(email);
 
         if(dp == null) {
             Picasso.with(this).load(prefs.getUser_gpicture()).transform(new CircleTransform())
-                    .into(fb_dp);
+                    .into(img_fb_dp);
         }
         else {
-            Picasso.with(this).load(dp).transform(new CircleTransform()).into(fb_dp);
+            Picasso.with(this).load(dp).transform(new CircleTransform()).into(img_fb_dp);
         }
     }
 
@@ -254,8 +254,8 @@ public class CheckDetails extends AppCompatActivity {
     public void verifyDetails(View view){
 
         //String initialized to get above mentioned edittext values
-        mName = detail_name.getText().toString();            //can't change name
-        mEmail = detail_email.getText().toString();          //can change email
+        mName = et_detail_name.getText().toString();            //can't change name
+        mEmail = et_detail_email.getText().toString();          //can change email
 
         if(mName == null || mName.equalsIgnoreCase("")){
             Snackbar.make(view, "Please Enter Name", Snackbar.LENGTH_LONG)

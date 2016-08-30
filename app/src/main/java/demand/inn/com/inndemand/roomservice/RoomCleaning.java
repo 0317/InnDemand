@@ -54,9 +54,9 @@ public class RoomCleaning extends AppCompatActivity {
     static final int TIME_DIALOG_ID = 1111;
 
 //    UI Class call for the screen
-    LinearLayout backpress, confirm_demand_click_roomClean;
-    EditText say_something;
-    TextView now, pickTime;
+    LinearLayout ll_confirm_demand_click_roomClean;
+    EditText et_say_something;
+    TextView txt_now, txt_pickTime;
     Toolbar toolbar;
 
 //    String and others to get current time and date
@@ -97,12 +97,12 @@ public class RoomCleaning extends AppCompatActivity {
         });
 
         //UI initialize area
-        confirm_demand_click_roomClean = (LinearLayout) findViewById(R.id.confirm_demand_click_roomClean);
-        say_something = (EditText) findViewById(R.id.say_something_roomClean);
+        ll_confirm_demand_click_roomClean = (LinearLayout) findViewById(R.id.confirm_demand_click_roomClean);
+        et_say_something = (EditText) findViewById(R.id.say_something_roomClean);
 
         //TextView UI Initialize area
-        now = (TextView) findViewById(R.id.now_roomClean);
-        pickTime = (TextView) findViewById(R.id.pickTime_roomClean);
+        txt_now = (TextView) findViewById(R.id.now_roomClean);
+        txt_pickTime = (TextView) findViewById(R.id.pickTime_roomClean);
 
 //         Coding to get current time/date
         c = Calendar.getInstance();
@@ -116,7 +116,7 @@ public class RoomCleaning extends AppCompatActivity {
         // formattedDate have current date/time
 
 //        Now click to pick current time and send to server
-        now.setOnClickListener(new View.OnClickListener() {
+        txt_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 c = Calendar.getInstance();
@@ -131,7 +131,7 @@ public class RoomCleaning extends AppCompatActivity {
         });
 
 //        Open pop-ups by matching key and allows to set time
-        pickTime.setOnClickListener(new View.OnClickListener() {
+        txt_pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(TIME_DIALOG_ID);
@@ -140,16 +140,16 @@ public class RoomCleaning extends AppCompatActivity {
 
 //        Button Click at the bottom of the screen
 //        Sending all requirements to server with this click
-        confirm_demand_click_roomClean.setOnClickListener(new View.OnClickListener() {
+        ll_confirm_demand_click_roomClean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //string call to get value of edittext
-                saySomething = say_something.getText().toString().trim();
+                saySomething = et_say_something.getText().toString().trim();
 
                 if(saySomething == "")
                     saySomething = "none";
                 else
-                    saySomething = say_something.getText().toString().trim();
+                    saySomething = et_say_something.getText().toString().trim();
 
                     JSONObject obj = new JSONObject();
 
@@ -161,7 +161,7 @@ public class RoomCleaning extends AppCompatActivity {
 
                         postJsonData(Config.innDemand + "roomcleaning/save/", obj.toString());
 
-                        say_something.getText().clear();
+                        et_say_something.getText().clear();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
