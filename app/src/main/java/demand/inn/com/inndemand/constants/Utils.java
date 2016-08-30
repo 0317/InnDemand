@@ -1,72 +1,7 @@
 package demand.inn.com.inndemand.constants;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
-import android.text.Html;
-import android.text.Spanned;
-import android.util.Base64;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.toolbox.NetworkImageView;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-import javax.net.ssl.HttpsURLConnection;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.security.MessageDigest;
-import java.util.*;
-import java.util.regex.Pattern;
-
-import demand.inn.com.inndemand.utils.PicassoEx;
-
-//9650275007;	
+import android.provider.BaseColumns;
 
 /**
  * All common methods are defined here as a public static.
@@ -75,24 +10,67 @@ import demand.inn.com.inndemand.utils.PicassoEx;
 
 public class Utils  {
 
-    //COLUMNS for Restaurant Items
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_DESC = "desc";
-    public static final String COLUMN_CATEGORY = "categoryname";
-    public static final String COLUMN_AMOUNT = "amount";
-    public static final String COLUMN_FOOD = "food";
-    public static final String COLUMN_SUBCATEGORY = "subcategory";
+    private Utils(){
 
-    //COLUMNS for Bar Items
-    public static final String COLUMN_BLID = "id";
-    public static final String COLUMN_BLNAME = "name";
-    public static final String COLUMN_BLDESC = "desc";
-    public static final String COLUMN_BLCATEGORY = "categorybar";
-    public static final String COLUMN_BLAMOUNT = "amount";
-    public static final String COLUMN_BLFOOD = "food";
-    public static final String COLUMN_BLSUBCATEGORY = "subcategory";
-    public static final String COLUMN_BRID= "rid";
-    public static final String COLUMN_BCtID= "cid";
+    }
 
-   }
+    public static class FeedEntry implements BaseColumns {
+
+        //Table created for Misc Info Inndemand
+        public static final String TABLE_MISC = "misc";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_DESC = "desc";
+
+        //Table created for Restaurant List Inndemand
+        public static final String TABLE_RESTAURANTLIST = "restaurantlist";
+        public static final String COLUMN_RID = "id";
+        public static final String COLUMN_RNAME = "name";
+        public static final String COLUMN_RDESC = "desc";
+
+        //Table created for Bar List Inndemand
+        public static final String TABLE_BARLIST = "barlist";
+        public static final String COLUMN_BID = "id";
+        public static final String COLUMN_BNAME = "name";
+        public static final String COLUMN_BDESC = "desc";
+
+        //Table created for Category(Restaurant) items for Inndemand
+        public static final String TABLE_CATEGORY = "category";
+        public static final String COLUMN_CTID = "id";
+        public static final String COLUMN_CTNAME = "name";
+        public static final String COLUMN_CTTYPE = "type";
+
+        //Table created for Category(Bar) items for Inndemand
+        public static final String TABLE_BRCATEGORY = "barcategory";
+        public static final String COLUMN_BRTID = "id";
+        public static final String COLUMN_BRNAME = "name";
+        public static final String COLUMN_BRTYPE = "type";
+
+        //Table created for Cart for Inndemand
+        public static final String TABLE_CART = "cart";
+        public static final String COLUMN_CID = "id";
+        public static final String COLUMN_CNAME = "name";
+        public static final String COLUMN_CAMOUNT = "amount";
+
+        //COLUMNS for Restaurant Items
+        public static final String TABLE_RESTLISTS = "restlists";
+        public static final String COLUMN_RRID = "id";
+        public static final String COLUMN_RRNAME = "name";
+        public static final String COLUMN_RRDESC = "desc";
+        public static final String COLUMN_RRCATEGORY = "categoryname";
+        public static final String COLUMN_RRAMOUNT = "amount";
+        public static final String COLUMN_RRFOOD = "food";
+        public static final String COLUMN_RRSUBCATEGORY = "subcategory";
+
+        //COLUMNS for Bar Items
+        public static final String TABLE_BAR = "barlists";
+        public static final String COLUMN_BLID = "id";
+        public static final String COLUMN_BLNAME = "name";
+        public static final String COLUMN_BLDESC = "desc";
+        public static final String COLUMN_BLCATEGORY = "categorybar";
+        public static final String COLUMN_BLAMOUNT = "amount";
+        public static final String COLUMN_BLFOOD = "food";
+        public static final String COLUMN_BLSUBCATEGORY = "subcategory";
+
+    }
+}

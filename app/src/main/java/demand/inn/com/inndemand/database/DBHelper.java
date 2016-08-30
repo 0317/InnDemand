@@ -17,6 +17,7 @@ import demand.inn.com.inndemand.constants.HotelData;
 import demand.inn.com.inndemand.constants.ListData;
 import demand.inn.com.inndemand.constants.TabData;
 import demand.inn.com.inndemand.constants.Translate;
+import demand.inn.com.inndemand.constants.Utils;
 import demand.inn.com.inndemand.model.AppetiserData;
 import demand.inn.com.inndemand.model.BarDataModel;
 
@@ -27,116 +28,71 @@ import demand.inn.com.inndemand.model.BarDataModel;
 public class DBHelper extends SQLiteOpenHelper {
 
     // If change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 11;
     public static final String DATABASE_NAME = "Inndemand";
+    private static final String TEXT_TYPE = " TEXT";
+    private static final String COMMA_SEP = ",";
 
-    //Table created for Misc Info Inndemand
-    public static final String TABLE_MISC = "misc";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_DESC = "desc";
+    /*
+     * Creating Different Tables as per requirement
+     * Getting Table Name/Columns from Utils.FeedEntry Class
+     */
+    String CREATE_TABLE = "CREATE TABLE " + Utils.FeedEntry.TABLE_MISC + "("
+            + Utils.FeedEntry.COLUMN_ID + " INTEGER PRIMARY KEY,"
+            + Utils.FeedEntry.COLUMN_NAME + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_DESC + TEXT_TYPE  + ")";
 
-    //Table created for Restaurant List Inndemand
-    public static final String TABLE_RESTAURANTLIST = "restaurantlist";
-    public static final String COLUMN_RID = "id";
-    public static final String COLUMN_RNAME = "name";
-    public static final String COLUMN_RDESC = "desc";
+    String CREATE_TABLE_RESTAURANTLIST = "CREATE TABLE "
+            + Utils.FeedEntry.TABLE_RESTAURANTLIST + "("
+            + Utils.FeedEntry.COLUMN_RID + " INTEGER PRIMARY KEY,"
+            + Utils.FeedEntry.COLUMN_RNAME + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_RDESC + TEXT_TYPE + ")";
 
-    //Table created for Bar List Inndemand
-    public static final String TABLE_BARLIST = "barlist";
-    public static final String COLUMN_BID = "id";
-    public static final String COLUMN_BNAME = "name";
-    public static final String COLUMN_BDESC = "desc";
+    String CREATE_TABLE_BARLIST = "CREATE TABLE " + Utils.FeedEntry.TABLE_BARLIST + "("
+            + Utils.FeedEntry.COLUMN_BID + " INTEGER PRIMARY KEY,"
+            + Utils.FeedEntry.COLUMN_BNAME + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_BDESC + TEXT_TYPE  + ")";
 
-/*    //Table created for Restaurant items for Inndemand
-    public static final String TABLE_RESTLIST = "restaurantlists";
-    public static final String COLUMN_RRID = "id";
-    public static final String COLUMN_RRNAME = "name";
-    public static final String COLUMN_RRDESC = "descr";
-    public static final String COLUMN_RRCATEGORY = "categoryname";
-    public static final String COLUMN_RRAMOUNT = "amount";*/
+    String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + Utils.FeedEntry.TABLE_RESTLISTS + "("
+            + Utils.FeedEntry.COLUMN_RRID + " INTEGER PRIMARY KEY,"
+            + Utils.FeedEntry.COLUMN_RRNAME + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_RRDESC + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_RRCATEGORY + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_RRAMOUNT + TEXT_TYPE +COMMA_SEP
+            + Utils.FeedEntry.COLUMN_RRFOOD + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_RRSUBCATEGORY + TEXT_TYPE + ")";
 
-    //Table created for Restaurant items for Inndemand
-    public static final String TABLE_RESTLISTS = "restaurantlistss";
-    public static final String COLUMN_RRID = "id";
-    public static final String COLUMN_RRNAME = "name";
-    public static final String COLUMN_RRDESC = "descr";
-    public static final String COLUMN_RRCATEGORY = "categoryname";
-    public static final String COLUMN_RRAMOUNT = "amount";
-    public static final String COLUMN_RRTABS = "tabdata";
+    String CREATE_TABLE_BAR = "CREATE TABLE " + Utils.FeedEntry.TABLE_BAR + "("
+            + Utils.FeedEntry.COLUMN_BLID + " INTEGER PRIMARY KEY,"
+            + Utils.FeedEntry.COLUMN_BLNAME + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_BLDESC + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_BLCATEGORY + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_BLAMOUNT + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_BLFOOD + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_BLSUBCATEGORY + TEXT_TYPE + ")";
 
-    //Table created for Bar items for Inndemand
-    public static final String TABLE_BAR = "bar";
-    public static final String COLUMN_BLID = "id";
-    public static final String COLUMN_BLNAME = "name";
-    public static final String COLUMN_BLDESC = "desc";
-    public static final String COLUMN_BLCATEGORY = "category";
-    public static final String COLUMN_BLAMOUNT = "amount";
-    public static final String COLUMN_BLFOOD = "food";
-    public static final String COLUMN_BLSUBCATEGORY = "subcategory";
-//    public static final String COLUMN_BRID= "rid";
-//    public static final String COLUMN_BCtID= "cid";
+    String CREATE_TABLE_CATEGORY = "CREATE TABLE " + Utils.FeedEntry.TABLE_CATEGORY + "("
+            + Utils.FeedEntry.COLUMN_CTID + " INTEGER PRIMARY KEY,"
+            + Utils.FeedEntry.COLUMN_CTNAME + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_CTTYPE + TEXT_TYPE  + ")";
 
-    //Table created for Category(Restaurant) items for Inndemand
-    public static final String TABLE_CATEGORY = "category";
-    public static final String COLUMN_CTID = "id";
-    public static final String COLUMN_CTNAME = "name";
-    public static final String COLUMN_CTTYPE = "type";
+    String CREATE_TABLE_CATEGORY_BAR = "CREATE TABLE " + Utils.FeedEntry.TABLE_BRCATEGORY + "("
+            + Utils.FeedEntry.COLUMN_BRTID + " INTEGER PRIMARY KEY,"
+            + Utils.FeedEntry.COLUMN_BRNAME + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_BRTYPE + TEXT_TYPE  + ")";
 
-    //Table created for Category(Bar) items for Inndemand
-    public static final String TABLE_BRCATEGORY = "barcategory";
-    public static final String COLUMN_BRTID = "id";
-    public static final String COLUMN_BRNAME = "name";
-    public static final String COLUMN_BRTYPE = "type";
+    String CREATE_TABLE_CART= "CREATE TABLE " + Utils.FeedEntry.TABLE_CART + "("
+            + Utils.FeedEntry.COLUMN_CID + " INTEGER PRIMARY KEY,"
+            + Utils.FeedEntry.COLUMN_CNAME + TEXT_TYPE + COMMA_SEP
+            + Utils.FeedEntry.COLUMN_CAMOUNT + TEXT_TYPE  + ")";
 
-    //Table created for Cart for Inndemand
-    public static final String TABLE_CART = "cart";
-    public static final String COLUMN_CID = "id";
-    public static final String COLUMN_CNAME = "name";
-    public static final String COLUMN_CAMOUNT = "amount";
-
+    //Database Constructor
     public DBHelper(Context context){
         super(context, DATABASE_NAME , null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE = "CREATE TABLE " + TABLE_MISC + "("
-                + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_NAME + " TEXT,"
-                + COLUMN_DESC + " TEXT"  + ")";
-
-        String CREATE_TABLE_RESTAURANTLIST = "CREATE TABLE " + TABLE_RESTAURANTLIST + "("
-                + COLUMN_RID + " INTEGER PRIMARY KEY," + COLUMN_RNAME + " TEXT,"
-                + COLUMN_RDESC + " TEXT"  + ")";
-
-        String CREATE_TABLE_BARLIST = "CREATE TABLE " + TABLE_BARLIST + "("
-                + COLUMN_BID + " INTEGER PRIMARY KEY," + COLUMN_BNAME + " TEXT,"
-                + COLUMN_BDESC + " TEXT"  + ")";
-
-        String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + TABLE_RESTLISTS + "("
-                + COLUMN_RRID + " INTEGER PRIMARY KEY," + COLUMN_RRNAME + " TEXT,"
-                + COLUMN_RRDESC + " TEXT," + COLUMN_RRCATEGORY + " TEXT,"
-                + COLUMN_RRAMOUNT + " TEXT," + COLUMN_RRTABS + " TEXT" + ")";
-
-        Log.d("RestaurantDetailsList", "Checks: "+CREATE_TABLE_RESTAURANTS);
-
-        String CREATE_TABLE_BAR = "CREATE TABLE " + TABLE_BAR + "("
-                + COLUMN_BLID + " INTEGER PRIMARY KEY," + COLUMN_BLNAME + " TEXT,"
-                + COLUMN_BLDESC + " TEXT," + COLUMN_BLCATEGORY + " TEXT,"
-                + COLUMN_BLAMOUNT + " TEXT," + COLUMN_BLFOOD + " TEXT,"
-                + COLUMN_BLSUBCATEGORY + " TEXT" + ")";
-
-        String CREATE_TABLE_CATEGORY = "CREATE TABLE " + TABLE_CATEGORY + "("
-                + COLUMN_CTID + " INTEGER PRIMARY KEY," + COLUMN_CTNAME + " TEXT,"
-                + COLUMN_CTTYPE + " TEXT"  + ")";
-
-        String CREATE_TABLE_CATEGORY_BAR = "CREATE TABLE " + TABLE_BRCATEGORY + "("
-                + COLUMN_BRTID + " INTEGER PRIMARY KEY," + COLUMN_BRNAME + " TEXT,"
-                + COLUMN_BRTYPE + " TEXT"  + ")";
-
-        String CREATE_TABLE_CART= "CREATE TABLE " + TABLE_CART + "("
-                + COLUMN_CID + " INTEGER PRIMARY KEY," + COLUMN_CNAME + " TEXT,"
-                + COLUMN_CAMOUNT + " TEXT"  + ")";
 
         db.execSQL(CREATE_TABLE);
         db.execSQL(CREATE_TABLE_RESTAURANTLIST);
@@ -150,14 +106,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_MISC);
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_RESTAURANTLIST);
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_BARLIST);
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_RESTLISTS);
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_BAR);
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_CATEGORY);
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_BRCATEGORY);
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_CART);
+        db.execSQL("DROP TABLE IF EXISTS "+ Utils.FeedEntry.TABLE_MISC);
+        db.execSQL("DROP TABLE IF EXISTS "+ Utils.FeedEntry.TABLE_RESTAURANTLIST);
+        db.execSQL("DROP TABLE IF EXISTS "+ Utils.FeedEntry.TABLE_BARLIST);
+        db.execSQL("DROP TABLE IF EXISTS "+ Utils.FeedEntry.TABLE_RESTLISTS);
+        db.execSQL("DROP TABLE IF EXISTS "+ Utils.FeedEntry.TABLE_BAR);
+        db.execSQL("DROP TABLE IF EXISTS "+ Utils.FeedEntry.TABLE_CATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS "+ Utils.FeedEntry.TABLE_BRCATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS "+ Utils.FeedEntry.TABLE_CART);
         //create table again
         onCreate(db);
     }
@@ -166,11 +122,11 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NAME, cartData.getTitle());
-        contentValues.put(COLUMN_DESC, cartData.getDesc());
+        contentValues.put(Utils.FeedEntry.COLUMN_NAME, cartData.getTitle());
+        contentValues.put(Utils.FeedEntry.COLUMN_DESC, cartData.getDesc());
 
         // Inserting Row
-        db.insert(TABLE_MISC, null, contentValues);
+        db.insert(Utils.FeedEntry.TABLE_MISC, null, contentValues);
 
         db.close(); // Closing database connection
     }
@@ -179,11 +135,11 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_RNAME, cartData.getTitle());
-        contentValues.put(COLUMN_RDESC, cartData.getStatus());
+        contentValues.put(Utils.FeedEntry.COLUMN_RNAME, cartData.getTitle());
+        contentValues.put(Utils.FeedEntry.COLUMN_RDESC, cartData.getStatus());
 
         // Inserting Row
-        db.insert(TABLE_RESTAURANTLIST, null, contentValues);
+        db.insert(Utils.FeedEntry.TABLE_RESTAURANTLIST, null, contentValues);
 
         db.close(); // Closing database connection
     }
@@ -192,11 +148,11 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_BNAME, cartData.getTitle());
-        contentValues.put(COLUMN_BDESC, cartData.getStatus());
+        contentValues.put(Utils.FeedEntry.COLUMN_BNAME, cartData.getTitle());
+        contentValues.put(Utils.FeedEntry.COLUMN_BDESC, cartData.getStatus());
 
         // Inserting Row
-        db.insert(TABLE_BARLIST, null, contentValues);
+        db.insert(Utils.FeedEntry.TABLE_BARLIST, null, contentValues);
 
         db.close(); // Closing database connection
     }
@@ -205,15 +161,14 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_RRID, cartData.getId());
-        contentValues.put(COLUMN_RRNAME, cartData.getName());
-        contentValues.put(COLUMN_RRDESC, cartData.getDescription());
-        contentValues.put(COLUMN_RRCATEGORY, cartData.getCategory());
-        contentValues.put(COLUMN_RRAMOUNT, cartData.getPrice());
-        contentValues.put(COLUMN_RRTABS, cartData.getCategory());
+        contentValues.put(Utils.FeedEntry.COLUMN_RRID, cartData.getId());
+        contentValues.put(Utils.FeedEntry.COLUMN_RRNAME, cartData.getName());
+        contentValues.put(Utils.FeedEntry.COLUMN_RRDESC, cartData.getDescription());
+        contentValues.put(Utils.FeedEntry.COLUMN_RRCATEGORY, cartData.getCategory());
+        contentValues.put(Utils.FeedEntry.COLUMN_RRAMOUNT, cartData.getPrice());
 
         // Inserting Row
-        db.insert(TABLE_RESTLISTS, null, contentValues);
+        db.insert(Utils.FeedEntry.TABLE_RESTLISTS, null, contentValues);
 
         db.close(); // Closing database connection
     }
@@ -222,15 +177,15 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_BNAME, cartData.getTitle());
-        contentValues.put(COLUMN_BDESC, cartData.getDescription());
-        contentValues.put(COLUMN_BLCATEGORY, cartData.getCategory());
-        contentValues.put(COLUMN_BLAMOUNT, cartData.getPrice());
-        contentValues.put(COLUMN_BLFOOD, cartData.getFood());
-        contentValues.put(COLUMN_BLSUBCATEGORY, cartData.getSubcategory());
+        contentValues.put(Utils.FeedEntry.COLUMN_BNAME, cartData.getTitle());
+        contentValues.put(Utils.FeedEntry.COLUMN_BDESC, cartData.getDescription());
+        contentValues.put(Utils.FeedEntry.COLUMN_BLCATEGORY, cartData.getCategory());
+        contentValues.put(Utils.FeedEntry.COLUMN_BLAMOUNT, cartData.getPrice());
+        contentValues.put(Utils.FeedEntry.COLUMN_BLFOOD, cartData.getFood());
+        contentValues.put(Utils.FeedEntry.COLUMN_BLSUBCATEGORY, cartData.getSubcategory());
 
         // Inserting Row
-        db.insert(TABLE_BAR, null, contentValues);
+        db.insert(Utils.FeedEntry.TABLE_BAR, null, contentValues);
 
         db.close(); // Closing database connection
     }
@@ -239,11 +194,11 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_CTNAME, cartData.getName());
-        contentValues.put(COLUMN_CTTYPE, cartData.getType());
+        contentValues.put(Utils.FeedEntry.COLUMN_CTNAME, cartData.getName());
+        contentValues.put(Utils.FeedEntry.COLUMN_CTTYPE, cartData.getType());
 
         // Inserting Row
-        db.insert(TABLE_CATEGORY, null, contentValues);
+        db.insert(Utils.FeedEntry.TABLE_CATEGORY, null, contentValues);
 
         db.close(); // Closing database connection
     }
@@ -252,11 +207,11 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_BRNAME, cartData.getName());
-        contentValues.put(COLUMN_BRTYPE, cartData.getType());
+        contentValues.put(Utils.FeedEntry.COLUMN_BRNAME, cartData.getName());
+        contentValues.put(Utils.FeedEntry.COLUMN_BRTYPE, cartData.getType());
 
         // Inserting Row
-        db.insert(TABLE_BRCATEGORY, null, contentValues);
+        db.insert(Utils.FeedEntry.TABLE_BRCATEGORY, null, contentValues);
 
         db.close(); // Closing database connection
     }
@@ -265,11 +220,11 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_CNAME, cartData.getName());
-        contentValues.put(COLUMN_CAMOUNT, cartData.getPrice());
+        contentValues.put(Utils.FeedEntry.COLUMN_CNAME, cartData.getName());
+        contentValues.put(Utils.FeedEntry.COLUMN_CAMOUNT, cartData.getPrice());
 
         // Inserting Row
-        db.insert(TABLE_CART, null, contentValues);
+        db.insert(Utils.FeedEntry.TABLE_CART, null, contentValues);
 
         db.close(); // Closing database connection
     }
@@ -281,9 +236,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor getDetail(String title){
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query(Utils.FeedEntry.TABLE_RESTLISTS, null,
+                Utils.FeedEntry.COLUMN_RRCATEGORY + "=?", new String[]{title},
+                null, null, null, null);
+        return cursor;
+    }
+
     public int numberOfRows(){
         SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, TABLE_MISC, TABLE_RESTAURANTLIST);
+        int numRows = (int) DatabaseUtils.queryNumEntries(db, Utils.FeedEntry.TABLE_MISC,
+                Utils.FeedEntry.TABLE_RESTAURANTLIST);
         return numRows;
     }
 
@@ -291,24 +255,24 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NAME, name);
-        contentValues.put(COLUMN_DESC, email);
+        contentValues.put(Utils.FeedEntry.COLUMN_NAME, name);
+        contentValues.put(Utils.FeedEntry.COLUMN_DESC, email);
 
-        db.update(TABLE_MISC, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        db.update(Utils.FeedEntry.TABLE_MISC, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
 
     public Integer deleteData (Integer id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_MISC, "id = ? ", new String[] { Integer.toString(id) });
+        return db.delete(Utils.FeedEntry.TABLE_MISC, "id = ? ", new String[] { Integer.toString(id) });
     }
 
     public List<HotelData> getAllData(){
         List<HotelData> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_MISC;
+        String selectQuery = "SELECT  * FROM " + Utils.FeedEntry.TABLE_MISC;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -335,7 +299,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List<ListData> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_RESTAURANTLIST;
+        String selectQuery = "SELECT  * FROM " + Utils.FeedEntry.TABLE_RESTAURANTLIST;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -361,7 +325,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List<BarlistData> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_BARLIST;
+        String selectQuery = "SELECT  * FROM " + Utils.FeedEntry.TABLE_BARLIST;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -386,8 +350,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public AppetiserData getAllDatarls(String title){
         AppetiserData data = new AppetiserData();
 
-        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS + " where categoryname = '"
-                + title + "'";
+        String selectQuery = "SELECT  * FROM " + Utils.FeedEntry.TABLE_RESTLISTS
+                + " where categoryname = '" + title + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -410,44 +374,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return data;
     }
 
-   /* public AppetiserData getAllDatarls(String title) {
-        AppetiserData data = new AppetiserData();
-
-
-
-        *//*SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_RESTLISTS, null, COLUMN_RRCATEGORY + " = ?",
-                new String[]{title}, null, null, null);
-        cursor.moveToFirst();
-*//*
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_RESTLISTS, null, "categoryname=?",
-                new String[]{title}, null, null, null);
-        cursor.moveToFirst();
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-
-                data.setName(cursor.getString(1));
-                data.setDescription(cursor.getString(2));
-                data.setCategory(cursor.getString(3));
-                data.setPrice(cursor.getString(4));
-                data.setSubcategory(cursor.getString(5));
-
-                // Adding data to list
-
-            } while (cursor.moveToNext());
-        }
-
-        return data;
-    }
-*/
     public List<AppetiserData> getAllDatarl(){
         List<AppetiserData> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_RESTLISTS;
+        String selectQuery = "SELECT  * FROM " + Utils.FeedEntry.TABLE_RESTLISTS;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -476,7 +407,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List<BarDataModel> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_BAR;
+        String selectQuery = "SELECT  * FROM " + Utils.FeedEntry.TABLE_BAR;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -507,7 +438,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List<TabData> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_CATEGORY;
+        String selectQuery = "SELECT  * FROM " + Utils.FeedEntry.TABLE_CATEGORY;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -533,7 +464,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List<Translate> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_BRCATEGORY;
+        String selectQuery = "SELECT  * FROM " + Utils.FeedEntry.TABLE_BRCATEGORY;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -559,7 +490,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List<CartData> dataList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_CART;
+        String selectQuery = "SELECT  * FROM " + Utils.FeedEntry.TABLE_CART;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

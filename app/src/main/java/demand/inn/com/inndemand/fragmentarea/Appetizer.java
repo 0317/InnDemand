@@ -28,6 +28,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +45,7 @@ import javax.net.ssl.HttpsURLConnection;
 import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
+import demand.inn.com.inndemand.constants.Utils;
 import demand.inn.com.inndemand.database.DBHelper;
 import demand.inn.com.inndemand.model.AppetiserData;
 import demand.inn.com.inndemand.model.ResturantDataModel;
@@ -94,6 +96,8 @@ public class Appetizer extends Fragment {
 
         if(getArguments().getString("title") != null)
             title = getArguments().getString("title");
+
+        Log.d("CategoryName","Checking:"+title);
     }
 
     @Nullable
@@ -155,16 +159,17 @@ public class Appetizer extends Fragment {
 
             List<AppetiserData> rest_list = db.getAllDatarl();
 
-            AppetiserData rest_lists = db.getAllDatarls(title);
+           /* AppetiserData rest_lists = db.getAllDatarls(title);
 
             Log.d("RestaurantModel: ", "Check: "+rest_list);
 
         AppetiserData modelss = new AppetiserData(rest_lists.getName(), rest_lists.getDescription(),
                 rest_lists.getCategory(), rest_lists.getPrice(), "");
         cardList.add(modelss);
+*/
 
            /* for(AppetiserData data : rest_list) {
-              *//*  is_set = Integer.parseInt(data.getId());
+                is_set = Integer.parseInt(data.getId());
                 Cursor cursor;
                 cursor = db.getData(is_set);
                 if (cursor.getCount() != 0) {
@@ -177,14 +182,40 @@ public class Appetizer extends Fragment {
                             String price = cursor.getString
                                     (cursor.getColumnIndex(DBHelper.COLUMN_RRAMOUNT));
                             String sub = cursor.getString
-                                    (cursor.getColumnIndex(DBHelper.COLUMN_RRTABS));*//*
+                                    (cursor.getColumnIndex(DBHelper.COLUMN_RRTABS));
 
                             AppetiserData modelss = new AppetiserData(name, desc, "", price, sub);
                             cardList.add(modelss);
 
                         }*/
 
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Cursor cursor = db.getDetail(title);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (cursor.moveToNext()) {
+                String title = cursor.getString(cursor.getColumnIndexOrThrow
+                        (Utils.FeedEntry.COLUMN_RRNAME));
+                String subtitle = cursor.getString(cursor.getColumnIndexOrThrow
+                        (Utils.FeedEntry.COLUMN_RRDESC));
+
+                new AlertDialog.Builder(getActivity()).setMessage(title)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        }).create().show();
+//                AppetiserData modelss = new AppetiserData(title, subtitle, "", "", "");
+//                cardList.add(modelss);
+            }
+        }
     }
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {

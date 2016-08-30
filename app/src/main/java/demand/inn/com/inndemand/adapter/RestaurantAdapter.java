@@ -87,18 +87,18 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, subtitle, rupees, count, details;
+        public TextView txt_title, txt_subtitle, txt_rupees, txt_count, txt_details;
         public ImageView plus, minus;
         private LinearLayout item_click;
 
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.restaurant_listitems_head);
-            subtitle = (TextView) view.findViewById(R.id.restaurant_listitems_name);
-            rupees = (TextView) view.findViewById(R.id.restaurant_listitems_rupees);
-            details = (TextView) view.findViewById(R.id.restaurant_listitems_details);
-            count = (TextView) view.findViewById(R.id.restaurant_counts);
+            txt_title = (TextView) view.findViewById(R.id.restaurant_listitems_head);
+            txt_subtitle = (TextView) view.findViewById(R.id.restaurant_listitems_name);
+            txt_rupees = (TextView) view.findViewById(R.id.restaurant_listitems_rupees);
+            txt_details = (TextView) view.findViewById(R.id.restaurant_listitems_details);
+            txt_count = (TextView) view.findViewById(R.id.restaurant_counts);
             plus = (ImageView) view.findViewById(R.id.restaurant_plus);
             minus = (ImageView) view.findViewById(R.id.restaurant_minus);
             item_click = (LinearLayout) view.findViewById(R.id.item_click);
@@ -136,10 +136,10 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
     public void onBindViewHolder(final RestaurantAdapter.MyViewHolder holder, final int position) {
         AppetiserData data = cartData.get(position);
         Log.d("Category Details", "Check: "+data.getCategory());
-            holder.title.setText(data.getSubcategory());
-            holder.subtitle.setText(data.getName() + " ");
-            holder.rupees.setText(data.getPrice());
-            holder.details.setText(data.getDescription());
+            holder.txt_title.setText(data.getSubcategory());
+            holder.txt_subtitle.setText(data.getName() + " ");
+            holder.txt_rupees.setText(data.getPrice());
+            holder.txt_details.setText(data.getDescription());
         holder.item_click.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -197,9 +197,9 @@ public class RestaurantAdapter extends  RecyclerView.Adapter<RestaurantAdapter.M
 
 
         holder.plus.setOnClickListener(new PlusButtonListener(position, data,
-                holder.count, holder.title));
+                holder.txt_count, holder.txt_title));
         holder.minus.setOnClickListener(new MinusButtonListener(position, data,
-                holder.count, holder.title));
+                holder.txt_count, holder.txt_title));
 
         finalamount =0;
         for (int temp1 = 0; temp1 < itemprice.size(); temp1++)
