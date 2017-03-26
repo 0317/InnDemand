@@ -44,7 +44,6 @@
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
 
         <!-- ...................Activity call Area....................... -->
@@ -261,10 +260,7 @@
             android:name="io.fabric.ApiKey"
             android:value="d41faf1bafcf634b25cd4c680c0f048567e1cef9" />
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="d41faf1bafcf634b25cd4c680c0f048567e1cef9"
-            />
+
 
     </application>
 
