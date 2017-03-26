@@ -1,6 +1,7 @@
 package demand.inn.com.inndemand.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +69,11 @@ public class MainCourseAdapter extends  RecyclerView.Adapter<MainCourseAdapter.M
         if(holder.title.getText().toString().trim() == "" || holder.title.getText().toString().trim() == null){
             holder.title.setVisibility(View.GONE);
         }
+
+        if(data.getFood() == "2" || data.getFood().equalsIgnoreCase("2"))
+            holder.subtitle.setTextColor(Color.RED);
+        else
+            holder.subtitle.setTextColor(Color.GREEN);
 
         holder.plus.setTag(position);
         holder.minus.setTag(position);

@@ -5,135 +5,144 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_collapseMode="pin"
-        app:layout_scrollFlags="scroll|snap"
-        />
-
-        <ScrollView
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="40dp"
-            >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
->
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:src="@drawable/ic_menu_camera"
-            android:layout_weight="2"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|snap"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/when_to_clean"
-                android:textSize="@dimen/forteen_sp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@mipmap/room_cleaning" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NOW"
-                android:textSize="@dimen/sixteen_sp"
-                android:padding="5dp"
-                android:id="@+id/now_roomClean"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:textColor="@color/confirm_demand_click" />
+           <!--     <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/note"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@android:color/black" />-->
 
+             <!--   <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/view_gray"/>-->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/pick_time"
-                    android:textSize="@dimen/sixteen_sp"
-                    android:padding="5dp"
-                    android:id="@+id/pickTime_roomClean"
+                    android:text="@string/when_to_clean"
+                    android:textSize="@dimen/forteen_sp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:textStyle="bold"
-                    android:textColor="@color/confirm_demand_click" />
+                    android:textColor="@android:color/black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/now"
+                        android:textSize="@dimen/sixteen_sp"
+                        android:onClick="nowPick"
+                        android:id="@+id/now_roomClean"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:padding="5dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/confirm_demand_click" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pick_time"
+                        android:textSize="@dimen/sixteen_sp"
+                        android:padding="5dp"
+                        android:id="@+id/pickTime_roomClean"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/confirm_demand_click" />
 
                 </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/view_gray"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/view_gray"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/anything_to_say"
+                    android:textSize="@dimen/forteen_sp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:maxLines="3"
+                    android:maxLength="100"
+                    android:layout_marginBottom="50dp"
+                    android:id="@+id/say_something_roomClean"
+                    android:hint="@string/tap_to_start"
+                    android:background="@null"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/confirm_demand_click"
+            android:id="@+id/confirm_demand_click_roomClean"
+            android:onClick="confirmDemand"
+            android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/anything_to_say"
+                android:text="@string/confirm_demand"
                 android:textSize="@dimen/forteen_sp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:maxLines="3"
-                android:layout_marginBottom="50dp"
-                android:id="@+id/say_something_roomClean"
-                android:hint="@string/tap_to_start"
-                android:background="@null"/>
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
-
-    </LinearLayout>
-
-        </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/confirm_demand_click"
-        android:id="@+id/confirm_demand_click_roomClean"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/confirm_demand"
-            android:textSize="@dimen/forteen_sp"
-            android:textColor="@android:color/white" />
-
-    </LinearLayout>
 
     </RelativeLayout>
 

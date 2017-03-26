@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/coordinatorLayout">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,71 +19,63 @@
             app:layout_scrollFlags="scroll|snap"
             />
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="40dp"
-            >
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@mipmap/bell_boy" />
 
-        <ImageView
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/view_gray"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/anything_to_say"
+                    android:textSize="@dimen/forteen_sp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:maxLines="3"
+                    android:maxLength="100"
+                    android:layout_marginBottom="50dp"
+                    android:id="@+id/say_something_bell"
+                    android:hint="@string/tap_to_start"
+                    android:background="@null"/>
+
+            </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:src="@drawable/ic_menu_camera"
-            android:layout_weight="2"/>
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/confirm_demand_click"
+            android:id="@+id/confirm_demand_click"
+            android:onClick="confirmDemand"
+            android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm_demand"
+                android:textSize="@dimen/forteen_sp"
+                android:textColor="@android:color/white" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/anything_to_say"
-            android:textSize="@dimen/forteen_sp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:maxLines="3"
-            android:id="@+id/say_something_bell"
-            android:hint="@string/tap_to_start"
-            android:background="@null"/>
-
-    </LinearLayout>
-
-    </LinearLayout>
-
-        </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/confirm_demand_click"
-        android:id="@+id/confirm_demand_click"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/confirm_demand"
-            android:textSize="@dimen/forteen_sp"
-            android:textColor="@android:color/white" />
-
-    </LinearLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 

@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -48,35 +49,34 @@ public class BellBoy extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //UI call area
-    LinearLayout backPress, confirm_demand_click;
-    EditText say_something;
-    Snackbar snackbar;
+    //UI Class call for the screen
+    LinearLayout ll_confirm_demand_click;
+    EditText et_say_something;
     CoordinatorLayout coordinatorLayout;
     Toolbar toolbar;
 
-    //Others
+    //Others to comment in the area provided in the screen
     String saySomething;
 
-    //Class call
-    AppController appController;
-
-    //Date & Time
+//    String and others to get current time and date
     Calendar c;
     SimpleDateFormat df;
     String formattedDate;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bellboy);
+//        Utility Class Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bell-boy");
+        toolbar.setTitle(R.string.bell_boy);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 
@@ -87,33 +87,36 @@ public class BellBoy extends AppCompatActivity {
             }
         });
 
+//        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         formattedDate = df.format(c.getTime());
         // formattedDate have current date/time
 
-        //UI initialize arae
+//        UI Class Initialisation for the screen
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        et_say_something = (EditText) findViewById(R.id.say_something_bell);
 
-        say_something = (EditText) findViewById(R.id.say_something_bell);
-
-        confirm_demand_click = (LinearLayout) findViewById(R.id.confirm_demand_click);
-        confirm_demand_click.setOnClickListener(new View.OnClickListener() {
+//        Button Click at the bottom of the screen
+//        Sending all requirements to server with this click
+        ll_confirm_demand_click = (LinearLayout) findViewById(R.id.confirm_demand_click);
+        ll_confirm_demand_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //string call to get value of edittext
-                saySomething = say_something.getText().toString().trim();
+                saySomething = et_say_something.getText().toString().trim();
 
-                if(saySomething == null){
-            snackbar = Snackbar.make(coordinatorLayout, "Please fill to confirm", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null);
+                if(saySomething == null || saySomething.equalsIgnoreCase("")){
+//            snackbar = Snackbar.make(coordinatorLayout, "Please fill to confirm", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null);
 //                        View snackbarView = snackbar.getView();
 //                        snackbarView.setBackgroundColor(Color.YELLOW);
 //                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
 //                        textView.setTextColor(getResources().getColor(R.color.confirm_demand_click));
-            snackbar.show();
+//            snackbar.show();
                 }else {
 
                     JSONObject obj = new JSONObject();
@@ -125,7 +128,7 @@ public class BellBoy extends AppCompatActivity {
 
                         postJsonData(Config.innDemand + "bellboy/save/", obj.toString());
 
-                        say_something.getText().clear();
+                        et_say_something.getText().clear();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -135,12 +138,7 @@ public class BellBoy extends AppCompatActivity {
         });
     }
 
-    public void backPress(View view){
-        onBackPressed();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;
@@ -187,5 +185,10 @@ public class BellBoy extends AppCompatActivity {
         };
 //        mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    public void backPress(View view){
+        onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

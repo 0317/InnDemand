@@ -4,8 +4,8 @@
 
     <size
         android:width=".5dp"
-        android:height=".5dp" />
+        android:height="1dp" />
 
-    <solid android:color="@color/view_gray" />
+    <solid android:color="@color/light_grey" />
 
 </shape>

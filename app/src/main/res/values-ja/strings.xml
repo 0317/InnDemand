@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">旅館の需要</string>
+    <!-- .......Google Integration String calls....... -->
+
+    <string name="logout">ログアウト</string>
+    <string name="loginText">Googleアカウントでログインしてください</string>
+
+    <string name="action_settings">[設定]</string>
+    <string name="notification">お知らせ</string>
+
+    <!-- ......Hardcoded string values are under...... -->
+
+    <string name="login_call">ログイン</string>
+    <string name="get_direction">道順を知ります</string>
+    <string name="login_terms_lines">By signing-up you agree to our</string>
+    <string name="terms_conditions">terms of service</string>
+    <string name="termsconditions">利用規約</string>
+    <string name="and">&amp;</string>
+    <string name="privacy_policy">個人情報保護方針</string>
+    <string name="room_services">ルームサービス</string>
+    <string name="bell_boy">ベルボーイ</string>
+    <string name="room_cleaning">部屋の掃除</string>
+    <string name="laundry">洗濯物</string>
+    <string name="cab_call">タクシー</string>
+    <string name="restaurant">レストラン</string>
+    <string name="wakeup_call">私を覚まします</string>
+    <string name="bath_essentials">バスルームエッセンシャル</string>
+    <string name="bed_tea_call">ベッドコーヒー/紅茶</string>
+    <string name="beverages">飲物</string>
+    <string name="itemscount">アイテム: </string>
+    <string name="totalcount">合計: </string>
+    <string name="pick_time">時間を選びます</string>
+    <string name="pick_date">受取日</string>
+    <string name="pick_up_time">お迎えの時間</string>
+    <string name="select_date">日付を選択</string>
+    <string name="select_time">時間を選択</string>
+    <string name="change_time">時間変化</string>
+    <string name="check_out">チェックアウト</string>
+    <string name="cancel_wakeup_call">モーニングコールをキャンセル</string>
+    <string name="cancel_cab">タクシーをキャンセル</string>
+    <string name="anything_to_say">あなたが言うには何も持っていますか？</string>
+    <string name="tap_to_start">入力を開始するにはここをタップ</string>
+    <string name="when_to_clean">あなたは私たちがあなたの部屋を掃除したくないとき？</string>
+    <string name="when_to_deliver">ときあなたは私たちがお届けしたいですか？</string>
+    <string name="when_to_wake">ときあなたは私たちがあなたを覚ますしたいですか？</string>
+    <string name="when_to_pick">ときあなたは私たちがあなたを迎えたいですか？</string>
+    <string name="pick_clothes">ときあなたは私たちが服をピックアップしたいですか？</string>
+    <string name="no_of_water_bottles">[いいえ]を選択します。湯</string>
+    <string name="no_of_soda_bottles">[いいえ]を選択します。ソーダボトルの</string>
+    <string name="no_of_ice_bottles">ノルを選択します。アイスバケットの</string>
+    <string name="no_of_glasses">[いいえ]を選択します。メガネの</string>
+    <string name="bed_tea_tea">お茶</string>
+    <string name="bed_tea_coffee">コーヒー</string>
+    <string name="note_bed_tea">NOTE: We cost Rs 25  per  Tea/Coffee. It will  take us 20 mins to
+        prepare your drink</string>
+    <string name="note_beverage">NOTE: We will reach the service to you in 15 minutes</string>
+    <string name="note_clothes">NOTE: We charge Rs 15 per cloth &amp; 7 hours to deliver it back
+    </string>
+    <string name="note_bath_essentials">NOTE: It will take us 10 minutes to reach you the towel(S)
+    </string>
+    <string name="note_cab">NOTE: Providing Cab services is based on the availability.
+        We will call you to confirm.</string>
+    <string name="write_comment_here">ここにあなたのコメントを書きます</string>
+    <string name="write_comment">コメントを書きます</string>
+    <string name="comment_section">コメントセクション</string>
+    <string name="submit">提出します</string>
+    <string name="my_cart">マイカート</string>
+    <string name="mycart">注：税金は含まれています</string>
+    <string name="proceed">進みます</string>
+    <string name="apply_coupon">割引コードを適用します</string>
+    <string name="food_delivery_time">食品配達時間</string>
+    <string name="appetizer_fragment_headline">Our Restaurant Serves both Vegetarian &amp;
+        Non-Vegeterian</string>
+    <string name="restaurant_timing">Restaurant Timings - 7AM to 11PM</string>
+    <string name="note_restaurant">NOTE: It will take a minimum of 60 mins to prepare the food
+    </string>
+    <string name="towel">タオル</string>
+    <string name="soap">せっけん</string>
+    <string name="maintainance">メンテナンス</string>
+    <string name="waterbottles">ウォーターボトル</string>
+    <string name="sodabottles">ソーダボトル</string>
+    <string name="icebuckets">アイスバケット</string>
+    <string name="glasses">眼鏡</string>
+    <string name="food_type">食品の種類: </string>
+    <string name="restaurants">レストラン</string>
+    <string name="bar"></string>
+    <string name="spa">スパ</string>
+    <string name="zero">0</string>
+    <string name="call_hotel">コール</string>
+    <string name="room_service">ルームサービス</string>
+    <string name="mis_info">MISCELLANEOUS INFO</string>
+    <string name="hotel_restau_timing">Restaurant Timing(s)</string>
+    <string name="swim_timing">Swimming Pool Timing(s)</string>
+    <string name="about_hotel">ABOUT HOTEL</string>
+    <string name="add_number">注：より良いサービスを提供するために、あなたの携帯電話番号を追加してください.</string>
+    <string name="enter_promocode">プロモーションコードを入力してください</string>
+    <string name="please_scan">ホテルの詳細を取得するために以下のコードをスキャンしてください</string>
+    <string name="order_summary">注文の概要</string>
+    <string name="thankyou">私たちと一緒に買い物 \n していただきありがとうございます.</string>
+    <string name="pleasantstay">快適なご滞在を持っています.</string>
+    <string name="verifycredentials">資格を確認しました...</string>
+    <string name="addcart">カートに入れます</string>
+    <string name="viewcart">カートを見ます</string>
+    <string name="noti_hotel">通知（ホテル）</string>
+    <string name="noti_inndemand">通知（需要の）</string>
+    <string name="no">いいえ</string>
+    <string name="qr_entry">You have to scan QR Code \n\n Click Ok to Scan QR Code</string>
+    <string name="apply">適用します</string>
+    <string name="coupon">クーポン</string>
+    <string name="now">今</string>
+    <string name="choose_location">場所を選択</string>
+    <string name="roomservicesnotavailable">注：サービスは利用できません</string>
+
+    <!-- ............Restaurant Area................-->
+
+    <string name="restaurant_foodadded_tocart">あなたの食べ物はカートに追加されます</string>
+    <string name="restaurant_servenotavailable">注：レストランのサービスは利用できません</string>
+    <string name="restaurant_serveavailable">注：それは食べ物を準備するために60時間以上かかります</string>
+
+    <!-- ............Room Services Class........... -->
+
+    <string name="servebeverages_etc">飲料など</string>
+    <string name="serveroomclean">ルームクリーニング</string>
+    <string name="servecab">タクシー</string>
+    <string name="servelaundry">ランドリー</string>
+    <string name="servetea_coffee">ベッドのコーヒー/紅茶</string>
+    <string name="servewake_up">私を覚まします</string>
+    <string name="servebell_boy">ベルボーイ</string>
+    <string name="servebath_essentials">バスルームの必需品</string>
+
+    <!-- ......Navigation Menu.................. -->
+
+    <string name="menuorder_history">注文履歴</string>
+    <string name="menushare_inndemand">共有 inndemand</string>
+    <string name="menusetting">[設定]</string>
+    <string name="menufeedback">フィードバック</string>
+    <string name="menuhelp">助けます</string>
+    <string name="menusign_out">サインアウト</string>
+
+
+
+    <!-- Button labels -->
+    <string name="deleteaccount">アカウントを削除する</string>
+    <string name="sign_out">サインアウト</string>
+    <string name="confirm_demand">私の需要を確認します</string>
+    <string name="confirm">確認します</string>
+    <string name="ok_click">[OK]</string>
+    <string name="disconnect">切断</string>
+    <string name="delete_account">アカウントを削除するようにその思えます.</string>
+    <string name="delete">削除</string>
+
+    <!-- .....My cart & Promo pop-up.....-->
+
+    <string name="carttotal_price">総価格</string>
+    <string name="carttotal_items">総アイテム</string>
+    <string name="promoenter_code">コードを入力します。</string>
+    <string name="promocancel">キャンセル</string>
+    <string name="promoapply">適用します</string>
+    <string name="promoplease_enterpromo">クーポンコードを入力してください</string>
+    <string name="cartselectpayment_option">支払いオプションを選択します</string>
+    <string name="cartselectpayment_pay">支払い</string>
+
+
+</resources>

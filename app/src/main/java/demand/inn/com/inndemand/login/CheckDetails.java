@@ -1,12 +1,16 @@
 package demand.inn.com.inndemand.login;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -27,22 +31,40 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+//import com.firebase.client.Firebase;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.CircleTransform;
 import demand.inn.com.inndemand.constants.Config;
+//import demand.inn.com.inndemand.fcm.NotificationListener;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
 import demand.inn.com.inndemand.volleycall.AppController;
 import demand.inn.com.inndemand.welcome.BaseActivity;
+import demand.inn.com.inndemand.welcome.SplashScreen;
 
 /**
  * Created by akash
@@ -54,48 +76,75 @@ public class CheckDetails extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //UI
-    EditText detail_name, detail_email, detail_phone;
-    ImageView fb_dp;
+    //UI Class area used in this screen
+    EditText et_detail_name, et_detail_email;
+    ImageView img_fb_dp;
 
-    //Preference Area
+    //Preferences Class Area
     SharedPreferences settings;
     Bundle getBundle = null;
 
-    // Progress dialog
+    // Progress dialog (to show dialog if required)
     private ProgressDialog pDialog;
 
     //Others
-    String name, email, dp, l_name, gender, bDay, gGender, fb_location, gToken;
-    String gName, gEmail, gDP, gbBday, gLoc;
-    String mName, mEmail;
+    //String values to get/set details either from FB/google
+    String name, email, dp, l_name, gender, bDay, gGender, fb_location, gToken = "none";
+    String gName, gEmail, gDP, gbBday = "none", gLoc = "none";
+    String mName, mEmail, phoneNo = "none";
+    String tokenss = "";
+    String customer_id = "";
     int yourAge;
     StringBuilder strBuild;
 
-    // temporary string to show the parsed response
+    //temporary string to show the parsed response
     private String jsonResponse;
     private static String TAG = CheckDetails.class.getSimpleName();
+
+    //Google Client to know the status (If need)
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.checkdetails);
+        //Initialisation of the Utility Classes and Preferences Classes
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
         settings =  PreferenceManager.getDefaultSharedPreferences(this);
         prefs  =new AppPreferences(CheckDetails.this);
 
+        //Google Class call code to check/get status of the User (If Sign-In then User can Sign-Out)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+                    }
+                }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
+
+        //pop-up dialog
         pDialog = new ProgressDialog(CheckDetails.this);
 
-        //UI Initialized here
-        detail_name = (EditText) findViewById(R.id.fb_name);
-        detail_email = (EditText) findViewById(R.id.fb_email);
+        //UI shown on the screen Initialized here
+        et_detail_name = (EditText) findViewById(R.id.fb_name);
+        et_detail_email = (EditText) findViewById(R.id.fb_email);
+        img_fb_dp = (ImageView) findViewById(R.id.fb_dp);
 
-        fb_dp = (ImageView) findViewById(R.id.fb_dp);
+        //Email validation (to check email contains requirements or not)
+        et_detail_email.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
-        //Email validation
-        detail_email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
+      /*
+       * Bundle Class area
+       * Here we are getting all details fetched from Google and managing them to send to Server
+       */
         getBundle = this.getIntent().getExtras();
         if(getBundle == null) {
             gName = prefs.getUser_gname();
@@ -112,18 +161,28 @@ public class CheckDetails extends AppCompatActivity {
                 gGender = "1";
 
             if(gbBday == "")
-                bDay = "none";
+                gbBday = "none";
             else
-                bDay = prefs.getGoogle_bday();
+                gbBday = prefs.getGoogle_bday();
 
             if(gLoc == "")
                 gLoc = "none";
             else
                 gLoc = prefs.getGoogle_location();
 
+            if(gToken == "")
+                gToken = "none";
+            else
+                gToken = prefs.getG_Token();
+
             Log.d("Check", "Check bday "+prefs.getGoogle_bday());
             Log.d("Check", "Check Loc "+prefs.getGoogle_location());
         }
+
+        /*
+         * Bundle area for facebook
+         * Here we are getting all details fetched from Facebook and managing them to send to Server
+         */
         else {
             name = getBundle.getString("first_name");
             email = getBundle.getString("email");
@@ -132,6 +191,9 @@ public class CheckDetails extends AppCompatActivity {
             gender = getBundle.getString("gender");
             bDay = getBundle.getString("birthday");
             fb_location = getBundle.getString("location");
+            prefs.setUser_fbemail(email);
+            prefs.setUser_fbname(name+" "+l_name);
+            prefs.setUser_fbpic(dp);
 
             if (gender.equalsIgnoreCase("Male"))
                 gender = "0";
@@ -163,32 +225,37 @@ public class CheckDetails extends AppCompatActivity {
         }
 
 
-        //details set from facebook/google data
+        //these details get set from facebook/google data
         if(name == null)
-            detail_name.setText(gName);
+            et_detail_name.setText(gName);
         else
-        detail_name.setText(name+" "+l_name);
+            et_detail_name.setText(name+" "+l_name);
 
-        detail_name.setEnabled(false);
+        et_detail_name.setEnabled(false);
 
         if(email == null)
-        detail_email.setText(gEmail);
+            et_detail_email.setText(gEmail);
         else
-        detail_email.setText(email);
+            et_detail_email.setText(email);
 
         if(dp == null) {
-            Picasso.with(this).load(prefs.getUser_gpicture()).transform(new CircleTransform()).into(fb_dp);
+            Picasso.with(this).load(prefs.getUser_gpicture()).transform(new CircleTransform())
+                    .into(img_fb_dp);
         }
         else {
-            Picasso.with(this).load(dp).transform(new CircleTransform()).into(fb_dp);
+            Picasso.with(this).load(dp).transform(new CircleTransform()).into(img_fb_dp);
         }
     }
 
+    /*
+     * Method to check if the Name & Email is filled in EditText or not
+     * If not then show a Toast else fire Intent to next screen
+     */
     public void verifyDetails(View view){
 
         //String initialized to get above mentioned edittext values
-        mName = detail_name.getText().toString();            //can't change name
-        mEmail = detail_email.getText().toString();          //can change email
+        mName = et_detail_name.getText().toString();            //can't change name
+        mEmail = et_detail_email.getText().toString();          //can change email
 
         if(mName == null || mName.equalsIgnoreCase("")){
             Snackbar.make(view, "Please Enter Name", Snackbar.LENGTH_LONG)
@@ -198,14 +265,15 @@ public class CheckDetails extends AppCompatActivity {
                     .setAction("Action", null).show();
         }else {
             makeJsonObjectRequest();
-            Intent in = new Intent(CheckDetails.this, QRscanning.class);
+            Intent in = new Intent(CheckDetails.this, QrEntry.class);
+            in.putExtra("customer_id", customer_id);
             startActivity(in);
             finish();
         }
     }
 
     /**
-     * Method to make json object post call
+     * Method to make json object post call to send details to server
      * */
 
     private void makeJsonObjectRequest() {
@@ -221,10 +289,10 @@ public class CheckDetails extends AppCompatActivity {
             else
                 obj.put("image", dp);
 
-            obj.put("mobile_number", "9899123456");
+            obj.put("mobile_number", phoneNo);
 
             if(bDay == null)
-                obj.put("age", bDay);
+                obj.put("age", gbBday);
             else
                 obj.put("age", strBuild);
 
@@ -239,7 +307,7 @@ public class CheckDetails extends AppCompatActivity {
                 obj.put("gender", gender);
 
             if (prefs.getFb_Token() == null)
-                obj.put("google_auth", prefs.getG_Token());
+                obj.put("facebook_auth", gToken);
             else
                 obj.put("facebook_auth", prefs.getFb_Token());
 
@@ -254,6 +322,10 @@ public class CheckDetails extends AppCompatActivity {
 
     }
 
+    /*
+     * main method to hit server with all the details either from FB/Google.
+     * Getting Customer ID as a Response in below method
+     */
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;
@@ -275,14 +347,14 @@ public class CheckDetails extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("yohaha=success==="+response);
+                System.out.println("yohaha=custmor==success==="+response);
 
                 try {
                     JSONObject object = new JSONObject(response);
 
-                    String customer = object.getString("customer_id");
-                    prefs.setCustomer_Id(customer);
-//                    Toast.makeText(CheckDetails.this, customer, Toast.LENGTH_LONG).show();
+                    customer_id = object.getString("customer_id");
+                    prefs.setCustomer_Id(customer_id);
+                    //Toast.makeText(CheckDetails.this, customer, Toast.LENGTH_LONG).show();
 
                 }catch(JSONException e){
                     e.printStackTrace();
@@ -309,7 +381,34 @@ public class CheckDetails extends AppCompatActivity {
                 }
             }
         };
-//        mRequestQueue.add(stringRequest);
+        //mRequestQueue.add(stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    /*
+     * Method to back press from the device
+     * Either to go to last screen or If the last screen working finished then close the app
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(prefs.getFacebook_logged_In() == true){
+            if(LoginManager.getInstance()!=null)
+                prefs.clearPref();
+            LoginManager.getInstance().logOut();
+            prefs.setFacebook_logged_In(false);
+            finish();
+
+        }else if(prefs.getGoogle_logged_In() == true){
+            prefs.setGoogle_logged_In(false);
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            prefs.clearPref();
+                            finish();
+                        }
+                    });
+        }
     }
 }

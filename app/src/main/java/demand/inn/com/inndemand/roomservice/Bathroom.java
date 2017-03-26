@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -48,35 +49,40 @@ public class Bathroom extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
-    //UI call area
-    CheckBox towels, soap, maintainance;
-    LinearLayout backPress, confirm;
-    Snackbar snackbar;
-    EditText say_something_bell;
+    //UI call area foir the screen
+    CheckBox cb_towels, cb_soap, cb_maintainance;
+    LinearLayout ll_confirm;
+    EditText et_say_something_bell;
     Toolbar toolbar;
 
-    //Class call
-    AppController appController;
+    //Linearlayout to show/hide options provided by hotel (Towel/Soap/Maintenance)
+    LinearLayout ll_bath_towel, ll_bath_soap, ll_bath_maintenance;
 
-    //Date & Time
+//    String and others to get current time and date
     Calendar c;
     SimpleDateFormat df;
     String formattedDate;
 
-    //Others
+//    String vaues assigned 0 initally
+//    0 show no request for anything from User (if 1 that means User requested for any of these
+//      equals value 1)
     String towel_value = "0", soap_value= "0", main_value = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bathroom);
+//        Utility Class Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bathroom Essentials");
+        toolbar.setTitle(R.string.bath_essentials);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 
@@ -88,76 +94,100 @@ public class Bathroom extends AppCompatActivity {
         });
 
         //UI Initialize area
-        confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_bath);
+        ll_confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_bath);
+        ll_bath_towel = (LinearLayout) findViewById(R.id.bath_towel);
+        ll_bath_soap = (LinearLayout) findViewById(R.id.bath_soap);
+        ll_bath_maintenance = (LinearLayout) findViewById(R.id.bath_maintenance);
 
         //UI CheckBox Initialize area
-        towels = (CheckBox) findViewById(R.id.towels_bath);
-        soap = (CheckBox) findViewById(R.id.soap_bath);
-        maintainance = (CheckBox) findViewById(R.id.maintainance_bath);
+        cb_towels = (CheckBox) findViewById(R.id.towels_bath);
+        cb_soap = (CheckBox) findViewById(R.id.soap_bath);
+        cb_maintainance = (CheckBox) findViewById(R.id.maintainance_bath);
 
-        say_something_bell = (EditText) findViewById(R.id.say_something_bell);
+        et_say_something_bell = (EditText) findViewById(R.id.say_something_bell);
 
+//        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         formattedDate = df.format(c.getTime());
         // formattedDate have current date/time
 
+        if(prefs.getBath_towel() == false)
+            ll_bath_towel.setVisibility(View.GONE);
+        else
+            ll_bath_towel.setVisibility(View.VISIBLE);
+
+        if(prefs.getBath_toiletries() == false)
+            ll_bath_soap.setVisibility(View.GONE);
+        else
+            ll_bath_soap.setVisibility(View.VISIBLE);
+
+        if(prefs.getBath_maintenance()== false)
+            ll_bath_maintenance.setVisibility(View.GONE);
+        else
+            ll_bath_maintenance.setVisibility(View.VISIBLE);
+
+
         //Selection of items(Towels/Soap/maintainance) for the room
-        towels.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//        Boolean value check = true and int value = 1 means User demamds for towel
+//        Boolean value check = false and int value = 0 means no demand
+        cb_towels.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
-                if(towels.isChecked()){
-                    towels.setChecked(true);
+                if(cb_towels.isChecked()){
+                    cb_towels.setChecked(true);
                     towel_value = "1";
                 }else{
-                    towels.setChecked(false);
+                    cb_towels.setChecked(false);
                     towel_value = "0";
                 }
             }
         });
 
-        soap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_soap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // TODO Auto-generated method stub
 
-                if(soap.isChecked()){
-                    soap.setChecked(true);
+                if(cb_soap.isChecked()){
+                    cb_soap.setChecked(true);
                     soap_value = "1";
 
                 }else{
-                    soap.setChecked(false);
+                    cb_soap.setChecked(false);
                     soap_value = "0";
                 }
             }
         });
 
-        maintainance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_maintainance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(maintainance.isChecked()){
-                    maintainance.setChecked(true);
+                if(cb_maintainance.isChecked()){
+                    cb_maintainance.setChecked(true);
                     main_value = "1";
 
                 }else{
-                    maintainance.setChecked(false);
+                    cb_maintainance.setChecked(false);
                     main_value = "0";
                 }
             }
         });
     }
 
-    //OnClick to confirm demands for the room
+//    Button Click at the bottom of the screen
+//    Sending all requirements to server with this click
     public void confirmDemand(View view){
 
-        String comment = say_something_bell.getText().toString().trim();
+        String comment = et_say_something_bell.getText().toString().trim();
 
-        if(towels.isChecked() || soap.isChecked() || maintainance.isChecked()){
+        if(cb_towels.isChecked() || cb_soap.isChecked() || cb_maintainance.isChecked()){
 
             JSONObject obj  =new JSONObject();
             try {
@@ -169,22 +199,26 @@ public class Bathroom extends AppCompatActivity {
                 obj.put("maintenance", main_value);
 
                 postJsonData(Config.innDemand+"bathessentials/save/", obj.toString());
-                say_something_bell.getText().clear();
+                et_say_something_bell.getText().clear();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }else if(towels.isChecked() == false && soap.isChecked() == false && maintainance.isChecked() == false){
-//            snackbar = Snackbar.make(coordinatorLayout, "Please fill to confirm", Snackbar.LENGTH_LONG)
+        }else if(cb_towels.isChecked() == false && cb_soap.isChecked() == false
+                && cb_maintainance.isChecked() == false){
+//            snackbar = Snackbar.make(coordinatorLayout, "Please fill to confirm",
+// Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null);
 ////                        View snackbarView = snackbar.getView();
 ////                        snackbarView.setBackgroundColor(Color.YELLOW);
-////                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-////                        textView.setTextColor(getResources().getColor(R.color.confirm_demand_click));
+////                        TextView textView = (TextView) snackbarView.findViewById(android.s
+// upport.design.R.id.snackbar_text);
+////                        textView.setTextColor(getResources().getColor(R.color.
+// confirm_demand_click));
 //            snackbar.show();
         }
     }
 
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;

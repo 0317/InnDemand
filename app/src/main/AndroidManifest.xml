@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="demand.inn.com.inndemand">
 
     <!-- ...............InnDemand app permissions area............ -->
+    <permission android:name="demand.inn.com.inndemand.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="demand.inn.com.inndemand.permission.C2D_MESSAGE" />
     <uses-permission-sdk-23 android:name="android.permission.CAMERA"></uses-permission-sdk-23>
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- To access accounts configured on device -->
+    <!-- ..........To access accounts configured on device........ -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <!-- To use account credentials -->
+    <!-- ..........To use account credentials...................... -->
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -23,7 +26,7 @@
     <application
         android:allowBackup="true"
         android:name=".volleycall.AppController"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -31,7 +34,8 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"
+            tools:ignore="ManifestResource" />
         <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
 
 
@@ -47,7 +51,9 @@
 
         <activity android:name=".welcome.SplashScreen"
             android:label="@string/app_name"
+            android:configChanges="locale"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,123 +64,207 @@
 
         <activity android:name=".login.Loginscreen"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".login.CheckDetails"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+
+        <activity android:name=".login.QrEntry"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"></activity>
+
         <activity android:name=".login.QRscanning"
+            android:configChanges="locale"
             android:screenOrientation="portrait">
 
         </activity>
 
+        <activity android:name=".Helper.Loader"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".DashBoard"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+            android:configChanges="locale"
+            android:screenOrientation="portrait">
+
         </activity>
 
-        <activity android:name=".login.HotelDetails"
-            android:label="Hotel"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-          <!--  <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
         <activity android:name=".cartarea.MyCart"
+            android:configChanges="locale"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".welcome.CommentArea"
+            android:configChanges="locale"
             android:screenOrientation="portrait"></activity>
 
         <!-- ................Room-Services Activity Area.......... -->
 
         <activity android:name=".roomservice.RoomServices"
             android:label="@string/room_services"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar"
-            android:icon="@drawable/ic_menu_camera"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".roomservice.Bathroom"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.RoomCleaning"
-            android:screenOrientation="portrait">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.WakeUp"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.Cab"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.Laundry"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.Beverages"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.BedTea"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".roomservice.BellBoy"
-            android:screenOrientation="portrait">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:windowSoftInputMode="stateHidden">
         </activity>
 
         <!-- ................Restaurant Activity Area.......... -->
 
-        <activity android:name=".roomservice.Restaurant"
+        <activity android:name=".hotelserv.Restaurant"
             android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        </activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+        <activity android:name=".model.SearchArea"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".model.SearchDB"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <!-- ...................Bar Activity Area...................... -->
+
+        <activity android:name=".hotelserv.Bar"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <!-- ...................Terms of Use Area...................... -->
 
-        <activity android:name=".login.PrivacyPolicy">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+        <activity android:name=".login.PrivacyPolicy"
+            android:configChanges="locale"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".login.TermsCondition"></activity>
+        <activity android:name=".login.TermsCondition"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"></activity>
 
         <!-- ...................Broadcast call Area....................... -->
 
-        <!-- ...................Services call Area........................ -->
+        <activity android:name=".gcm.GCMNotifications"
+            android:configChanges="locale"
+            android:screenOrientation="portrait">
+        </activity>
 
+        <service android:name=".service.Serve"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE"></action>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".fcm.MyInstanceIDListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".fcm.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
         <!-- ...................Map Area....................................-->
 
-        <activity android:name=".mapdirection.Mapping"
+        <activity android:name=".mapdirection.MapArea"
+            android:configChanges="locale"
             android:screenOrientation="portrait"></activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCNosy5B30fOPeAT7Wcqo14sdtyRawTQ1Q"/>
+            android:value="AIzaSyBrD28TFE4myXxwFBkU9hNLzwkLURY88xA"/>
+
+        <!-- ..................Settings Area(Menu Area).......................... -->
+
+        <activity android:name=".setting.Settings"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".setting.Feedback"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".setting.OrderHistory"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".setting.FeedbackList"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <!-- ..................Thank You........................... -->
+        <activity android:name=".welcome.Thankyou"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- ..................Crashlytics Call Area..................... -->
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d41faf1bafcf634b25cd4c680c0f048567e1cef9" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d41faf1bafcf634b25cd4c680c0f048567e1cef9"
+            />
 
     </application>
 

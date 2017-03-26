@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+            android:layout_weight="1.3"
+        android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qr_entry"
+        android:textSize="@dimen/sixteen_sp"
+        android:layout_margin="15dp"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="sans-serif-thin"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight=".7"
+            android:gravity="center">
+
+            <Spinner
+                android:id="@+id/languages"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:background="@color/light_grey"
+                android:entries="@array/country_languages"
+                android:prompt="@string/country_prompt" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="@string/ok_click"
+        android:id="@+id/click_ok"
+        android:onClick="click_OK"
+        android:textColor="@android:color/black"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/confirm_demand_click"/>
+
+</RelativeLayout>

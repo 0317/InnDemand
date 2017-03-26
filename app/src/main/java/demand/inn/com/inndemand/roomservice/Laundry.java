@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -53,29 +54,26 @@ public class Laundry extends AppCompatActivity {
 
     static final int TIME_DIALOG_ID = 1111;
 
-    //UI call area
-    LinearLayout backpress;
-    EditText say_something;
-    TextView now, pickTime;
-    private Calendar calendar;
-    TimePicker timePick;
+    //UI Class call for the screen
+    EditText et_say_something;
+    TextView txt_now, txt_pickTime;
+    TextView txt_note;
     Toolbar toolbar;
 
     //Others
     String saySomething;
-    private String format = "";
-    String getTime;
-    private int hour;
-    private int minute;
 
     //Class call Area
     AppController appController;
 
-    //Date & Time
+    //String and others to get current time and date
     Calendar c;
     SimpleDateFormat df, date;
     String formattedDate, getDate;
     String finalTime;
+    String getTime;
+    private int hour;
+    private int minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +83,13 @@ public class Laundry extends AppCompatActivity {
         prefs = new AppPreferences(this);
         appController = new AppController();
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Laundry");
+        toolbar.setTitle(R.string.laundry);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 
@@ -100,35 +101,45 @@ public class Laundry extends AppCompatActivity {
         });
 
         //UI initialize area
-        say_something = (EditText) findViewById(R.id.say_something_laundry);
+        et_say_something = (EditText) findViewById(R.id.say_something_laundry);
 
         //TextView UI Initialize area
-        now = (TextView) findViewById(R.id.now_laundry);
-        pickTime = (TextView) findViewById(R.id.pickTime_laundry);
+        txt_note = (TextView) findViewById(R.id.note_laundry);
+        txt_note.setText(prefs.getLaundrynote());
+        txt_now = (TextView) findViewById(R.id.now_laundry);
+        txt_pickTime = (TextView) findViewById(R.id.pickTime_laundry);
 
+        //Settings static values for the activity (fetched from server before)
+        txt_note.setText(prefs.getLaundrynote());
+
+//        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         date = new SimpleDateFormat("yyyy-MM-dd");
         formattedDate = df.format(c.getTime());
         getDate = date.format(c.getTime());
         // formattedDate have current date/time
 
-        now.setOnClickListener(new View.OnClickListener() {
+//        Now click to pick current time and send to server
+        txt_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 c = Calendar.getInstance();
                 System.out.println("Current time => "+c.getTime());
 
                 df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
                 formattedDate = df.format(c.getTime());
                 // formattedDate have current date/time
                 finalTime =formattedDate;
             }
         });
 
-        pickTime.setOnClickListener(new View.OnClickListener() {
+//        Open pop-ups by matching key and allows to set time
+        txt_pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Add Click Listener
@@ -137,6 +148,7 @@ public class Laundry extends AppCompatActivity {
         });
     }
 
+//    Coding(different method to get current time/Date in required format)
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -202,9 +214,11 @@ public class Laundry extends AppCompatActivity {
         finalTime = getDate+" "+getTime;
     }
 
+//    Button Click at the bottom of the screen
+//      Sending all requirements to server with this click
     public void confirmDemand(View view){
         //string call to get value of edittext
-        saySomething = say_something.getText().toString().trim();
+        saySomething = et_say_something.getText().toString().trim();
 
         if(saySomething == null){
 
@@ -220,7 +234,7 @@ public class Laundry extends AppCompatActivity {
 
                 postJsonData(Config.innDemand + "laundry/save/", obj.toString());
 
-                say_something.getText().clear();
+                et_say_something.getText().clear();
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -228,7 +242,7 @@ public class Laundry extends AppCompatActivity {
         }
     }
 
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;

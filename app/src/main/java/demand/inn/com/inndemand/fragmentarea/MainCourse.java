@@ -1,12 +1,14 @@
 package demand.inn.com.inndemand.fragmentarea;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,9 +46,6 @@ import java.util.List;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.MainCourseAdapter;
-import demand.inn.com.inndemand.adapter.RestaurantAdapter;
-import demand.inn.com.inndemand.constants.AppetiserData;
-import demand.inn.com.inndemand.constants.CartData;
 import demand.inn.com.inndemand.constants.Config;
 import demand.inn.com.inndemand.constants.MaincourseData;
 import demand.inn.com.inndemand.utility.AppPreferences;
@@ -59,6 +58,7 @@ import demand.inn.com.inndemand.volleycall.AppController;
 public class MainCourse extends Fragment {
 
     //Utility
+    NetworkUtility nu;
     AppPreferences prefs;
 
     View view;
@@ -86,13 +86,14 @@ public class MainCourse extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.maincourse, container, false);
+        nu = new NetworkUtility(getActivity());
         prefs = new AppPreferences(getActivity());
 
         //UI initialize
-        cart_item = (TextView) view.findViewById(R.id.maincourse_items);
-        cart_total = (TextView) view.findViewById(R.id.maincourse_total);
-        cart_total.setText("Total: Rs 2000");
-        cart_item.setText("(10 items)");
+//        cart_item = (TextView) view.findViewById(R.id.maincourse_items);
+//        cart_total = (TextView) view.findViewById(R.id.maincourse_total);
+//        cart_total.setText("Total: Rs 2000");
+//        cart_item.setText("(10 items)");
 
         //ListItems in RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
@@ -105,7 +106,16 @@ public class MainCourse extends Fragment {
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        callMethod();
+        if(nu.isConnectingToInternet()) {
+            if(prefs.getFm_restaurant() == true) {
+
+            } else {
+                //mehtod to send Restaurant ID to server & to get response.
+                callMethod();
+            }
+        }else{
+
+        }
 
         return  view;
     }
@@ -198,7 +208,7 @@ public class MainCourse extends Fragment {
                         amount = object.getString("price");
 
                         if(category.contains("Main") || category.equalsIgnoreCase("Main")) {
-                            MaincourseData a = new MaincourseData(category, itemName, itemDesc, "Rs:"+ amount);
+                            MaincourseData a = new MaincourseData(subCategory, itemName, itemDesc, "Rs: "+ amount, food);
                             cardList.add(a);
 
                             adapter.notifyDataSetChanged();

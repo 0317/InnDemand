@@ -11,19 +11,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/view_gray">
+            android:id="@+id/gray_back"
+            android:background="@color/light_grey">
 
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="@string/restaurant"
+           android:text=""
            android:maxLines="1"
            android:lines="1"
            android:textSize="@dimen/sixteen_sp"
            android:layout_marginLeft="15dp"
+           android:layout_marginTop="5dp"
+           android:layout_marginBottom="2dp"
            android:id="@+id/restaurant_listitems_head"
-           android:textColor="@color/colorPrimary"
-           android:textStyle="bold"/>
+           android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
 
@@ -37,17 +39,18 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/item_click">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/restaurant"
             android:textSize="@dimen/fifteen_sp"
             android:maxLines="1"
             android:lines="1"
             android:layout_marginLeft="15dp"
             android:id="@+id/restaurant_listitems_name"
+            android:fontFamily="sans-serif-thin"
             android:textColor="@color/confirm_demand_click"
             android:textStyle="bold"/>
 
@@ -59,6 +62,7 @@
                         android:maxLines="1"
                         android:lines="1"
                         android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif-thin"
                         android:id="@+id/restaurant_listitems_details"
                         android:textColor="@color/view_gray"
                         android:textStyle="bold"/>
@@ -73,7 +77,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/restaurant"
             android:textSize="@dimen/forteen_sp"
             android:maxLines="1"
             android:lines="1"
@@ -91,8 +94,8 @@
                     android:layout_gravity="bottom">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@mipmap/ic_subtract"
                         android:id="@+id/restaurant_minus"/>
 
@@ -101,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textSize="@dimen/forteen_sp"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:id="@+id/restaurant_counts"
@@ -109,8 +112,8 @@
                         android:textStyle="bold"/>
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@mipmap/ic_plus"
                         android:id="@+id/restaurant_plus"/>
 

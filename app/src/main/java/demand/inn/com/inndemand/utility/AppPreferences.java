@@ -14,9 +14,21 @@ public class AppPreferences {
     private SharedPreferences appSharedpref;
     private SharedPreferences.Editor prefEditor;
 
+    private String refreshToken = "refreshToken";
+
+    private String localeset = "localeset",
+                selectedLanguage = "selectedLanguage";
+
+    private String hotel_name = "hotel_name",
+            hotel_address = "hotel_address",
+            hotel_dp = "hotel_dp";
+
     private String customer_Id = "customer_Id",
             checkin_Id = "checkin_Id",
             restaurant_Id = "restaurant_Id",
+            restaurant_item_id = "restaurant_item_id",
+            rating_value = "rating_value",
+            bar_Id = "bar_Id",
             user_gender = "user_gender",
             user_bday = "user_bday",
             user_lname = "user_lname",
@@ -30,6 +42,8 @@ public class AppPreferences {
             appVersion = "app_version_pref",
             checkout = "checkout",
             user_fbemail = "user_fbemail",
+            user_fbname = "user_fbname",
+            user_fbpic = "user_fbpic",
             fb_Token = "fb_Token",
             g_Token = "g_Token",
             hotel_id = "hotel_id",
@@ -40,10 +54,59 @@ public class AppPreferences {
             price = "price",
             category = "category",
             restaurant_food = "restaurant_food",
-            save_data = "save_data";
+            save_data = "save_data",
+            total_cash = "total_cash",
+            total_items = "total_items";
+
+    //Check whether Hotel provides mentioned facilities/not
+    private String bar = "bar",
+                    spa = "spa",
+                    restaurant = "restaurant",
+                    barList = "barList";
+
+    //Category Check
+    private String category_check = "category_check",
+                    data_check = "data_check";
+
+    //Check timings for the services mentioned
+    private String fm_bar = "fm_bar",
+                    fm_spa = "fm_spa",
+                    fm_restaurant = "fm_restaurant",
+                    fm_service = "fm_service";
+
+    //Check availability for the services mentioned
+    private String room_service = "roomservice",
+                    beverage = "beverage",
+                    bed_tea = "bed_tea",
+                    wake_up = "wake_up",
+                    bell_boy = "bell_boy",
+                    room_clean = "room_clean",
+                    laundry = "laundry",
+                    cab = "cab",
+                    bathroom = "bathroom",
+                    bath_towel = "bath_towel",
+                    bath_toiletries = "bath_toiletries",
+                    bath_maintenance = "bath_maintenance",
+                    water = "water",
+                    ice_bucket = "ice_bucket",
+                    soda = "soda",
+                    glass = "glass",
+                    tea = "tea",
+                    coffee = "coffee",
+                    laundrynote = "laundrynote",
+                    cabnote = "cabnote";
+
+    //Location Saves
+    private String currentLocation = "currentLocation",
+                    destination = "destination";
+
+    //Registration ID for GCM
+    private String reg_ID = "reg_ID";
 
     private String is_task_completed = "is_task_completed",
+            hotel_check = "hotel_check",
             is_In_Hotel = "is_In_Hotel",
+            check_list = "check_list",
             facebook_logged_In = "facebook_logged_In",
             google_logged_In = "google_logged_IN";
 
@@ -55,10 +118,103 @@ public class AppPreferences {
         this.prefEditor = appSharedpref.edit();
     }
 
+    public void singleCache(Context context){
+        this.appSharedpref = context.getSharedPreferences(SKILL_PREFS, Activity.MODE_PRIVATE);
+        this.prefEditor = appSharedpref.edit();
+    }
+
     public void clearPref() {
         prefEditor.clear().commit();
     }
 
+    public String getLocaleset() {
+        return appSharedpref.getString(localeset, "en");
+    }
+
+    public void setLocaleset(String _localeset) {
+        prefEditor.putString(localeset, _localeset).commit();
+    }
+
+    public String getSelectedLanguage() {
+        return appSharedpref.getString(selectedLanguage, "");
+    }
+
+    public void setSelectedLanguage(String _selectedLanguage) {
+        prefEditor.putString(selectedLanguage, _selectedLanguage).commit();
+    }
+
+
+    //Category Check Area
+
+    public boolean getCategory_check() {
+        return appSharedpref.getBoolean(category_check, false);
+    }
+
+    public void setCategory_check(Boolean _category_check) {
+        prefEditor.putBoolean(category_check, _category_check).commit();
+    }
+
+    //Data Check
+
+    public boolean getData_check() {
+        return appSharedpref.getBoolean(data_check, false);
+    }
+
+    public void setData_check(Boolean _data_check) {
+        prefEditor.putBoolean(data_check, _data_check).commit();
+    }
+
+
+//   Hotel Details for Dashboard Screen
+
+
+    public String getHotel_name() {
+        return appSharedpref.getString(hotel_name, "");
+    }
+
+    public void setHotel_name(String _hotel_name) {
+        prefEditor.putString(hotel_name, _hotel_name).commit();
+    }
+
+    public String getHotel_address() {
+        return appSharedpref.getString(hotel_address, "");
+    }
+
+    public void setHotel_address(String _hotel_address) {
+        prefEditor.putString(hotel_address, _hotel_address).commit();
+    }
+
+    public String getHotel_dp() {
+        return appSharedpref.getString(hotel_dp, "");
+    }
+
+    public void setHotel_dp(String _hotel_dp) {
+        prefEditor.putString(hotel_dp, _hotel_dp).commit();
+    }
+
+    public Boolean getHotel_check() {
+        return appSharedpref.getBoolean(hotel_check, false);
+    }
+
+    public void setHotel_check(boolean _hotel_check) {
+        prefEditor.putBoolean(hotel_check, _hotel_check).commit();
+    }
+
+    public String getRefreshToken() {
+        return appSharedpref.getString(refreshToken, "");
+    }
+
+    public void setRefreshToken(String _refreshToken) {
+        prefEditor.putString(refreshToken, _refreshToken);
+    }
+
+    public String getReg_ID() {
+        return appSharedpref.getString(reg_ID, "");
+    }
+
+    public void setReg_ID(String _reg_ID) {
+        prefEditor.putString(reg_ID, _reg_ID).commit();
+    }
 
     public String getFb_Token() {
         return appSharedpref.getString(fb_Token, "");
@@ -90,6 +246,30 @@ public class AppPreferences {
 
     public void setRestaurant_Id(String _restaurant_Id) {
         prefEditor.putString(restaurant_Id, _restaurant_Id).commit();
+    }
+
+    public String getRestaurant_item_id() {
+        return appSharedpref.getString(restaurant_item_id, "");
+    }
+
+    public void setRestaurant_item_id(String _restaurant_item_id) {
+        prefEditor.putString(restaurant_item_id, _restaurant_item_id).commit();
+    }
+
+    public String getRating_value() {
+        return appSharedpref.getString(rating_value, "");
+    }
+
+    public void setRating_value(String _rating_value) {
+        prefEditor.putString(rating_value, _rating_value).commit();
+    }
+
+    public String getBar_Id() {
+        return appSharedpref.getString(bar_Id, "");
+    }
+
+    public void setBar_Id(String _bar_Id) {
+        prefEditor.putString(bar_Id, _bar_Id).commit();
     }
 
     public String getG_Token() {
@@ -124,6 +304,22 @@ public class AppPreferences {
         prefEditor.putString(user_fbemail, _user_fbemail).commit();
     }
 
+    public String getUser_fbname() {
+        return appSharedpref.getString(user_fbname, "");
+    }
+
+    public void setUser_fbname(String _user_fbname) {
+        prefEditor.putString(user_fbname, _user_fbname).commit();
+    }
+
+    public String getUser_fbpic() {
+        return appSharedpref.getString(user_fbpic, "");
+    }
+
+    public void setUser_fbpic(String _user_fbpic) {
+        prefEditor.putString(user_fbpic, _user_fbpic).commit();
+    }
+
     public boolean getIs_task_completed() {
         return appSharedpref.getBoolean(String.valueOf(is_task_completed), false);
     }
@@ -132,12 +328,20 @@ public class AppPreferences {
         prefEditor.putBoolean(String.valueOf(is_task_completed), _is_task_completed).commit();
     }
 
-    public boolean getIs_In_Hotel() {
+    public Boolean getIs_In_Hotel() {
         return appSharedpref.getBoolean(String.valueOf(is_In_Hotel), false);
     }
 
-    public void setIs_In_Hotel(Boolean _is_In_Hotel) {
+    public void setIs_In_Hotel(boolean _is_In_Hotel) {
         prefEditor.putBoolean(String.valueOf(is_In_Hotel), _is_In_Hotel).commit();
+    }
+
+    public Boolean getCheck_list() {
+        return appSharedpref.getBoolean(check_list, false);
+    }
+
+    public void setCheck_list(boolean _check_list) {
+        prefEditor.putBoolean(check_list, _check_list).commit();
     }
 
     public boolean getFacebook_logged_In() {
@@ -312,5 +516,275 @@ public class AppPreferences {
 
     public void setRestaurant_food(String _restaurant_food) {
         prefEditor.putString(restaurant_food, _restaurant_food).commit();
+    }
+
+
+    /* ..................Location Data Details........................... */
+
+    public String getCurrentLocation() {
+        return appSharedpref.getString(currentLocation, "");
+    }
+
+    public void setCurrentLocation(String _currentLocation) {
+        prefEditor.putString(currentLocation, _currentLocation).commit();
+    }
+
+    public String getDestination() {
+        return appSharedpref.getString(destination, "");
+    }
+
+    public void setDestination(String _destination) {
+        prefEditor.putString(destination, _destination).commit();
+    }
+
+    /* ..................Hotel Details........................... */
+
+    public Boolean getBar() {
+        return appSharedpref.getBoolean(bar, false);
+    }
+
+    public void setBar(boolean _bar) {
+        prefEditor.putBoolean(bar, _bar).commit();
+    }
+
+    public Boolean getSpa() {
+        return appSharedpref.getBoolean(spa, false);
+    }
+
+    public void setSpa(boolean _spa) {
+        prefEditor.putBoolean(spa, _spa).commit();
+    }
+
+    public Boolean getRestaurant() {
+        return appSharedpref.getBoolean(restaurant, false);
+    }
+
+    public void setRestaurant(boolean _restaurant) {
+        prefEditor.putBoolean(restaurant, _restaurant).commit();
+
+
+    }
+
+
+     /* .................Timings Check Area....................... */
+
+    public Boolean getFm_bar() {
+        return appSharedpref.getBoolean(fm_bar, false);
+    }
+
+    public void setFm_bar(boolean _fm_bar) {
+        prefEditor.putBoolean(fm_bar, _fm_bar).commit();
+    }
+
+    public Boolean getFm_spa() {
+        return appSharedpref.getBoolean(fm_spa, false);
+    }
+
+    public void setFm_spa(boolean _fm_spa) {
+        prefEditor.putBoolean(fm_spa, _fm_spa).commit();
+    }
+
+    public Boolean getFm_restaurant() {
+        return appSharedpref.getBoolean(fm_restaurant, false);
+    }
+
+    public void setFm_restaurant(boolean _fm_restaurant) {
+        prefEditor.putBoolean(fm_restaurant, _fm_restaurant).commit();
+    }
+
+    public Boolean getFm_service() {
+        return appSharedpref.getBoolean(fm_service, false);
+    }
+
+    public void setFm_service(boolean _fm_service) {
+        prefEditor.putBoolean(fm_service, _fm_service).commit();
+    }
+
+    /* .................Room Services Area....................... */
+
+    public Boolean getRoom_service() {
+        return appSharedpref.getBoolean(room_service, false);
+    }
+
+    public void setRoom_service(boolean _room_service) {
+        prefEditor.putBoolean(room_service, _room_service).commit();
+    }
+
+    public Boolean getBeverage() {
+        return appSharedpref.getBoolean(beverage, false);
+    }
+
+    public void setBeverage(boolean _beverage) {
+        prefEditor.putBoolean(beverage, _beverage).commit();
+    }
+
+    public Boolean getBed_tea() {
+        return appSharedpref.getBoolean(bed_tea, false);
+    }
+
+    public void setBed_tea(boolean _bed_tea) {
+        prefEditor.putBoolean(bed_tea, _bed_tea).commit();
+    }
+
+    public Boolean getWake_up() {
+        return appSharedpref.getBoolean(wake_up, false);
+    }
+
+    public void setWake_up(boolean _wake_up) {
+        prefEditor.putBoolean(wake_up, _wake_up).commit();
+    }
+
+    public Boolean getBell_boy() {
+        return appSharedpref.getBoolean(bell_boy, false);
+    }
+
+    public void setBell_boy(boolean _bell_boy) {
+        prefEditor.putBoolean(bell_boy, _bell_boy).commit();
+    }
+
+    public Boolean getRoom_clean() {
+        return appSharedpref.getBoolean(room_clean, false);
+    }
+
+    public void setRoom_clean(boolean _room_clean) {
+        prefEditor.putBoolean(room_clean, _room_clean).commit();
+    }
+
+    public Boolean getLaundry() {
+        return appSharedpref.getBoolean(laundry, false);
+    }
+
+    public void setLaundry(boolean _laundry) {
+        prefEditor.putBoolean(laundry, _laundry).commit();
+    }
+
+    public Boolean getCab() {
+        return appSharedpref.getBoolean(cab, false);
+    }
+
+    public void setCab(boolean _cab) {
+        prefEditor.putBoolean(cab, _cab).commit();
+    }
+
+    public Boolean getBathroom() {
+        return appSharedpref.getBoolean(bathroom, false);
+    }
+
+    public void setBathroom(boolean _bathroom) {
+        prefEditor.putBoolean(bathroom, _bathroom).commit();
+    }
+
+    public Boolean getBath_towel() {
+        return appSharedpref.getBoolean(bath_towel, false);
+    }
+
+    public void setBath_towel(boolean _bath_towel) {
+        prefEditor.putBoolean(bath_towel, _bath_towel).commit();
+    }
+
+    public Boolean getBath_toiletries() {
+        return appSharedpref.getBoolean(bath_toiletries, false);
+    }
+
+    public void setBath_toiletries(boolean _bath_toiletries) {
+        prefEditor.putBoolean(bath_toiletries, _bath_toiletries).commit();
+    }
+
+    public Boolean getBath_maintenance() {
+        return appSharedpref.getBoolean(bath_maintenance, false);
+    }
+
+    public void setBath_maintenance(boolean _bath_maintenance) {
+        prefEditor.putBoolean(bath_maintenance, _bath_maintenance).commit();
+    }
+
+    public Boolean getWater() {
+        return appSharedpref.getBoolean(water, false);
+    }
+
+    public void setWater(boolean _water) {
+        prefEditor.putBoolean(water, _water).commit();
+    }
+
+    public Boolean getIce_bucket() {
+        return appSharedpref.getBoolean(ice_bucket, false);
+    }
+
+    public void setIce_bucket(boolean _ice_bucket) {
+        prefEditor.putBoolean(ice_bucket, _ice_bucket).commit();
+    }
+
+    public Boolean getSoda() {
+        return appSharedpref.getBoolean(soda, false);
+    }
+
+    public void setSoda(boolean _soda) {
+        prefEditor.putBoolean(soda, _soda).commit();
+    }
+
+    public Boolean getGlass() {
+        return appSharedpref.getBoolean(glass, false);
+    }
+
+    public void setGlass(boolean _glass) {
+        prefEditor.putBoolean(glass, _glass).commit();
+    }
+
+    public Boolean getTea() {
+        return appSharedpref.getBoolean(tea, false);
+    }
+
+    public void setTea(boolean _tea) {
+        prefEditor.putBoolean(tea, _tea).commit();
+    }
+
+    public Boolean getCoffee() {
+        return appSharedpref.getBoolean(coffee, false);
+    }
+
+    public void setCoffee(boolean _coffee) {
+        prefEditor.putBoolean(coffee, _coffee).commit();
+    }
+
+    public Boolean getBarList() {
+        return appSharedpref.getBoolean(barList, false);
+    }
+
+    public void setBarList(boolean _barList) {
+        prefEditor.putBoolean(barList, _barList).commit();
+    }
+
+    public String getLaundrynote() {
+        return appSharedpref.getString(laundrynote, "");
+    }
+
+    public void setLaundrynote(String _laundrynote) {
+        prefEditor.putString(laundrynote, _laundrynote).commit();
+    }
+
+    public String getCabnote() {
+        return appSharedpref.getString(cabnote, "");
+    }
+
+    public void setCabnote(String _cabnote) {
+        prefEditor.putString(cabnote, _cabnote).commit();
+    }
+
+    //    Total cash for Restaurant/ Bar/ Spa
+
+    public String getTotal_cash() {
+        return appSharedpref.getString(total_cash, "");
+    }
+
+    public String getTotal_items() {
+        return appSharedpref.getString(total_items, "");
+    }
+
+    public void setTotal_items(String _total_items) {
+        prefEditor.putString(total_items, _total_items).commit();
+    }
+
+    public void setTotal_cash(String _total_cash) {
+        prefEditor.putString(total_cash, _total_cash).commit();
     }
 }

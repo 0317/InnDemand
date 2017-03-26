@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">一经请求</string>
+
+    <!-- .......Google Integration String calls....... -->
+
+    <string name="logout">登出</string>
+    <string name="loginText">请与您的谷歌帐户登录</string>
+
+    <string name="action_settings">设置</string>
+
+    <!-- ......Hardcoded string values are under...... -->
+
+    <string name="login_call">登录</string>
+    <string name="get_direction">获取路线</string>
+    <string name="login_terms_lines">By signing-up you agree to our</string>
+    <string name="terms_conditions">terms of service</string>
+    <string name="termsconditions">条款和条件</string>
+    <string name="and">&amp;</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="room_services">客房服务</string>
+    <string name="bell_boy">行李员</string>
+    <string name="room_cleaning">房间打扫</string>
+    <string name="laundry">洗衣店</string>
+    <string name="cab_call">出租车</string>
+    <string name="restaurant">餐厅</string>
+    <string name="wakeup_call">叫醒我</string>
+    <string name="bath_essentials">卫浴要点</string>
+    <string name="bed_tea_call">床咖啡/茶</string>
+    <string name="beverages">饮料</string>
+    <string name="itemscount">项目: </string>
+    <string name="totalcount">总: </string>
+    <string name="pick_time">选择时间</string>
+    <string name="pick_date">挑个日子</string>
+    <string name="pick_up_time">拾起时间</string>
+    <string name="select_date">选择日期</string>
+    <string name="select_time">选择时间</string>
+    <string name="change_time">更改时间</string>
+    <string name="check_out">查看</string>
+    <string name="cancel_wakeup_call">取消敲响了警钟</string>
+    <string name="cancel_cab">取消驾驶室</string>
+    <string name="anything_to_say">你有什么话要说？</string>
+    <string name="tap_to_start">点击这里开始打字</string>
+    <string name="when_to_clean">你想什么时候我们打扫你的房间？</string>
+    <string name="when_to_deliver">你想什么时候我们可以提供？</string>
+    <string name="when_to_wake">你想什么时候我们把你唤醒？</string>
+    <string name="when_to_pick">当你要我们来接你？</string>
+    <string name="pick_clothes">当你要我们拿起衣服？</string>
+    <string name="no_of_water_bottles">水瓶选择否</string>
+    <string name="no_of_soda_bottles">汽水瓶的选择号</string>
+    <string name="no_of_ice_bottles">选择空。冰桶的</string>
+    <string name="no_of_glasses">眼镜的选择号</string>
+    <string name="bed_tea_tea">茶</string>
+    <string name="bed_tea_coffee">咖啡</string>
+    <string name="note_bed_tea">NOTE: We cost Rs 25  per  Tea/Coffee. It will  take us 20 mins to
+        prepare your drink</string>
+    <string name="note_beverage">NOTE: We will reach the service to you in 15 minutes</string>
+    <string name="note_clothes">NOTE: We charge Rs 15 per cloth &amp; 7 hours to deliver it back
+    </string>
+    <string name="note_bath_essentials">NOTE: It will take us 10 minutes to reach you the towel(S)
+    </string>
+    <string name="note_cab">NOTE: Providing Cab services is based on the availability.
+        We will call you to confirm.</string>
+    <string name="write_comment_here">在这里写下您的评论</string>
+    <string name="write_comment">发表评论</string>
+    <string name="comment_section">注释部分</string>
+    <string name="submit">提交</string>
+    <string name="my_cart">我的车</string>
+    <string name="mycart">注：含税</string>
+    <string name="proceed">继续</string>
+    <string name="apply_coupon">套用折扣代码</string>
+    <string name="food_delivery_time">食品交货时间</string>
+    <string name="appetizer_fragment_headline">Our Restaurant Serves both Vegetarian &amp;
+        Non-Vegeterian</string>
+    <string name="restaurant_timing">Restaurant Timings - 7AM to 11PM</string>
+    <string name="note_restaurant">NOTE: It will take a minimum of 60 mins to prepare the food
+    </string>
+    <string name="towel">毛巾</string>
+    <string name="soap">肥皂</string>
+    <string name="maintainance">保养</string>
+    <string name="waterbottles">水瓶</string>
+    <string name="sodabottles">碳酸饮料瓶</string>
+    <string name="icebuckets">冰桶</string>
+    <string name="glasses">眼镜</string>
+    <string name="food_type">食物种类: </string>
+    <string name="restaurants">餐厅</string>
+    <string name="bar">酒吧</string>
+    <string name="spa">温泉</string>
+    <string name="zero">0</string>
+    <string name="call_hotel">呼叫</string>
+    <string name="room_service">客房服务</string>
+    <string name="mis_info">MISCELLANEOUS INFO</string>
+    <string name="hotel_restau_timing">Restaurant Timing(s)</string>
+    <string name="swim_timing">Swimming Pool Timing(s)</string>
+    <string name="about_hotel">ABOUT HOTEL</string>
+    <string name="add_number">NOTE: Please add your Mobile number to serve you better.</string>
+    <string name="enter_promocode">输入促销代码</string>
+    <string name="please_scan">Please scan the code below to get Hotel Details</string>
+    <string name="order_summary">订单摘要</string>
+    <string name="thankyou">感谢您 \n 我们的网站。.</string>
+    <string name="pleasantstay">有一个愉快的假期.</string>
+    <string name="verifycredentials">验证凭据...</string>
+    <string name="addcart">添加到购物车</string>
+    <string name="viewcart">查看购物车</string>
+    <string name="deleteaccount">删除帐户</string>
+    <string name="noti_hotel">通知（酒店）</string>
+    <string name="noti_inndemand">通知（需求）</string>
+    <string name="no">没有</string>
+    <string name="qr_entry">You have to scan QR Code \n\n Click Ok to Scan QR Code</string>
+    <string name="apply">应用</string>
+    <string name="coupon">优惠券</string>
+    <string name="now">现在</string>
+    <string name="choose_location">选择位置</string>
+    <string name="roomservicesnotavailable">注：服务不可用</string>
+
+    <!-- ............Restaurant Area................-->
+
+    <string name="restaurant_foodadded_tocart">你的食物添加到购物车</string>
+    <string name="restaurant_servenotavailable">注：餐厅服务不可用</string>
+    <string name="restaurant_serveavailable">注：这将需要至少60分钟准备食物</string>
+
+    <!-- ............Room Services Class........... -->
+
+    <string name="servebeverages_etc">饮料等</string>
+    <string name="serveroomclean">房间打扫</string>
+    <string name="servecab">出租汽车</string>
+    <string name="servelaundry">洗衣店</string>
+    <string name="servetea_coffee">床茶/咖啡</string>
+    <string name="servewake_up">叫我起床</string>
+    <string name="servebell_boy">行李员</string>
+    <string name="servebath_essentials">浴室必备</string>
+
+    <!-- ......Navigation Menu.................. -->
+
+    <string name="menuorder_history">以前的订单</string>
+    <string name="menushare_inndemand">分享点播</string>
+    <string name="menusetting">设置</string>
+    <string name="menufeedback">反馈</string>
+    <string name="menuhelp">帮助</string>
+    <string name="menusign_out">注销</string>
+
+
+    <!-- Button labels -->
+    <string name="sign_out">注销</string>
+    <string name="confirm_demand">证实了我的需求</string>
+    <string name="confirm">确认</string>
+    <string name="ok_click">行</string>
+    <string name="disconnect">断开</string>
+    <string name="delete_account">它好像你要删除自己的帐户.</string>
+    <string name="delete">删除</string>
+
+    <!-- .....My cart & Promo pop-up.....-->
+
+    <string name="carttotal_price"></string>
+    <string name="carttotal_items">Total Items</string>
+    <string name="promoenter_code">输入代码</string>
+    <string name="promocancel">取消</string>
+    <string name="promoapply">应用</string>
+    <string name="promoplease_enterpromo">请输入优惠券代码</string>
+    <string name="cartselectpayment_option">选择付款方式</string>
+    <string name="cartselectpayment_pay">工资</string>
+
+</resources>

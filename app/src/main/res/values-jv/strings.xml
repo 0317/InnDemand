@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name"></string>
+
+    <!-- .......Google Integration String calls....... -->
+
+    <string name="logout">Logout</string>
+    <string name="loginText">Login nganggo akun Google</string>
+
+    <string name="action_settings">Setelan</string>
+    <string name="notification">Notifikasi</string>
+
+    <!-- ......Hardcoded string values are under...... -->
+
+    <string name="login_call">LOGIN</string>
+    <string name="get_direction">njaluk Manajemen</string>
+    <string name="login_terms_lines">By signing-up you agree to our</string>
+    <string name="terms_conditions">terms of service</string>
+    <string name="termsconditions">Terms &amp; kahanan</string>
+    <string name="and">&amp;</string>
+    <string name="privacy_policy">Kebijakan privasi</string>
+    <string name="room_services">layanan kamar</string>
+    <string name="bell_boy">Bellboy</string>
+    <string name="room_cleaning">cleaning kamar</string>
+    <string name="laundry">umbah-umbah</string>
+    <string name="cab_call">taksi</string>
+    <string name="restaurant">restaurant</string>
+    <string name="wakeup_call">tangi kula munggah</string>
+    <string name="bath_essentials">jedhing Penting</string>
+    <string name="bed_tea_call">amben teh/kopi</string>
+    <string name="beverages">Minuman</string>
+    <string name="itemscount">Items: </string>
+    <string name="totalcount">babar blas: </string>
+    <string name="pick_time">Pick wektu</string>
+    <string name="pick_date">Pick munggah tanggal</string>
+    <string name="pick_up_time">Pick munggah wektu</string>
+    <string name="select_date">Pilih Tanggal</string>
+    <string name="select_time">Pilih Wektu</string>
+    <string name="change_time">GANTI TIME</string>
+    <string name="check_out">checkout</string>
+    <string name="cancel_wakeup_call">Batal tangi telpon</string>
+    <string name="cancel_cab">Batal taksi</string>
+    <string name="anything_to_say">Apa ngomong?</string>
+    <string name="tap_to_start">Tutul kanggo miwiti ngetik</string>
+    <string name="when_to_clean">Nalika kowe pengin kita kanggo ngresiki kamar?</string>
+    <string name="when_to_deliver">Nalika kowe pengin kita kanggo ngirim?</string>
+    <string name="when_to_wake">Nalika kowe pengin kita tangi sampeyan munggah?</string>
+    <string name="when_to_pick">Nalika kowe pengin kita Pick sampeyan?</string>
+    <string name="pick_clothes">Nalika kowe pengin kita Pick munggah sandhangan?</string>
+    <string name="no_of_water_bottles">Pilih No. saka Camping Water</string>
+    <string name="no_of_soda_bottles">Pilih No. saka botol Soda</string>
+    <string name="no_of_ice_bottles">Pilih nul. saka Storage Ice</string>
+    <string name="no_of_glasses">Pilih No. saka Kaca</string>
+    <string name="bed_tea_tea">teh</string>
+    <string name="bed_tea_coffee">warung</string>
+    <string name="note_bed_tea">NOTE: We cost Rs 25  per  Tea/Coffee. It will  take us 20 mins to
+        prepare your drink</string>
+    <string name="note_beverage">NOTE: We will reach the service to you in 15 minutes</string>
+    <string name="note_clothes">NOTE: We charge Rs 15 per cloth &amp; 7 hours to deliver it back
+    </string>
+    <string name="note_bath_essentials">NOTE: It will take us 10 minutes to reach you the towel(S)
+    </string>
+    <string name="note_cab">NOTE: Providing Cab services is based on the availability.
+        We will call you to confirm.</string>
+    <string name="write_comment_here">Tulis komentar kene</string>
+    <string name="write_comment">writeComment</string>
+    <string name="comment_section">komentar Section</string>
+    <string name="submit">NGIRIM</string>
+    <string name="my_cart">cart Kula</string>
+    <string name="mycart">CATETAN: Pajak Klebu</string>
+    <string name="proceed">nerusake</string>
+    <string name="apply_coupon">Aplikasi Code Discount</string>
+    <string name="food_delivery_time">wektu pangiriman pangan</string>
+    <string name="appetizer_fragment_headline">Our Restaurant Serves both Vegetarian &amp;
+        Non-Vegeterian</string>
+    <string name="restaurant_timing">Restaurant Timings - 7AM to 11PM</string>
+    <string name="note_restaurant">NOTE: It will take a minimum of 60 mins to prepare the food
+    </string>
+    <string name="towel">andhuk</string>
+    <string name="soap">sinetron</string>
+    <string name="maintainance">pangopènan</string>
+    <string name="waterbottles">Camping Water</string>
+    <string name="sodabottles">Bottles soda</string>
+    <string name="icebuckets">es buckets</string>
+    <string name="glasses">Kaca</string>
+    <string name="food_type">jinis pangan: </string>
+    <string name="restaurants">RESTAURANT</string>
+    <string name="bar">awis</string>
+    <string name="spa">SPA</string>
+    <string name="zero">0</string>
+    <string name="call_hotel">telpon</string>
+    <string name="room_service">layanan kamar</string>
+    <string name="mis_info">MISCELLANEOUS INFO</string>
+    <string name="hotel_restau_timing">Restaurant Timing(s)</string>
+    <string name="swim_timing">Swimming Pool Timing(s)</string>
+    <string name="about_hotel">ABOUT HOTEL</string>
+    <string name="add_number">NOTE: Please add your Mobile number to serve you better.</string>
+    <string name="enter_promocode">ketik kode promo</string>
+    <string name="please_scan">Mangga mindhai kode ing ngisor iki kanggo njaluk katrangan hotel</string>
+    <string name="order_summary">ringkesan supaya</string>
+    <string name="thankyou">Thank You \n kanggo Shopping karo kita.</string>
+    <string name="pleasantstay">Duwe Pleasant Tetep.</string>
+    <string name="verifycredentials">verifikasi Diverifikasi...</string>
+    <string name="addcart">Tambah Wadhah</string>
+    <string name="viewcart">tampilan cart</string>
+    <string name="noti_hotel">Notifikasi (Hotel)</string>
+    <string name="noti_inndemand">Notifikasi (Ing Dikarepake)</string>
+    <string name="no">Ora</string>
+    <string name="qr_entry">You have to scan QR Code \n\n Click Ok to Scan QR Code</string>
+    <string name="apply">aplikasi</string>
+    <string name="coupon">Coupon</string>
+    <string name="now">saiki</string>
+    <string name="choose_location">Pilih Lokasi</string>
+    <string name="roomservicesnotavailable">CATETAN: Layanan ora kasedhiya</string>
+
+    <!-- ............Restaurant Area................-->
+
+    <string name="restaurant_foodadded_tocart">Pangan ditambahake to cart</string>
+    <string name="restaurant_servenotavailable">CATETAN: Layanan Restaurant ora kasedhiya</string>
+    <string name="restaurant_serveavailable">CATETAN: Bakal njupuk minimal 60 mins kanggo nata panganan</string>
+
+    <!-- ............Room Services Class........... -->
+
+    <string name="servebeverages_etc">Minuman ETC</string>
+    <string name="serveroomclean">kamar cleaning</string>
+    <string name="servecab">taksi</string>
+    <string name="servelaundry">umbah-umbah</string>
+    <string name="servetea_coffee">amben teh/kopi</string>
+    <string name="servewake_up">Tangi kula munggah</string>
+    <string name="servebell_boy">Bellboy</string>
+    <string name="servebath_essentials">esensial jedhing</string>
+
+    <!-- ......Navigation Menu.................. -->
+
+    <string name="menuorder_history">pesenan Previous</string>
+    <string name="menushare_inndemand">nuduhake dikarepake</string>
+    <string name="menusetting">Setelan</string>
+    <string name="menufeedback">Komentar</string>
+    <string name="menuhelp">bantuan</string>
+    <string name="menusign_out">mlebu metu</string>
+
+
+    <!-- Button labels -->
+    <string name="deleteaccount">Busak akun</string>
+    <string name="sign_out">mlebu metu</string>
+    <string name="confirm_demand">Konfirmasi MY dikarepake</string>
+    <string name="confirm">konfirmasi</string>
+    <string name="ok_click">OK</string>
+    <string name="disconnect">mesthekake</string>
+    <string name="delete_account">Sawijining misale jek kaya sampeyan pengin mbusak akun.</string>
+    <string name="delete">Busak</string>
+
+    <!-- .....My cart & Promo pop-up.....-->
+
+    <string name="carttotal_price">TotalPrice</string>
+    <string name="carttotal_items">TotalItem</string>
+    <string name="promoenter_code">ketik kode</string>
+    <string name="promocancel">Batal</string>
+    <string name="promoapply">aplikasi</string>
+    <string name="promoplease_enterpromo">Mangga ketik kode coupon</string>
+    <string name="cartselectpayment_option">Pilih pilihan pembayaran</string>
+    <string name="cartselectpayment_pay">mbayar</string>
+
+</resources>

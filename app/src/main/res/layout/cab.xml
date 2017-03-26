@@ -34,8 +34,8 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:src="@drawable/ic_menu_camera"
+            android:layout_height="160dp"
+            android:background="@mipmap/cab"
             />
 
         <LinearLayout
@@ -47,7 +47,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/note_cab"
+                android:id="@+id/note_cab"
                 android:textSize="12sp"
                 android:gravity="center"
                 android:layout_marginRight="15dp"
@@ -91,7 +91,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="NOW"
+                            android:text="@string/now"
                             android:textSize="@dimen/sixteen_sp"
                             android:padding="5dp"
                             android:id="@+id/now_cab"
@@ -124,7 +124,6 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text=""
                                     android:layout_marginTop="5dp"
                                     android:id="@+id/set_time"
                                     android:textStyle="bold"/>
@@ -163,7 +162,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Choose Location"
+                    android:text="@string/choose_location"
                     android:id="@+id/set_location"
                     android:textSize="@dimen/sixteen_sp"/>
 
@@ -209,6 +208,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:maxLines="3"
+                    android:maxLength="100"
                     android:id="@+id/say_something"
                     android:hint="@string/tap_to_start"
                     android:background="@null"/>

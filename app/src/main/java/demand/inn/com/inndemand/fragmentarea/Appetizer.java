@@ -1,17 +1,20 @@
 package demand.inn.com.inndemand.fragmentarea;
 
-import android.Manifest;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,40 +24,34 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.TextView;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
-import com.android.volley.Network;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.net.ssl.HttpsURLConnection;
+
+import demand.inn.com.inndemand.Helper.OnItemCLick;
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.adapter.RestaurantAdapter;
-import demand.inn.com.inndemand.constants.AppetiserData;
-import demand.inn.com.inndemand.constants.Config;
-import demand.inn.com.inndemand.roomservice.Restaurant;
+import demand.inn.com.inndemand.constants.Utils;
+import demand.inn.com.inndemand.database.DBHelper;
+import demand.inn.com.inndemand.model.AppetiserData;
+import demand.inn.com.inndemand.model.ResturantDataModel;
+import demand.inn.com.inndemand.model.SimpleDividerItemDecoration;
 import demand.inn.com.inndemand.utility.AppPreferences;
 import demand.inn.com.inndemand.utility.NetworkUtility;
-import demand.inn.com.inndemand.volleycall.AppController;
 
 /**
  * Created by akash
@@ -62,51 +59,79 @@ import demand.inn.com.inndemand.volleycall.AppController;
 
 public class Appetizer extends Fragment {
 
-    //Utility
+    //Utility Class call area
     NetworkUtility nu;
     AppPreferences prefs;
 
     //Others
     View view;
-    Context mContext;
-    String id;
-    String itemName;
-    String itemDesc;
-    String category;
-    String food;
-    String restaurant;
-    String subCategory;
-    String amount;
 
-    //UI call area
-    TextView cart_item, cart_total;
-    LinearLayout menu_options;
+    //Cart entry Click
+    String result_price;
 
-
+    //Recyclerview(List) and Adapter classes(Data) to show list and data in that list
     private RecyclerView recyclerView;
     private RestaurantAdapter adapter;
     private List<AppetiserData> cardList;
+    OnItemCLick onCLick;
 
-    String filterName = "", filterDesc = "", filterPrice = "";
+    //String for different values for data coming from API
+    public String idCat, subCat, names, desc, price, foods;
+
+    //DATABASE CLASSES CALL AREA
+    DBHelper db;
+
+    //String to get dynamic Translated data
+    public String destinationString = "";
+
+    // create boolean for fetching data
+    private boolean isViewShown = false;
+
+    String title = "";
+    int is_set = 0;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if(getArguments().getString("title") != null)
+            title = getArguments().getString("title");
+
+        Log.d("CategoryName","Checking:"+title);
+    }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.appetizer, container, false);
+        //Utility Class Initialize
         nu = new NetworkUtility(getActivity());
         prefs = new AppPreferences(getActivity());
 
-        //UI initialize
-        cart_item = (TextView) view.findViewById(R.id.appetiser_items);
-        cart_total = (TextView) view.findViewById(R.id.appetiser_total);
-        cart_total.setText("Total: Rs 2000");
-        cart_item.setText("(10 items)");
+        //Database Class Initialisation
+        db = new DBHelper(getActivity());
 
+        //Custom toolbar class call
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
 
-        //ListItems in RecyclerView
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
+//        Code to call Broadcast Receiver to get or send data In or to different activity
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+                new IntentFilter("position-message"));
+
+        idCat = getArguments().getString("id_type");
+
+        Log.d("names", "name"+subCat);
+        Log.d("names", "cat"+names);
+
+        //ListItems in RecyclerView with adapter class to set all the items in list
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         cardList = new ArrayList<>();
-        adapter = new RestaurantAdapter(getActivity(), cardList);
+        adapter = new RestaurantAdapter(getActivity(), cardList, cardList);
+
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -114,137 +139,294 @@ public class Appetizer extends Fragment {
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        callMethod();
+        adapter.notifyDataSetChanged();
 
-        //mehtod to send Restaurant ID to server & to get response.
+        if (nu.isConnectingToInternet()) {
+            if (prefs.getFm_restaurant() == true) {
+                new AlertDialog.Builder(getActivity()).setMessage("Restaurant is closed")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }).create().show();
+            } else {
+                //method to send Restaurant ID to server & to get response.
+            }
+        } else {
+                networkClick();
+        }
 
-        return  view;
+            List<AppetiserData> rest_list = db.getAllDatarl();
+
+           /* AppetiserData rest_lists = db.getAllDatarls(title);
+
+            Log.d("RestaurantModel: ", "Check: "+rest_list);
+
+        AppetiserData modelss = new AppetiserData(rest_lists.getName(), rest_lists.getDescription(),
+                rest_lists.getCategory(), rest_lists.getPrice(), "");
+        cardList.add(modelss);
+*/
+
+           /* for(AppetiserData data : rest_list) {
+                is_set = Integer.parseInt(data.getId());
+                Cursor cursor;
+                cursor = db.getData(is_set);
+                if (cursor.getCount() != 0) {
+                    if (cursor.moveToFirst()) {
+                        do {
+                            String name = cursor.getString
+                                    (cursor.getColumnIndex(DBHelper.COLUMN_RRNAME));
+                            String desc = cursor.getString
+                                    (cursor.getColumnIndex(DBHelper.COLUMN_RRDESC));
+                            String price = cursor.getString
+                                    (cursor.getColumnIndex(DBHelper.COLUMN_RRAMOUNT));
+                            String sub = cursor.getString
+                                    (cursor.getColumnIndex(DBHelper.COLUMN_RRTABS));
+
+                            AppetiserData modelss = new AppetiserData(name, desc, "", price, sub);
+                            cardList.add(modelss);
+
+                        }*/
+
+
+        return view;
     }
 
-    public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
-        private Drawable mDivider;
+    @Override
+    public void onResume() {
+        super.onResume();
+        Cursor cursor = db.getDetail(title);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (cursor.moveToNext()) {
+                String title = cursor.getString(cursor.getColumnIndexOrThrow
+                        (Utils.FeedEntry.COLUMN_RRNAME));
+                String subtitle = cursor.getString(cursor.getColumnIndexOrThrow
+                        (Utils.FeedEntry.COLUMN_RRDESC));
 
-        public SimpleDividerItemDecoration(Context context) {
-            mDivider = ContextCompat.getDrawable(context,R.drawable.line_divider);
+                new AlertDialog.Builder(getActivity()).setMessage(title)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        }).create().show();
+//                AppetiserData modelss = new AppetiserData(title, subtitle, "", "", "");
+//                cardList.add(modelss);
+            }
+        }
+    }
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        }
+    };
+
+   /* @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getView() != null) {
+            isViewShown = true;
+            // fetchdata() contains logic to show data when page is selected mostly asynctask to fill the data
+            List<AppetiserData> rest_list = db.getAllDatarl();
+
+            Log.d("RestaurantModel: ", "Check: "+rest_list);
+
+            for(AppetiserData data : rest_list){
+                AppetiserData models = new AppetiserData(data.getName(),
+                        data.getDescription(), data.getCategory(), data.getPrice());
+                cardList.add(models);
+            }
+        } else {
+            isViewShown = false;
+        }
+    }*/
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)
+                item.getMenuInfo();
+        int listPosition = info.position;
+        String price= cardList.get(listPosition).getPrice();//list item price
+
+        result_price = price;
+
+        return  true;
+    }
+
+
+    //Translation Area Coding .....
+    //Google Translate API call to translate Dynamic data
+    public class getTraslatedString extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String[] target) {
+
+            String trasRequest = "https://www.googleapis.com/language/translate/v2?" +
+                    "key=AIzaSyAK9Vu9g2vv4jsT0aljz5DFHiTqS9IKsBk&source=en" +
+                    "&target="+target[0]+"&q="+target[1];
+
+            try {
+                String responseString = executeHttpGet(trasRequest);
+
+                JSONObject dataObj = getJsonObject(new JSONObject(responseString),"data");
+
+                JSONArray translationArray = getJsonArray(dataObj,"translations");
+                if(translationArray!=null && translationArray.length()>0){
+
+                    for (int i = 0; i <translationArray.length() ; i++) {
+                        JSONObject jsonObject = translationArray.getJSONObject(i);
+                        destinationString = getString(jsonObject,"translatedText");
+                        Log.d("Check Responce", "Here: "+destinationString);
+                        System.out.print("Pls give "+destinationString);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.print("ExceptionGen: "+e);
+            }
+            return destinationString;
         }
 
         @Override
-        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            int left = parent.getPaddingLeft();
-            int right = parent.getWidth() - parent.getPaddingRight();
+        protected void onPostExecute(String valuee) {
+            Log.d("Check Responce", "Here: "+destinationString);
 
-            int childCount = parent.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View child = parent.getChildAt(i);
-
-                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-
-                int top = child.getBottom() + params.bottomMargin;
-                int bottom = top + mDivider.getIntrinsicHeight();
-
-                mDivider.setBounds(left, top, right, bottom);
-                mDivider.draw(c);
-            }
+            Log.d("Check Responce", "There: "+valuee);
         }
     }
 
+    public String executeHttpGet(String url) throws Exception {
 
-    public void callMethod(){
-        JSONObject obj = new JSONObject();
+        URL obj = new URL(url.replace(" ", "%20"));
+        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+        // optional default is GET
+        con.setRequestMethod("GET");
+
+        //add request header
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        System.out.println(response.toString());
+
+        return  response.toString();
+
+    }
+
+    /**
+     * get String from {@link JSONObject}.
+     *
+     * @param jsonObject
+     * @param key
+     * @return value
+     */
+    public String getString(JSONObject jsonObject, String key) {
         try {
-            obj.put("restaurant_id", prefs.getRestaurant_Id());
+            if (jsonObject != null) {
+                if (!jsonObject.isNull(key)) {
+                    return jsonObject.getString(key);
+                }
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("Check API Data", obj.toString());
+        return null;
+    }
+    /**
+     * get {@link JSONObject}.
+     *
+     * @param jsonObject
+     * @param key
+     * @return
+     */
+    public JSONObject getJsonObject(JSONObject jsonObject, String key) {
 
-        postJsonData(Config.innDemand+"restaurant_items/details/", obj.toString());
+        try {
+            if (jsonObject != null) {
+                if (!jsonObject.isNull(key)) {
+                    return jsonObject.getJSONObject(key);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public void postJsonData(String url, String userData) {
+    /**
+     * get {@link JSONObject}.
+     *
+     * @param resString
+     * @return
+     */
+    public JSONObject getJsonObjectFromResponse(String resString) {
 
-        RequestQueue mRequestQueue;
-        Cache cache = new DiskBasedCache(getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
-
-        // Set up the network to use HttpURLConnection as the HTTP client.
-        Network network = new BasicNetwork(new HurlStack());
-
-        // Instantiate the RequestQueue with the cache and network.
-        mRequestQueue = new RequestQueue(cache, network);
-
-        // Start the queue
-        mRequestQueue.start();
-
-        final String requestBody = userData;
-
-        System.out.println("inside post json data=====" + requestBody);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("yohaha==data==success===" + response);
-
-                JSONArray array = null;
-                try {
-                    array = new JSONArray(response);
-
-                    Log.d("API", "API D"+array);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                for (int i = 0; i < array.length(); i++) {
-                    try {
-                        JSONObject object = array.getJSONObject(i);
-                        Log.d("API", "API Daa"+array);
-//                        id = object.getString(String.valueOf(id));
-                        Log.d("API", "API ID"+id);
-                        itemName = object.getString("name");
-                        Log.d("API", "API na"+itemName);
-                        itemDesc = object.getString("description");
-                        category = object.getString("category");
-                        Log.d("API", "API Ca"+category);
-                        food = object.getString("food");
-//                        restaurant = object.getString(String.valueOf(restaurant));
-                        subCategory = object.getString("subcategory");
-                        amount = object.getString("price");
-
-                        if(category.contains("starter") || category.equalsIgnoreCase("Starter")) {
-                            AppetiserData a = new AppetiserData(category, itemName, itemDesc, "Rs:"+amount);
-                            cardList.add(a);
-
-                            adapter.notifyDataSetChanged();
-                        }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            requestBody, "utf-8");
-                    return null;
+        try {
+            if (resString != null) {
+                if (resString.length()>0) {
+                    return new JSONObject(resString);
                 }
             }
-        };
-//        mRequestQueue.add(stringRequest);
-        AppController.getInstance().addToRequestQueue(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * get {@link JSONArray}.
+     *
+     * @param jsonObject
+     * @param key
+     * @return
+     */
+    public JSONArray getJsonArray(JSONObject jsonObject, String key) {
+
+        try {
+            if (jsonObject != null) {
+                if (!jsonObject.isNull(key)) {
+                    return jsonObject.getJSONArray(key);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //Custom pop-up for Internet Check (If connected or not)
+    public void networkClick(){
+        // custom dialog
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.network);
+
+        // set the custom dialog components - text, image and button
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        Button checkout = (Button) dialog.findViewById(R.id.ok_click);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
+        dialog.show();
     }
 }

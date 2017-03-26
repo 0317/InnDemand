@@ -42,6 +42,7 @@ import org.w3c.dom.Text;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -59,27 +60,29 @@ public class Cab extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
+    //   static int key to match current time/date code
     static final int TIME_DIALOG_ID = 1111;
 
     //UI call area
-    LinearLayout confirm;
+    LinearLayout ll_confirm;
     Toolbar toolbar;
-    TextView now, pickTime, changeTime, setTime, set_loc;
+    TextView txt_now, txt_pickTime, txt_changeTime, txt_setTime, txt_set_loc;
+    TextView txt_note;
     CoordinatorLayout coordinatorLayout;
-    LinearLayout choose_destination, cancel_wakeUp;
-    EditText say_something;
+    LinearLayout ll_choose_destination, ll_cancel_wakeUp;
+    EditText et_say_something;
 
     //Others
     String saySomething;
-    String getTime;
-    private int hour;
-    private int minute;
 
-    //Date & Time
+//    String and others to get current time and date
     Calendar c;
     SimpleDateFormat df, date;
     String formattedDate, getDate;
     String finalTime;
+    String getTime;
+    private int hour;
+    private int minute;
 
     //Google Place AutoComplete API
     Activity mActivity;
@@ -90,13 +93,17 @@ public class Cab extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cab);
+//        Utility Class Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Cab");
+        toolbar.setTitle(R.string.cab_call);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 
@@ -107,26 +114,32 @@ public class Cab extends AppCompatActivity {
             }
         });
 
+//        Google place picker Initialisation
         final PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
         mActivity = this;
 
         //UI Initialize area
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        txt_note = (TextView) findViewById(R.id.note_cab);
+        txt_note.setText(prefs.getCabnote());
+        txt_now = (TextView) findViewById(R.id.now_cab);
+        txt_pickTime = (TextView) findViewById(R.id.currentTime_cab);
+        txt_setTime = (TextView) findViewById(R.id.set_time);
+        txt_set_loc = (TextView) findViewById(R.id.set_location);
+        txt_changeTime = (TextView) findViewById(R.id.changeTime_cab);
+        ll_choose_destination = (LinearLayout) findViewById(R.id.choose_destination);
+        ll_cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
+        et_say_something = (EditText) findViewById(R.id.say_something);
+        txt_changeTime.setVisibility(View.GONE);
 
-        now = (TextView) findViewById(R.id.now_cab);
-        pickTime = (TextView) findViewById(R.id.currentTime_cab);
-        setTime = (TextView) findViewById(R.id.set_time);
-        set_loc = (TextView) findViewById(R.id.set_location);
-        changeTime = (TextView) findViewById(R.id.changeTime_cab);
-        choose_destination = (LinearLayout) findViewById(R.id.choose_destination);
-        cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
-        say_something = (EditText) findViewById(R.id.say_something);
-        changeTime.setVisibility(View.GONE);
+        ll_confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_cab);
 
-        confirm = (LinearLayout) findViewById(R.id.confirm_demand_click_cab);
+        //Settings static values for the activity (fetched from server)
+        txt_note.setText(prefs.getCabnote());
 
-        choose_destination.setOnClickListener(new View.OnClickListener() {
+//        Click to open Google Place picker API screen to select location
+        ll_choose_destination.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -140,16 +153,18 @@ public class Cab extends AppCompatActivity {
             }
         });
 
+//        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         date = new SimpleDateFormat("yyyy-MM-dd");
         formattedDate = df.format(c.getTime());
         getDate = date.format(c.getTime());
         // formattedDate have current date/time
 
-        now.setOnClickListener(new View.OnClickListener() {
+        txt_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 c = Calendar.getInstance();
@@ -162,19 +177,21 @@ public class Cab extends AppCompatActivity {
             }
         });
 
-        pickTime.setOnClickListener(new View.OnClickListener() {
+//        Open pop-ups by matching key and allows to set time
+        txt_pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(TIME_DIALOG_ID);
             }
         });
 
-        //UI Initialize RadioButton area
-        confirm.setOnClickListener(new View.OnClickListener() {
+//        Button Click at the bottom of the screen
+//        Sending all requirements to server with this click
+        ll_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //string call to get value of edittext
-                saySomething = say_something.getText().toString().trim();
+                saySomething = et_say_something.getText().toString().trim();
 
                 if (saySomething == null) {
 
@@ -191,7 +208,7 @@ public class Cab extends AppCompatActivity {
 
                         postJsonData(Config.innDemand + "cab/save/", obj.toString());
 
-                        say_something.getText().clear();
+                        et_say_something.getText().clear();
 
 
                     } catch (JSONException e) {
@@ -201,18 +218,20 @@ public class Cab extends AppCompatActivity {
             }
         });
 
-        cancel_wakeUp.setOnClickListener(new View.OnClickListener() {
+//        If wake-up call is set it is to cancel that call
+        ll_cancel_wakeUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTime.setText("");
-                changeTime.setVisibility(View.GONE);
-                pickTime.setText("PICK A TIME:");
-                pickTime.setEnabled(true);
+                txt_setTime.setText("");
+                txt_changeTime.setVisibility(View.GONE);
+                txt_pickTime.setText("PICK A TIME:");
+                txt_pickTime.setEnabled(true);
             }
         });
 
     }
 
+//    Final result comes in this method for Google place API when User selects Location to go.
     @Override
     protected void onActivityResult(int requestCode,int resultCode, Intent data) {
 
@@ -230,13 +249,14 @@ public class Cab extends AppCompatActivity {
             }
             choosenAddress = address.toString();
             System.out.println("Place Data===="+address+"====="+latLng.longitude+"===="+latLng.latitude);
-            set_loc.setText(address);
+            txt_set_loc.setText(address);
 
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
+//    Coding(different method to get current time/Date in required format)
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -299,15 +319,15 @@ public class Cab extends AppCompatActivity {
         getTime = new StringBuilder().append(hours).append(':')
                 .append(minutes).append(":").append("00").toString();
 
-        setTime.setText(getTime);
-        changeTime.setVisibility(View.VISIBLE);
-        pickTime.setText("CAB TIME:");
-        pickTime.setEnabled(false);
+        txt_setTime.setText(getTime);
+        txt_changeTime.setVisibility(View.VISIBLE);
+        txt_pickTime.setText("CAB TIME:");
+        txt_pickTime.setEnabled(false);
 
         finalTime = getDate+" "+getTime;
     }
 
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "609144095308",
+    "firebase_url": "https://inndemand-10c1d.firebaseio.com",
+    "project_id": "inndemand-10c1d",
+    "storage_bucket": "inndemand-10c1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609144095308:android:63b019769a7232c0",
+        "android_client_info": {
+          "package_name": "demand.inn.com.inndemand"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "609144095308-l6f2oa5hm0c0a6h19l5v7idnrre5khgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ-7QjzGAcvacqPomPL7ikJ2KcF-3N_Eo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

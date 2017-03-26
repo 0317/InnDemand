@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,7 +32,6 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
-                android:src="@mipmap/hottteel"
                 app:layout_collapseMode="parallax"
                 />
 
@@ -81,6 +79,7 @@
             android:paddingLeft="15dp"
             android:maxLines="1"
             android:lines="1"
+            android:ellipsize="end"
             android:paddingTop="15dp"
             android:textSize="@dimen/twenty_sp"
             android:textStyle="bold"
@@ -92,6 +91,7 @@
                     android:paddingLeft="15dp"
                     android:maxLines="1"
                     android:lines="1"
+                    android:ellipsize="end"
                     android:id="@+id/hotel_Address"
                     android:paddingTop="5dp"
                     android:textSize="@dimen/forteen_sp"
@@ -112,10 +112,9 @@
                 android:id="@+id/checkout_click"
                 android:onClick="checkOut"
                 android:paddingRight="5dp"
-                android:paddingLeft="5dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/ten_sp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 android:textColor="@android:color/white"
                 android:background="@drawable/yellow_side_round"/>
 
@@ -140,7 +139,7 @@
                 android:paddingRight="5dp"
                 android:textColor="@color/confirm_demand_click"
                 android:id="@+id/call_hotel"
-                android:text="CALL"
+                android:text="@string/call_hotel"
                 />
 
                 <TextView
@@ -165,6 +164,7 @@
                 android:layout_marginTop="15dp"
                 android:onClick="restaurantClick"
                 android:gravity="center_vertical"
+                android:id="@+id/hotel_restaurant"
                 android:background="@mipmap/ic_restaurant_click">
 
                 <ImageView
@@ -184,6 +184,17 @@
 
             </LinearLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/hotel_recycler_list"
+                android:layout_marginLeft="15dp"
+                android:background="@android:color/white"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp">
+
+            </android.support.v7.widget.RecyclerView>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -192,6 +203,7 @@
                 android:layout_marginTop="15dp"
                 android:onClick="roomServiceClick"
                 android:gravity="center_vertical"
+                android:id="@+id/hotel_roomservice"
                 android:background="@mipmap/ic_roomservice_click">
 
                 <ImageView
@@ -219,6 +231,7 @@
                 android:layout_marginTop="15dp"
                 android:onClick="barClick"
                 android:gravity="center_vertical"
+                android:id="@+id/hotel_bar"
                 android:background="@mipmap/ic_bar_click">
 
 
@@ -239,6 +252,17 @@
 
             </LinearLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/hotel_barlist"
+                android:layout_marginLeft="15dp"
+                android:background="@android:color/white"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp">
+
+            </android.support.v7.widget.RecyclerView>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -247,6 +271,7 @@
                 android:layout_marginTop="15dp"
                 android:onClick="spaClick"
                 android:gravity="center_vertical"
+                android:id="@+id/hotel_spa"
                 android:background="@mipmap/ic_spa_click">
 
 
@@ -337,10 +362,16 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:layout_marginBottom="10dp"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:background="@android:color/white">
 
-                <!--<TextView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@android:color/white">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
@@ -355,18 +386,18 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
                     android:textSize="16sp"
                     android:id="@+id/hotel_desc"
                     android:textColor="@color/view_gray"
-                    android:text=""
-                    />-->
+                    />
+
+                </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/hotel_recycler_view">
-
 
                 </android.support.v7.widget.RecyclerView>
 

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">InnDemand</string>
+
+    <!-- .......Google Integration String calls....... -->
+
+    <string name="logout">Выход</string>
+    <string name="loginText">Пожалуйста, войдите с помощью аккаунта Google</string>
+
+    <string name="action_settings">настройки</string>
+    <string name="notification">уведомление</string>
+
+    <!-- ......Hardcoded string values are under...... -->
+
+    <string name="login_call">ВХОД</string>
+    <string name="get_direction">НАПРАВЛЕНИЕ GET</string>
+    <string name="login_terms_lines">By signing-up you agree to our</string>
+    <string name="terms_conditions">terms of service</string>
+    <string name="termsconditions">Правила и условия</string>
+    <string name="and">&amp;</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="room_services">обслуживание номеров</string>
+    <string name="bell_boy">коридорный</string>
+    <string name="room_cleaning">уборка помещений</string>
+    <string name="laundry">Прачечная</string>
+    <string name="cab_call">кабина</string>
+    <string name="restaurant">ресторан</string>
+    <string name="wakeup_call">Разбуди меня</string>
+    <string name="bath_essentials">Основы ванной</string>
+    <string name="bed_tea_call">кровать чай/кофе</string>
+    <string name="beverages">напитки</string>
+    <string name="itemscount">Предметы: </string>
+    <string name="totalcount">полностью: </string>
+    <string name="pick_time">Выберите время</string>
+    <string name="pick_date">подобрать Дата</string>
+    <string name="pick_up_time">подобрать время</string>
+    <string name="select_date">Выберите дату</string>
+    <string name="select_time">Выбор времени</string>
+    <string name="change_time">ИЗМЕНИТЬ ВРЕМЯ</string>
+    <string name="check_out">ПРОВЕРКИ</string>
+    <string name="cancel_wakeup_call">ОТМЕНА призыв к пробуждению</string>
+    <string name="cancel_cab">ОТМЕНА кабины</string>
+    <string name="anything_to_say">Вам есть что сказать?</string>
+    <string name="tap_to_start">Нажмите здесь, чтобы начать печатать</string>
+    <string name="when_to_clean">Когда вы хотите, чтобы мы очистить свою комнату?</string>
+    <string name="when_to_deliver">Когда вы хотите нас поставить?</string>
+    <string name="when_to_wake">Когда вы хотите, чтобы мы разбудить вас?</string>
+    <string name="when_to_pick">Когда вы хотите, чтобы мы забрать вас?</string>
+    <string name="pick_clothes">Когда вы хотите, чтобы мы забрать одежду?</string>
+    <string name="no_of_water_bottles">Выберите Нет. бутылок воды</string>
+    <string name="no_of_soda_bottles">Выберите Нет. кальцинированной Бутылки</string>
+    <string name="no_of_ice_bottles">Выберите ноль. из ведра льда</string>
+    <string name="no_of_glasses">Выберите Нет. очков</string>
+    <string name="bed_tea_tea">чай</string>
+    <string name="bed_tea_coffee">кофе</string>
+    <string name="note_bed_tea">NOTE: We cost Rs 25  per  Tea/Coffee. It will  take us 20 mins to
+        prepare your drink</string>
+    <string name="note_beverage">NOTE: We will reach the service to you in 15 minutes</string>
+    <string name="note_clothes">NOTE: We charge Rs 15 per cloth &amp; 7 hours to deliver it back
+    </string>
+    <string name="note_bath_essentials">NOTE: It will take us 10 minutes to reach you the towel(S)
+    </string>
+    <string name="note_cab">NOTE: Providing Cab services is based on the availability.
+        We will call you to confirm.</string>
+    <string name="write_comment_here">Написать свой комментарий здесь</string>
+    <string name="write_comment">writeComment</string>
+    <string name="comment_section">Комментарий Раздел</string>
+    <string name="submit">ПОДАТЬ</string>
+    <string name="my_cart">Моя корзина</string>
+    <string name="mycart">Примечание: налоги включены</string>
+    <string name="proceed">ПЕРЕЙТИ</string>
+    <string name="apply_coupon">Применить код скидки</string>
+    <string name="food_delivery_time">Время доставки еды</string>
+    <string name="appetizer_fragment_headline">Our Restaurant Serves both Vegetarian &amp;
+        Non-Vegeterian</string>
+    <string name="restaurant_timing">Restaurant Timings - 7AM to 11PM</string>
+    <string name="note_restaurant">NOTE: It will take a minimum of 60 mins to prepare the food
+    </string>
+    <string name="towel">полотенце</string>
+    <string name="soap">мыло</string>
+    <string name="maintainance">техническое обслуживание</string>
+    <string name="waterbottles">Бутылки для воды</string>
+    <string name="sodabottles">соды бутылки</string>
+    <string name="icebuckets">ведерки для льда</string>
+    <string name="glasses">очки</string>
+    <string name="food_type">ЕДА ТИП: </string>
+    <string name="restaurants">РЕСТОРАН</string>
+    <string name="bar">бар</string>
+    <string name="spa">спа</string>
+    <string name="zero">0</string>
+    <string name="call_hotel">ВЫЗОВ</string>
+    <string name="room_service">ОБСЛУЖИВАНИЕ НОМЕРОВ</string>
+    <string name="mis_info">MISCELLANEOUS INFO</string>
+    <string name="hotel_restau_timing">Restaurant Timing(s)</string>
+    <string name="swim_timing">Swimming Pool Timing(s)</string>
+    <string name="about_hotel">ABOUT HOTEL</string>
+    <string name="add_number">NOTE: Please add your Mobile number to serve you better.</string>
+    <string name="enter_promocode">введите промо-код</string>
+    <string name="please_scan">Please scan the code below to get Hotel Details</string>
+    <string name="order_summary">Сводный список заказа</string>
+    <string name="thankyou">Спасибо \п для покупок с нами.</string>
+    <string name="pleasantstay">Приятное пребывание.</string>
+    <string name="verifycredentials">Проверка учетных данных...</string>
+    <string name="addcart">Добавить в корзину</string>
+    <string name="viewcart">Просмотр корзины</string>
+    <string name="noti_hotel">Уведомление (отель)</string>
+    <string name="noti_inndemand">Уведомление (в спросе)</string>
+    <string name="no">Нет</string>
+    <string name="qr_entry">You have to scan QR Code \n\n Click Ok to Scan QR Code</string>
+    <string name="apply">применять</string>
+    <string name="coupon">купон</string>
+    <string name="now">в настоящее время</string>
+    <string name="choose_location">Выбрать Расположение</string>
+    <string name="roomservicesnotavailable">Примечание: Услуги не доступны</string>
+
+    <!-- ............Restaurant Area................-->
+
+    <string name="restaurant_foodadded_tocart">Ваша пища будет добавлен в корзину</string>
+    <string name="restaurant_servenotavailable">Примечание: Услуги ресторана не доступны</string>
+    <string name="restaurant_serveavailable">Примечание: Это займет минимум 60 минут, чтобы приготовить пищу</string>
+
+    <!-- ............Room Services Class........... -->
+
+    <string name="servebeverages_etc">НАПИТКИ и т.д.</string>
+    <string name="serveroomclean">Уборка помещений</string>
+    <string name="servecab">кабина</string>
+    <string name="servelaundry">ХИМЧИСТКА</string>
+    <string name="servetea_coffee">кровать чай/кофе</string>
+    <string name="servewake_up">Разбуди меня</string>
+    <string name="servebell_boy">коридорный</string>
+    <string name="servebath_essentials">ванной важно</string>
+
+    <!-- ......Navigation Menu.................. -->
+
+    <string name="menuorder_history">Предыдущие заказы</string>
+    <string name="menushare_inndemand">Доля On Demand</string>
+    <string name="menusetting">настройки</string>
+    <string name="menufeedback">обратная связь</string>
+    <string name="menuhelp">помощь</string>
+    <string name="menusign_out">выйти из системы</string>
+
+
+    <!-- Button labels -->
+    <string name="deleteaccount">Удалить аккаунт</string>
+    <string name="sign_out">выйти из системы</string>
+    <string name="confirm_demand">Подтвердить СПРОС</string>
+    <string name="confirm">ПОДТВЕРДИТЬ</string>
+    <string name="ok_click">хорошо</string>
+    <string name="disconnect">отключать</string>
+    <string name="delete_account">Его кажется, что вы хотите удалить свой аккаунт.</string>
+    <string name="delete">Удалить</string>
+
+
+    <!-- .....My cart & Promo pop-up.....-->
+
+    <string name="carttotal_price">Total Price</string>
+    <string name="carttotal_items">Total Items</string>
+    <string name="promoenter_code">Введите код</string>
+    <string name="promocancel">отменить</string>
+    <string name="promoapply">применять</string>
+    <string name="promoplease_enterpromo">Пожалуйста, введите код купона</string>
+    <string name="cartselectpayment_option">Выберите вариант оплаты</string>
+    <string name="cartselectpayment_pay">платить</string>
+
+</resources>

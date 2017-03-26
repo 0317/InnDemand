@@ -36,6 +36,7 @@ import org.w3c.dom.Text;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import demand.inn.com.inndemand.R;
 import demand.inn.com.inndemand.constants.Config;
@@ -53,37 +54,40 @@ public class WakeUp extends AppCompatActivity {
     NetworkUtility nu;
     AppPreferences prefs;
 
+//   static int key to match current time/date code
     static final int TIME_DIALOG_ID = 1111;
 
-    //UI call
-    LinearLayout back_press, confirm_demand,cancel_wakeUp;
-    RadioButton today, tomorrow;
-    TextView pickTime, setTime, changeTime;
+    //UI Class call for the screen
+    LinearLayout ll_confirm_demand, ll_cancel_wakeUp;
+    TextView txt_pickTime, txt_setTime, txt_changeTime;
     Toolbar toolbar;
-    EditText say_something_bell;
+    EditText et_say_something_bell;
 
-    //Others
-    String getTime;
-    private int hour;
-    private int minute;
-
-    //Date & Time
+//   String and others to get current time and date
     Calendar c;
     SimpleDateFormat df, date;
     String formattedDate, getDate, getFinal;
     String finalTime;
+    String getTime;
+    private int hour;
+    private int minute;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wakemeup);
+//        Utility Class Initialisation
         nu = new NetworkUtility(this);
         prefs = new AppPreferences(this);
 
+//        method to hide default toolbar
         getSupportActionBar().hide();
 
+//        Custom toolbar Class call
+//        Setting Title and icons in toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Wake me up");
+        toolbar.setTitle(R.string.wakeup_call);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_cancel);
 
@@ -94,43 +98,49 @@ public class WakeUp extends AppCompatActivity {
             }
         });
 
+//        Coding to get current time/date
         c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
         df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         date = new SimpleDateFormat("yyyy-MM-dd");
         formattedDate = df.format(c.getTime());
         getDate = date.format(c.getTime());
-        // formattedDate have current date/time
+//        formattedDate have current date/time
 
-        confirm_demand = (LinearLayout) findViewById(R.id.confirm_demand_click_wakeup);
+//        UI Class Initialisation for the screen
+        ll_confirm_demand = (LinearLayout) findViewById(R.id.confirm_demand_click_wakeup);
+        txt_pickTime = (TextView) findViewById(R.id.currentTime_wakeup);
+        txt_setTime = (TextView) findViewById(R.id.set_time);
+        txt_changeTime = (TextView) findViewById(R.id.changeTime_wakeup);
+        ll_cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
+        et_say_something_bell = (EditText) findViewById(R.id.say_something_bell);
+        txt_changeTime.setVisibility(View.GONE);
 
-        pickTime = (TextView) findViewById(R.id.currentTime_wakeup);
-        setTime = (TextView) findViewById(R.id.set_time);
-        changeTime = (TextView) findViewById(R.id.changeTime_wakeup);
-        cancel_wakeUp = (LinearLayout) findViewById(R.id.cancel_wakeUp);
-        say_something_bell = (EditText) findViewById(R.id.say_something_bell);
-        changeTime.setVisibility(View.GONE);
-
-        pickTime.setOnClickListener(new View.OnClickListener() {
+//        Open pop-ups by matching key and allows to set time
+        txt_pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(TIME_DIALOG_ID);
             }
         });
 
-        changeTime.setOnClickListener(new View.OnClickListener() {
+//        Open pop-ups by matching key and allows to change time
+        txt_changeTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(TIME_DIALOG_ID);
             }
         });
 
-        confirm_demand.setOnClickListener(new View.OnClickListener() {
+//        Button Click at the bottom of the screen
+//        Sending all requirements to server with this click
+        ll_confirm_demand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //string call to get value of edittext
-                String saySomething = say_something_bell.getText().toString().trim();
+                String saySomething = et_say_something_bell.getText().toString().trim();
 
                 if (saySomething == null) {
 
@@ -146,7 +156,7 @@ public class WakeUp extends AppCompatActivity {
 
                         postJsonData(Config.innDemand + "wakeup/save/", obj.toString());
 
-                        say_something_bell.getText().clear();
+                        et_say_something_bell.getText().clear();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -155,18 +165,19 @@ public class WakeUp extends AppCompatActivity {
             }
         });
 
-        cancel_wakeUp.setOnClickListener(new View.OnClickListener() {
+        ll_cancel_wakeUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTime.setText("");
-                changeTime.setVisibility(View.GONE);
-                pickTime.setText("PICK A TIME");
-                pickTime.setEnabled(true);
+                txt_setTime.setText("");
+                txt_changeTime.setVisibility(View.GONE);
+                txt_pickTime.setText("PICK A TIME");
+                txt_pickTime.setEnabled(true);
             }
         });
 
     }
 
+//    Coding(different method to get current time/Date in required format)
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -229,17 +240,17 @@ public class WakeUp extends AppCompatActivity {
         getTime = new StringBuilder().append(hours).append(':')
                 .append(minutes).append(":").append("00").toString(); /*append(timeSet).toString()*/
 
-        setTime.setText(getTime);
-        changeTime.setVisibility(View.VISIBLE);
-        pickTime.setText("WAKE UP TIME");
-        pickTime.setEnabled(false);
+        txt_setTime.setText(getTime);
+        txt_changeTime.setVisibility(View.VISIBLE);
+        txt_pickTime.setText("WAKE UP TIME");
+        txt_pickTime.setEnabled(false);
 
         finalTime = getDate+" "+getTime;
 
     }
 
 
-    //API call method to POST data to the server
+//    Volley Library main Method to POST data to the server
     public void postJsonData(String url, String userData){
 
         RequestQueue mRequestQueue;

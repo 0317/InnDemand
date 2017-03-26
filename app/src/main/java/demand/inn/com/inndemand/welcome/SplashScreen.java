@@ -1,25 +1,35 @@
 package demand.inn.com.inndemand.welcome;
 
-import android.content.DialogInterface;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.ImageView;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import demand.inn.com.inndemand.DashBoard;
 import demand.inn.com.inndemand.R;
-import demand.inn.com.inndemand.login.HotelDetails;
 import demand.inn.com.inndemand.login.Loginscreen;
 import demand.inn.com.inndemand.login.QRscanning;
 import demand.inn.com.inndemand.utility.AppPreferences;
@@ -29,11 +39,12 @@ import demand.inn.com.inndemand.utility.NetworkUtility;
  * Created by akash
  */
 
-public class SplashScreen extends BaseActivity {
+public class SplashScreen extends AppCompatActivity {
 
-    //Utility Class Area
+    //Utility Class Area to call Internet n Shared preferences
     NetworkUtility nu;
     AppPreferences prefs;
+
 
     //Preferences call
     SharedPreferences settings;
@@ -43,6 +54,18 @@ public class SplashScreen extends BaseActivity {
     Snackbar snackbar;
 
     //Others
+    Context context;
+
+    //Notification area for Google notifications
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+    GoogleCloudMessaging gcm;
+
+    String SENDER_ID = "551529436128";
+    String regid = "";
+    private final static String TAG = "Splash Screen";
+    public static final String PROPERTY_REG_ID = "registration_id";
+    private static final String PROPERTY_APP_VERSION = "appVersion";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +76,37 @@ public class SplashScreen extends BaseActivity {
         prefs = new AppPreferences(SplashScreen.this);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
-//        getSupportActionBar().hide();
-
+        //Preference to check If the User Checked-into hotel or not after QR scan
         prefs.setCheckout("1");
+
+        //((LocaleApp)getApplicationContext()).changeLang(prefs.getLocaleset());
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         //To add shortcut App icon on the desktop of mobile
         addShortcut();
+
+    }
+
+    //Method to call another method to initiate tha APP when app opens
+    @Override
+    protected void onResume() {
+        super.onResume();
         call();
     }
 
-    public void call(){
-//        if (nu.isConnectingToInternet()) {
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    /*
+     * Method to Initiate the App and to check whether the User opens the app
+     * Multiple conditions to check whether User is a new user and needs to sign-up
+     * Or If already sign-up, send to QR scan page or if Qr-scan is done send to Dashboard screen
+     */
+    public void call() {
+        if (nu.isConnectingToInternet()) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -76,31 +117,28 @@ public class SplashScreen extends BaseActivity {
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                         } else if (prefs.getIs_task_completed() == true) {
-                            if(prefs.getIs_In_Hotel() == false) {
+                            if (prefs.getIs_In_Hotel() == false) {
                                 Intent in = new Intent(SplashScreen.this, QRscanning.class);
                                 startActivity(in);
                                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 finish();
-                            }else if(prefs.getIs_In_Hotel() == true){
-                            Intent in = new Intent(SplashScreen.this, HotelDetails.class);
-                            startActivity(in);
-                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                            finish();
+                            } else if (prefs.getIs_In_Hotel() == true) {
+                                Intent in = new Intent(SplashScreen.this, DashBoard.class);
+                                startActivity(in);
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                finish();
                             }
                         }
-                    }else{
-                        snackbar = Snackbar.make(coordinatorLayout, "Oops! No Internet Connection", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null);
-//                        View snackbarView = snackbar.getView();
-//                        snackbarView.setBackgroundColor(Color.YELLOW);
-//                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-//                        textView.setTextColor(getResources().getColor(R.color.confirm_demand_click));
-                        snackbar.show();
+                    } else {
+                        networkClick();
+
                     }
                 }
             }, 3000 /* 3sec delay*/);
+        }
     }
 
+    //Method to add shortcut icon of the app on the home page of device.
     private void addShortcut() {
         // TODO Auto-generated method stub
         Intent shortcutIntent = new Intent(getApplicationContext(), SplashScreen.class);
@@ -114,4 +152,183 @@ public class SplashScreen extends BaseActivity {
         getApplicationContext().sendBroadcast(addIntent);
 
     }
+
+    //GCM notification call to register device to get notifications
+    private void registerInBackground() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                if (gcm == null) {
+                    gcm = GoogleCloudMessaging.getInstance(context);
+                }
+                try {
+                    regid = gcm.register(SENDER_ID);
+                    prefs.setReg_ID(regid);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                msg = regid;
+                Log.d("ID mesg:", msg);
+
+                // You should send the registration ID to your server over
+                // HTTP,
+                // so it can use GCM/HTTP or CCS to send messages to your
+                // app.
+                // The request to your server should be authenticated if
+                // your app
+                // is using accounts.
+                // sendRegistrationIdToBackend();
+
+                // For this demo: we don't need to send it because the
+                // device
+                // will send upstream messages to a server that echo back
+                // the
+                // message using the 'from' address in the message.
+
+                // Persist the regID - no need to register again.
+                storeRegistrationId(context, regid);
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+
+                if(!msg.equalsIgnoreCase("Error")){
+                    if(nu.isConnectingToInternet()){
+                        DeviceUpdate update = new DeviceUpdate();
+                        update.execute(regid);
+                    }
+                }
+            }
+        }.execute();
+    }
+
+    /**
+     * Stores the registration ID and app versionCode in the application's
+     * {@code SharedPreferences}.
+     *
+     * @param context
+     *            application's context.
+     * @param regId
+     *            registration ID
+     */
+
+    //Method to store registration ID in Shared preferences provided by GCM
+    private void storeRegistrationId(Context context, String regId) {
+
+        int appVersion = getAppVersion(context);
+        Log.i(TAG, "Saving regId on app version " + appVersion);
+
+        prefs.setAppVersion(appVersion);
+        prefs.setDeviceToken(regId);
+
+    }
+
+
+
+    /**
+     * Gets the current registration ID for application on GCM service.
+     * <p>
+     * If result is empty, the app needs to register.
+     *
+     * @return registration ID, or empty string if there is no existing
+     *         registration ID.
+     */
+    private String getRegistrationId(Context context) {
+
+        String registrationId = prefs.getDeviceToken();
+        if (registrationId.isEmpty()) {
+            Log.i(TAG, "Registration not found.");
+            return "";
+        }
+        // Check if app was updated; if so, it must clear the registration ID
+        // since the existing regID is not guaranteed to work with the new
+        // app version.
+        int registeredVersion = prefs.getAppVersion();
+        int currentVersion = getAppVersion(context);
+        if (registeredVersion != currentVersion) {
+            Log.i(TAG, "App version changed.");
+            return "";
+        }
+        return registrationId;
+    }
+
+    /**
+     * @return Application's version code from the {@code PackageManager}.
+     */
+    private int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
+
+    //method for Updation of device to get notifications
+    public class DeviceUpdate extends AsyncTask<String, Void, String> {
+        ProgressDialog pd = new ProgressDialog(SplashScreen.this);
+
+        String keyResponce = "";
+        String jsonstr;
+
+        @Override
+        protected String doInBackground(String... param) {
+
+            JSONObject json = new JSONObject();
+            if (json != null) {
+                try {
+                    keyResponce = param[0];
+
+                    jsonstr = json.getString("response");
+                    if (json.getBoolean("res")) {
+                        String id = json.getString("");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+    }
+
+    //Check whether Play Services are there in Device
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                //   finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    //Custom pop-up to show Internet Connection (Pop-up opens If app is not connected to Internet)
+    public void networkClick(){
+        // custom dialog
+        final Dialog dialog = new Dialog(SplashScreen.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.network);
+
+        // set the custom dialog components - text, image and button
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        Button checkout = (Button) dialog.findViewById(R.id.ok_click);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        dialog.show();
+    }
+
 }

@@ -35,8 +35,8 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:src="@drawable/ic_menu_camera"
+                android:layout_height="160dp"
+                android:background="@mipmap/bathroom"
                 android:layout_weight="2"/>
 
             <LinearLayout
@@ -70,6 +70,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:id="@+id/bath_towel"
                         android:orientation="horizontal">
 
                         <RelativeLayout
@@ -79,7 +80,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Towels"
+                                android:text="@string/towel"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"
@@ -107,6 +108,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:id="@+id/bath_soap"
                         android:orientation="horizontal">
 
                         <RelativeLayout
@@ -116,7 +118,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Soaps"
+                                android:text="@string/soap"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"
@@ -144,6 +146,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:id="@+id/bath_maintenance"
                         android:orientation="horizontal">
 
                         <RelativeLayout
@@ -153,7 +156,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Maintainance"
+                                android:text="@string/maintainance"
                                 android:textSize="@dimen/sixteen_sp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="10dp"
@@ -200,6 +203,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="15dp"
                             android:maxLines="3"
+                            android:maxLength="100"
                             android:id="@+id/say_something_bell"
                             android:hint="@string/tap_to_start"
                             android:background="@null"/>

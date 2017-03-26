@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">على الطلب</string>
+
+    <!-- .......Google Integration String calls....... -->
+
+    <string name="logout">خروج</string>
+    <string name="loginText">الرجاء الدخول إلى حسابك في Google</string>
+
+    <string name="action_settings">إعدادات</string>
+    <string name="notification">إعلام</string>
+
+    <!-- ......Hardcoded string values are under...... -->
+
+    <string name="login_call">تسجيل الدخول</string>
+    <string name="get_direction">احصل على اتجاه</string>
+    <string name="login_terms_lines">By signing-up you agree to our</string>
+    <string name="terms_conditions">terms of service</string>
+    <string name="termsconditions">البنود و الظروف</string>
+    <string name="and">&amp;</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="room_services">خدمة الغرف</string>
+    <string name="bell_boy">خادم فندق</string>
+    <string name="room_cleaning">تنظيف الغرفة</string>
+    <string name="laundry">غسيل ملابس</string>
+    <string name="cab_call">سيارة أجرة</string>
+    <string name="restaurant">مطعم</string>
+    <string name="wakeup_call">أيقظني</string>
+    <string name="bath_essentials">أساسيات الحمام</string>
+    <string name="bed_tea_call">السرير الشاي / القهوة</string>
+    <string name="beverages">مشروبات</string>
+    <string name="itemscount">العناصر: </string>
+    <string name="totalcount">مجموع: </string>
+    <string name="pick_time">اختيار الوقت</string>
+    <string name="pick_date">وانيت التسجيل</string>
+    <string name="pick_up_time">اختار المعاد</string>
+    <string name="select_date">حدد التاريخ</string>
+    <string name="select_time">حدد الوقت</string>
+    <string name="change_time">غير الوقت</string>
+    <string name="check_out">الدفع</string>
+    <string name="cancel_wakeup_call">إلغاء دعوة لليقظة</string>
+    <string name="cancel_cab">إلغاء أجرة</string>
+    <string name="anything_to_say">هل لديك شيء لتقوله؟</string>
+    <string name="tap_to_start">اضغط هنا لبدء كتابة</string>
+    <string name="when_to_clean">عندما تريدون منا لتنظيف غرفتك؟</string>
+    <string name="when_to_deliver">عندما تريدون منا أن يسلم؟</string>
+    <string name="when_to_wake">عندما تريدون منا لإيقاظك؟</string>
+    <string name="when_to_pick">عندما لا تريد منا أن يختار لك؟</string>
+    <string name="pick_clothes">عندما تريدون منا لالتقاط الملابس؟</string>
+    <string name="no_of_water_bottles">اختر رقم من زجاجات المياه</string>
+    <string name="no_of_soda_bottles">اختر رقم من زجاجات الصودا</string>
+    <string name="no_of_ice_bottles">اختر خالية. من دلاء الثلج</string>
+    <string name="no_of_glasses">اختر رقم من النظارات</string>
+    <string name="bed_tea_tea">شاي</string>
+    <string name="bed_tea_coffee">قهوة</string>
+    <string name="note_bed_tea">NOTE: We cost Rs 25  per  Tea/Coffee. It will  take us 20 mins to
+        prepare your drink</string>
+    <string name="note_beverage">ملاحظة: سنصل إلى الخدمات التي نقدمها لكم في غضون 15 دقيقة</string>
+    <string name="note_clothes">NOTE: We charge Rs 15 per cloth &amp; 7 hours to deliver it back
+    </string>
+    <string name="note_bath_essentials">ملاحظة: سوف يستغرق منا 10 دقيقة للوصول إلى لك منشفة (S)
+    </string>
+    <string name="note_cab">NOTE: Providing Cab services is based on the availability.
+        We will call you to confirm.</string>
+    <string name="write_comment_here">اكتب تعليقك هنا</string>
+    <string name="write_comment">اكتب تعليق</string>
+    <string name="comment_section">القسم تعليق</string>
+    <string name="submit">ترسل أي</string>
+    <string name="my_cart">سلتي</string>
+    <string name="mycart">وشملت الضرائب: ملاحظة</string>
+    <string name="proceed">تقدم</string>
+    <string name="apply_coupon">تطبيق كود الخصم</string>
+    <string name="food_delivery_time">الغذاء التسليم في الوقت المحدد</string>
+    <string name="appetizer_fragment_headline">Our Restaurant Serves both Vegetarian &amp;
+        Non-Vegeterian</string>
+    <string name="restaurant_timing">Restaurant Timings - 7AM to 11PM</string>
+    <string name="note_restaurant">NOTE: It will take a minimum of 60 mins to prepare the food
+    </string>
+    <string name="towel">منشفة</string>
+    <string name="soap">صابون</string>
+    <string name="maintainance">صيانة</string>
+    <string name="waterbottles">زجاجات مياه</string>
+    <string name="sodabottles">زجاجات الصودا</string>
+    <string name="icebuckets">دلاء الثلج</string>
+    <string name="glasses">نظارات</string>
+    <string name="food_type">نوع الغذاء: </string>
+    <string name="restaurants">مطعم</string>
+    <string name="bar">بار</string>
+    <string name="spa">منتجع صحي</string>
+    <string name="zero">0</string>
+    <string name="call_hotel">مكالمة</string>
+    <string name="room_service">خدمة الغرف</string>
+    <string name="mis_info">MISCELLANEOUS INFO</string>
+    <string name="hotel_restau_timing">Restaurant Timing(s)</string>
+    <string name="swim_timing">Swimming Pool Timing(s)</string>
+    <string name="about_hotel">ABOUT HOTEL</string>
+    <string name="add_number">NOTE: Please add your Mobile number to serve you better.</string>
+    <string name="enter_promocode">إدخال الرمز الترويجي</string>
+    <string name="please_scan">يرجى مسح رمز أدناه للحصول على تفاصيل فندق</string>
+    <string name="order_summary">ملخص الطلب</string>
+    <string name="thankyou">شكرا \ ن للتسوق معنا.</string>
+    <string name="pleasantstay">يملك طيب الإقامة.</string>
+    <string name="verifycredentials">التحقق من أوراق اعتماد...</string>
+    <string name="addcart">أضف إلى السلة</string>
+    <string name="viewcart">عرض السلة</string>
+    <string name="noti_hotel">الإعلام (فندق)</string>
+    <string name="noti_inndemand">الإعلام (في الطلب)</string>
+    <string name="no">لا</string>
+    <string name="qr_entry">You have to scan QR Code \n\n Click Ok to Scan QR Code</string>
+    <string name="apply">تطبيق</string>
+    <string name="coupon">كوبون</string>
+    <string name="now">الآن</string>
+    <string name="choose_location">اختر الموقع</string>
+    <string name="roomservicesnotavailable">ملاحظة: خدمات غير متوفرة</string>
+
+    <!-- ............Restaurant Area................-->
+
+    <string name="restaurant_foodadded_tocart">وأضاف الغذاء الخاص بك إلى السلة</string>
+    <string name="restaurant_servenotavailable">ملاحظة: خدمات المطعم غير متوفرة</string>
+    <string name="restaurant_serveavailable">ملاحظة: وسوف يستغرق ما لا يقل عن 60 دقيقة لإعداد الطعام</string>
+
+    <!-- ............Room Services Class........... -->
+
+    <string name="servebeverages_etc">المشروبات الخ</string>
+    <string name="serveroomclean">تنظيف الغرفة</string>
+    <string name="servecab">سيارة أجرة</string>
+    <string name="servelaundry">غسيل ملابس</string>
+    <string name="servetea_coffee">السرير الشاي / القهوة</string>
+    <string name="servewake_up">أيقظني</string>
+    <string name="servebell_boy">خادم فندق</string>
+    <string name="servebath_essentials">الأساسيات الحمام</string>
+
+    <!-- ......Navigation Menu.................. -->
+
+    <string name="menuorder_history">تاريخ الطلب</string>
+    <string name="menushare_inndemand">حصة في الطلب</string>
+    <string name="menusetting">إعدادات</string>
+    <string name="menufeedback">ردود الفعل</string>
+    <string name="menuhelp">مساعدة</string>
+    <string name="menusign_out">خروج</string>
+
+
+
+    <!-- Button labels -->
+    <string name="deleteaccount">حذف الحساب</string>
+    <string name="sign_out">خروج</string>
+    <string name="confirm_demand">تأكيد MY الطلب</string>
+    <string name="confirm">تأكيد</string>
+    <string name="ok_click">حسنا</string>
+    <string name="disconnect">قطع الاتصال</string>
+    <string name="delete_account">لها يبدو أنك تريد حذف حسابك.</string>
+    <string name="delete">حذف</string>
+
+    <!-- .....My cart & Promo pop-up.....-->
+
+    <string name="carttotal_price">السعر الكلي</string>
+    <string name="carttotal_items">مجموع الوحدات</string>
+    <string name="promoenter_code">ادخل الرمز</string>
+    <string name="promocancel">إلغاء</string>
+    <string name="promoapply">تطبيق</string>
+    <string name="promoplease_enterpromo">الرجاء إدخال رمز القسيمة</string>
+    <string name="cartselectpayment_option">خيار الدفع حدد</string>
+    <string name="cartselectpayment_pay">دفع</string>
+
+</resources>

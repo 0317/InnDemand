@@ -23,12 +23,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="50dp">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="@mipmap/laundry" />
+            android:layout_height="160dp"
+            android:background="@mipmap/towel" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,9 +39,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/note_clothes"
                 android:textSize="12sp"
                 android:gravity="center"
+                android:id="@+id/note_laundry"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
@@ -70,7 +71,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NOW"
+                    android:text="@string/now"
                     android:textSize="@dimen/sixteen_sp"
                     android:onClick="nowPick"
                     android:id="@+id/now_laundry"
@@ -115,6 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:maxLines="3"
+                android:maxLength="100"
                 android:layout_marginBottom="50dp"
                 android:id="@+id/say_something_laundry"
                 android:hint="@string/tap_to_start"

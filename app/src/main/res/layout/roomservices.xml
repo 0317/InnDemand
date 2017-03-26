@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
     android:weightSum="4">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:id="@+id/backpress"
-            android:onClick="backPress"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            android:orientation="vertical"
+            android:weightSum="4">
 
-            <ImageView
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_collapseMode="pin"
+        app:layout_scrollFlags="scroll|snap"
+        />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_cancel"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/room_services"
-            android:textSize="@dimen/twenty_sp"
-            android:textColor="@android:color/white"
-            android:padding="10dp"/>
-
-    </LinearLayout>
+                android:text=""
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textSize="@dimen/forteen_sp"
+                android:id="@+id/services_text"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,21 +52,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/beverages_click"
             android:orientation="vertical"
             android:gravity="center">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:onClick="beveragesClick"
+                android:id="@+id/beverages_click"
+                android:onClick="beverages_click"
                 android:background="@drawable/round_beverage"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BEVERAGES ETC"
+                android:text="@string/servebeverages_etc"
                 android:textSize="10sp"
                 android:gravity="center"
                 android:paddingTop="5dp"/>
@@ -74,13 +77,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/roomclean_click"
             android:orientation="vertical"
             android:gravity="center">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:id="@+id/roomclean_click"
                 android:onClick="roomcleanClick"
                 android:background="@drawable/round_circle"
                 />
@@ -88,7 +91,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ROOM CLEANING"
+                android:text="@string/serveroomclean"
                 android:textSize="10sp"
                 android:gravity="center"
                 android:paddingTop="5dp"/>
@@ -100,12 +103,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:id="@+id/laundry_click"
             android:orientation="vertical">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:id="@+id/laundry_click"
                 android:onClick="laundryClick"
                 android:background="@drawable/round_laundry"
                 />
@@ -113,7 +116,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LAUNDRY"
+                android:text="@string/servelaundry"
                 android:textSize="10sp"
                 android:gravity="center"
                 android:paddingTop="5dp"/>
@@ -134,13 +137,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/cab_click"
             android:orientation="vertical"
             android:gravity="center">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:id="@+id/cab_click"
                 android:onClick="cabClick"
                 android:background="@drawable/round_cab"
                 />
@@ -148,7 +151,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CAB"
+                android:text="@string/servecab"
                 android:gravity="center"
                 android:textSize="10sp"
                 android:paddingTop="10dp"/>
@@ -159,20 +162,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/bed_tea_click"
             android:orientation="vertical"
             android:gravity="center">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:id="@+id/bed_tea_click"
                 android:onClick="bedteaClick"
                 android:background="@drawable/round_bedtea"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BED TEA/COFFEE"
+                android:text="@string/servetea_coffee"
                 android:gravity="center"
                 android:textSize="10sp"
                 android:paddingTop="10dp"/>
@@ -184,12 +187,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:id="@+id/wake_up_click"
             android:orientation="vertical">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:id="@+id/wake_up_click"
                 android:onClick="wakeupClick"
                 android:background="@drawable/round_wakeup"
                 />
@@ -197,7 +200,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="WAKE ME UP"
+                android:text="@string/servewake_up"
                 android:gravity="center"
                 android:textSize="10sp"
                 android:paddingTop="10dp"/>
@@ -218,13 +221,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/bell_boy_click"
             android:orientation="vertical"
             android:gravity="center">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:id="@+id/bell_boy_click"
                 android:onClick="bellboyClick"
                 android:background="@drawable/round_bellboy"
                 />
@@ -232,7 +235,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BELL-BOY"
+                android:text="@string/servebell_boy"
                 android:gravity="center"
                 android:textSize="10sp"
                 android:paddingTop="10dp"/>
@@ -243,13 +246,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/bath_essentials_click"
             android:orientation="vertical"
             android:gravity="center">
 
             <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:id="@+id/bath_essentials_click"
                 android:onClick="bathessentialsClick"
                 android:background="@drawable/round_bathroom"
                 />
@@ -257,7 +260,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BATHROOM ESSENTIALS"
+                android:text="@string/servebath_essentials"
                 android:gravity="center"
                 android:textSize="10sp"
                 android:paddingTop="10dp"/>
@@ -281,4 +284,8 @@
         android:layout_weight="1"
         android:background="#fff"></LinearLayout>
 
-</LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
